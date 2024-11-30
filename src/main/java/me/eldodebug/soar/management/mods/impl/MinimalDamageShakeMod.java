@@ -12,7 +12,7 @@ public class MinimalDamageShakeMod extends Mod {
 	private NumberSetting intensitySetting = new NumberSetting(TranslateText.INTENSITY, this, 0, 0, 100, true);
 	
 	public MinimalDamageShakeMod() {
-		super(TranslateText.MINIMAL_DAMAGE_SHAKE, TranslateText.MINIMAL_DAMAGE_SHAKE_DESCRIPTION, ModCategory.RENDER);
+		super(TranslateText.MINIMAL_DAMAGE_SHAKE, TranslateText.MINIMAL_DAMAGE_SHAKE_DESCRIPTION, ModCategory.RENDER, "nohurtcam");
 	}
 
 	@EventTarget

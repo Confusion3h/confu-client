@@ -20,7 +20,7 @@ public class AutoTextMod extends Mod {
 	private TextSetting text3Setting = new TextSetting(TranslateText.TEXT_3, this, "");
 	
 	public AutoTextMod() {
-		super(TranslateText.AUTO_TEXT, TranslateText.AUTO_TEXT_DESCRIPTION, ModCategory.PLAYER);
+		super(TranslateText.AUTO_TEXT, TranslateText.AUTO_TEXT_DESCRIPTION, ModCategory.PLAYER,"messagetexthotkeymacro");
 	}
 
 	@EventTarget

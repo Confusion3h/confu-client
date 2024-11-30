@@ -31,8 +31,8 @@ public class ModernHotbarMod extends HUDMod {
 	
 	private float barX, barY, barWidth, barHeight, selX;
 	
-	private ComboSetting designSetting = new ComboSetting(TranslateText.DESIGN, this, TranslateText.NORMAL, new ArrayList<Option>(Arrays.asList(
-			new Option(TranslateText.NORMAL), new Option(TranslateText.SOAR), new Option(TranslateText.CHILL))));
+	private ComboSetting designSetting = new ComboSetting(TranslateText.DESIGN, this, TranslateText.CLIENT, new ArrayList<Option>(Arrays.asList(
+			new Option(TranslateText.NORMAL), new Option(TranslateText.SOAR), new Option(TranslateText.CHILL), new Option(TranslateText.CLIENT))));
 	
 	private BooleanSetting smoothSetting = new BooleanSetting(TranslateText.SMOOTH, this, true);
 	
@@ -48,6 +48,7 @@ public class ModernHotbarMod extends HUDMod {
 		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		ScaledResolution sr = new ScaledResolution(mc);
 		Option option = designSetting.getOption();
+		if(this.isEditing()){return;}
 		
 		nvg.setupAndDraw(() -> drawNanoVG(nvg));
 		
@@ -121,7 +122,13 @@ public class ModernHotbarMod extends HUDMod {
     			if(option.getTranslate().equals(TranslateText.SOAR)) {
     				nvg.drawShadow(barX, barY, barWidth, barHeight, 6);
     				nvg.drawGradientRoundedRect(barX, barY, barWidth, barHeight, 6, ColorUtils.applyAlpha(currentColor.getColor1(), 190), ColorUtils.applyAlpha(currentColor.getColor2(), 190));
-    			}else {
+    			} else if(option.getTranslate().equals(TranslateText.CLIENT)){
+					// todo: fix glow mode
+					this.setScale(1f);
+					this.setX((int) barX);
+					this.setY((int) barY);
+					drawBackground(barWidth, barHeight, 6);
+				} else {
     				nvg.drawShadow(barX, barY, barWidth, barHeight, 6);
     				nvg.drawRoundedRect(barX, barY, barWidth, barHeight, 6, new Color(0, 0, 0, 100));
     			}

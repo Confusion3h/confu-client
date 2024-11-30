@@ -74,43 +74,42 @@ public class CosmeticsCategory extends Category {
 
 			nvg.drawRoundedRect(this.getX() + 15 + offsetX, this.getY() + offsetY - 3, textWidth + 20, 16, 6, defaultColor);
 			nvg.drawGradientRoundedRect(this.getX() + 15 + offsetX, this.getY() + offsetY - 3, textWidth + 20, 16, 6, color1, color2);
-			
+
 			nvg.drawText(c.getName(), this.getX() + 15 + offsetX + ((textWidth + 20) - textWidth) / 2, this.getY() + offsetY + 1.5F, textColor, 9, Fonts.MEDIUM);
 			
-			offsetX+=textWidth + 28;
+			offsetX+= (int) (textWidth + 28);
 		}
 		
 		offsetX = 0;
 		offsetY = offsetY + 23;
 		
-		for(Cape cp : capeManager.getCapes()) {
+		for(Cape cape : capeManager.getCapes()) {
 			
-			if(filterCape(cp)) {
+			if(filterCape(cape)) {
 				continue;
 			}
 			
-			cp.getAnimation().setAnimation(cp.equals(capeManager.getCurrentCape()) ? 1.0F : 0.0F, 16);
-			
-			nvg.drawGradientRoundedRect(this.getX() + 15 + offsetX - 2, this.getY() + offsetY - 2, 88 + 4, 135 + 4, 8.5F, ColorUtils.applyAlpha(accentColor.getColor1(), (int) (cp.getAnimation().getValue() * 255)), ColorUtils.applyAlpha(accentColor.getColor2(), (int) (cp.getAnimation().getValue() * 255)));
+			cape.getAnimation().setAnimation(cape.equals(capeManager.getCurrentCape()) ? 1.0F : 0.0F, 16);
+			nvg.drawGradientRoundedRect(this.getX() + 15 + offsetX - 2, this.getY() + offsetY - 2, 88 + 4, 135 + 4, 8.5F, ColorUtils.applyAlpha(accentColor.getColor1(), (int) (cape.getAnimation().getValue() * 255)), ColorUtils.applyAlpha(accentColor.getColor2(), (int) (cape.getAnimation().getValue() * 255)));
 			nvg.drawRoundedRect(this.getX() + 15 + offsetX, this.getY() + offsetY, 88, 135, 8, palette.getBackgroundColor(ColorType.DARK));
 			
-			if(cp instanceof NormalCape) {
+			if(cape instanceof NormalCape) {
 				
-				NormalCape c = ((NormalCape)cp);
+				NormalCape c = ((NormalCape)cape);
 				
 				if(c.getSample() != null) {
 					nvg.drawRoundedImage(c.getSample(), this.getX() + 24 + offsetX, this.getY() + offsetY + 9, 70, 105, 8);
 				}
-			}else if(cp instanceof CustomCape) {
+			}else if(cape instanceof CustomCape) {
 				
-				CustomCape c = ((CustomCape)cp);
+				CustomCape c = ((CustomCape)cape);
 				
 				if(c.getSample() != null) {
 					nvg.drawRoundedImage(c.getSample(), this.getX() + 24 + offsetX, this.getY() + offsetY + 9, 70, 105, 8);
 				}
 			}
-			
-			nvg.drawCenteredText(cp.getName(), this.getX() + 15 + offsetX + (88 / 2), this.getY() + offsetY + 120.5F, palette.getFontColor(ColorType.DARK), 10, Fonts.MEDIUM);
+			Color cColour = palette.getFontColor(ColorType.DARK);
+			nvg.drawCenteredText(cape.getName(), this.getX() + 15 + offsetX + (88 / 2), this.getY() + offsetY + 120.5F, cColour, 10, Fonts.MEDIUM);
 			
 			offsetX+=100;
 			
@@ -133,7 +132,6 @@ public class CosmeticsCategory extends Category {
 		
 		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
-		GlideAPI api = instance.getApi();
 		
 		int offsetX = 0;
 		float offsetY = 13 + scroll.getValue();
@@ -154,24 +152,14 @@ public class CosmeticsCategory extends Category {
 		offsetX = 0;
 		offsetY = offsetY + 23;
 		
-		for(Cape cp : capeManager.getCapes()) {
+		for(Cape cape : capeManager.getCapes()) {
 			
-			if(filterCape(cp)) {
+			if(filterCape(cape)) {
 				continue;
 			}
-			
-			if(MouseUtils.isInside(mouseX, mouseY, this.getX() + 15 + offsetX, this.getY() + offsetY, 88, 135) && mouseButton == 0) {
-				
-				if(cp.isPremium()) {
-					
-					if(api.isSpecialUser()) {
-						capeManager.setCurrentCape(cp);
-					} else {
-						instance.getNotificationManager().post(TranslateText.ERROR, TranslateText.PREMIUM_ONLY, NotificationType.ERROR);
-					}
-				} else {
-					capeManager.setCurrentCape(cp);
-				}
+
+			if (MouseUtils.isInside(mouseX, mouseY, this.getX() + 15 + offsetX, this.getY() + offsetY, 88, 135) && mouseButton == 0) {
+				capeManager.setCurrentCape(cape);
 			}
 			
 			offsetX+=100;
@@ -185,13 +173,13 @@ public class CosmeticsCategory extends Category {
 		}
 	}
 	
-	private boolean filterCape(Cape cp) {
+	private boolean filterCape(Cape cape) {
 		
-		if(!currentCategory.equals(CapeCategory.ALL) && !currentCategory.equals(cp.getCategory())) {
+		if(!currentCategory.equals(CapeCategory.ALL) && !currentCategory.equals(cape.getCategory())) {
 			return true;
 		}
 		
-		if(!this.getSearchBox().getText().isEmpty() && !SearchUtils.isSimillar(cp.getName(), this.getSearchBox().getText())) {
+		if(!this.getSearchBox().getText().isEmpty() && !SearchUtils.isSimillar(cape.getName(), this.getSearchBox().getText())) {
 			return true;
 		}
 		

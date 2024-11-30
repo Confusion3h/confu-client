@@ -2,6 +2,7 @@ package me.eldodebug.soar.management.mods;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 import me.eldodebug.soar.management.mods.impl.*;
 import me.eldodebug.soar.management.mods.settings.Setting;
@@ -12,6 +13,7 @@ public class ModManager {
 	private ArrayList<Setting> settings = new ArrayList<Setting>();
 	
 	public void init() {
+		mods.add(new AnimationsMod());
 		mods.add(new AppleSkinMod());
 		mods.add(new ArmorStatusMod());
 		mods.add(new ArrayListMod());
@@ -46,8 +48,10 @@ public class ModManager {
 		mods.add(new DamageTintMod());
 		mods.add(new DayCounterMod());
 		mods.add(new DiscordRPCMod());
+		mods.add(new EarsMod());
 		mods.add(new EntityCullingMod());
 		mods.add(new FarCameraMod());
+		mods.add(new FemaleGenderMod());
 		mods.add(new FovModifierMod());
 		mods.add(new FPSBoostMod());
 		mods.add(new FPSDisplayMod());
@@ -89,7 +93,6 @@ public class ModManager {
 		mods.add(new NameDisplayMod());
 		mods.add(new NameProtectMod());
 		mods.add(new NametagMod());
-		mods.add(new OldAnimationsMod());
 		mods.add(new OverlayEditorMod());
 		mods.add(new PackDisplayMod());
 		mods.add(new ParticleCustomizerMod());
@@ -197,6 +200,12 @@ public class ModManager {
 		for(Setting s : settings) {
 			if(s.getParent().equals(mod)) {
 				result = result + s.getName() + " ";
+			}
+		}
+
+		for(Mod m : mods) {
+			if(m.equals(mod) && !Objects.equals(m.getAlias(), "\u200B")) {
+				result = result + m.getAlias() + " ";
 			}
 		}
 		

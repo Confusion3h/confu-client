@@ -24,7 +24,7 @@ public class SessionInfoMod extends HUDMod {
 	private long startTime;
 	
 	public SessionInfoMod() {
-		super(TranslateText.SESSION_INFO, TranslateText.SESSION_INFO_DESCRIPTION);
+		super(TranslateText.SESSION_INFO, TranslateText.SESSION_INFO_DESCRIPTION, "stats");
 	}
 
 	@EventTarget

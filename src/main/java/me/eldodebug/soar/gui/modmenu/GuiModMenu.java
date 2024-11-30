@@ -51,7 +51,6 @@ public class GuiModMenu extends GuiScreen {
 	private ScreenAnimation screenAnimation = new ScreenAnimation();
 	
 	private Scroll scroll = new Scroll();
-	private Scroll categoryScroll = new Scroll();
 	
 	private boolean toEditHUD, canClose;
 	
@@ -90,7 +89,6 @@ public class GuiModMenu extends GuiScreen {
 		}
 		
 		scroll.resetAll();
-		categoryScroll.resetAll();
 		toEditHUD = false;
 		canClose = true;
 	}
@@ -120,6 +118,7 @@ public class GuiModMenu extends GuiScreen {
 		ColorManager colorManager = instance.getColorManager();
 		ColorPalette palette = colorManager.getPalette();
 		AccentColor currentColor = colorManager.getCurrentColor();
+
 		if(introAnimation.isDone(Direction.BACKWARDS)) {
 			mc.displayGuiScreen(toEditHUD ? new GuiEditHUD(true) : null);
 		}
@@ -134,6 +133,7 @@ public class GuiModMenu extends GuiScreen {
 		nvg.save();
 		nvg.translate(currentCategory.getTextAnimation().getValue() * 15, 0);
 		nvg.drawText(currentCategory.getName(), x + 32, y + 10, palette.getFontColor(ColorType.DARK, (int) (currentCategory.getTextAnimation().getValue() * 255)), 15, Fonts.MEDIUM);
+
 		nvg.restore();
 		
 		int offsetY = 0;
@@ -141,9 +141,7 @@ public class GuiModMenu extends GuiScreen {
 		moveAnimation.setAnimation(categories.indexOf(currentCategory) * 30, 18);
 		
 		nvg.save();
-		nvg.scissor(x, y + 30, 32, height - 100);
-		nvg.translate(0, categoryScroll.getValue());
-		
+
 		nvg.drawGradientRoundedRect(x + 5.5F, y + 38.5F + moveAnimation.getValue(), 21, 21, 4, currentColor.getColor1(), currentColor.getColor2());
 		
 		for(Category c : categories) {
@@ -159,10 +157,8 @@ public class GuiModMenu extends GuiScreen {
 		
 		nvg.restore();
 		
-		nvg.drawRect(x, y + height - 70, 32, 1, palette.getBackgroundColor(ColorType.NORMAL));
-		
-		nvg.drawGradientRoundedRect(x + 5.5F, y + height - 60, 21, 21, 4, currentColor.getColor1(), currentColor.getColor2());
-		nvg.drawText(Icon.LAYOUT, x + 9, y + height - 56.5F, Color.WHITE, 14, Fonts.ICON);
+		nvg.drawGradientRoundedRect(x + 5.5F, y + height - 30, 21, 21, 4, currentColor.getColor1(), currentColor.getColor2());
+		nvg.drawText(Icon.LAYOUT, x + 9, y + height - 26.5F, Color.WHITE, 14, Fonts.ICON);
 		
 		for(Category c : categories) {
 			
@@ -201,15 +197,7 @@ public class GuiModMenu extends GuiScreen {
 		}
 		
 		scroll.onAnimation();
-		
-		if(MouseUtils.isInside(mouseX, mouseY, x, y, 32, height)) {
-			categoryScroll.onScroll();
-		}
-		
-		categoryScroll.onAnimation();
-		
-		categoryScroll.setMaxScroll((categories.size() - 5.85F) * 30);
-		
+
 		if(currentCategory.isShowSearchBox() && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_F)) {
 			currentCategory.getSearchBox().setFocused(true);
 		}
@@ -217,21 +205,23 @@ public class GuiModMenu extends GuiScreen {
 	
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-		
 		int offsetY = 0;
-		
-		offsetY = (int) (offsetY + categoryScroll.getValue());
-		
+
+		// exit gui if not clicked in the gui area
+		if(!MouseUtils.isInside(mouseX, mouseY, x - 5, y - 5, width + 10, height + 10) && mouseButton == 0 && canClose) {
+			introAnimation.setDirection(Direction.BACKWARDS);
+		}
+
 		for(Category c : categories) {
 			
-			if(MouseUtils.isInside(mouseX, mouseY, x, y + 30, 32, height - 100) && MouseUtils.isInside(mouseX, mouseY, x + 5.5F, y + 38.5F + offsetY, 21, 21) && mouseButton == 0) {
+			if(MouseUtils.isInside(mouseX, mouseY, x + 5.5F, y + 38.5F + offsetY, 21, 21) && mouseButton == 0) {
 				currentCategory = c;
 			}
 			
 			offsetY+=30;
 		}
 		
-		if(MouseUtils.isInside(mouseX, mouseY, x + 5.5F, y + height - 60, 21, 21) && mouseButton == 0) {
+		if(MouseUtils.isInside(mouseX, mouseY, x + 5.5F, y + height - 30, 21, 21) && mouseButton == 0) {
 			toEditHUD = true;
 			introAnimation.setDirection(Direction.BACKWARDS);
 		}

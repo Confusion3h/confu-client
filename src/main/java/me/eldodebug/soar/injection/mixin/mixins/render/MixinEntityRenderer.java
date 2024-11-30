@@ -1,5 +1,6 @@
 package me.eldodebug.soar.injection.mixin.mixins.render;
 
+import me.eldodebug.soar.utils.animation.simple.SimpleAnimation;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,7 +25,7 @@ import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.mods.impl.EntityCullingMod;
 import me.eldodebug.soar.management.mods.impl.MinimalViewBobbingMod;
 import me.eldodebug.soar.management.mods.impl.MoBendsMod;
-import me.eldodebug.soar.management.mods.impl.OldAnimationsMod;
+import me.eldodebug.soar.management.mods.impl.AnimationsMod;
 import me.eldodebug.soar.management.mods.impl.WeatherChangerMod;
 import me.eldodebug.soar.management.mods.settings.impl.ComboSetting;
 import me.eldodebug.soar.management.mods.settings.impl.combo.Option;
@@ -55,7 +56,10 @@ public abstract class MixinEntityRenderer {
     
     @Unique
     private float eyeHeight;
-    
+
+	@Unique
+	private SimpleAnimation smooth = new SimpleAnimation(0.0F);
+
     @Unique
     private float previousHeight;
     
@@ -146,11 +150,14 @@ public abstract class MixinEntityRenderer {
 	
     @Redirect(method = "orientCamera", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getEyeHeight()F"))
     public float modifyEyeHeight(Entity entity, float partialTicks) {
-    	
-    	OldAnimationsMod mod = OldAnimationsMod.getInstance();
-    	
-        return mod.isToggled() && mod.getSneakSetting().isToggled() ? previousHeight + (height - previousHeight) * partialTicks : entity.getEyeHeight();
-    }
+		AnimationsMod mod = AnimationsMod.getInstance();
+		if(mod.getSmoothSneakSetting().isToggled()){
+			smooth.setAnimation(mod.isToggled() && mod.getSneakSetting().isToggled() ? previousHeight + (height - previousHeight) * partialTicks : entity.getEyeHeight(), mod.getSmoothSneakSpeedSetting()*10);
+			return smooth.getValue();
+		} else {
+			return mod.isToggled() && mod.getSneakSetting().isToggled() ? previousHeight + (height - previousHeight) * partialTicks : entity.getEyeHeight();
+		}
+	}
     
     @Redirect(method = "setupCameraTransform", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/EntityRenderer;setupViewBobbing(F)V"))
     public void setupCameraTransform(EntityRenderer entityRenderer, float f) {

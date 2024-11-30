@@ -32,6 +32,28 @@ public class HUDMod extends Mod {
 		this.scale = 1.0F;
 		this.draggable = true;
 	}
+
+	public HUDMod(TranslateText nameTranslate, TranslateText descriptionText, String alias) {
+		super(nameTranslate, descriptionText, ModCategory.HUD, alias);
+
+		this.x = 100;
+		this.y = 100;
+		this.width = 100;
+		this.height = 100;
+		this.scale = 1.0F;
+		this.draggable = true;
+	}
+
+	public HUDMod(TranslateText nameTranslate, TranslateText descriptionText, String alias, boolean banable) {
+		super(nameTranslate, descriptionText, ModCategory.HUD, alias, banable);
+
+		this.x = 100;
+		this.y = 100;
+		this.width = 100;
+		this.height = 100;
+		this.scale = 1.0F;
+		this.draggable = true;
+	}
 	
 	public void save() {
 		
@@ -163,13 +185,16 @@ public class HUDMod extends Mod {
 		boolean isShadow = theme.getTranslate().equals(TranslateText.SHADOW);
 		boolean isDark = theme.getTranslate().equals(TranslateText.DARK);
 		boolean isLight = theme.getTranslate().equals(TranslateText.LIGHT);
+		boolean isRect = theme.getTranslate().equals(TranslateText.RECT);
+		boolean isModern = theme.getTranslate().equals(TranslateText.MODERN);
+
 		
 		float lastWidth = width * scale;
 		float lastHeight = height * scale;
 		float x = this.x + (addX * scale);
 		float y = this.y + (addY * scale);
 		
-		if(isNormal || isVanilla || isShadow || isDark || isLight) {
+		if(isNormal || isVanilla || isShadow || isDark || isLight || isModern) {
 			nvg.drawShadow(x, y, lastWidth, lastHeight, radius);
 		}else if(isGlow || isVanillaGlow) {
 			nvg.drawGradientShadow(x, y, lastWidth, lastHeight, radius, currentColor.getColor1(), currentColor.getColor2());
@@ -194,6 +219,15 @@ public class HUDMod extends Mod {
 		} else if(isDark) {
 			nvg.drawRoundedRect(x, y, lastWidth, lastHeight, radius, new Color(20, 20, 20, 220));
 		}
+		if(isRect) {
+			nvg.drawRect(x, y, lastWidth, lastHeight, new Color(20, 20, 20, 165));
+		}
+		if(isModern) {
+			nvg.drawRoundedRect(x, y, lastWidth, lastHeight, radius, new Color(0, 0, 0, 150));
+			nvg.drawOutlineRoundedRect(x - 0.5F, y - 0.5F, lastWidth + 1, lastHeight + 1, radius + 0.5F, 0.5F,  new Color(255,255,255,150));
+
+		}
+
 	}
 	
 	public void drawBackground(float width, float height) {
@@ -212,8 +246,17 @@ public class HUDMod extends Mod {
 		
 		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		float lastSize = size * scale;
-		
-		nvg.drawText(text, x + (addX * scale), y + (addY * scale), color, lastSize, font);
+		Option theme = GlobalSettingsMod.getInstance().getModThemeSetting().getOption();
+		boolean isText = theme.getTranslate().equals(TranslateText.TEXT);
+
+		if(isText){
+			nvg.save();
+			nvg.fontBlur(20);
+			nvg.drawText(text, x + (addX * scale), y + (addY * scale), new Color(0,0,0, 150), lastSize, font);
+			nvg.restore();
+		}
+
+		nvg.drawText(text, x + (addX * scale), y + (addY * scale), new Color(color.getRed(), color.getGreen(), color.getBlue(), 180), lastSize, font);
 	}
 	
 	public void scale(float addX, float addY, float width, float height, float nvgScale) {

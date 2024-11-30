@@ -24,7 +24,7 @@ public class GlintColorMod extends Mod {
 	private ColorSetting colorSetting = new ColorSetting(TranslateText.COLOR, this, Color.RED, false);	
 	
 	public GlintColorMod() {
-		super(TranslateText.GLINT_COLOR, TranslateText.GLINT_COLOR_DESCRIPTION, ModCategory.RENDER);
+		super(TranslateText.GLINT_COLOR, TranslateText.GLINT_COLOR_DESCRIPTION, ModCategory.RENDER, "changeru");
 		
 		instance = this;
 	}

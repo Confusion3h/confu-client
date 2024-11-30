@@ -12,7 +12,7 @@ public class NameProtectMod extends Mod {
 	private TextSetting nameSetting = new TextSetting(TranslateText.NAME, this, "You");
 	
 	public NameProtectMod() {
-		super(TranslateText.NAME_PROTECT, TranslateText.NAME_PROTECT_DESCRIPTION, ModCategory.PLAYER);
+		super(TranslateText.NAME_PROTECT, TranslateText.NAME_PROTECT_DESCRIPTION, ModCategory.PLAYER, "nickhider");
 	}
 	
 	@EventTarget

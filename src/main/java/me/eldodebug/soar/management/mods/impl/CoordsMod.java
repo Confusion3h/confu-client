@@ -24,7 +24,7 @@ public class CoordsMod extends SimpleHUDMod {
 	private BooleanSetting iconSetting = new BooleanSetting(TranslateText.ICON, this, true);
 	
 	public CoordsMod() {
-		super(TranslateText.COORDS, TranslateText.COORDS_DEDSCRIPTION);
+		super(TranslateText.COORDS, TranslateText.COORDS_DEDSCRIPTION, "coordinates");
 	}
 
 	@EventTarget
@@ -65,7 +65,7 @@ public class CoordsMod extends SimpleHUDMod {
 	
 	@Override
 	public String getText() {
-		return "X: " + (int) mc.thePlayer.posX + " Y: " + (int) mc.thePlayer.posY + " Z: " + (int) mc.thePlayer.posZ;
+		return "X: " + (int) mc.thePlayer.posX + " Y: " + (int) mc.thePlayer.posY + " Z: " + (int) mc.thePlayer.posZ + " ";
 	}
 	
 	@Override

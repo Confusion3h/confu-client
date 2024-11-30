@@ -32,7 +32,7 @@ import me.eldodebug.soar.management.event.impl.EventUpdateFramebufferSize;
 import me.eldodebug.soar.management.mods.impl.FPSLimiterMod;
 import me.eldodebug.soar.management.mods.impl.FPSSpooferMod;
 import me.eldodebug.soar.management.mods.impl.HitDelayFixMod;
-import me.eldodebug.soar.management.mods.impl.OldAnimationsMod;
+import me.eldodebug.soar.management.mods.impl.AnimationsMod;
 import me.eldodebug.soar.management.mods.impl.ViaVersionMod;
 import me.eldodebug.soar.viaversion.fixes.AttackOrder;
 import net.minecraft.client.Minecraft;
@@ -209,7 +209,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     @Inject(method = "sendClickBlockToController", at = @At("HEAD"))
     public void preSendClickBlockToController(boolean leftClick, CallbackInfo ci) {
     	
-    	OldAnimationsMod mod = OldAnimationsMod.getInstance();
+    	AnimationsMod mod = AnimationsMod.getInstance();
     	
         if (mod.isToggled() && mod.getBlockHitSetting().isToggled() && mod.getPushingSetting().isToggled() && gameSettings.keyBindUseItem.isKeyDown()) {
             if (leftClickCounter <= 0 && leftClick && objectMouseOver != null && objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {

@@ -20,7 +20,7 @@ public class ChatMod extends Mod {
 	private BooleanSetting compactSetting = new BooleanSetting(TranslateText.COMPACT, this, false);
 	
 	public ChatMod() {
-		super(TranslateText.CHAT, TranslateText.CHAT_DESCRIPTION, ModCategory.OTHER);
+		super(TranslateText.CHAT, TranslateText.CHAT_DESCRIPTION, ModCategory.OTHER, "betterchatting");
 		
 		instance = this;
 	}

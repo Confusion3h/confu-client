@@ -16,6 +16,8 @@ import net.minecraft.client.gui.ScaledResolution;
 
 public class WelcomeMessageScene extends MainMenuScene {
 
+	// Todo: translate text
+
 	private Animation fadeAnimation;
 	private int step;
 	private String message;
@@ -33,8 +35,10 @@ public class WelcomeMessageScene extends MainMenuScene {
 		
 		ScaledResolution sr = new ScaledResolution(mc);
 		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
+		String hello = "Hello!";
 		String welcomeMessage = "Welcome to Glide Client";
-		String setupMessage = "Let's start setting up the Glide Client!";
+		String setupMessage = "An Updated Version of Soar Client";
+		String setupMessage2 = "Time to setup Glide.";
 		
 		BlurUtils.drawBlurScreen(14);
 		
@@ -49,10 +53,16 @@ public class WelcomeMessageScene extends MainMenuScene {
 			
 			switch(step) {
 				case 0:
-					message = welcomeMessage;
+					message = hello;
 					break;
 				case 1:
+					message = welcomeMessage;
+					break;
+				case 2:
 					message = setupMessage;
+					break;
+				case 3:
+					message = setupMessage2;
 					break;
 			}
 			
@@ -62,15 +72,15 @@ public class WelcomeMessageScene extends MainMenuScene {
 						new Color(255, 255, 255, (int) (fadeAnimation.getValueFloat() * 255)), 26, Fonts.REGULAR);
 			});
 			
-			if(timer.delay(5000) && fadeAnimation.getDirection().equals(Direction.FORWARDS)) {
+			if(timer.delay(2500) && fadeAnimation.getDirection().equals(Direction.FORWARDS)) {
 				fadeAnimation.setDirection(Direction.BACKWARDS);
 				timer.reset();
 			}
 			
 			if(fadeAnimation.isDone(Direction.BACKWARDS)) {
 				
-				if(step == 1) {
-					this.setCurrentScene(this.getSceneByClass(ThemeSelectScene.class));
+				if(step == 3) {
+					this.setCurrentScene(this.getSceneByClass(LanguageSelectScene.class));
 					return;
 				}
 				

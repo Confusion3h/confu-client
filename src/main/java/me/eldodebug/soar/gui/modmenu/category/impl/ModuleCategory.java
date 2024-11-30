@@ -140,9 +140,16 @@ public class ModuleCategory extends Category {
 				
 				nvg.drawRoundedRect(this.getX() + 15, this.getY() + offsetY, this.getWidth() - 30, 40, 8, palette.getBackgroundColor(ColorType.DARK));
 				nvg.drawRoundedRect(this.getX() + 21, this.getY() + offsetY + 6, 28, 28, 6, palette.getBackgroundColor(ColorType.NORMAL));
-				nvg.drawText(m.getName(), this.getX() + 56, this.getY() + offsetY + 15F, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
-				nvg.drawText(m.getDescription(), this.getX() + 56 + (nvg.getTextWidth(m.getName(), 13, Fonts.MEDIUM)) + 5, this.getY() + offsetY + 16, palette.getFontColor(ColorType.NORMAL), 9, Fonts.REGULAR);
-				
+				if(m.isBanable()){
+					nvg.drawText(m.getName(), this.getX() + 56, this.getY() + offsetY + 9F, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
+					nvg.drawText(m.getDescription(), this.getX() + 56 + (nvg.getTextWidth(m.getName(), 13, Fonts.MEDIUM)) + 5, this.getY() + offsetY + 12, palette.getFontColor(ColorType.NORMAL), 9, Fonts.REGULAR);
+					nvg.drawText(Icon.INFO, this.getX() + 56, this.getY() + offsetY + 23, new Color(255, 145, 0), 9, Fonts.ICON);
+					nvg.drawText("This mod may be banable on some servers", this.getX() + 57 + (nvg.getTextWidth(Icon.INFO, 9, Fonts.ICON)) , this.getY() + offsetY + 24, new Color(255, 145, 0), 9, Fonts.REGULAR);
+				} else {
+					nvg.drawText(m.getName(), this.getX() + 56, this.getY() + offsetY + 15F, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
+					nvg.drawText(m.getDescription(), this.getX() + 56 + (nvg.getTextWidth(m.getName(), 13, Fonts.MEDIUM)) + 5, this.getY() + offsetY + 17, palette.getFontColor(ColorType.NORMAL), 9, Fonts.REGULAR);
+				}
+
 				m.getAnimation().setAnimation(m.isToggled() ? 1.0F : 0.0F, 16);
 				
 				nvg.save();
@@ -185,7 +192,8 @@ public class ModuleCategory extends Category {
 			
 			nvg.drawRoundedRect(this.getX() + 15, this.getY() + offsetY, this.getWidth() - 30, this.getHeight() - 30, 10, palette.getBackgroundColor(ColorType.DARK));
 			nvg.drawRect(this.getX() + 15, this.getY() + offsetY + 27, this.getWidth() - 30, 1, palette.getBackgroundColor(ColorType.NORMAL));
-			nvg.drawText(currentMod.getName(), this.getX() + 26, this.getY() + offsetY + 9, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
+			nvg.drawText(Icon.ARROW_LEFT, this.getX() + 25, this.getY() + offsetY + 8, palette.getFontColor(ColorType.DARK), 13, Fonts.ICON);
+			nvg.drawText(currentMod.getName(), this.getX() + 42, this.getY() + offsetY + 9, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
 			nvg.drawText(Icon.REFRESH, this.getX() + this.getWidth() - 39, this.getY() + offsetY + 7.5F, palette.getFontColor(ColorType.DARK), 13, Fonts.ICON);
 			
 			offsetY = 44;
@@ -333,7 +341,7 @@ public class ModuleCategory extends Category {
 						offsetY = 44;
 						
 						if(settings != null) {
-							
+
 							comps.clear();
 							
 							for(Setting s : settings) {
@@ -457,6 +465,13 @@ public class ModuleCategory extends Category {
 		}
 		
 		if(openSetting && settingAnimation.isDone(Direction.BACKWARDS)) {
+			if(MouseUtils.isInside(mouseX, mouseY, this.getX() + 22, this.getY() + 20,  18,18)  && mouseButton == 0) {
+				openSetting = false;
+			}
+			int x = getX() - 32, y = getY() - 31, width = getWidth() + 32, height = getHeight() + 31;
+			if(!MouseUtils.isInside(mouseX, mouseY,  x - 5, y - 5, width + 10, height + 10) && mouseButton == 0 ) {
+				openSetting = false;
+			}
 			
 			for(ModuleSetting s: comps) {
 				
@@ -496,7 +511,7 @@ public class ModuleCategory extends Category {
 				}
 			}
 		}
-		
+
 		if(openSetting && mouseButton == 3) {
 			openSetting = false;
 		}
@@ -535,8 +550,8 @@ public class ModuleCategory extends Category {
 		if(binding) {
 			return;
 		}
-		
-		if(openSetting && keyCode == Keyboard.KEY_ESCAPE && !binding) {
+
+		if(openSetting && keyCode == Keyboard.KEY_ESCAPE  && !binding) {
 			openSetting = false;
 		}
 	}

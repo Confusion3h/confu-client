@@ -14,7 +14,7 @@ public class LanguageManager {
 	private Language currentLanguage;
 	
 	public LanguageManager() {
-		setCurrentLanguage(Language.ENGLISH);
+		setCurrentLanguage(Language.ENGLISHGB);
 	}
 	
 	private void loadMap(HashMap<String, String> map, String language) {

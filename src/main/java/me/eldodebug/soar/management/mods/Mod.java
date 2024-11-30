@@ -15,6 +15,8 @@ public class Mod {
 	private boolean toggled, hide;
 	private SimpleAnimation animation = new SimpleAnimation();
 	private ModCategory category;
+	private String alias = "\u200B"; // zerowidth space
+	private Boolean banable = false;
 	
 	public Mod(TranslateText nameTranslate, TranslateText descriptionTranslate, ModCategory category) {
 		
@@ -23,6 +25,29 @@ public class Mod {
 		this.toggled = false;
 		this.category = category;
 		
+		this.setup();
+	}
+
+	public Mod(TranslateText nameTranslate, TranslateText descriptionTranslate, ModCategory category, String alias) {
+
+		this.nameTranslate = nameTranslate;
+		this.descriptionTranslate = descriptionTranslate;
+		this.toggled = false;
+		this.category = category;
+		this.alias = alias;
+
+		this.setup();
+	}
+
+	public Mod(TranslateText nameTranslate, TranslateText descriptionTranslate, ModCategory category, String alias, boolean banable) {
+
+		this.nameTranslate = nameTranslate;
+		this.descriptionTranslate = descriptionTranslate;
+		this.toggled = false;
+		this.category = category;
+		this.alias = alias;
+		this.banable = banable;
+
 		this.setup();
 	}
 	
@@ -93,4 +118,10 @@ public class Mod {
 	public SimpleAnimation getAnimation() {
 		return animation;
 	}
+
+	public String getAlias() {
+		return this.alias;
+	}
+
+	public Boolean isBanable() {return this.banable;}
 }

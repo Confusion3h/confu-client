@@ -111,7 +111,11 @@ public class SettingCategory extends Category {
 		if(currentScene != null && sceneAnimation.isDone(Direction.BACKWARDS)) {
 			currentScene.mouseClicked(mouseX, mouseY, mouseButton);
 		}
-		
+
+		if (!MouseUtils.isInside(mouseX, mouseY, this.getX(), this.getY() ,  this.getWidth(), this.getHeight()) && mouseButton == 0) {
+			sceneAnimation.setDirection(Direction.FORWARDS);
+		}
+
 		if(currentScene != null && mouseButton == 3) {
 			sceneAnimation.setDirection(Direction.FORWARDS);
 		}

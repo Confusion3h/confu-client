@@ -48,6 +48,7 @@ public class ColorManager {
 		add("Inbox", new Color(69, 127, 202), new Color(86, 145, 200));
 		add("Amethyst", new Color(157, 80, 187), new Color(110, 72, 170));
 		add("Blush", new Color(178, 69, 146), new Color(241, 95, 121));
+		add("Mocha Rose", new Color(245, 194, 231), new Color(243, 139, 168));
 		
 		currentColor = getColorByName("Default");
 	}

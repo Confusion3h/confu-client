@@ -8,24 +8,18 @@ public class Cape {
 	
 	private String name;
 	private ResourceLocation cape;
-	private boolean premium;
 	private CapeCategory category;
 	
 	private SimpleAnimation animation = new SimpleAnimation();
 	
-	public Cape(String name, ResourceLocation cape, boolean premium, CapeCategory category) {
+	public Cape(String name, ResourceLocation cape, CapeCategory category) {
 		this.name = name;
-		this.premium = premium;
 		this.category = category;
 		this.cape = cape;
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public boolean isPremium() {
-		return premium;
 	}
 
 	public CapeCategory getCategory() {

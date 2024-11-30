@@ -15,7 +15,7 @@ public class ViaVersionMod extends Mod {
 	private boolean loaded;
 	
 	public ViaVersionMod() {
-		super(TranslateText.VIA_VERSION, TranslateText.VIA_VERSION_DESCRIPTION, ModCategory.OTHER);
+		super(TranslateText.VIA_VERSION, TranslateText.VIA_VERSION_DESCRIPTION, ModCategory.OTHER, "", true);
 		
 		instance = this;
 		loaded = false;

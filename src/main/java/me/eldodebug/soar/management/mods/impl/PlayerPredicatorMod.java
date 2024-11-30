@@ -28,7 +28,7 @@ public class PlayerPredicatorMod extends Mod {
 	private boolean isActive;
 	
 	public PlayerPredicatorMod() {
-		super(TranslateText.PLAYER_PREDICATOR, TranslateText.PLAYER_PREDICATOR_DESCRIPTION, ModCategory.WORLD);
+		super(TranslateText.PLAYER_PREDICATOR, TranslateText.PLAYER_PREDICATOR_DESCRIPTION, ModCategory.WORLD, "", true);
 	}
 
 	@EventTarget

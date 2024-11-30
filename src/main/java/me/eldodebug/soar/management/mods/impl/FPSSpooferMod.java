@@ -12,7 +12,7 @@ public class FPSSpooferMod extends Mod {
 	private NumberSetting multiplierSetting = new NumberSetting(TranslateText.MULTIPLIER, this, 2, 1, 30, true);
 	
 	public FPSSpooferMod() {
-		super(TranslateText.FPS_SPOOFER, TranslateText.FPS_SPOOFER_DESCRIPTION, ModCategory.OTHER);
+		super(TranslateText.FPS_SPOOFER, TranslateText.FPS_SPOOFER_DESCRIPTION, ModCategory.OTHER, "fake");
 		
 		instance = this;
 	}

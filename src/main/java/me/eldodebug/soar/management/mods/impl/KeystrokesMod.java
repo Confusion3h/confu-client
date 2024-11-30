@@ -12,6 +12,8 @@ import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.utils.animation.simple.SimpleAnimation;
 
+import java.awt.*;
+
 public class KeystrokesMod extends HUDMod {
 
 	private BooleanSetting spaceSetting = new BooleanSetting(TranslateText.SPACE, this, true);
@@ -56,29 +58,29 @@ public class KeystrokesMod extends HUDMod {
 		
 		// D
 		this.drawBackground(64, 32, 28, 28);
-		
+
 		// W
 		this.save();
 		this.scale(32, 0, 28, 28, animations[0].getValue());
-		this.drawRoundedRect(32, 0, 28, 28, 6, this.getFontColor((int) (120 * animations[0].getValue())));
+		this.drawHighlight(32, 0, 28, 28, 6, this.getFontColor((int) (120 * animations[0].getValue())));
 		this.restore();
 		
 		// A
 		this.save();
 		this.scale(0, 32, 28, 28, animations[1].getValue());
-		this.drawRoundedRect(0, 32, 28, 28, 6, this.getFontColor((int) (120 * animations[1].getValue())));
+		this.drawHighlight(0, 32, 28, 28, 6, this.getFontColor((int) (120 * animations[1].getValue())));
 		this.restore();
 		
 		// S
 		this.save();
 		this.scale(32, 32, 28, 28, animations[2].getValue());
-		this.drawRoundedRect(32, 32, 28, 28, 6, this.getFontColor((int) (120 * animations[2].getValue())));
+		this.drawHighlight(32, 32, 28, 28, 6, this.getFontColor((int) (120 * animations[2].getValue())));
 		this.restore();
 		
 		// D
 		this.save();
 		this.scale(64, 32, 28, 28, animations[3].getValue());
-		this.drawRoundedRect(64, 32, 28, 28, 6, this.getFontColor((int) (120 * animations[3].getValue())));
+		this.drawHighlight(64, 32, 28, 28, 6, this.getFontColor((int) (120 * animations[3].getValue())));
 		this.restore();
 		
 		if(!unmarkedSetting.isToggled()) {
@@ -94,7 +96,7 @@ public class KeystrokesMod extends HUDMod {
 			
 			this.save();
 			this.scale(0, 64, (28 * 3) + 8, 22, animations[4].getValue());
-			this.drawRoundedRect(0, 64, (28 * 3) + 8, 22, 6, this.getFontColor((int) (120 * animations[4].getValue())));
+			this.drawHighlight(0, 64, (28 * 3) + 8, 22, 6, this.getFontColor((int) (120 * animations[4].getValue())));
 			this.restore();
 			
 			if(!unmarkedSetting.isToggled()) {
@@ -104,5 +106,9 @@ public class KeystrokesMod extends HUDMod {
 		
 		this.setWidth(28 * 3 + 8);
 		this.setHeight(spaceSetting.isToggled() ? 64 + 22 : 32 + 28);
+	}
+	private void drawHighlight(float addX, float addY, float width, float height, float radius, Color color){
+		boolean rect = GlobalSettingsMod.getInstance().getModThemeSetting().getOption().getTranslate().equals(TranslateText.RECT);
+		if (!rect) this.drawRoundedRect(addX, addY, width, height, radius, color); else  this.drawRect(addX, addY, width, height, color);
 	}
 }

@@ -30,7 +30,7 @@ public class BreadcrumbsMod extends Mod {
     private NumberSetting timeSetting = new NumberSetting(TranslateText.TIME, this, 15, 1, 150, true);
     
 	public BreadcrumbsMod() {
-		super(TranslateText.BREADCRUMBS, TranslateText.BREADCRUMBS_DESCRIPTION, ModCategory.RENDER);
+		super(TranslateText.BREADCRUMBS, TranslateText.BREADCRUMBS_DESCRIPTION, ModCategory.RENDER, "playertrails");
 	}
 	
 	@EventTarget

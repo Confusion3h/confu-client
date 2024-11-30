@@ -37,7 +37,7 @@ public class LastMessageScene extends MainMenuScene {
 		ScaledResolution sr = new ScaledResolution(mc);
 		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		String compMessage = "Setup is complete!";
-		String welcomeMessage = "Welcome to Glide Client!";
+		String welcomeMessage = "Thank you for choosing Glide Client!";
 		
 		BlurUtils.drawBlurScreen(1 + blurAnimation.getValueFloat());
 		
@@ -70,7 +70,7 @@ public class LastMessageScene extends MainMenuScene {
 						new Color(255, 255, 255, (int) (fadeAnimation.getValueFloat() * 255)), 26, Fonts.REGULAR);
 			});
 			
-			if(timer.delay(5000) && fadeAnimation.getDirection().equals(Direction.FORWARDS)) {
+			if(timer.delay(3000) && fadeAnimation.getDirection().equals(Direction.FORWARDS)) {
 				fadeAnimation.setDirection(Direction.BACKWARDS);
 				timer.reset();
 			}

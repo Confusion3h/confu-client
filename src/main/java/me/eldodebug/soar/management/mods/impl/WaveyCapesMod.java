@@ -27,7 +27,7 @@ public class WaveyCapesMod extends Mod {
 	private NumberSetting heightMultiplierSetting = new NumberSetting(TranslateText.HEIGHT_MULTIPLIER, this, 6, 2, 10, true);
 	
 	public WaveyCapesMod() {
-		super(TranslateText.WAVEY_CAPES, TranslateText.WAVEY_CAPES_DESCRIPTION, ModCategory.RENDER);
+		super(TranslateText.WAVEY_CAPES, TranslateText.WAVEY_CAPES_DESCRIPTION, ModCategory.RENDER, "clothcapesoftfabriccloak");
 		
 		instance = this;
 	}

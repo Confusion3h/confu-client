@@ -9,8 +9,8 @@ public class CustomCape extends Cape {
 
 	private File sample;
 	
-	public CustomCape(String name, File sample, ResourceLocation cape, boolean premium, CapeCategory category) {
-		super(name, cape, premium, category);
+	public CustomCape(String name, File sample, ResourceLocation cape, CapeCategory category) {
+		super(name, cape, category);
 		this.sample = sample;
 	}
 

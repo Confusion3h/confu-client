@@ -47,7 +47,7 @@ public class HypixelMod extends Mod {
 	private HypixelGameMode currentMode;
 	
 	public HypixelMod() {
-		super(TranslateText.HYPIXEL, TranslateText.HYPIXEL_DESCRIPTION, ModCategory.OTHER);
+		super(TranslateText.HYPIXEL, TranslateText.HYPIXEL_DESCRIPTION, ModCategory.OTHER, "hytill");
 		
 		instance = this;
 	}

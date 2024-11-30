@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-import me.eldodebug.soar.management.mods.impl.OldAnimationsMod;
+import me.eldodebug.soar.management.mods.impl.AnimationsMod;
 import me.eldodebug.soar.management.mods.settings.impl.BooleanSetting;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -39,7 +39,7 @@ public abstract class MixinLayerHeldItem {
     @Overwrite
     public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float f, float g, float partialTicks, float h, float i, float j, float scale) {
     	
-    	OldAnimationsMod mod = OldAnimationsMod.getInstance();
+    	AnimationsMod mod = AnimationsMod.getInstance();
     	BooleanSetting sneak = mod.getSneakSetting();
         ItemStack itemStack = entitylivingbaseIn.getHeldItem();
         

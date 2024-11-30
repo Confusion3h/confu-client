@@ -16,7 +16,7 @@ public class PlayerDisplayMod extends HUDMod {
 	private NumberSetting yawOffsetSetting = new NumberSetting(TranslateText.YAW_OFFSET, this, 0, -90, 120, true);
 	
 	public PlayerDisplayMod() {
-		super(TranslateText.PLAYER_DISPLAY, TranslateText.PLAYER_DISPLAY_DESCRIPTION);
+		super(TranslateText.PLAYER_DISPLAY, TranslateText.PLAYER_DISPLAY_DESCRIPTION, "paperdoll");
 	}
 
 	@EventTarget

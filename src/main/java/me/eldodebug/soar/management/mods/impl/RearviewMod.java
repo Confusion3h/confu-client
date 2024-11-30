@@ -29,7 +29,7 @@ public class RearviewMod extends HUDMod {
 	private NumberSetting alphaSetting = new NumberSetting(TranslateText.ALPHA, this, 1.0F, 0.0F, 1.0F, false);
 	
 	public RearviewMod() {
-		super(TranslateText.REARVIEW, TranslateText.REARVIEW_DESCRIPTION);
+		super(TranslateText.REARVIEW, TranslateText.REARVIEW_DESCRIPTION, "", true);
 	}
 
 	@EventTarget

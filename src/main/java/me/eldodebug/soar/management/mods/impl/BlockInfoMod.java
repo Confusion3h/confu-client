@@ -31,7 +31,7 @@ public class BlockInfoMod extends HUDMod {
     private Block block;
     
 	public BlockInfoMod() {
-		super(TranslateText.BLOCK_INFO, TranslateText.BLOCK_INFO_DESCRIPTION);
+		super(TranslateText.BLOCK_INFO, TranslateText.BLOCK_INFO_DESCRIPTION, "waila");
 	}
 
 	@Override

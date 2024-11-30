@@ -54,7 +54,7 @@ public class BlockOverlayMod extends Mod {
     private ColorSetting outlineColorSetting = new ColorSetting(TranslateText.OUTLINE_COLOR, this, Color.RED, false);
     
 	public BlockOverlayMod() {
-		super(TranslateText.BLOCK_OVERLAY, TranslateText.BLOCK_OVERLAY_DESCRIPTION, ModCategory.RENDER);
+		super(TranslateText.BLOCK_OVERLAY, TranslateText.BLOCK_OVERLAY_DESCRIPTION, ModCategory.RENDER, "blockoutline");
 	}
 	
 	@EventTarget

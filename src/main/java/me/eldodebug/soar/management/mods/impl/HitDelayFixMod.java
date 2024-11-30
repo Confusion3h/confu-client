@@ -9,7 +9,7 @@ public class HitDelayFixMod extends Mod {
 	private static HitDelayFixMod instance;
 	
 	public HitDelayFixMod() {
-		super(TranslateText.HIT_DELAY_FIX, TranslateText.HIT_DELAY_FIX_DESCRIPTION, ModCategory.PLAYER);
+		super(TranslateText.HIT_DELAY_FIX, TranslateText.HIT_DELAY_FIX_DESCRIPTION, ModCategory.PLAYER, "nodelay", true);
 		
 		instance = this;
 	}

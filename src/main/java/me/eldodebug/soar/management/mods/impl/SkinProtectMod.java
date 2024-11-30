@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 public class SkinProtectMod extends Mod {
 
 	public SkinProtectMod() {
-		super(TranslateText.SKIN_PROTECT, TranslateText.SKIN_PROTECT_DESCRIPTION, ModCategory.PLAYER);
+		super(TranslateText.SKIN_PROTECT, TranslateText.SKIN_PROTECT_DESCRIPTION, ModCategory.PLAYER, "nickhider");
 	}
 	
 	@EventTarget

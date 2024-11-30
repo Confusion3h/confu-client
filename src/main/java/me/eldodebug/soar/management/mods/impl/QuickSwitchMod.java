@@ -21,7 +21,7 @@ public class QuickSwitchMod extends Mod {
 	private KeybindSetting bowSetting = new KeybindSetting(TranslateText.BOW, this, Keyboard.KEY_NONE);
 	
 	public QuickSwitchMod() {
-		super(TranslateText.QUICK_SWITCH, TranslateText.QUICK_SWITCH_DESCRIPTION, ModCategory.PLAYER);
+		super(TranslateText.QUICK_SWITCH, TranslateText.QUICK_SWITCH_DESCRIPTION, ModCategory.PLAYER,"itemhotkey", true);
 	}
 	
 	@EventTarget

@@ -14,12 +14,21 @@ import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.management.nanovg.font.Icon;
 import me.eldodebug.soar.utils.ColorUtils;
 import me.eldodebug.soar.utils.mouse.MouseUtils;
+import me.eldodebug.soar.utils.mouse.Scroll;
 
 public class LanguageScene extends SettingScene {
 
 	public LanguageScene(SettingCategory parent) {
 		super(parent, TranslateText.LANGUAGE, TranslateText.LANGUAGE_DESCRIPTION, Icon.TRANSLATE);
 	}
+
+	private Scroll categoryScroll = new Scroll();
+
+	@Override
+	public void initGui() {
+		categoryScroll.resetAll();
+	}
+
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -31,6 +40,9 @@ public class LanguageScene extends SettingScene {
 		LanguageManager languageManager = instance.getLanguageManager();
 		
 		float offsetY = 0;
+
+		nvg.scissor(this.getX(), this.getY() - 15, this.getWidth(), this.getHeight() + 45);
+		nvg.translate(0, categoryScroll.getValue());
 		
 		for(Language lang : Language.values()) {
 			
@@ -44,6 +56,13 @@ public class LanguageScene extends SettingScene {
 			
 			offsetY+=50;
 		}
+
+		if(MouseUtils.isInside(mouseX, mouseY, this.getX(), this.getY() - 15, this.getWidth(), this.getHeight() + 45)) {
+			categoryScroll.onScroll();
+		}
+
+		categoryScroll.onAnimation();
+		categoryScroll.setMaxScroll((Language.values().length - 4.5F) * 50);
 	}
 	
 	@Override
@@ -51,9 +70,9 @@ public class LanguageScene extends SettingScene {
 		
 		Glide instance = Glide.getInstance();
 		LanguageManager languageManager = instance.getLanguageManager();
-		
-		float offsetY = 0;
-		
+
+		float offsetY = 0 + categoryScroll.getValue();
+		if (!MouseUtils.isInside(mouseX, mouseY, this.getX(), this.getY() - 15,  this.getWidth(), this.getHeight() + 45)) {return;}
 		for(Language lang : Language.values()) {
 			
 			if(MouseUtils.isInside(mouseX, mouseY, this.getX(), this.getY() + offsetY, this.getWidth(), 40) && mouseButton == 0) {

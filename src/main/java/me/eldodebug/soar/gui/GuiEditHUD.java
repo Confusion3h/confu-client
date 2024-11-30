@@ -15,6 +15,7 @@ import me.eldodebug.soar.management.event.impl.EventRender2D;
 import me.eldodebug.soar.management.event.impl.EventRenderNotification;
 import me.eldodebug.soar.management.mods.HUDMod;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
+import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.utils.MathUtils;
 import me.eldodebug.soar.utils.animation.normal.Animation;
 import me.eldodebug.soar.utils.animation.normal.Direction;
@@ -56,6 +57,7 @@ public class GuiEditHUD extends GuiScreen {
 		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorPalette palette = instance.getColorManager().getPalette();
+		boolean shift = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 
 	    snapping = false;
 	    
@@ -72,7 +74,8 @@ public class GuiEditHUD extends GuiScreen {
 			
 			nvg.drawRect(0, halfScreenHeight, sr.getScaledWidth(), 0.5F, palette.getBackgroundColor(ColorType.DARK));
 			nvg.drawRect(halfScreenWidth, 0, 0.5F, sr.getScaledHeight(), palette.getBackgroundColor(ColorType.DARK));
-			
+			nvg.drawCenteredText("You can resize elements by scrolling over them. Use shift for more control.", sr.getScaledWidth() / 2F, sr.getScaledHeight() - 15, new Color(255,255,255, 200), 8F, Fonts.REGULAR);
+
 			for(HUDMod m : mods) {
 				
 				if(m.isToggled() && !m.isHide()) {
@@ -85,24 +88,24 @@ public class GuiEditHUD extends GuiScreen {
 						int dWheel = Mouse.getDWheel();
 
 						if (dWheel != 0) {
-						    float scaleChange = 0.1F;
-						    float newScale = m.getScale();
+							float scaleChange = shift ? 0.02F : 0.1F;
 
-						    if (dWheel > 1) {
-						        newScale += scaleChange;
-						    }
+							float newScale = m.getScale();
 
-						    if (dWheel < 1) {
-						        newScale -= scaleChange;
-						    }
+							if (dWheel > 0) {
+								newScale += scaleChange;
+							}
 
-						    float roundedScale = Math.round(newScale * 10.0F) / 10.0F;
-						    
-						    System.out.println(roundedScale);
-						    m.setScale(roundedScale);
+							if (dWheel < 0) {
+								newScale -= scaleChange;
+							}
+
+							float roundedScale = Math.round(newScale * 100.0F) / 100.0F;
+
+							m.setScale(roundedScale);
 						}
 					}
-					
+					if(shift) canSnap = false;
 					m.getAnimation().setAnimation(isInside ? 1.0F : 0.0F, 14);
 					
 					if(m.isDragging()) {
@@ -121,18 +124,18 @@ public class GuiEditHUD extends GuiScreen {
 					m.setY(Math.max(0, Math.min(modY, sr.getScaledHeight() - modHeight)));
 					
 					if(canSnap) {
-				        if (MathUtils.isInRange(modX + (modWidth / 2), halfScreenWidth - snapRange, halfScreenWidth + snapRange)) {
+				        if (MathUtils.isInRange(modX + (modWidth / 2f), halfScreenWidth - snapRange, halfScreenWidth + snapRange)) {
 				            m.setX(halfScreenWidth - (modWidth / 2));
 				        }
 
-				        if (MathUtils.isInRange(modY + (modHeight / 2), halfScreenHeight - snapRange, halfScreenHeight + snapRange)) {
+				        if (MathUtils.isInRange(modY + (modHeight / 2f), halfScreenHeight - snapRange, halfScreenHeight + snapRange)) {
 				            m.setY(halfScreenHeight - (modHeight / 2));
 				        }
 					}
 			        
 					for(HUDMod m2 : instance.getModManager().getHudMods()) {
 						
-						if(m2.isToggled() && m.isDragging() && !m2.equals(m) && !snapping && canSnap) {
+						if(m2.isToggled() && m.isDragging() && !m2.equals(m) && !snapping && canSnap ) {
 							
 							int mod2X = m2.getX();
 							int mod2Y = m2.getY();

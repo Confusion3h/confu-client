@@ -35,7 +35,7 @@ public class FreelookMod extends Mod {
 	private KeybindSetting keybindSetting = new KeybindSetting(TranslateText.KEYBIND, this, Keyboard.KEY_V);
 	
 	public FreelookMod() {
-		super(TranslateText.FREELOOK, TranslateText.FREELOOK_DESCRIPTION, ModCategory.PLAYER);
+		super(TranslateText.FREELOOK, TranslateText.FREELOOK_DESCRIPTION, ModCategory.PLAYER,"perspectivemod", true);
 	}
 	
 	@EventTarget

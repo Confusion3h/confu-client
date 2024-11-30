@@ -18,7 +18,7 @@ public enum TranslateText {
 	TIME_CHANGER("text.timechanger.name"), TIME_CHANGER_DESCRIPTION("text.timechanger.description"), TIME("text.time"),
 	OLD_ANIMATION("text.oldanimations.name"), OLD_ANIMATION_DESCRIPTION("text.oldanimations.description"),
 	BLOCK_HIT("text.blockhit"), PUSHING("text.pushing"), PUSHING_PARTICLES("text.pushingparticles"),
-	SNEAK("text.sneak"), HEALTH("text.health"), ARMOR_DAMAGE("text.armordamage"), ITEM_SWITCH("text.itemswitch"),
+	SNEAK("text.sneak"), SNEAKSMOOTH("text.smoothsneak"), HEALTH("text.health"), ARMOR_DAMAGE("text.armordamage"), ITEM_SWITCH("text.itemswitch"),
 	ROD("text.rod"), HIT_DELAY_FIX("text.hitdelayfix.name"), HIT_DELAY_FIX_DESCRIPTION("text.hitdelayfix.description"),
 	HOME("text.home"), MODULE("text.module"), COSMETICS("text.cosmetics"), MUSIC("text.music"), SCREENSHOT("text.screenshot"),
 	PROFILE("text.profile"), SETTINGS("text.settings"), SCRIPT("text.script"), COMBO_COUNTER("text.combocounter.name"),
@@ -89,7 +89,7 @@ public enum TranslateText {
 	ITEM_PHYSICS_DESCRIPTION("text.itemphysics.description"), UHC_OVERLAY("text.uhcoverlay.name"), UHC_OVERLAY_DESCRIPTION("text.uhcoverlay.description"),
 	GOLD_INGOT_SCALE("text.goldingotscale"), GOLD_NUGGET_SCALE("text.goldnuggetscale"), GOLD_ORE_SCALE("text.goldorescale"), GOLD_APPLE_SCALE("text.goldapplescale"),
 	SKULL_SCALE("text.skullscale"), ITEMS_2D("text.2ditems.name"), ITEMS_2D_DESCRIPTION("text.2ditems.description"),
-	CHILL("text.chill"), SOAR("text.soar"), MODERN_HOTBAR("text.modernhotbar.name"), MODERN_HOTBAR_DESCRIPTION("text.modernhotbar.description"),
+	CHILL("text.chill"), SOAR("text.soar"),  MODERN("text.modern"), MODERN_HOTBAR("text.modernhotbar.name"), MODERN_HOTBAR_DESCRIPTION("text.modernhotbar.description"),
 	CUSTOM_HELD_ITEMS("text.customhelditems.name"), CUSTOM_HELD_ITEMS_DESCRIPTION("text.customhelditems.description"), X("text.x"), Y("text.y"),
 	Z("text.z"), X_SCALE("text.xscale"), Y_SCALE("text.yscale"), Z_SCALE("text.zscale"), SLOW_SWING("text.slowswing.name"),
 	SLOW_SWING_DESCRIPTION("text.slowswing.description"), DELAY("text.delay"), REACH_CIRCLES("text.reachcircles.name"),
@@ -104,7 +104,7 @@ public enum TranslateText {
 	MUSIC_INFO("text.musicinfo.name"), MUSIC_INFO_DESCRIPTION("text.musicinfo.description"), OVERLAY("text.overlay"), WAVEFORM("text.waveform"),
 	APPEARANCE("text.appearance"), APPEARANCE_DESCRIPTION("text.appearance.description"), LANGUAGE_DESCRIPTION("text.language.description"),
 	KEYBINDS("text.keybinds"), KEYBINDS_DESCRIPTION("text.keybinds.description"), ACCENT_COLOR("text.accentcolor"), HUD_THEME("text.hudtheme"),
-	THEME("text.theme"), GLOW("text.glow"), OUTLINE_GLOW("text.outlineglow"), VANILLA_GLOW("text.vanillaglow"), ENGLISH_US("text.englishus"),
+	THEME("text.theme"), GLOW("text.glow"), OUTLINE_GLOW("text.outlineglow"), VANILLA_GLOW("text.vanillaglow"), RECT("text.rect"), ENGLISH_US("text.englishus"), ENGLISH_GB("text.englishgb"), FRENCH("text.french"),
 	WELCOME_TO_SOAR("text.welcometosoar"), CALENDAR("text.calendar.name"), CALENDAR_DESCRIPTION("text.calendar.description"),
 	RAW_INPUT("text.rawinput.name"), RAW_INPUT_DESCRIPTION("text.rawinput.description"), ARMOR_STATUS("text.armorstatus.name"),
 	ARMOR_STATUS_DESCRIPTION("text.armorstatus.description"), VERTICAL("text.vertical"), HORIZONTAL("text.horizontal"), VALUE("text.value"),
@@ -140,8 +140,9 @@ public enum TranslateText {
 	AUTO_TEXT("text.autotext.name"), AUTO_TEXT_DESCRIPTION("text.autotext.description"), TEXT_1("text.text1"), TEXT_1_KEY("text.text1key"), TEXT_2("text.text2"), TEXT_2_KEY("text.text2key"), TEXT_3("text.text3"), TEXT_3_KEY("text.text3key"),
 	LOADING("text.loading"), PING_DISPLAY("text.pingdisplay.name"), PING_DISPLAY_DESCRIPTION("text.pingdisplay.description"), SESSION_INFO("text.sessioninfo.name"), SESSION_INFO_DESCRIPTION("text.sessioninfo.description"), MINEMEN("text.minemen.name"),
 	MINEMEN_DESCRIPTION("text.minemen.description"), CLIPBOARD("text.clipboard"), VIA_VERSION("text.viaversion.name"), VIA_VERSION_DESCRIPTION("text.viaversion.description"), WEB_BROWSER("text.webbrowser.name"), WEB_BROWSER_DESCRIPTION("text.webbrowser.description"),
-	REQUIRED_FILE_MISSING("text.requiredfilemissing"), GODBRIDGE_ASSIST("text.godbridgeassist.name"), GODBRIDGE_ASSIST_DESCRIPTION("text.godbridgeassist.description"), ENTITY_CULLING("text.entityculling.name"), ENTITY_CULLING_DESCRIPTIONN("text.entityculling.description"),
-	DISTANCE("text.distance"), DISCORD_RPC("text.discordrpc.name"), DISCORD_RPC_DESCRIPTION("text.discordrpc.description"), HIDE_ARMOR_STAND("text.hidearmorstand"), REMOVE_BOT("text.removebot"), PARTICLE("text.particle"), LIGHT("text.light"), DARK("text.dark");
+	REQUIRED_FILE_MISSING("text.requiredfilemissing"), GODBRIDGE_ASSIST("text.godbridgeassist.name"), GODBRIDGE_ASSIST_DESCRIPTION("text.godbridgeassist.description"), ENTITY_CULLING("text.entityculling.name"), ENTITY_CULLING_DESCRIPTIONN("text.entityculling.description"), TEXT("text.text"),
+	DISTANCE("text.distance"), DISCORD_RPC("text.discordrpc.name"), DISCORD_RPC_DESCRIPTION("text.discordrpc.description"), HIDE_ARMOR_STAND("text.hidearmorstand"),
+	REMOVE_BOT("text.removebot"), PARTICLE("text.particle"), LIGHT("text.light"), CLIENT("text.client"), DARK("text.dark"), FEMALE_GENDER("text.femalegender.name"), FEMALE_GENDER_DESCRIPTION("text.femalegender.description"), EARS("text.ears.name"), EARS_DESCRIPTION("text.ears.description"),;
 	
 	private String key, text;
 	

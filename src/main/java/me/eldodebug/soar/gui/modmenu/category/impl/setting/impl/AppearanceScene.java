@@ -22,7 +22,8 @@ import me.eldodebug.soar.utils.mouse.Scroll;
 
 public class AppearanceScene extends SettingScene {
 
-	private Scroll scroll = new Scroll();
+	private Scroll themeScroll = new Scroll();
+	private Scroll accentScroll = new Scroll();
 	private CompComboBox modTheme;
 	
 	public AppearanceScene(SettingCategory parent) {
@@ -44,11 +45,21 @@ public class AppearanceScene extends SettingScene {
 		AccentColor currentColor = colorManager.getCurrentColor();
 		
 		float offsetX = 0;
-		int index = 1;
+		int Index1 = 1;
+		int Index2 = 1;
 		
 		nvg.drawRoundedRect(this.getX(), this.getY(), this.getWidth(), 76, 6, palette.getBackgroundColor(ColorType.DARK));
 		nvg.drawText(TranslateText.THEME.getText(), this.getX() + 8, this.getY() + 8, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
-		
+
+		nvg.save();
+		nvg.scissor(this.getX(), this.getY() + 24, this.getWidth(), 72);
+		nvg.translate(themeScroll.getValue(), 0);
+
+		if(MouseUtils.isInside(mouseX, mouseY, this.getX(), this.getY() + 24, this.getWidth(), 72)) {
+			themeScroll.onScroll();
+			themeScroll.onAnimation();
+		}
+
 		for(Theme t : Theme.values()) {
 			
 			int alpha = (int) (t.getAnimation().getValue() * 255);
@@ -60,8 +71,13 @@ public class AppearanceScene extends SettingScene {
 			nvg.drawGradientOutlineRoundedRect(this.getX() + offsetX + 12, this.getY() + 28, 36, 36, 6, 1.4F * t.getAnimation().getValue(), ColorUtils.applyAlpha(currentColor.getColor1(), alpha), ColorUtils.applyAlpha(currentColor.getColor2(), alpha));
 			
 			offsetX+=46;
+			Index1++;
 		}
-		
+
+		themeScroll.setMaxScroll((Index1 - 9.1F) * 44F);
+
+		nvg.restore();
+
 		offsetX = 0;
 		
 		nvg.drawRoundedRect(this.getX(), this.getY() + 91, this.getWidth(), 72, 6, palette.getBackgroundColor(ColorType.DARK));
@@ -69,11 +85,11 @@ public class AppearanceScene extends SettingScene {
 		
 		nvg.save();
 		nvg.scissor(this.getX(), this.getY() + 91, this.getWidth(), 72);
-		nvg.translate(scroll.getValue(), 0);
+		nvg.translate(accentScroll.getValue(), 0);
 		
 		if(MouseUtils.isInside(mouseX, mouseY, this.getX(), this.getY() + 91, this.getWidth(), 72)) {
-			scroll.onScroll();
-			scroll.onAnimation();
+			accentScroll.onScroll();
+			accentScroll.onAnimation();
 		}
 		
 		for(AccentColor c : colorManager.getColors()) {
@@ -85,10 +101,10 @@ public class AppearanceScene extends SettingScene {
 			nvg.drawCenteredText(Icon.CHECK, this.getX() + offsetX + 12 + (32 / 2), this.getY() + 28 + 99, new Color(255, 255, 255, (int) (c.getAnimation().getValue() * 255)), 16, Fonts.ICON);
 			
 			offsetX+=40F;
-			index++;
+			Index2++;
 		}
 		
-		scroll.setMaxScroll((index - 10.3F) * 40);
+		accentScroll.setMaxScroll((Index2 - 10.3F) * 40);
 		
 		nvg.restore();
 		
@@ -106,7 +122,7 @@ public class AppearanceScene extends SettingScene {
 		Glide instance = Glide.getInstance();
 		ColorManager colorManager = instance.getColorManager();
 		
-		float offsetX = 0;
+		float offsetX = themeScroll.getValue();
 		
 		for(Theme t : Theme.values()) {
 			
@@ -117,7 +133,7 @@ public class AppearanceScene extends SettingScene {
 			offsetX+=46;
 		}
 		
-		offsetX = scroll.getValue();
+		offsetX = accentScroll.getValue();
 		
 		for(AccentColor c : colorManager.getColors()) {
 			

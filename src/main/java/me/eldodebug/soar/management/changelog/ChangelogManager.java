@@ -8,6 +8,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.utils.JsonUtils;
 import me.eldodebug.soar.utils.Multithreading;
 import me.eldodebug.soar.utils.network.HttpUtils;
@@ -22,7 +23,7 @@ public class ChangelogManager {
 	
 	private void loadChangelog() {
 		
-		JsonObject jsonObject = HttpUtils.readJson("https://files.soarclient.com/data/changelog.json", null);
+		JsonObject jsonObject = HttpUtils.readJson("https://glideclient.github.io/changelogs/versions/" + Glide.getInstance().getVersion().toString() + ".json", null);
 		
 		if(jsonObject != null) {
 			

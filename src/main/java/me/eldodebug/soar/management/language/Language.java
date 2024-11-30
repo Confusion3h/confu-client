@@ -4,17 +4,22 @@ import me.eldodebug.soar.utils.animation.simple.SimpleAnimation;
 import net.minecraft.util.ResourceLocation;
 
 public enum Language {
-	JAPANESE("ja", TranslateText.JAPANESE, new ResourceLocation("soar/flag/ja.png")), 
-	CHINESE("cn", TranslateText.CHINESE, new ResourceLocation("soar/flag/cn.png")), 
-	ENGLISH("en", TranslateText.ENGLISH_US, new ResourceLocation("soar/flag/us.png"));
+	JAPANESE("ja-jp", "日本語 (日本)", new ResourceLocation("soar/flag/ja.png")),
+	CHINESE("zh-cn", "中文 (中國)", new ResourceLocation("soar/flag/cn.png")),
+	ENGLISHGB("en-gb", "English (United Kingdom)", new ResourceLocation("soar/flag/gb.png")),
+	ENGLISH("en-us", "English (United States)", new ResourceLocation("soar/flag/us.png")),
+	FRENCH("fr-fr", "Français (France)", new ResourceLocation("soar/flag/fr.png")),
+	SPANISH("es-es", "Español (España)", new ResourceLocation("soar/flag/es.png")),
+	VIETNAMESE("vi-vn", "Tiếng Việt (Việt Nam)", new ResourceLocation("soar/flag/vn.png")), // todo: add
+	LOLCAT("lc-koc", "LOLCAT (Kinduim ov catos)", new ResourceLocation("soar/flag/koc.png"));
 	
 	private SimpleAnimation animation = new SimpleAnimation();
 	
 	private String id;
-	private TranslateText nameTranslate;
+	private String nameTranslate;
 	private ResourceLocation flag;
 	
-	private Language(String id, TranslateText nameTranslate, ResourceLocation flag) {
+	private Language(String id, String nameTranslate, ResourceLocation flag) {
 		this.id = id;
 		this.nameTranslate = nameTranslate;
 		this.flag = flag;
@@ -25,7 +30,7 @@ public enum Language {
 	}
 	
 	public String getName() {
-		return nameTranslate.getText();
+		return nameTranslate;
 	}
 	
 	public ResourceLocation getFlag() {
@@ -36,7 +41,7 @@ public enum Language {
 		return animation;
 	}
 
-	public TranslateText getNameTranslate() {
+	public String getNameTranslate() {
 		return nameTranslate;
 	}
 

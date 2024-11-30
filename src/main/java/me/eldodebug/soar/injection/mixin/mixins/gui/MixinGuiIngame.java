@@ -23,7 +23,7 @@ import me.eldodebug.soar.management.event.impl.EventRenderScoreboard;
 import me.eldodebug.soar.management.event.impl.EventRenderSelectedItem;
 import me.eldodebug.soar.management.event.impl.EventRenderTooltip;
 import me.eldodebug.soar.management.event.impl.EventRenderVisualizer;
-import me.eldodebug.soar.management.mods.impl.OldAnimationsMod;
+import me.eldodebug.soar.management.mods.impl.AnimationsMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
@@ -98,7 +98,7 @@ public abstract class MixinGuiIngame implements IMixinGuiIngame {
     @Redirect(method = "renderPlayerStats", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiIngame;drawTexturedModalRect(IIIIII)V"))
     public void drawTexturedModalRect(GuiIngame gui, int x, int y, int textureX, int textureY, int width, int height) {
     	
-    	OldAnimationsMod mod = OldAnimationsMod.getInstance();
+    	AnimationsMod mod = AnimationsMod.getInstance();
     	
     	if(mod.isToggled() && mod.getHealthSetting().isToggled()) {
         	if(textureX != prevAmount + 54) {

@@ -5,15 +5,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import me.eldodebug.soar.gui.mainmenu.impl.welcome.*;
 import org.lwjgl.input.Mouse;
 
 import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.mainmenu.impl.BackgroundScene;
 import me.eldodebug.soar.gui.mainmenu.impl.MainScene;
-import me.eldodebug.soar.gui.mainmenu.impl.welcome.AccentColorSelectScene;
-import me.eldodebug.soar.gui.mainmenu.impl.welcome.LastMessageScene;
-import me.eldodebug.soar.gui.mainmenu.impl.welcome.ThemeSelectScene;
-import me.eldodebug.soar.gui.mainmenu.impl.welcome.WelcomeMessageScene;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
 import me.eldodebug.soar.management.event.impl.EventRenderNotification;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
@@ -56,6 +53,7 @@ public class GuiGlideMainMenu extends GuiScreen {
 		scenes.add(new BackgroundScene(this));
 		scenes.add(new WelcomeMessageScene(this));
 		scenes.add(new ThemeSelectScene(this));
+		scenes.add(new LanguageSelectScene(this));
 		scenes.add(new AccentColorSelectScene(this));
 		scenes.add(new LastMessageScene(this));
 		

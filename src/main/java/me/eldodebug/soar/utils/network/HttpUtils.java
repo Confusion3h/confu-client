@@ -88,7 +88,6 @@ public class HttpUtils {
 
             InputStream is = connection.getResponseCode() != 200 ? connection.getErrorStream() : connection.getInputStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-            
             return gson.fromJson(readResponse(rd), JsonObject.class);
         } catch (IOException e) {
         	GlideLogger.error("Failed to read json", e);

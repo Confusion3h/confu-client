@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import me.eldodebug.soar.management.event.impl.EventFireOverlay;
 import me.eldodebug.soar.management.event.impl.EventRenderItemInFirstPerson;
 import me.eldodebug.soar.management.event.impl.EventWaterOverlay;
-import me.eldodebug.soar.management.mods.impl.OldAnimationsMod;
+import me.eldodebug.soar.management.mods.impl.AnimationsMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -73,7 +73,7 @@ public class MixinItemRenderer {
     public float modifyTransformItem(float original, float partialTicks) {
     	
         AbstractClientPlayer abstractClientPlayer = mc.thePlayer;
-        OldAnimationsMod mod = OldAnimationsMod.getInstance();
+        AnimationsMod mod = AnimationsMod.getInstance();
         
         return mod.isToggled() && mod.getBlockHitSetting().isToggled() ? abstractClientPlayer.getSwingProgress(partialTicks) : original;
     }
@@ -81,7 +81,7 @@ public class MixinItemRenderer {
     @Redirect(method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;renderItem(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemCameraTransforms$TransformType;)V"))
     public void oldRod(ItemRenderer instance, EntityLivingBase entityIn, ItemStack heldStack, ItemCameraTransforms.TransformType transform) {
     	
-    	OldAnimationsMod mod = OldAnimationsMod.getInstance();
+    	AnimationsMod mod = AnimationsMod.getInstance();
     	
         if (mod.isToggled() && mod.getRodSetting().isToggled() && !mc.getRenderItem().shouldRenderItemIn3D(heldStack)) {
         	
@@ -106,7 +106,7 @@ public class MixinItemRenderer {
     @Inject(method = "updateEquippedItem", at = @At("HEAD"), cancellable = true)
     private void preUpdateEquippedItem(CallbackInfo ci) {
     	
-    	OldAnimationsMod mod = OldAnimationsMod.getInstance();
+    	AnimationsMod mod = AnimationsMod.getInstance();
     	
         if (mod.isToggled() && mod.getItemSwitchSetting().isToggled()) {
             ci.cancel();

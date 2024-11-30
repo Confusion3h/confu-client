@@ -11,6 +11,10 @@ public class SimpleHUDMod extends HUDMod {
 		super(nameTranslate, descriptionText);
 	}
 
+	public SimpleHUDMod(TranslateText nameTranslate, TranslateText descriptionText, String alias) {
+		super(nameTranslate, descriptionText, alias);
+	}
+
 	public void draw() {
 		
 		Glide instance = Glide.getInstance();

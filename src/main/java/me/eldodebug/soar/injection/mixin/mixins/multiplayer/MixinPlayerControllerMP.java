@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import me.eldodebug.soar.management.mods.impl.OldAnimationsMod;
+import me.eldodebug.soar.management.mods.impl.AnimationsMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -57,7 +57,7 @@ public class MixinPlayerControllerMP {
     @Inject(method = "getIsHittingBlock", at = @At("HEAD"), cancellable = true)
     private void cancelHit(CallbackInfoReturnable<Boolean> cir) {
     	
-    	OldAnimationsMod mod = OldAnimationsMod.getInstance();
+    	AnimationsMod mod = AnimationsMod.getInstance();
     	
     	if(mod.isToggled() && mod.getPushingSetting().isToggled() && mod.getBlockHitSetting().isToggled()) {
     		cir.setReturnValue(false);

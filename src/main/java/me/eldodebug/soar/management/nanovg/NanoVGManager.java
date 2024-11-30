@@ -298,7 +298,11 @@ public class NanoVGManager {
 		NanoVG.nvgFillPaint(nvg, NanoVG.nvgLinearGradient(nvg, x, y, radius, radius, nvgColor1, nvgColor2, bg));
 		NanoVG.nvgFill(nvg);
 	}
-	
+
+	public void fontBlur(float blur){
+		NanoVG.nvgFontBlur(nvg, blur);
+	}
+
 	public void drawText(String text, float x, float y, Color color, float size, Font font) {
 
 		y+=size / 2;
