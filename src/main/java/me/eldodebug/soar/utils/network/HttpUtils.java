@@ -18,7 +18,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import me.eldodebug.soar.logger.SoarLogger;
+import me.eldodebug.soar.logger.GlideLogger;
 
 public class HttpUtils {
 
@@ -47,7 +47,7 @@ public class HttpUtils {
             connection.setRequestMethod("POST");
             connection.getOutputStream().write(gson.toJson(request).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-        	SoarLogger.error("Failed to post json", e);
+        	GlideLogger.error("Failed to post json", e);
         }
         
         return readJson(connection);
@@ -69,7 +69,7 @@ public class HttpUtils {
                 response.append(line).append('\n');
             }
         } catch (IOException e) {
-        	SoarLogger.error("Failed to read response", e);
+        	GlideLogger.error("Failed to read response", e);
         }
 
         return response.toString();
@@ -91,7 +91,7 @@ public class HttpUtils {
             
             return gson.fromJson(readResponse(rd), JsonObject.class);
         } catch (IOException e) {
-        	SoarLogger.error("Failed to read json", e);
+        	GlideLogger.error("Failed to read json", e);
         }
         
         return null;
@@ -113,7 +113,7 @@ public class HttpUtils {
             
             return sb.toString();
         } catch (IOException e) {
-        	SoarLogger.error("Failed to read response", e);
+        	GlideLogger.error("Failed to read response", e);
         }
         
         return null;
@@ -157,7 +157,7 @@ public class HttpUtils {
 	        
 	        return connection;
 		} catch (Exception e) {
-			SoarLogger.error("Failed to setup connection");
+			GlideLogger.error("Failed to setup connection");
 		}
         
 		return null;

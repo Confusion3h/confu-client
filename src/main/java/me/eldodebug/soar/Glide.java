@@ -6,20 +6,17 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import me.eldodebug.soar.injection.mixin.SoarTweaker;
-import me.eldodebug.soar.logger.SoarLogger;
-import me.eldodebug.soar.management.account.AccountManager;
+import me.eldodebug.soar.injection.mixin.GlideTweaker;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.management.cape.CapeManager;
 import me.eldodebug.soar.management.changelog.ChangelogManager;
 import me.eldodebug.soar.management.color.ColorManager;
 import me.eldodebug.soar.management.command.CommandManager;
-import me.eldodebug.soar.management.download.DownloadManager;
 import me.eldodebug.soar.management.event.EventManager;
 import me.eldodebug.soar.management.file.FileManager;
 import me.eldodebug.soar.management.language.LanguageManager;
 import me.eldodebug.soar.management.mods.ModManager;
 import me.eldodebug.soar.management.mods.impl.GlobalSettingsMod;
-import me.eldodebug.soar.management.music.MusicManager;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.notification.NotificationManager;
 import me.eldodebug.soar.management.profile.ProfileManager;
@@ -32,25 +29,22 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 
-public class Soar {
+public class Glide {
 
-	private static Soar instance = new Soar();
+	private static Glide instance = new Glide();
 	private Minecraft mc = Minecraft.getMinecraft();
-	private SoarAPI api;
+	private GlideAPI api;
 	
 	private String name, version;
 	
 	private NanoVGManager nanoVGManager;
 	private FileManager fileManager;
-	private DownloadManager downloadManager;
 	private LanguageManager languageManager;
-	private AccountManager accountManager;
 	private EventManager eventManager;
 	private ModManager modManager;
 	private CapeManager capeManager;
 	private ColorManager colorManager;
 	private ProfileManager profileManager;
-	private MusicManager musicManager;
 	private CommandManager commandManager;
 	private ScreenshotManager screenshotManager;
 	private NotificationManager notificationManager;
@@ -59,9 +53,9 @@ public class Soar {
 	private ChangelogManager changelogManager;
 	private WaypointManager waypointManager;
 	
-	public Soar() {
-		name = "Soar";
-		version = "7.1.2";
+	public Glide() {
+		name = "Glide";
+		version = "7.2";
 	}
 	
 	public void start() {
@@ -70,9 +64,7 @@ public class Soar {
 		this.removeOptifineZoom();
 		
 		fileManager = new FileManager();
-		downloadManager = new DownloadManager();
 		languageManager = new LanguageManager();
-		accountManager = new AccountManager();
 		eventManager = new EventManager();
 		modManager = new ModManager();
 		
@@ -81,9 +73,8 @@ public class Soar {
 		capeManager = new CapeManager();
 		colorManager = new ColorManager();
 		profileManager = new ProfileManager();
-		musicManager = new MusicManager();
 		
-		api = new SoarAPI();
+		api = new GlideAPI();
 		api.init();
 		
 		commandManager = new CommandManager();
@@ -94,7 +85,7 @@ public class Soar {
 		changelogManager = new ChangelogManager();
 		waypointManager = new WaypointManager();
 		
-		eventManager.register(new SoarHandler());
+		eventManager.register(new GlideHandler());
 		
 		setupLibraryPath();
 		
@@ -104,15 +95,14 @@ public class Soar {
 	
 	public void stop() {
 		profileManager.save();
-		accountManager.save();
 	}
 	
 	private void removeOptifineZoom() {
-		if(SoarTweaker.hasOptifine) {
+		if(GlideTweaker.hasOptifine) {
 			try {
 				this.unregisterKeybind((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
 			} catch(Exception e) {
-				SoarLogger.error("Failed to unregister zoom key", e);
+				GlideLogger.error("Failed to unregister zoom key", e);
 			}
 		}
 	}
@@ -135,11 +125,11 @@ public class Soar {
 		}
     }
     
-	public static Soar getInstance() {
+	public static Glide getInstance() {
 		return instance;
 	}
 
-	public SoarAPI getApi() {
+	public GlideAPI getApi() {
 		return api;
 	}
 
@@ -155,9 +145,6 @@ public class Soar {
 		return fileManager;
 	}
 
-	public DownloadManager getDownloadManager() {
-		return downloadManager;
-	}
 
 	public ModManager getModManager() {
 		return modManager;
@@ -181,14 +168,6 @@ public class Soar {
 
 	public ProfileManager getProfileManager() {
 		return profileManager;
-	}
-
-	public MusicManager getMusicManager() {
-		return musicManager;
-	}
-
-	public AccountManager getAccountManager() {
-		return accountManager;
 	}
 
 	public CapeManager getCapeManager() {

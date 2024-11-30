@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.mods.Mod;
@@ -39,7 +39,7 @@ public class GlintColorMod extends Mod {
 		
 		if(type.getTranslate().equals(TranslateText.SYNC)) {
 			
-			AccentColor currentColor = Soar.getInstance().getColorManager().getCurrentColor();
+			AccentColor currentColor = Glide.getInstance().getColorManager().getCurrentColor();
 			
 			return currentColor.getInterpolateColor();
 		}else if(type.getTranslate().equals(TranslateText.RAINBOW)) {

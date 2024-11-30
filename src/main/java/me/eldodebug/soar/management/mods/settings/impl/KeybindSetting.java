@@ -2,7 +2,7 @@ package me.eldodebug.soar.management.mods.settings.impl;
 
 import org.lwjgl.input.Keyboard;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.mods.Mod;
 import me.eldodebug.soar.management.mods.settings.Setting;
@@ -18,7 +18,7 @@ public class KeybindSetting extends Setting {
 		this.defaultKeyCode = keyCode;
 		this.keyCode = keyCode;
 		
-		Soar.getInstance().getModManager().addSettings(this);
+		Glide.getInstance().getModManager().addSettings(this);
 	}
 
 	@Override

@@ -55,8 +55,6 @@
       "layer.MixinLayerHeldItem",
       "layer.MixinLayerSpiderEyes",
       "layer.MixinLayerWitherAura",
-      "lwjgl.MixinLinuxKeyboard",
-      "lwjgl.MixinLinuxKeycodes",
       "lwjgl.MixinWindowsDisplay",
       "model.MixinFaceBakery",
       "model.MixinModelBox",

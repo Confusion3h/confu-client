@@ -10,7 +10,7 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import me.eldodebug.soar.logger.SoarLogger;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.utils.transferable.ImageTransferable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
@@ -59,7 +59,7 @@ public class IOUtils {
 	        
 	        return data;
 		} catch (Exception e) {
-			SoarLogger.error("Failed to load resource", e);
+			GlideLogger.error("Failed to load resource", e);
 		}
         
 		return null;
@@ -75,7 +75,7 @@ public class IOUtils {
 	        
 	        return data;
 		} catch (Exception e) {
-			SoarLogger.error("Failed to load resource", e);
+			GlideLogger.error("Failed to load resource", e);
 		}
         
 		return null;

@@ -12,7 +12,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.file.FileManager;
 import me.eldodebug.soar.utils.ColorUtils;
 import me.eldodebug.soar.utils.JsonUtils;
@@ -27,8 +27,8 @@ public class WaypointManager {
 	
 	public WaypointManager() {
 		
-		FileManager fileManager = Soar.getInstance().getFileManager();
-		File waypointFile = new File(fileManager.getSoarDir(), "Waypoint.json");
+		FileManager fileManager = Glide.getInstance().getFileManager();
+		File waypointFile = new File(fileManager.getGlideDir(), "Waypoint.json");
 		
 		fileManager.createFile(waypointFile);
 		
@@ -69,8 +69,8 @@ public class WaypointManager {
 	
 	public void save() {
 		
-		FileManager fileManager = Soar.getInstance().getFileManager();
-		File waypointFile = new File(fileManager.getSoarDir(), "Waypoint.json");
+		FileManager fileManager = Glide.getInstance().getFileManager();
+		File waypointFile = new File(fileManager.getGlideDir(), "Waypoint.json");
 		
 		try (FileWriter writer = new FileWriter(waypointFile)) {
 			

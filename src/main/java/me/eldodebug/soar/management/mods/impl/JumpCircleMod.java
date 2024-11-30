@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.injection.interfaces.IMixinMinecraft;
 import me.eldodebug.soar.injection.interfaces.IMixinRenderManager;
 import me.eldodebug.soar.management.color.AccentColor;
@@ -48,7 +48,7 @@ public class JumpCircleMod extends Mod {
 	@EventTarget
 	public void onRender3D(EventRender3D event) {
 		
-		AccentColor currentColor = Soar.getInstance().getColorManager().getCurrentColor();
+		AccentColor currentColor = Glide.getInstance().getColorManager().getCurrentColor();
 		
         GL11.glPushMatrix();
         GL11.glEnable(3042);

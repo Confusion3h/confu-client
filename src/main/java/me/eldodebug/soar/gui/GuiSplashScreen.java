@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import org.lwjgl.opengl.GL11;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.management.nanovg.font.Icon;
@@ -75,6 +75,6 @@ public class GuiSplashScreen {
     		mc.updateDisplay();
 		}
 		
-		Soar.getInstance().setNanoVGManager(nvg);
+		Glide.getInstance().setNanoVGManager(nvg);
 	}
 }

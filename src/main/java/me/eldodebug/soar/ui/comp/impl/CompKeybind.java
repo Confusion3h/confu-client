@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import org.lwjgl.input.Keyboard;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.color.ColorManager;
 import me.eldodebug.soar.management.mods.settings.impl.KeybindSetting;
@@ -34,7 +34,7 @@ public class CompKeybind extends Comp {
 	@Override
 	public void draw(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorManager colorManager = instance.getColorManager();
 		AccentColor accentColor = colorManager.getCurrentColor();

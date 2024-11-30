@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.input.Keyboard;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.gui.modmenu.category.Category;
 import me.eldodebug.soar.gui.modmenu.category.impl.setting.SettingScene;
@@ -55,7 +55,7 @@ public class SettingCategory extends Category {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorPalette palette = instance.getColorManager().getPalette();
 		

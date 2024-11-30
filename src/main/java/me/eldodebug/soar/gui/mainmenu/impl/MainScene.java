@@ -2,8 +2,8 @@ package me.eldodebug.soar.gui.mainmenu.impl;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
-import me.eldodebug.soar.gui.mainmenu.GuiSoarMainMenu;
+import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
 import me.eldodebug.soar.gui.mainmenu.MainMenuScene;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
@@ -17,14 +17,14 @@ import net.minecraft.client.gui.ScaledResolution;
 
 public class MainScene extends MainMenuScene {
 
-	public MainScene(GuiSoarMainMenu parent) {
+	public MainScene(GuiGlideMainMenu parent) {
 		super(parent);
 	}
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 	
 		nvg.setupAndDraw(() -> drawNanoVG(nvg));

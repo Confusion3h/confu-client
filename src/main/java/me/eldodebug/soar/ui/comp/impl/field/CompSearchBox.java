@@ -2,7 +2,7 @@ package me.eldodebug.soar.ui.comp.impl.field;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.ColorManager;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
 import me.eldodebug.soar.management.color.palette.ColorType;
@@ -28,7 +28,7 @@ public class CompSearchBox extends CompTextBoxBase {
 	@Override
 	public void draw(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorManager colorManager = instance.getColorManager();
 		ColorPalette palette = colorManager.getPalette();

@@ -1,5 +1,6 @@
 package me.eldodebug.soar.management.nanovg.font;
 
+
 public class Icon {
 
 	public static final String ACTIVITY = "@";
@@ -35,7 +36,7 @@ public class Icon {
 	public static final String LOGOUT = "d";
 	public static final String MAIL = "e";
 	public static final String MAP = "f";
-	public static final String SOAR = "g";
+	public static final String SOAR = "g"; // todo: replace name with GLIDE
 	public static final String MINIMIZE = "h";
 	public static final String MONITOR = "i";
 	public static final String MORE_HORIZONTAL = "j";
@@ -93,5 +94,25 @@ public class Icon {
 	public static final String CHECK_CIRCLE = "\u00c4";
 	public static final String ARROW_LEFT = "\u00c5";
 	public static final String ARROW_RIGHT = "\u00c6";
-	
+	public static final String FILTER = "\"";
+	public static final String NEWS = "$";
+	public static final String SHIFT_KEY = "%";
+	public static final String GAME = "'";
+	public static final String GLOBE = "-";
+	public static final String COLOUR = "/";
+	public static final String VERIFIED = "\\";
+	public static final String PROHIBITED = "^";
+	public static final String LAYOUT_2 = "`";
+	public static final String SUPPORT = "~";
+	public static final String HOVER = "¢";
+	public static final String LAYOUT_3 = "£";
+	public static final String SORT_DECENDING = "¥";
+	public static final String SORT_ASCENDING = "¦";
+	public static final String CAT = "¿";
+	public static final String CHEVRON_LEFT = "Ç";
+	public static final String CHEVRON_RIGHT = "È";
+	public static final String LIST_MODS = "É";
+	public static final String EXPERIMENTAL = "Ê";
+	public static final String GRID = "Ë";
+
 }

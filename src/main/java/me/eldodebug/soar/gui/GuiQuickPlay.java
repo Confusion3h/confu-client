@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
 import me.eldodebug.soar.management.color.palette.ColorType;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
@@ -56,7 +56,7 @@ public class GuiQuickPlay extends GuiScreen {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
 		BlurUtils.drawBlurScreen(20);
 		
@@ -71,7 +71,7 @@ public class GuiQuickPlay extends GuiScreen {
 	
 	private void drawNanoVG() {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorPalette palette = instance.getColorManager().getPalette();
 		QuickPlayManager quickPlayManager = instance.getQuickPlayManager();
@@ -159,7 +159,7 @@ public class GuiQuickPlay extends GuiScreen {
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		QuickPlayManager quickPlayManager = instance.getQuickPlayManager();
 		
 		int offsetX = 0;

@@ -8,7 +8,7 @@ import java.util.Collections;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
 import me.eldodebug.soar.management.color.palette.ColorType;
 import me.eldodebug.soar.management.event.impl.EventRender2D;
@@ -33,7 +33,7 @@ public class GuiEditHUD extends GuiScreen {
 	
 	public GuiEditHUD(boolean fromModMenu) {
 		this.fromModMenu = fromModMenu;
-		this.mods = Soar.getInstance().getModManager().getHudMods();
+		this.mods = Glide.getInstance().getModManager().getHudMods();
 		Collections.reverse(mods);
 	}
 	
@@ -53,7 +53,7 @@ public class GuiEditHUD extends GuiScreen {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
 		ScaledResolution sr = new ScaledResolution(mc);
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorPalette palette = instance.getColorManager().getPalette();
 
@@ -246,7 +246,7 @@ public class GuiEditHUD extends GuiScreen {
 	public void keyTyped(char typedChar, int keyCode) {
 		if(keyCode == Keyboard.KEY_ESCAPE) {
 			if(fromModMenu) {
-				mc.displayGuiScreen(Soar.getInstance().getApi().getModMenu());
+				mc.displayGuiScreen(Glide.getInstance().getApi().getModMenu());
 			}else {
 				introAnimation.setDirection(Direction.BACKWARDS);
 			}

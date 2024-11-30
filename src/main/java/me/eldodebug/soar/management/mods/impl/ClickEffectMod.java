@@ -2,7 +2,7 @@ package me.eldodebug.soar.management.mods.impl;
 
 import java.util.ArrayList;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.mods.Mod;
@@ -61,7 +61,7 @@ public class ClickEffectMod extends Mod {
 		
 		public void draw() {
 			
-			Soar instance = Soar.getInstance();
+			Glide instance = Glide.getInstance();
 			NanoVGManager nvg = instance.getNanoVGManager();
 			AccentColor currentColor = instance.getColorManager().getCurrentColor();
 			

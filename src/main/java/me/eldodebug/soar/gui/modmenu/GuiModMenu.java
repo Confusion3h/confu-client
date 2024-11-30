@@ -7,13 +7,12 @@ import java.util.ArrayList;
 
 import org.lwjgl.input.Keyboard;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.GuiEditHUD;
 import me.eldodebug.soar.gui.modmenu.category.Category;
 import me.eldodebug.soar.gui.modmenu.category.impl.CosmeticsCategory;
 import me.eldodebug.soar.gui.modmenu.category.impl.HomeCategory;
 import me.eldodebug.soar.gui.modmenu.category.impl.ModuleCategory;
-import me.eldodebug.soar.gui.modmenu.category.impl.MusicCategory;
 import me.eldodebug.soar.gui.modmenu.category.impl.ProfileCategory;
 import me.eldodebug.soar.gui.modmenu.category.impl.ScreenshotCategory;
 import me.eldodebug.soar.gui.modmenu.category.impl.SettingCategory;
@@ -63,7 +62,6 @@ public class GuiModMenu extends GuiScreen {
 		categories.add(new HomeCategory(this));
 		categories.add(new ModuleCategory(this));
 		categories.add(new CosmeticsCategory(this));
-		categories.add(new MusicCategory(this));
 		categories.add(new ProfileCategory(this));
 		categories.add(new ScreenshotCategory(this));
 		categories.add(new SettingCategory(this));
@@ -100,7 +98,7 @@ public class GuiModMenu extends GuiScreen {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		BlurUtils.drawBlurScreen((float) (Math.min(introAnimation.getValue(), 1) * 20) + 1F);
@@ -117,13 +115,11 @@ public class GuiModMenu extends GuiScreen {
 	
 	private void drawNanoVG(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorManager colorManager = instance.getColorManager();
 		ColorPalette palette = colorManager.getPalette();
 		AccentColor currentColor = colorManager.getCurrentColor();
-		File headFile = new File(instance.getFileManager().getCacheDir(), "head/" + instance.getAccountManager().getCurrentAccount().getName() + ".png");
-		
 		if(introAnimation.isDone(Direction.BACKWARDS)) {
 			mc.displayGuiScreen(toEditHUD ? new GuiEditHUD(true) : null);
 		}
@@ -164,12 +160,6 @@ public class GuiModMenu extends GuiScreen {
 		nvg.restore();
 		
 		nvg.drawRect(x, y + height - 70, 32, 1, palette.getBackgroundColor(ColorType.NORMAL));
-		
-		if(!headFile.exists()) {
-			nvg.drawPlayerHead(new ResourceLocation("textures/entity/steve.png"), x + 5, y + height - 30, 22, 22, 11);
-		}else {
-			nvg.drawRoundedImage(headFile, x + 5, y + height - 30, 22, 22, 11);
-		}
 		
 		nvg.drawGradientRoundedRect(x + 5.5F, y + height - 60, 21, 21, 4, currentColor.getColor1(), currentColor.getColor2());
 		nvg.drawText(Icon.LAYOUT, x + 9, y + height - 56.5F, Color.WHITE, 14, Fonts.ICON);
@@ -294,7 +284,7 @@ public class GuiModMenu extends GuiScreen {
 	
 	@Override
 	public void onGuiClosed() {
-		Soar.getInstance().getProfileManager().save();
+		Glide.getInstance().getProfileManager().save();
 	}
 
 	public int getX() {

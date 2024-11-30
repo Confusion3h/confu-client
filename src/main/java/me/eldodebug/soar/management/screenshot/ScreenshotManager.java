@@ -12,7 +12,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.file.FileManager;
 import me.eldodebug.soar.utils.JsonUtils;
 import me.eldodebug.soar.utils.file.FileUtils;
@@ -25,7 +25,7 @@ public class ScreenshotManager {
 	
 	public ScreenshotManager() {
 		
-		FileManager fileManager = Soar.getInstance().getFileManager();
+		FileManager fileManager = Glide.getInstance().getFileManager();
 		File screenshotCacheDir = new File(fileManager.getCacheDir(), "screenshot");
 		File dataJson = new File(screenshotCacheDir, "Data.json");
 		ArrayList<String> removeScreenshots = loadData();
@@ -49,7 +49,7 @@ public class ScreenshotManager {
 	
 	public ArrayList<String> loadData() {
 		
-		FileManager fileManager = Soar.getInstance().getFileManager();
+		FileManager fileManager = Glide.getInstance().getFileManager();
 		File screenshotCacheDir = new File(fileManager.getCacheDir(), "screenshot");
 		File dataJson = new File(screenshotCacheDir, "Data.json");
 		
@@ -84,7 +84,7 @@ public class ScreenshotManager {
 	
 	public void saveData() {
 		
-		FileManager fileManager = Soar.getInstance().getFileManager();
+		FileManager fileManager = Glide.getInstance().getFileManager();
 		File screenshotCacheDir = new File(fileManager.getCacheDir(), "screenshot");
 		File dataJson = new File(screenshotCacheDir, "Data.json");
 		
@@ -111,7 +111,7 @@ public class ScreenshotManager {
 	
 	public void loadScreenshots() {
 		
-		File screenshotDir = Soar.getInstance().getFileManager().getScreenshotDir();
+		File screenshotDir = Glide.getInstance().getFileManager().getScreenshotDir();
 		
 		if(prevSize != screenshotDir.listFiles().length) {
 			
@@ -122,7 +122,7 @@ public class ScreenshotManager {
 				if(FileUtils.getExtension(f).equals("png")) {
 					if(!removeScreenshots.contains(f) && getScreenshotByFile(f) == null) {
 						screenshots.add(new Screenshot(f));
-						Soar.getInstance().getNanoVGManager().loadImage(f);
+						Glide.getInstance().getNanoVGManager().loadImage(f);
 					}
 				}
 			}

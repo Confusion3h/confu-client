@@ -2,7 +2,7 @@ package me.eldodebug.soar.management.notification;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
@@ -34,7 +34,7 @@ public class Notification {
 	
 	public void draw() {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
 		screenAlpha.wrap(() -> drawNanoVG(nvg), animation.getValueFloat());
 	}
@@ -42,7 +42,7 @@ public class Notification {
 	private void drawNanoVG(NanoVGManager nvg) {
 		
 		ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		AccentColor currentColor = instance.getColorManager().getCurrentColor();
 		
 		float maxWidth;

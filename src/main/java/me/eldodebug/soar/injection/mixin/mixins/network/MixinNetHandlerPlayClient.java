@@ -37,7 +37,7 @@ public class MixinNetHandlerPlayClient {
 	@Redirect(method = "handleJoinGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkManager;sendPacket(Lnet/minecraft/network/Packet;)V"))
 	public void sendBrand() {
 		
-		PacketBuffer data = new PacketBuffer(Unpooled.buffer()).writeString("Soar Client");
+		PacketBuffer data = new PacketBuffer(Unpooled.buffer()).writeString("Glide Client");
 		
 		if(ClientSpooferMod.getInstance().isToggled()) {
 			

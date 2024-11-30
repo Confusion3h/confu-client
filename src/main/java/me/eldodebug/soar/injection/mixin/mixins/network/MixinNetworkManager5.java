@@ -14,7 +14,7 @@ import io.netty.channel.socket.SocketChannel;
 import me.eldodebug.soar.management.mods.impl.ViaVersionMod;
 import me.eldodebug.soar.viaversion.MCPVLBPipeline;
 import me.eldodebug.soar.viaversion.ViaLoadingBase;
-import me.eldodebug.soar.viaversion.ViaSoar;
+import me.eldodebug.soar.viaversion.ViaGlide;
 
 @Mixin(targets = "net.minecraft.network.NetworkManager$5")
 public class MixinNetworkManager5 {
@@ -23,7 +23,7 @@ public class MixinNetworkManager5 {
     private void onInitChannel(Channel channel, CallbackInfo ci) {
     	
     	if (ViaVersionMod.getInstance().isToggled() && ViaVersionMod.getInstance().isLoaded() && channel instanceof SocketChannel && 
-    			ViaLoadingBase.getInstance().getTargetVersion().getVersion() != ViaSoar.NATIVE_VERSION) {
+    			ViaLoadingBase.getInstance().getTargetVersion().getVersion() != ViaGlide.NATIVE_VERSION) {
     	    final UserConnection user = new UserConnectionImpl(channel, true);
     	    new ProtocolPipelineImpl(user);
     	    

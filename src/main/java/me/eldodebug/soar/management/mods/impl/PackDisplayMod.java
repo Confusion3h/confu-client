@@ -3,7 +3,7 @@ package me.eldodebug.soar.management.mods.impl;
 import java.io.IOException;
 import java.util.List;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.injection.interfaces.IMixinMinecraft;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventRender2D;
@@ -42,7 +42,7 @@ public class PackDisplayMod extends HUDMod {
 	@EventTarget
 	public void onRender2D(EventRender2D event) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		if(pack == null) {

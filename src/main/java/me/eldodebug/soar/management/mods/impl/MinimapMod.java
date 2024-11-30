@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import org.lwjgl.opengl.GL11;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventLoadWorld;
 import me.eldodebug.soar.management.event.impl.EventRender2D;
@@ -44,7 +44,7 @@ public class MinimapMod extends HUDMod {
 	@EventTarget
 	public void onRender2D(EventRender2D event) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		int width = widthSetting.getValueInt();
 		int height = heightSetting.getValueInt();
 		

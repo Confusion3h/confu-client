@@ -2,7 +2,7 @@ package me.eldodebug.soar.management.command;
 
 import java.util.ArrayList;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.command.impl.ScreenshotCommand;
 import me.eldodebug.soar.management.command.impl.TranslateCommand;
 import me.eldodebug.soar.management.event.EventTarget;
@@ -17,7 +17,7 @@ public class CommandManager {
 		commands.add(new ScreenshotCommand());
 		commands.add(new TranslateCommand());
 		
-		Soar.getInstance().getEventManager().register(this);
+		Glide.getInstance().getEventManager().register(this);
 	}
 	
 	@EventTarget

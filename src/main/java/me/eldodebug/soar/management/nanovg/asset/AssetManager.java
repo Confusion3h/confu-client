@@ -14,7 +14,7 @@ import org.lwjgl.nanovg.NanoVGGL2;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryUtil;
 
-import me.eldodebug.soar.logger.SoarLogger;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.utils.IOUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
@@ -146,7 +146,7 @@ public class AssetManager {
                 
 			} catch (Exception e) {
 				
-				SoarLogger.error("Failed to load svg", e);
+				GlideLogger.error("Failed to load svg", e);
 				
 				return false;
 			}

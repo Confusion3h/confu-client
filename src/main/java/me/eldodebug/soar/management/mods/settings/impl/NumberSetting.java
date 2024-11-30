@@ -1,6 +1,6 @@
 package me.eldodebug.soar.management.mods.settings.impl;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.mods.Mod;
 import me.eldodebug.soar.management.mods.settings.Setting;
@@ -19,7 +19,7 @@ public class NumberSetting extends Setting {
 		this.maxValue = maxValue;
 		this.integer = integer;
 		
-		Soar.getInstance().getModManager().addSettings(this);
+		Glide.getInstance().getModManager().addSettings(this);
 	}
 	
 	@Override

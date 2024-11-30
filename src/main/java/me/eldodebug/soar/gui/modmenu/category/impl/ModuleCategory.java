@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.input.Keyboard;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.gui.modmenu.category.Category;
 import me.eldodebug.soar.management.color.AccentColor;
@@ -81,7 +81,7 @@ public class ModuleCategory extends Category {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ModManager modManager = instance.getModManager();
 		ColorManager colorManager = instance.getColorManager();
@@ -292,7 +292,7 @@ public class ModuleCategory extends Category {
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ModManager modManager = instance.getModManager();
 		
@@ -551,7 +551,7 @@ public class ModuleCategory extends Category {
 			return true;
 		}
 		
-		if(!this.getSearchBox().getText().isEmpty() && !SearchUtils.isSimillar(Soar.getInstance().getModManager().getWords(m), this.getSearchBox().getText())) {
+		if(!this.getSearchBox().getText().isEmpty() && !SearchUtils.isSimillar(Glide.getInstance().getModManager().getWords(m), this.getSearchBox().getText())) {
 			return true;
 		}
 		

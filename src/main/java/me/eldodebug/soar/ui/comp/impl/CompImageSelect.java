@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.color.ColorManager;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
@@ -37,7 +37,7 @@ public class CompImageSelect extends Comp {
 	@Override
 	public void draw(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorManager colorManager = instance.getColorManager();
 		AccentColor accentColor = colorManager.getCurrentColor();
@@ -62,7 +62,7 @@ public class CompImageSelect extends Comp {
 				
 				if(image != null) {
 					
-					FileManager fileManager = Soar.getInstance().getFileManager();
+					FileManager fileManager = Glide.getInstance().getFileManager();
 					File cacheDir = new File(fileManager.getCacheDir(), "custom-image");
 					
 					fileManager.createDir(cacheDir);

@@ -5,7 +5,7 @@ import me.eldodebug.soar.management.mods.Mod;
 import me.eldodebug.soar.management.mods.ModCategory;
 import me.eldodebug.soar.utils.Multithreading;
 import me.eldodebug.soar.viaversion.ViaLoadingBase;
-import me.eldodebug.soar.viaversion.ViaSoar;
+import me.eldodebug.soar.viaversion.ViaGlide;
 import me.eldodebug.soar.viaversion.protocolinfo.ProtocolInfo;
 
 public class ViaVersionMod extends Mod {
@@ -28,8 +28,8 @@ public class ViaVersionMod extends Mod {
 		if(!loaded) {
 			loaded = true;
 			Multithreading.runAsync(() -> {
-				ViaSoar.create();
-				ViaSoar.getInstance().initAsyncSlider();
+				ViaGlide.create();
+				ViaGlide.getInstance().initAsyncSlider();
 			});
 		}
 	}
@@ -40,7 +40,7 @@ public class ViaVersionMod extends Mod {
 		super.onDisable();
 		
 		if(loaded) {
-			ViaSoar.getInstance().getAsyncVersionSlider().setVersion(ProtocolInfo.R1_8.getProtocolVersion().getVersion());
+			ViaGlide.getInstance().getAsyncVersionSlider().setVersion(ProtocolInfo.R1_8.getProtocolVersion().getVersion());
 			ViaLoadingBase.getInstance().reload(ProtocolInfo.R1_8.getProtocolVersion());
 		}
 	}

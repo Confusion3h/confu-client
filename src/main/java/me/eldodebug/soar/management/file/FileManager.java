@@ -3,8 +3,8 @@ package me.eldodebug.soar.management.file;
 import java.io.File;
 import java.io.IOException;
 
-import me.eldodebug.soar.Soar;
-import me.eldodebug.soar.logger.SoarLogger;
+import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.logger.GlideLogger;
 import net.minecraft.client.Minecraft;
 
 public class FileManager {
@@ -36,7 +36,7 @@ public class FileManager {
 		File versionDir = new File(cacheDir, "version");
 		
 		createDir(versionDir);
-		createFile(new File(versionDir, Soar.getInstance().getVersion() + ".tmp"));
+		createFile(new File(versionDir, Glide.getInstance().getVersion() + ".tmp"));
 	}
 	
 	public void createDir(File file) {
@@ -47,7 +47,7 @@ public class FileManager {
 		try {
 			file.createNewFile();
 		} catch (IOException e) {
-			SoarLogger.error("Failed to create file " + file.getName(), e);
+			GlideLogger.error("Failed to create file " + file.getName(), e);
 		}
 	}
 
@@ -55,7 +55,7 @@ public class FileManager {
 		return screenshotDir;
 	}
 
-	public File getSoarDir() {
+	public File getGlideDir() {
 		return soarDir;
 	}
 

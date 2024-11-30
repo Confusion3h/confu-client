@@ -1,6 +1,6 @@
 package me.eldodebug.soar.management.mods.settings.impl;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.mods.Mod;
 import me.eldodebug.soar.management.mods.settings.Setting;
@@ -14,7 +14,7 @@ public class TextSetting extends Setting {
 		this.text = text;
 		this.defaultText = text;
 		
-		Soar.getInstance().getModManager().addSettings(this);
+		Glide.getInstance().getModManager().addSettings(this);
 	}
 	
 	@Override

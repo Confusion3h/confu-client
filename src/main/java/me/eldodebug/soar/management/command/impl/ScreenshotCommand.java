@@ -5,7 +5,7 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.command.Command;
 import me.eldodebug.soar.management.file.FileManager;
 import me.eldodebug.soar.utils.transferable.FileTransferable;
@@ -20,7 +20,7 @@ public class ScreenshotCommand extends Command {
 	@Override
 	public void onCommand(String message) {
 		
-		FileManager fileManager = Soar.getInstance().getFileManager();
+		FileManager fileManager = Glide.getInstance().getFileManager();
 		String[] args = message.split(" ");
 		File file = new File(fileManager.getScreenshotDir(), args[1]);
 		

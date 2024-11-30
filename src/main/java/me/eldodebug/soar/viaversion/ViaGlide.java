@@ -2,33 +2,33 @@ package me.eldodebug.soar.viaversion;
 
 import java.io.File;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.file.FileManager;
 import me.eldodebug.soar.viaversion.gui.AsyncVersionSlider;
 
-public class ViaSoar {
+public class ViaGlide {
 	
     public final static int NATIVE_VERSION = 47;
-    private static ViaSoar instance;
+    private static ViaGlide instance;
 
     public static void create() {
-    	instance = new ViaSoar();
+    	instance = new ViaGlide();
     }
 
     private AsyncVersionSlider asyncVersionSlider;
 
-    public ViaSoar() {
+    public ViaGlide() {
     	
-    	FileManager fileManager = Soar.getInstance().getFileManager();
+    	FileManager fileManager = Glide.getInstance().getFileManager();
     	
-        ViaLoadingBase.ViaLoadingBaseBuilder.create().runDirectory(new File(fileManager.getSoarDir(), "ViaVersion")).nativeVersion(NATIVE_VERSION).onProtocolReload(comparableProtocolVersion -> {
+        ViaLoadingBase.ViaLoadingBaseBuilder.create().runDirectory(new File(fileManager.getGlideDir(), "ViaVersion")).nativeVersion(NATIVE_VERSION).onProtocolReload(comparableProtocolVersion -> {
             if (getAsyncVersionSlider() != null) {
                 getAsyncVersionSlider().setVersion(comparableProtocolVersion.getVersion());
             }
         }).build();
     }
 
-    public static ViaSoar getInstance() {
+    public static ViaGlide getInstance() {
 		return instance;
 	}
 

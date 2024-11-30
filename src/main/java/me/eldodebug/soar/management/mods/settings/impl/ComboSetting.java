@@ -2,7 +2,7 @@ package me.eldodebug.soar.management.mods.settings.impl;
 
 import java.util.ArrayList;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.mods.Mod;
 import me.eldodebug.soar.management.mods.settings.Setting;
@@ -21,7 +21,7 @@ public class ComboSetting extends Setting {
 		this.option = getOptionByNameKey(defaultOption.getKey());
 		this.defaultOption = getOptionByNameKey(defaultOption.getKey());
 		
-		Soar.getInstance().getModManager().addSettings(this);
+		Glide.getInstance().getModManager().addSettings(this);
 	}
 
 	@Override

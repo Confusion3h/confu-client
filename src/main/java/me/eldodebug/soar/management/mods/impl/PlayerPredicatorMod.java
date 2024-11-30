@@ -2,7 +2,7 @@ package me.eldodebug.soar.management.mods.impl;
 
 import org.lwjgl.opengl.GL11;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.injection.interfaces.IMixinS14PacketEntity;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventReceivePacket;
@@ -91,7 +91,7 @@ public class PlayerPredicatorMod extends Mod {
 
 	        double expand = 0.14;
 
-	        ColorUtils.setColor(ColorUtils.applyAlpha(Soar.getInstance().getColorManager().getCurrentColor().getInterpolateColor(0), 80).getRGB());
+	        ColorUtils.setColor(ColorUtils.applyAlpha(Glide.getInstance().getColorManager().getCurrentColor().getInterpolateColor(0), 80).getRGB());
 	        
 	        Render3DUtils.drawBoundingBox(mc.thePlayer.getEntityBoundingBox().offset(-mc.thePlayer.posX, -mc.thePlayer.posY, -mc.thePlayer.posZ).
 	                offset(realTargetPosition.x, realTargetPosition.y, realTargetPosition.z).expand(expand, expand, expand));

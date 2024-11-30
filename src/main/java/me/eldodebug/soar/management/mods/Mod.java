@@ -1,6 +1,6 @@
 package me.eldodebug.soar.management.mods;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.utils.animation.simple.SimpleAnimation;
 import net.minecraft.client.Minecraft;
@@ -29,11 +29,11 @@ public class Mod {
 	public void setup() {}
 	
 	public void onEnable() {
-		Soar.getInstance().getEventManager().register(this);
+		Glide.getInstance().getEventManager().register(this);
 	}
 	
 	public void onDisable() {
-		Soar.getInstance().getEventManager().unregister(this);
+		Glide.getInstance().getEventManager().unregister(this);
 	}
 	
 	public void toggle() {

@@ -2,7 +2,7 @@ package me.eldodebug.soar.utils;
 
 import java.lang.reflect.Field;
 
-import me.eldodebug.soar.injection.mixin.SoarTweaker;
+import me.eldodebug.soar.injection.mixin.GlideTweaker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 
@@ -23,7 +23,7 @@ public class OptifineUtils {
     
     public static void disableFastRender() {
     	
-		if(SoarTweaker.hasOptifine) {
+		if(GlideTweaker.hasOptifine) {
 			try {
 				OptifineUtils.gameSettings_ofFastRender.set(mc.gameSettings, false);
 			} catch (IllegalArgumentException | IllegalAccessException e) {}

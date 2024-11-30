@@ -2,7 +2,7 @@ package me.eldodebug.soar.ui.comp.impl;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.mods.settings.impl.ColorSetting;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.ui.comp.Comp;
@@ -43,7 +43,7 @@ public class CompColorPicker extends Comp {
 	@Override
 	public void draw(int mouseX, int mouseY, float partialTicks) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
 		openAnimation.setAnimation(open ? 1.1F : 0.0F, 16);
 		

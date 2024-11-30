@@ -17,7 +17,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import me.eldodebug.soar.logger.SoarLogger;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.utils.file.filter.PngFileFilter;
 import me.eldodebug.soar.utils.file.filter.SoundFileFilter;
 
@@ -171,7 +171,7 @@ public class FileUtils {
             }
             httpClient.close();
     	}catch(Exception e) {
-    		SoarLogger.error("Failed to download file: " + url, e);
+    		GlideLogger.error("Failed to download file: " + url, e);
     	}
     }
     

@@ -26,14 +26,14 @@ apply plugin: 'java'
 
 version = "Release"
 group= "me.eldodebug"
-archivesBaseName = "SoarClient"
+archivesBaseName = "GlideClient"
 
 sourceCompatibility = targetCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 
 minecraft {
     version = "1.8.9"
-    tweakClass = "me.eldodebug.soar.injection.mixin.SoarTweaker"
+    tweakClass = "me.eldodebug.soar.injection.mixin.GlideTweaker"
     runDir = "run"
     mappings = "stable_22"
     clientJvmArgs = ["-XX:-DisableExplicitGC"]
@@ -95,7 +95,7 @@ jar {
 jar {
     manifest.attributes(
             "MixinConfigs": 'mixins.soar.json',
-            "TweakClass": 'me.eldodebug.soar.injection.mixin.SoarTweaker',
+            "TweakClass": 'me.eldodebug.soar.injection.mixin.GlideTweaker',
             "TweakOrder": 0,
             "Manifest-Version": 1.0,
             'FMLAT': 'soar_at.cfg'

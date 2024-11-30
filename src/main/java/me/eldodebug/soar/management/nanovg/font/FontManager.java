@@ -4,12 +4,13 @@ import java.nio.ByteBuffer;
 
 import org.lwjgl.nanovg.NanoVG;
 
-import me.eldodebug.soar.logger.SoarLogger;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.utils.IOUtils;
 
 public class FontManager {
 
 	public void init(long nvg) {
+		loadFont(nvg, Fonts.FALLBACK);
 		for(Font f : Fonts.getFonts()) {
 			loadFont(nvg, f);
 		}
@@ -28,13 +29,14 @@ public class FontManager {
 			loaded = NanoVG.nvgCreateFontMem(nvg, font.getName(), buffer, false);
 			font.setBuffer(buffer);
 		} catch (Exception e) {
-			SoarLogger.error("Failed to load font", e);
+			GlideLogger.error("Failed to load font", e);
 		}
 		
 		if(loaded == -1) {
 			throw new RuntimeException("Failed to init font " + font.getName());
 		}else {
 			font.setLoaded(true);
+			if(Fonts.FALLBACK.isLoaded()) NanoVG.nvgAddFallbackFont(nvg, font.getName(), Fonts.FALLBACK.getName());
 		}
 	}
 }

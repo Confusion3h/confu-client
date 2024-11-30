@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import org.lwjgl.input.Keyboard;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventKey;
 import me.eldodebug.soar.management.language.TranslateText;
@@ -43,7 +43,7 @@ public class GlobalSettingsMod extends Mod {
 	@EventTarget
 	public void onKey(EventKey event) {
 		if(event.getKeyCode() == modMenuKeybindSetting.getKeyCode()) {
-			mc.displayGuiScreen(Soar.getInstance().getApi().getModMenu());
+			mc.displayGuiScreen(Glide.getInstance().getApi().getModMenu());
 		}
 	}
 

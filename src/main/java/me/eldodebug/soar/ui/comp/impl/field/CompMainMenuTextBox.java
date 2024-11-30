@@ -2,7 +2,7 @@ package me.eldodebug.soar.ui.comp.impl.field;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.utils.ColorUtils;
@@ -34,7 +34,7 @@ public class CompMainMenuTextBox extends CompTextBoxBase {
 	@Override
 	public void draw(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		float height = this.getHeight();

@@ -7,7 +7,7 @@ import java.util.Date;
 
 import javax.imageio.ImageIO;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.mods.impl.AsyncScreenshotMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
@@ -77,7 +77,7 @@ public class AsyncScreenshots extends Thread {
 
         while (true) {
             screenshot = new File(
-                Soar.getInstance().getFileManager().getScreenshotDir(),
+                Glide.getInstance().getFileManager().getScreenshotDir(),
                 dateFormatting + ((screenshotCount == 1) ? "" : ("_" + screenshotCount)) + ".png"
             );
             if (!screenshot.exists()) {

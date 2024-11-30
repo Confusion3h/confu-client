@@ -1,10 +1,10 @@
 package me.eldodebug.soar.management.security;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 
 public class SecurityFeature {
 
 	public SecurityFeature() {
-		Soar.getInstance().getEventManager().register(this);
+		Glide.getInstance().getEventManager().register(this);
 	}
 }

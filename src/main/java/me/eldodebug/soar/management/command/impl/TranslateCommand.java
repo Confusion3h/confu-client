@@ -1,6 +1,6 @@
 package me.eldodebug.soar.management.command.impl;
 
-import me.eldodebug.soar.logger.SoarLogger;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.management.command.Command;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.mods.impl.ChatTranslateMod;
@@ -41,7 +41,7 @@ public class TranslateCommand extends Command {
 			try {
 				mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "[Translate] " + EnumChatFormatting.WHITE + Translator.translate(text, Translator.AUTO_DETECT, to)));
 			} catch (Exception e) {
-				SoarLogger.error("Failed translate", e);
+				GlideLogger.error("Failed translate", e);
 			}
 		});
 	}

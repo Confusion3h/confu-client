@@ -9,8 +9,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import me.eldodebug.soar.Soar;
-import me.eldodebug.soar.logger.SoarLogger;
+import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.management.color.ColorManager;
 import me.eldodebug.soar.management.color.Theme;
 import me.eldodebug.soar.management.file.FileManager;
@@ -46,7 +46,7 @@ public class ProfileManager {
 	
 	public void loadProfiles(boolean loadDefaultProfile) {
 		
-		File profileDir = Soar.getInstance().getFileManager().getProfileDir();
+		File profileDir = Glide.getInstance().getFileManager().getProfileDir();
 		int id = 0;
 		
 		profiles.clear();
@@ -82,7 +82,7 @@ public class ProfileManager {
 			            
 			            id++;
 					} catch(Exception e) {
-						SoarLogger.error("Failed to load profile", e);
+						GlideLogger.error("Failed to load profile", e);
 					}
 				}
 			}
@@ -93,7 +93,7 @@ public class ProfileManager {
 	
 	public void save(File file, String serverIp, ProfileType type, ProfileIcon icon) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		ModManager modManager = instance.getModManager();
 		ColorManager colorManager = instance.getColorManager();
 		
@@ -211,17 +211,17 @@ public class ProfileManager {
 			gson.toJson(jsonObject, writer);
 			
 		} catch(Exception e) {
-			SoarLogger.error("Failed to save profile", e);
+			GlideLogger.error("Failed to save profile", e);
 		}
 	}
 	
 	public void save() {
-		save(new File(Soar.getInstance().getFileManager().getProfileDir(), "Default.json"), "", ProfileType.ALL, ProfileIcon.GRASS);
+		save(new File(Glide.getInstance().getFileManager().getProfileDir(), "Default.json"), "", ProfileType.ALL, ProfileIcon.GRASS);
 	}
 	
 	public void load(File file) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		ModManager modManager = instance.getModManager();
 		ColorManager colorManager = instance.getColorManager();
 		FileManager fileManager = instance.getFileManager();
@@ -347,7 +347,7 @@ public class ProfileManager {
 				}
 			}
 		} catch (Exception e) {
-			SoarLogger.error("Failed to load profile", e);
+			GlideLogger.error("Failed to load profile", e);
 		}
 	}
 	

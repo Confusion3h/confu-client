@@ -8,7 +8,7 @@ import java.util.List;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventRender2D;
 import me.eldodebug.soar.management.event.impl.EventRenderScoreboard;
@@ -41,7 +41,7 @@ public class ScoreboardMod extends HUDMod {
 	@EventTarget
 	public void onRender2D(EventRender2D event) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
 		if(isFirstLoad) {
 			isFirstLoad = false;

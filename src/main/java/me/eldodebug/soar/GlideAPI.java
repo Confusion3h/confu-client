@@ -2,20 +2,20 @@ package me.eldodebug.soar;
 
 import java.io.File;
 
-import me.eldodebug.soar.gui.mainmenu.GuiSoarMainMenu;
+import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.management.file.FileManager;
 
-public class SoarAPI {
+public class GlideAPI {
 
 	private long launchTime;
 	private GuiModMenu modMenu;
-	private GuiSoarMainMenu mainMenu;
+	private GuiGlideMainMenu mainMenu;
 	private File firstLoginFile;
 	
-	public SoarAPI() {
+	public GlideAPI() {
 		
-		FileManager fileManager = Soar.getInstance().getFileManager();
+		FileManager fileManager = Glide.getInstance().getFileManager();
 		
 		firstLoginFile = new File(fileManager.getCacheDir(), "first.tmp");
 	}
@@ -23,7 +23,7 @@ public class SoarAPI {
 	public void init() {
 		launchTime = System.currentTimeMillis();
 		modMenu = new GuiModMenu();
-		mainMenu = new GuiSoarMainMenu();
+		mainMenu = new GuiGlideMainMenu();
 	}
 	
 	public boolean isSpecialUser() {
@@ -38,12 +38,12 @@ public class SoarAPI {
 		return launchTime;
 	}
 
-	public GuiSoarMainMenu getMainMenu() {
+	public GuiGlideMainMenu getMainMenu() {
 		return mainMenu;
 	}
 
 	public void createFirstLoginFile() {
-		Soar.getInstance().getFileManager().createFile(firstLoginFile);
+		Glide.getInstance().getFileManager().createFile(firstLoginFile);
 	}
 	
 	public boolean isFirstLogin() {

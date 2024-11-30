@@ -1,6 +1,6 @@
 package me.eldodebug.soar.management.mods.impl.mechibes;
 
-import me.eldodebug.soar.logger.SoarLogger;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.utils.Sound;
 import net.minecraft.util.ResourceLocation;
 
@@ -15,7 +15,7 @@ public class SoundKey {
 		try {
 			sound.loadClip(new ResourceLocation("soar/mechvibes/" + mode + "/" + key + ".wav"));
 		} catch (Exception e) {
-			SoarLogger.error("Failed load sound", e);
+			GlideLogger.error("Failed load sound", e);
 		}
 		
 		pressed = false;

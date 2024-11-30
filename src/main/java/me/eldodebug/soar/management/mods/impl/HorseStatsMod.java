@@ -2,7 +2,7 @@ package me.eldodebug.soar.management.mods.impl;
 
 import java.text.DecimalFormat;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventRender2D;
 import me.eldodebug.soar.management.language.TranslateText;
@@ -23,7 +23,7 @@ public class HorseStatsMod extends HUDMod {
 	@EventTarget
 	public void onRender2D(EventRender2D event) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
 		nvg.setupAndDraw(() -> drawNanoVG());
 	}

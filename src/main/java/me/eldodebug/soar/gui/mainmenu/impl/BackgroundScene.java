@@ -6,8 +6,8 @@ import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 
-import me.eldodebug.soar.Soar;
-import me.eldodebug.soar.gui.mainmenu.GuiSoarMainMenu;
+import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
 import me.eldodebug.soar.gui.mainmenu.MainMenuScene;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
 import me.eldodebug.soar.management.file.FileManager;
@@ -30,7 +30,7 @@ public class BackgroundScene extends MainMenuScene {
 
 	private Scroll scroll = new Scroll();
 	
-	public BackgroundScene(GuiSoarMainMenu parent) {
+	public BackgroundScene(GuiGlideMainMenu parent) {
 		super(parent);
 	}
 
@@ -39,13 +39,13 @@ public class BackgroundScene extends MainMenuScene {
 		
 		ScaledResolution sr = new ScaledResolution(mc);
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		nvg.setupAndDraw(() -> drawNanoVG(mouseX, mouseY, sr, instance, nvg));
 	}
 	
-	private void drawNanoVG(int mouseX, int mouseY, ScaledResolution sr, Soar instance, NanoVGManager nvg) {
+	private void drawNanoVG(int mouseX, int mouseY, ScaledResolution sr, Glide instance, NanoVGManager nvg) {
 		
 		BackgroundManager backgroundManager = instance.getProfileManager().getBackgroundManager();
 		ColorPalette palette = instance.getColorManager().getPalette();
@@ -118,7 +118,7 @@ public class BackgroundScene extends MainMenuScene {
 		
 		ScaledResolution sr = new ScaledResolution(mc);
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		FileManager fileManager = instance.getFileManager();
 		BackgroundManager backgroundManager = instance.getProfileManager().getBackgroundManager();
 		

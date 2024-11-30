@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 import org.lwjgl.opengl.GL11;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventRender2D;
 import me.eldodebug.soar.management.language.TranslateText;
@@ -35,7 +35,7 @@ public class SpeedometerMod extends SimpleHUDMod {
 	@EventTarget
 	public void onRender2D(EventRender2D event) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
 		if(graphSetting.isToggled()) {
 			nvg.setupAndDraw(() -> drawNanoVG());

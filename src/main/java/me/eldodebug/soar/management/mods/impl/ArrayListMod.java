@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventRender2D;
@@ -38,14 +38,14 @@ public class ArrayListMod extends HUDMod {
 	@EventTarget
 	public void onRender2D(EventRender2D event) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
 		nvg.setupAndDraw(() -> drawNanoVG());
 	}
 	
 	private void drawNanoVG() {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		AccentColor currentColor = instance.getColorManager().getCurrentColor();
 		
 		ArrayList<Mod> enabledMods = new ArrayList<Mod>();

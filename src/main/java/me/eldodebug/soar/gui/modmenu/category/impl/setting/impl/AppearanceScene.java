@@ -2,7 +2,7 @@ package me.eldodebug.soar.gui.modmenu.category.impl.setting.impl;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.modmenu.category.impl.SettingCategory;
 import me.eldodebug.soar.gui.modmenu.category.impl.setting.SettingScene;
 import me.eldodebug.soar.management.color.AccentColor;
@@ -37,7 +37,7 @@ public class AppearanceScene extends SettingScene {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorManager colorManager = instance.getColorManager();
 		ColorPalette palette = colorManager.getPalette();
@@ -103,7 +103,7 @@ public class AppearanceScene extends SettingScene {
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		ColorManager colorManager = instance.getColorManager();
 		
 		float offsetX = 0;

@@ -2,8 +2,8 @@ package me.eldodebug.soar.gui.mainmenu.impl.welcome;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
-import me.eldodebug.soar.gui.mainmenu.GuiSoarMainMenu;
+import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
 import me.eldodebug.soar.gui.mainmenu.MainMenuScene;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.color.ColorManager;
@@ -32,10 +32,10 @@ public class AccentColorSelectScene extends MainMenuScene {
 	
 	private Scroll scroll = new Scroll();
 	
-	public AccentColorSelectScene(GuiSoarMainMenu parent) {
+	public AccentColorSelectScene(GuiGlideMainMenu parent) {
 		super(parent);
 		
-		currentColor = Soar.getInstance().getColorManager().getColorByName("Default");
+		currentColor = Glide.getInstance().getColorManager().getColorByName("Default");
 	}
 
 	@Override
@@ -59,13 +59,13 @@ public class AccentColorSelectScene extends MainMenuScene {
 		screenAlpha.wrap(() -> drawNanoVG(), fadeAnimation.getValueFloat());
 		
 		if(fadeAnimation.isDone(Direction.BACKWARDS)) {
-			this.setCurrentScene(this.getSceneByClass(LoginMessageScene.class));
+			this.setCurrentScene(this.getSceneByClass(LastMessageScene.class));
 		}
 	}
 	
 	private void drawNanoVG() {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorManager colorManager = instance.getColorManager();
 		
@@ -116,7 +116,7 @@ public class AccentColorSelectScene extends MainMenuScene {
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		ColorManager colorManager = instance.getColorManager();
 		
 		int offsetX = 0;
@@ -141,14 +141,14 @@ public class AccentColorSelectScene extends MainMenuScene {
 		}
 		
 		if(MouseUtils.isInside(mouseX, mouseY, x + width - 86, y + height - 26, 80, 20) && mouseButton == 0) {
-			Soar.getInstance().getColorManager().setCurrentColor(currentColor);
+			Glide.getInstance().getColorManager().setCurrentColor(currentColor);
 			fadeAnimation.setDirection(Direction.BACKWARDS);
 		}
 	}
 	
 	private void drawExampleHud(float x, float y, AccentColor accentColor) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
 		float width = 71;
 		float height = 34F;

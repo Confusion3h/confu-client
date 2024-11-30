@@ -1,6 +1,6 @@
 package me.eldodebug.soar.gui.modmenu.category.impl.setting.impl;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.modmenu.category.impl.SettingCategory;
 import me.eldodebug.soar.gui.modmenu.category.impl.setting.SettingScene;
 import me.eldodebug.soar.management.color.AccentColor;
@@ -24,7 +24,7 @@ public class LanguageScene extends SettingScene {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorPalette palette = instance.getColorManager().getPalette();
 		AccentColor currentColor = instance.getColorManager().getCurrentColor();
@@ -49,7 +49,7 @@ public class LanguageScene extends SettingScene {
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		LanguageManager languageManager = instance.getLanguageManager();
 		
 		float offsetY = 0;

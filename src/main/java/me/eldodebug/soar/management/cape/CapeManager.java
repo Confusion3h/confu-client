@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import me.eldodebug.soar.Soar;
-import me.eldodebug.soar.logger.SoarLogger;
+import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.management.cape.impl.Cape;
 import me.eldodebug.soar.management.cape.impl.CustomCape;
 import me.eldodebug.soar.management.cape.impl.NormalCape;
@@ -28,9 +28,9 @@ public class CapeManager {
 	
 	public CapeManager() {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		FileManager fileManager = instance.getFileManager();
-		File customCapeDir = new File(fileManager.getSoarDir(), "custom-cape");
+		File customCapeDir = new File(fileManager.getGlideDir(), "custom-cape");
 		File cacheDir = new File(fileManager.getCacheDir(), "cape");
 		
 		if(!customCapeDir.exists()) {
@@ -78,7 +78,7 @@ public class CapeManager {
 						
 						ImageIO.write(ImageUtils.resize(outputImage, 1000, 1700), "png", file);
 					} catch (IOException e) {
-						SoarLogger.error("Failed to load image", e);
+						GlideLogger.error("Failed to load image", e);
 						continue;
 					}
 				}

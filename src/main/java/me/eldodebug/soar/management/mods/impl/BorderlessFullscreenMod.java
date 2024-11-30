@@ -5,7 +5,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import me.eldodebug.soar.injection.interfaces.IMixinMinecraft;
-import me.eldodebug.soar.logger.SoarLogger;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventPreRenderTick;
 import me.eldodebug.soar.management.event.impl.EventToggleFullscreen;
@@ -87,7 +87,7 @@ public class BorderlessFullscreenMod extends Mod {
 			}
 		}
 		catch(LWJGLException error) {
-			SoarLogger.error("Could not totggle borderless fullscreen", error);
+			GlideLogger.error("Could not totggle borderless fullscreen", error);
 		}
 	}
 }

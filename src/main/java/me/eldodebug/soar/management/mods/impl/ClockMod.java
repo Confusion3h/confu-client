@@ -10,7 +10,7 @@ import java.util.Locale;
 import org.lwjgl.nanovg.NVGColor;
 import org.lwjgl.nanovg.NanoVG;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventRender2D;
 import me.eldodebug.soar.management.language.TranslateText;
@@ -41,7 +41,7 @@ public class ClockMod extends SimpleHUDMod {
 		if(modeSetting.getOption().getTranslate().equals(TranslateText.SIMPLE)) {
 			this.draw();
 		}else {
-			Soar.getInstance().getNanoVGManager().setupAndDraw(() -> drawNanoVG());
+			Glide.getInstance().getNanoVGManager().setupAndDraw(() -> drawNanoVG());
 		}
 	}
 	
@@ -57,7 +57,7 @@ public class ClockMod extends SimpleHUDMod {
 	
 	private void drawNanoVG() {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		float scale = this.getScale();

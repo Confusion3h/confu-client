@@ -2,7 +2,7 @@ package me.eldodebug.soar.management.mods.impl;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventRender3D;
@@ -28,7 +28,7 @@ public class TargetIndicatorMod extends Mod {
 	@EventTarget
 	public void onRender3D(EventRender3D event) {
 		
-		AccentColor currentColor = Soar.getInstance().getColorManager().getCurrentColor();
+		AccentColor currentColor = Glide.getInstance().getColorManager().getCurrentColor();
 		
 		if(TargetUtils.getTarget() != null && !TargetUtils.getTarget().equals(mc.thePlayer)) {
 			Render3DUtils.drawTargetIndicator(TargetUtils.getTarget(), 0.67, customColorSetting.isToggled() ? ColorUtils.applyAlpha(colorSetting.getColor(), 255) : currentColor.getInterpolateColor());

@@ -5,7 +5,7 @@ import java.awt.Color;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.GuiWaypoint;
 import me.eldodebug.soar.injection.interfaces.IMixinRenderManager;
 import me.eldodebug.soar.management.event.EventTarget;
@@ -32,8 +32,8 @@ public class WaypointMod extends Mod {
 	@EventTarget
 	public void onRender3D(EventRender3D event) {
 		
-		for(Waypoint wy : Soar.getInstance().getWaypointManager().getWaypoints()) {
-			if(Soar.getInstance().getWaypointManager().getWorld().equals(wy.getWorld())) {
+		for(Waypoint wy : Glide.getInstance().getWaypointManager().getWaypoints()) {
+			if(Glide.getInstance().getWaypointManager().getWorld().equals(wy.getWorld())) {
 				
 				double distance = this.getDistance(wy, mc.getRenderViewEntity());
 				double renderDistance = (mc.gameSettings.renderDistanceChunks * 16) * 0.75;

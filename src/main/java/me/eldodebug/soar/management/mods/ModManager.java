@@ -86,7 +86,6 @@ public class ModManager {
 		mods.add(new ModernHotbarMod());
 		mods.add(new MotionBlurMod());
 		mods.add(new MouseStrokesMod());
-		mods.add(new MusicInfoMod());
 		mods.add(new NameDisplayMod());
 		mods.add(new NameProtectMod());
 		mods.add(new NametagMod());
@@ -133,7 +132,6 @@ public class ModManager {
 		mods.add(new WaypointMod());
 		mods.add(new WeatherChangerMod());
 		mods.add(new WeatherDisplayMod());
-		mods.add(new WebBrowserMod());
 		mods.add(new ZoomMod());
 	}
 	

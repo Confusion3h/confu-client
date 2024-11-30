@@ -2,7 +2,7 @@ package me.eldodebug.soar.management.event;
 
 import java.lang.reflect.InvocationTargetException;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 
 public abstract class Event {
 
@@ -24,7 +24,7 @@ public abstract class Event {
 
 	private static void call(Event event) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		EventManager eventManager = instance.getEventManager();
 		ArrayHelper<Data> dataList = eventManager.get(event.getClass());
 		

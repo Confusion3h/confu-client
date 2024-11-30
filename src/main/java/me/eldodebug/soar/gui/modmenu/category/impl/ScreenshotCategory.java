@@ -3,7 +3,7 @@ package me.eldodebug.soar.gui.modmenu.category.impl;
 import java.awt.Desktop;
 import java.io.IOException;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.gui.modmenu.category.Category;
 import me.eldodebug.soar.management.color.AccentColor;
@@ -40,7 +40,7 @@ public class ScreenshotCategory extends Category {
 	@Override
 	public void initGui() {
 		
-		ScreenshotManager screenshotManager = Soar.getInstance().getScreenshotManager();
+		ScreenshotManager screenshotManager = Glide.getInstance().getScreenshotManager();
 		
 		if(currentScreenshot == null && !screenshotManager.getScreenshots().isEmpty()) {
 			currentScreenshot = screenshotManager.getScreenshots().get(0);
@@ -50,7 +50,7 @@ public class ScreenshotCategory extends Category {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ScreenshotManager screenshotManager = instance.getScreenshotManager();
 		ColorManager colorManager = instance.getColorManager();
@@ -147,7 +147,7 @@ public class ScreenshotCategory extends Category {
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 		
-		ScreenshotManager screenshotManager = Soar.getInstance().getScreenshotManager();
+		ScreenshotManager screenshotManager = Glide.getInstance().getScreenshotManager();
 		
 		int offsetX = (int) scroll.getValue();
 		int addX = 42;

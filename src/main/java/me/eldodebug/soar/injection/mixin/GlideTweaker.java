@@ -15,7 +15,7 @@ import net.minecraft.launchwrapper.ITweaker;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 
-public class SoarTweaker implements ITweaker {
+public class GlideTweaker implements ITweaker {
 
     private final List<String> launchArguments = new ArrayList<>();
 

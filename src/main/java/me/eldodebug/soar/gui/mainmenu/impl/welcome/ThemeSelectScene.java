@@ -2,8 +2,8 @@ package me.eldodebug.soar.gui.mainmenu.impl.welcome;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
-import me.eldodebug.soar.gui.mainmenu.GuiSoarMainMenu;
+import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
 import me.eldodebug.soar.gui.mainmenu.MainMenuScene;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.color.Theme;
@@ -27,7 +27,7 @@ public class ThemeSelectScene extends MainMenuScene {
 	private Scroll scroll = new Scroll();
 	private Theme currentTheme = Theme.DARK;
 	
-	public ThemeSelectScene(GuiSoarMainMenu parent) {
+	public ThemeSelectScene(GuiGlideMainMenu parent) {
 		super(parent);
 	}
 	
@@ -58,7 +58,7 @@ public class ThemeSelectScene extends MainMenuScene {
 	
 	private void drawNanoVG() {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		AccentColor currentColor = instance.getColorManager().getCurrentColor();
 		
@@ -101,7 +101,7 @@ public class ThemeSelectScene extends MainMenuScene {
 	
 	private void drawModMenuExample(float x, float y, Theme theme) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
 		float width = 90;
 		float height = 56;
@@ -134,7 +134,7 @@ public class ThemeSelectScene extends MainMenuScene {
 		}
 		
 		if(MouseUtils.isInside(mouseX, mouseY, x + width - 86, y + height - 26, 80, 20) && mouseButton == 0) {
-			Soar.getInstance().getColorManager().setTheme(currentTheme);
+			Glide.getInstance().getColorManager().setTheme(currentTheme);
 			fadeAnimation.setDirection(Direction.BACKWARDS);
 		}
 	}

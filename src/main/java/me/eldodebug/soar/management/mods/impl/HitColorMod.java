@@ -2,7 +2,7 @@ package me.eldodebug.soar.management.mods.impl;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventHitOverlay;
@@ -26,7 +26,7 @@ public class HitColorMod extends Mod {
 	@EventTarget
 	public void onHitOverlay(EventHitOverlay event) {
 		
-		AccentColor currentColor = Soar.getInstance().getColorManager().getCurrentColor();
+		AccentColor currentColor = Glide.getInstance().getColorManager().getCurrentColor();
 		Color lastColor = customColorSetting.isToggled() ? colorSetting.getColor() : currentColor.getInterpolateColor();
 		
 		event.setRed(lastColor.getRed() / 255F);

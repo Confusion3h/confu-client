@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import me.eldodebug.soar.logger.SoarLogger;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.mobends.animation.MoBendsAnimation;
 import me.eldodebug.soar.mobends.client.renderer.entity.RenderBendsPlayer;
 import me.eldodebug.soar.mobends.util.RenderingRegistry;
@@ -50,7 +50,7 @@ public class AnimatedEntity {
 	
 	public static void register(){
 		
-		SoarLogger.info("[Mo Bends] Registering Animated Entities...");
+		GlideLogger.info("[Mo Bends] Registering Animated Entities...");
 		
 		animatedEntities.clear();
 		
@@ -81,7 +81,7 @@ public class AnimatedEntity {
 	}
 	
 	public static void registerEntity(AnimatedEntity argEntity){
-		SoarLogger.info("[Mo Bends] Registering " + argEntity.displayName);
+		GlideLogger.info("[Mo Bends] Registering " + argEntity.displayName);
 		animatedEntities.add(argEntity);
 	}
 	

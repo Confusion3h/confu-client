@@ -2,8 +2,8 @@ package me.eldodebug.soar.gui.mainmenu.impl.welcome;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
-import me.eldodebug.soar.gui.mainmenu.GuiSoarMainMenu;
+import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
 import me.eldodebug.soar.gui.mainmenu.MainMenuScene;
 import me.eldodebug.soar.gui.mainmenu.impl.MainScene;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
@@ -23,7 +23,7 @@ public class LastMessageScene extends MainMenuScene {
 	
 	private TimerUtils timer = new TimerUtils();
 	
-	public LastMessageScene(GuiSoarMainMenu parent) {
+	public LastMessageScene(GuiGlideMainMenu parent) {
 		super(parent);
 		
 		step = 0;
@@ -35,9 +35,9 @@ public class LastMessageScene extends MainMenuScene {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
 		ScaledResolution sr = new ScaledResolution(mc);
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		String compMessage = "Setup is complete!";
-		String welcomeMessage = "Welcome to Soar Client!";
+		String welcomeMessage = "Welcome to Glide Client!";
 		
 		BlurUtils.drawBlurScreen(1 + blurAnimation.getValueFloat());
 		
@@ -49,7 +49,7 @@ public class LastMessageScene extends MainMenuScene {
 		}
 		
 		if(blurAnimation.isDone(Direction.BACKWARDS)) {
-			Soar.getInstance().getApi().createFirstLoginFile();
+			Glide.getInstance().getApi().createFirstLoginFile();
 			this.setCurrentScene(this.getSceneByClass(MainScene.class));
 		}
 		

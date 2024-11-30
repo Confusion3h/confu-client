@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventMotionUpdate;
@@ -36,7 +36,7 @@ public class BreadcrumbsMod extends Mod {
 	@EventTarget
 	public void onRender3D(EventRender3D event) {
 		
-		AccentColor currentColor = Soar.getInstance().getColorManager().getCurrentColor();
+		AccentColor currentColor = Glide.getInstance().getColorManager().getCurrentColor();
 		
 		Render3DUtils.renderBreadCrumbs(path, customColorSetting.isToggled() ? ColorUtils.applyAlpha(colorSetting.getColor(), 255) : currentColor.getInterpolateColor());
 	}

@@ -21,7 +21,7 @@ import net.minecraft.network.NetworkManager;
 public class MixinGuiPlayerTabOverlay {
 	
 	@Redirect(method = "renderPlayerlist", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/FontRenderer;drawStringWithShadow(Ljava/lang/String;FFI)I", ordinal = 2))
-	public int renderSoarIcon(FontRenderer instance, String text, float x, float y, int color) {
+	public int renderGlideIcon(FontRenderer instance, String text, float x, float y, int color) {
 		
 		int i = instance.drawStringWithShadow(text, x, y, color);
 		

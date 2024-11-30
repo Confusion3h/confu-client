@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventRender2D;
@@ -45,7 +45,7 @@ public class ModernHotbarMod extends HUDMod {
 	@EventTarget
 	public void onRender2D(EventRender2D event) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		ScaledResolution sr = new ScaledResolution(mc);
 		Option option = designSetting.getOption();
 		
@@ -107,7 +107,7 @@ public class ModernHotbarMod extends HUDMod {
 		
 		ScaledResolution sr = new ScaledResolution(mc);
 		Option option = designSetting.getOption();
-		AccentColor currentColor = Soar.getInstance().getColorManager().getCurrentColor();
+		AccentColor currentColor = Glide.getInstance().getColorManager().getCurrentColor();
 		
         if (mc.getRenderViewEntity() instanceof EntityPlayer) {
         	

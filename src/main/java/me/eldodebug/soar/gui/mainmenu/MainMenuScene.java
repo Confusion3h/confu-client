@@ -8,11 +8,11 @@ import net.minecraft.client.Minecraft;
 public class MainMenuScene {
 
 	public Minecraft mc = Minecraft.getMinecraft();
-	private GuiSoarMainMenu parent;
+	private GuiGlideMainMenu parent;
 	
 	private SimpleAnimation animation = new SimpleAnimation();
 	
-	public MainMenuScene(GuiSoarMainMenu parent) {
+	public MainMenuScene(GuiGlideMainMenu parent) {
 		this.parent = parent;
 	}
 	
@@ -34,7 +34,7 @@ public class MainMenuScene {
 	
 	public void onSceneClosed() {}
 	
-	public GuiSoarMainMenu getParent() {
+	public GuiGlideMainMenu getParent() {
 		return parent;
 	}
 

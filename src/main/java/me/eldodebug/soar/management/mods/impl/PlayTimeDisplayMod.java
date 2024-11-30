@@ -1,6 +1,6 @@
 package me.eldodebug.soar.management.mods.impl;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventRender2D;
 import me.eldodebug.soar.management.language.TranslateText;
@@ -24,7 +24,7 @@ public class PlayTimeDisplayMod extends SimpleHUDMod {
 	@Override
 	public String getText() {
 		
-		int sec = (int) ((System.currentTimeMillis() - Soar.getInstance().getApi().getLaunchTime()) / 1000);
+		int sec = (int) ((System.currentTimeMillis() - Glide.getInstance().getApi().getLaunchTime()) / 1000);
 		int min = (sec % 3600) / 60;
 		int hour = sec / 3600;
 		sec = sec % 60;

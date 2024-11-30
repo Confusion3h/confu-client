@@ -3,7 +3,7 @@ package me.eldodebug.soar.management.mods;
 import java.awt.Color;
 import java.io.File;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.GuiEditHUD;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.color.ColorManager;
@@ -35,7 +35,7 @@ public class HUDMod extends Mod {
 	
 	public void save() {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		nvg.save();
@@ -43,7 +43,7 @@ public class HUDMod extends Mod {
 	
 	public void restore() {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		nvg.restore();
@@ -51,7 +51,7 @@ public class HUDMod extends Mod {
 	
 	public void scissor(float addX, float addY, float width, float height) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		nvg.scissor(x + (addX * scale), y + (addY * scale), width * scale, height * scale);
@@ -59,7 +59,7 @@ public class HUDMod extends Mod {
 	
 	public void drawPlayerHead(ResourceLocation location, float addX, float addY, float width, float height, float radius) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		nvg.drawPlayerHead(location, x + (addX * scale), y + (addY * scale), width * scale, height * scale, radius * scale);
@@ -67,7 +67,7 @@ public class HUDMod extends Mod {
 	
 	public void drawRoundedImage(int texture, float addX, float addY, float width, float height, float radius) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		nvg.drawRoundedImage(texture, x + (addX * scale), y + (addY * scale), width * scale, height * scale, radius * scale);
@@ -75,7 +75,7 @@ public class HUDMod extends Mod {
 	
 	public void drawRoundedImage(File file, float addX, float addY, float width, float height, float radius, float alpha) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		nvg.drawRoundedImage(file, x + (addX * scale), y + (addY * scale), width * scale, height * scale, radius * scale, alpha);
@@ -87,7 +87,7 @@ public class HUDMod extends Mod {
 	
 	public void drawRoundedImage(ResourceLocation location, float addX, float addY, float width, float height, float radius) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		nvg.drawRoundedImage(location, x + (addX * scale), y + (addY * scale), width * scale, height * scale, radius * scale);
@@ -95,7 +95,7 @@ public class HUDMod extends Mod {
 	
 	public void drawArc(float addX, float addY, float radius, float startAngle, float endAngle, float strokeWidth, Color color) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		nvg.drawArc(x + (addX * scale), y + (addY * scale), radius * scale, startAngle, endAngle, strokeWidth * scale, color);
@@ -107,7 +107,7 @@ public class HUDMod extends Mod {
 	
 	public void drawShadow(float addX, float addY, float width, float height, float radius) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		nvg.drawShadow(x + (addX * scale), y + (addY * scale), width * scale, height * scale, radius * scale);
@@ -115,7 +115,7 @@ public class HUDMod extends Mod {
 	
 	public void drawRect(float addX, float addY, float width, float height, Color color) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		nvg.drawRect(x + (addX * scale), y + (addY * scale), width * scale, height * scale, color);
@@ -127,7 +127,7 @@ public class HUDMod extends Mod {
 	
 	public void drawRoundedRect(float addX, float addY, float width, float height, float radius, Color color) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
 		if(width < 0) {
@@ -147,7 +147,7 @@ public class HUDMod extends Mod {
 	
 	public void drawBackground(float addX, float addY, float width, float height, float radius) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorManager colorManager = instance.getColorManager();
 		AccentColor currentColor = colorManager.getCurrentColor();
@@ -210,7 +210,7 @@ public class HUDMod extends Mod {
 	
 	public void drawText(String text, float addX, float addY, float size, Font font, Color color) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		float lastSize = size * scale;
 		
 		nvg.drawText(text, x + (addX * scale), y + (addY * scale), color, lastSize, font);
@@ -218,7 +218,7 @@ public class HUDMod extends Mod {
 	
 	public void scale(float addX, float addY, float width, float height, float nvgScale) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
 		nvg.scale(x + (addX * scale), y + (addY * scale), width * scale, height * scale, nvgScale);
 	}
@@ -229,7 +229,7 @@ public class HUDMod extends Mod {
 	
 	public void drawCenteredText(String text, float addX, float addY, float size, Font font, Color color) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		float lastSize = size * scale;
 		
 		nvg.drawCenteredText(text, x + (addX * scale), y + (addY * scale), color, lastSize, font);
@@ -241,7 +241,7 @@ public class HUDMod extends Mod {
 	
 	public float getTextWidth(String text, float size, Font font) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
 		return nvg.getTextWidth(text, size, font);
 	}
@@ -255,7 +255,7 @@ public class HUDMod extends Mod {
 		boolean isLight = theme.getTranslate().equals(TranslateText.LIGHT);
 		
 		if(isDark || isLight) {
-			return Soar.getInstance().getColorManager().getCurrentColor().getInterpolateColor(alpha);
+			return Glide.getInstance().getColorManager().getCurrentColor().getInterpolateColor(alpha);
 		}
 		
 		return new Color(255, 255, 255, alpha);

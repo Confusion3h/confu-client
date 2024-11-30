@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.event.impl.EventText;
 import net.minecraft.client.gui.FontRenderer;
 
@@ -20,7 +20,7 @@ public abstract class MixinFontRenderer {
     @ModifyVariable(method = "renderString", at = @At("HEAD"), ordinal = 0)
     private String renderString(String text) {
     	
-    	if(text == null || Soar.getInstance().getEventManager() == null) {
+    	if(text == null || Glide.getInstance().getEventManager() == null) {
     		return text;
     	}
 		
@@ -33,7 +33,7 @@ public abstract class MixinFontRenderer {
     @ModifyVariable(method = "getStringWidth", at = @At("HEAD"), ordinal = 0)
     private String getStringWidth(String text) {
     	
-    	if(text == null || Soar.getInstance().getEventManager() == null) {
+    	if(text == null || Glide.getInstance().getEventManager() == null) {
     		return text;
     	}
     	

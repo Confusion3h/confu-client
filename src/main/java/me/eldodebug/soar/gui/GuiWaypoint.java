@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.input.Keyboard;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.ColorManager;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
 import me.eldodebug.soar.management.color.palette.ColorType;
@@ -75,7 +75,7 @@ public class GuiWaypoint extends GuiScreen {
 	
 	private void drawNanoVG(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		WaypointManager waypointManager = instance.getWaypointManager();
 		ColorManager colorManager = instance.getColorManager();
@@ -150,7 +150,7 @@ public class GuiWaypoint extends GuiScreen {
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		WaypointManager waypointManager = instance.getWaypointManager();
 		
 		int offsetX = 0;

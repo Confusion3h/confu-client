@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.GuiSplashScreen;
 import me.eldodebug.soar.injection.interfaces.IMixinEntityLivingBase;
 import me.eldodebug.soar.injection.interfaces.IMixinMinecraft;
@@ -126,7 +126,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     
     @Inject(method = "startGame", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;ingameGUI:Lnet/minecraft/client/gui/GuiIngame;", shift = At.Shift.AFTER))
     public void preStartGame(CallbackInfo ci) {
-    	Soar.getInstance().start();
+    	Glide.getInstance().start();
     }
     
 	@Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;next()Z"))
@@ -161,7 +161,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     
     @Inject(method = "shutdownMinecraftApplet", at = @At("HEAD"))
     public void preShutdown(CallbackInfo ci) {
-    	Soar.getInstance().stop();
+    	Glide.getInstance().stop();
     }
     
     @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;dispatchKeypresses()V", shift = At.Shift.AFTER))
@@ -232,19 +232,19 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     
     @Inject(method = "updateDisplay", at = @At("HEAD"))
     public void onUpdateDisplay(CallbackInfo ci) {
-    	if(Soar.getInstance().getEventManager() != null) {
+    	if(Glide.getInstance().getEventManager() != null) {
     		new EventUpdateDisplay().call();
     	}
     }
     
 	@Redirect(method = "createDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V"))
 	public void overrideTitle(String title) {
-		Display.setTitle("Soar Client v" + Soar.getInstance().getVersion() + " for " + title);
+		Display.setTitle("Glide Client v" + Glide.getInstance().getVersion() + " for " + title);
 	}
 	
     @Inject(method = "updateFramebufferSize", at = @At("HEAD"))
     private void onUpdateFramebufferSize(CallbackInfo ci) {
-    	if(Soar.getInstance().getEventManager() != null) {
+    	if(Glide.getInstance().getEventManager() != null) {
         	new EventUpdateFramebufferSize().call();
     	}
     }
@@ -314,7 +314,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     @Inject(method = "displayGuiScreen", at = @At("RETURN"), cancellable = true)
     public void displayGuiScreenInject(GuiScreen guiScreenIn, CallbackInfo ci) {
     	if(guiScreenIn instanceof GuiMainMenu) {
-			displayGuiScreen(Soar.getInstance().getApi().getMainMenu());
+			displayGuiScreen(Glide.getInstance().getApi().getMainMenu());
     	}
     }
     

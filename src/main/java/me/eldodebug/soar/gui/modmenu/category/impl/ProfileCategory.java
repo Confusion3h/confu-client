@@ -5,7 +5,7 @@ import java.io.File;
 
 import org.lwjgl.input.Keyboard;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.gui.modmenu.category.Category;
 import me.eldodebug.soar.management.color.AccentColor;
@@ -63,7 +63,7 @@ public class ProfileCategory extends Category {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ProfileManager profileManager = instance.getProfileManager();
 		ColorManager colorManager = instance.getColorManager();
@@ -198,7 +198,7 @@ public class ProfileCategory extends Category {
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		ProfileManager profileManager = instance.getProfileManager();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ModManager modManager = instance.getModManager();

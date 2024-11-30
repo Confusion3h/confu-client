@@ -2,7 +2,7 @@ package me.eldodebug.soar.ui.comp.impl;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.color.ColorManager;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
@@ -28,7 +28,7 @@ public class CompToggleButton extends Comp {
 	public CompToggleButton(float x, float y, float scale, BooleanSetting setting) {
 		super(x, y);
 		
-		ColorPalette palette = Soar.getInstance().getColorManager().getPalette();
+		ColorPalette palette = Glide.getInstance().getColorManager().getPalette();
 		
 		this.setting = setting;
 		this.scale = scale;
@@ -39,7 +39,7 @@ public class CompToggleButton extends Comp {
 	public CompToggleButton(BooleanSetting setting) {
 		super(0, 0);
 		
-		ColorPalette palette = Soar.getInstance().getColorManager().getPalette();
+		ColorPalette palette = Glide.getInstance().getColorManager().getPalette();
 		
 		this.setting = setting;
 		this.scale = 1.0F;
@@ -50,7 +50,7 @@ public class CompToggleButton extends Comp {
 	@Override
 	public void draw(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorManager colorManager = instance.getColorManager();
 		AccentColor accentColor = colorManager.getCurrentColor();

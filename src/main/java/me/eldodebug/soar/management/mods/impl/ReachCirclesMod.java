@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import org.lwjgl.opengl.GL11;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventRender3D;
@@ -61,7 +61,7 @@ public class ReachCirclesMod extends Mod {
 	
     private void circle(double x, double y, double z, double rad) {
     	
-    	AccentColor currentColor = Soar.getInstance().getColorManager().getCurrentColor();
+    	AccentColor currentColor = Glide.getInstance().getColorManager().getCurrentColor();
     	
         GL11.glPushMatrix();
         Color color = ColorUtils.applyAlpha(currentColor.getInterpolateColor(), 120);

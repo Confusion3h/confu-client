@@ -2,7 +2,7 @@ package me.eldodebug.soar.viaversion.fixes;
 
 import me.eldodebug.soar.management.mods.impl.ViaVersionMod;
 import me.eldodebug.soar.viaversion.ViaLoadingBase;
-import me.eldodebug.soar.viaversion.ViaSoar;
+import me.eldodebug.soar.viaversion.ViaGlide;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -64,7 +64,7 @@ public class FixedSoundEngine {
                     iblock.getBlock().onBlockPlacedBy(worldIn, pos, iblockstate1, playerIn, stack);
                 }
 
-                if (ViaVersionMod.getInstance().isToggled() && ViaVersionMod.getInstance().isLoaded() && ViaLoadingBase.getInstance().getTargetVersion().getOriginalVersion() != ViaSoar.NATIVE_VERSION) {
+                if (ViaVersionMod.getInstance().isToggled() && ViaVersionMod.getInstance().isLoaded() && ViaLoadingBase.getInstance().getTargetVersion().getOriginalVersion() != ViaGlide.NATIVE_VERSION) {
                     mc.theWorld.playSoundAtPos(pos.add(0.5, 0.5, 0.5), iblock.getBlock().stepSound.getPlaceSound(), (iblock.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, iblock.getBlock().stepSound.getFrequency() * 0.8F, false);
                 } else {
                     worldIn.playSoundEffect((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), iblock.getBlock().stepSound.getPlaceSound(), (iblock.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, iblock.getBlock().stepSound.getFrequency() * 0.8F);

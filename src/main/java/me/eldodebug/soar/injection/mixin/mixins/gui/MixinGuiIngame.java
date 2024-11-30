@@ -24,8 +24,6 @@ import me.eldodebug.soar.management.event.impl.EventRenderSelectedItem;
 import me.eldodebug.soar.management.event.impl.EventRenderTooltip;
 import me.eldodebug.soar.management.event.impl.EventRenderVisualizer;
 import me.eldodebug.soar.management.mods.impl.OldAnimationsMod;
-import me.eldodebug.soar.management.mods.impl.WebBrowserMod;
-import me.eldodebug.soar.mcef.Mcef;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
@@ -67,13 +65,6 @@ public abstract class MixinGuiIngame implements IMixinGuiIngame {
 		boolean result = !event.isCancelled() && showCrosshair();
 		mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/icons.png"));
 		return result;
-	}
-	
-	@Inject(method = "renderGameOverlay", at = @At("HEAD"))
-	public void updateBrowser(float partialTicks, CallbackInfo callback) {
-		if(WebBrowserMod.getInstance().isToggled() && Mcef.isInitialized()) {
-			Mcef.getApp().getHandle().N_DoMessageLoopWork();
-		}
 	}
 	
 	@Inject(method = "renderGameOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;enableBlend()V", ordinal = 0, shift = At.Shift.AFTER), cancellable = true)

@@ -3,9 +3,9 @@ package me.eldodebug.soar.logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class SoarLogger {
+public class GlideLogger {
 	
-    public static final Logger logger = LogManager.getLogger("Soar Client");
+    public static final Logger logger = LogManager.getLogger("Glide Client");
     
     public static void info(String message) {
     	logger.info("[SC/INFO] " + message);

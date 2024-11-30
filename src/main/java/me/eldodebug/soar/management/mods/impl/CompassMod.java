@@ -7,7 +7,7 @@ import java.util.Arrays;
 import org.lwjgl.nanovg.NVGColor;
 import org.lwjgl.nanovg.NanoVG;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventRender2D;
 import me.eldodebug.soar.management.language.TranslateText;
@@ -39,7 +39,7 @@ public class CompassMod extends SimpleHUDMod {
 	public void onRender2D(EventRender2D event) {
 		
 		Option design = designSetting.getOption();
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
 		if(design.getTranslate().equals(TranslateText.SIMPLE)) {
 			this.draw();
@@ -207,7 +207,7 @@ public class CompassMod extends SimpleHUDMod {
 	
     private void renderMarker(float x, float y, Color color) {
     	
-    	NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+    	NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
     	long vg = nvg.getContext();
 		NVGColor nvgColor = nvg.getColor(color);
 		float scale = this.getScale();

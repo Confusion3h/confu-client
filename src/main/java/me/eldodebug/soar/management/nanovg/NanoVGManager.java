@@ -10,7 +10,7 @@ import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.nanovg.NanoVGGL2;
 import org.lwjgl.opengl.GL11;
 
-import me.eldodebug.soar.logger.SoarLogger;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.management.nanovg.asset.AssetManager;
 import me.eldodebug.soar.management.nanovg.font.Font;
 import me.eldodebug.soar.management.nanovg.font.FontManager;
@@ -36,7 +36,7 @@ public class NanoVGManager {
 		nvg = NanoVGGL2.nvgCreate(NanoVGGL2.NVG_ANTIALIAS);
 		
 		if(nvg == 0) {
-			SoarLogger.error("Failed to create NanoVG context");
+			GlideLogger.error("Failed to create NanoVG context");
 			mc.shutdown();
 		}
 		

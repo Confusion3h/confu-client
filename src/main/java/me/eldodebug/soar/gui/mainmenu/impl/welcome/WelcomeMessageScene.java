@@ -2,8 +2,8 @@ package me.eldodebug.soar.gui.mainmenu.impl.welcome;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
-import me.eldodebug.soar.gui.mainmenu.GuiSoarMainMenu;
+import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
 import me.eldodebug.soar.gui.mainmenu.MainMenuScene;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
@@ -22,7 +22,7 @@ public class WelcomeMessageScene extends MainMenuScene {
 	
 	private TimerUtils timer = new TimerUtils();
 	
-	public WelcomeMessageScene(GuiSoarMainMenu parent) {
+	public WelcomeMessageScene(GuiGlideMainMenu parent) {
 		super(parent);
 		
 		step = 0;
@@ -32,9 +32,9 @@ public class WelcomeMessageScene extends MainMenuScene {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
 		ScaledResolution sr = new ScaledResolution(mc);
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
-		String welcomeMessage = "Welcome to Soar Client";
-		String setupMessage = "Let's start setting up the Soar Client!";
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
+		String welcomeMessage = "Welcome to Glide Client";
+		String setupMessage = "Let's start setting up the Glide Client!";
 		
 		BlurUtils.drawBlurScreen(14);
 		

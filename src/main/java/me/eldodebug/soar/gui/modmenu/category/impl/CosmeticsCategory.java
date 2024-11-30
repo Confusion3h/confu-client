@@ -2,8 +2,8 @@ package me.eldodebug.soar.gui.modmenu.category.impl;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
-import me.eldodebug.soar.SoarAPI;
+import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.GlideAPI;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.gui.modmenu.category.Category;
 import me.eldodebug.soar.management.cape.CapeCategory;
@@ -45,7 +45,7 @@ public class CosmeticsCategory extends Category {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		ColorManager colorManager = instance.getColorManager();
 		AccentColor accentColor = colorManager.getCurrentColor();
@@ -131,9 +131,9 @@ public class CosmeticsCategory extends Category {
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
-		SoarAPI api = instance.getApi();
+		GlideAPI api = instance.getApi();
 		
 		int offsetX = 0;
 		float offsetY = 13 + scroll.getValue();

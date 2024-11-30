@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import org.lwjgl.opengl.GL11;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventBlockHighlightRender;
@@ -60,7 +60,7 @@ public class BlockOverlayMod extends Mod {
 	@EventTarget
 	public void onBlockHighlightRender(EventBlockHighlightRender event) {
 		
-		AccentColor currentColor = Soar.getInstance().getColorManager().getCurrentColor();
+		AccentColor currentColor = Glide.getInstance().getColorManager().getCurrentColor();
 		
 		event.setCancelled(true);
 		

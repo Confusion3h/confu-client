@@ -2,7 +2,7 @@ package me.eldodebug.soar.management.color.palette;
 
 import java.awt.Color;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.color.Theme;
 import me.eldodebug.soar.utils.animation.ColorAnimation;
 
@@ -68,7 +68,7 @@ public class ColorPalette {
 	
 	private Theme getTheme() {
 		
-		Soar instance = Soar.getInstance();
+		Glide instance = Glide.getInstance();
 		
 		if(instance == null || instance.getColorManager() == null) {
 			return Theme.LIGHT;

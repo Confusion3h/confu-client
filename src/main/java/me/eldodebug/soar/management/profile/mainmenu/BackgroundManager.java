@@ -12,7 +12,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import me.eldodebug.soar.Soar;
+import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.file.FileManager;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
@@ -31,7 +31,7 @@ public class BackgroundManager {
 	
 	public BackgroundManager() {
 		
-		FileManager fileManager = Soar.getInstance().getFileManager();
+		FileManager fileManager = Glide.getInstance().getFileManager();
 		File bgCacheDir = new File(fileManager.getCacheDir(), "background");
 		File dataJson = new File(bgCacheDir, "Data.json");
 		
@@ -65,7 +65,7 @@ public class BackgroundManager {
 
 	public ArrayList<String> load() {
 		
-		FileManager fileManager = Soar.getInstance().getFileManager();
+		FileManager fileManager = Glide.getInstance().getFileManager();
 		File bgCacheDir = new File(fileManager.getCacheDir(), "background");
 		File dataJson = new File(bgCacheDir, "Data.json");
 		ArrayList<String> output = new ArrayList<String>();
@@ -99,7 +99,7 @@ public class BackgroundManager {
 	
 	public void save() {
 		
-		FileManager fileManager = Soar.getInstance().getFileManager();
+		FileManager fileManager = Glide.getInstance().getFileManager();
 		File bgCacheDir = new File(fileManager.getCacheDir(), "background");
 		File dataJson = new File(bgCacheDir, "Data.json");
 		
@@ -163,7 +163,7 @@ public class BackgroundManager {
 	
 	public void removeCustomBackground(CustomBackground cusBackground) {
 		
-		NanoVGManager nvg = Soar.getInstance().getNanoVGManager();
+		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
 		nvg.getAssetManager().removeImage(nvg.getContext(), cusBackground.getImage());
 		backgrounds.remove(cusBackground);
