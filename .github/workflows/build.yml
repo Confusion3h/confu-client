@@ -1,4 +1,4 @@
-name: Compile and upload build client
+name: Compile and upload build
 
 on:
   push:
@@ -20,10 +20,10 @@ jobs:
           java-version: 8
           cache: "gradle"
 
-    - name: Build Glide Client with Gradle Wrapper
-      run: chmod +x ./gradlew build && ./gradlew build
+    - name: Build with Gradle Wrapper
+      run: chmod +x ./gradlew && ./gradlew build
 
-    - name: Upload Glide Jar to Actions
+    - name: Upload artifacts
       uses: actions/upload-artifact@v4.4.3
       with:
           name: GlideClient
