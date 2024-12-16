@@ -45,7 +45,7 @@ public class GlobalSettingsMod extends Mod {
 	@EventTarget
 	public void onKey(EventKey event) {
 		if(event.getKeyCode() == modMenuKeybindSetting.getKeyCode()) {
-			mc.displayGuiScreen(Glide.getInstance().getApi().getModMenu());
+			mc.displayGuiScreen(Glide.getInstance().getModMenu());
 		}
 	}
 

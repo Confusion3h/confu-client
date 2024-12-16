@@ -142,7 +142,7 @@ public enum TranslateText {
 	MINEMEN_DESCRIPTION("text.minemen.description"), CLIPBOARD("text.clipboard"), VIA_VERSION("text.viaversion.name"), VIA_VERSION_DESCRIPTION("text.viaversion.description"), WEB_BROWSER("text.webbrowser.name"), WEB_BROWSER_DESCRIPTION("text.webbrowser.description"),
 	REQUIRED_FILE_MISSING("text.requiredfilemissing"), GODBRIDGE_ASSIST("text.godbridgeassist.name"), GODBRIDGE_ASSIST_DESCRIPTION("text.godbridgeassist.description"), ENTITY_CULLING("text.entityculling.name"), ENTITY_CULLING_DESCRIPTIONN("text.entityculling.description"), TEXT("text.text"),
 	DISTANCE("text.distance"), DISCORD_RPC("text.discordrpc.name"), DISCORD_RPC_DESCRIPTION("text.discordrpc.description"), HIDE_ARMOR_STAND("text.hidearmorstand"),
-	REMOVE_BOT("text.removebot"), PARTICLE("text.particle"), LIGHT("text.light"), CLIENT("text.client"), DARK("text.dark"), FEMALE_GENDER("text.femalegender.name"), FEMALE_GENDER_DESCRIPTION("text.femalegender.description"), EARS("text.ears.name"), EARS_DESCRIPTION("text.ears.description"),;
+	REMOVE_BOT("text.removebot"), PARTICLE("text.particle"), LIGHT("text.light"), CLIENT("text.client"), DARK("text.dark"), FEMALE_GENDER("text.femalegender.name"), FEMALE_GENDER_DESCRIPTION("text.femalegender.description"), EARS("text.ears.name"), EARS_DESCRIPTION("text.ears.description"), PICKUP_ANIM("text.pickup"), PICKUP_VANILLA("text.pickup.vanilla"),PICKUP_BREAD("text.pickup.bread"),PICKUP_POP("text.pickup.pop");
 	
 	private String key, text;
 	

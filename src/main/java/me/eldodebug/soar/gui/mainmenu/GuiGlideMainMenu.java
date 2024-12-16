@@ -57,7 +57,7 @@ public class GuiGlideMainMenu extends GuiScreen {
 		scenes.add(new AccentColorSelectScene(this));
 		scenes.add(new LastMessageScene(this));
 		
-		if(instance.getApi().isFirstLogin()) {
+		if(instance.isFirstLogin()) {
 			currentScene = getSceneByClass(WelcomeMessageScene.class);
 		} else {
 				currentScene = getSceneByClass(MainScene.class);
@@ -76,7 +76,7 @@ public class GuiGlideMainMenu extends GuiScreen {
 		
 		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
-		boolean isFirstLogin = instance.getApi().isFirstLogin();
+		boolean isFirstLogin = instance.isFirstLogin();
 		
 		backgroundAnimations[0].setAnimation(Mouse.getX(), 16);
 		backgroundAnimations[1].setAnimation(Mouse.getY(), 16);
@@ -167,7 +167,7 @@ public class GuiGlideMainMenu extends GuiScreen {
 		
 		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
-		boolean isFirstLogin = instance.getApi().isFirstLogin();
+		boolean isFirstLogin = instance.isFirstLogin();
 		
 		if(mouseButton == 0 && !isFirstLogin) {
 			

@@ -314,7 +314,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     @Inject(method = "displayGuiScreen", at = @At("RETURN"), cancellable = true)
     public void displayGuiScreenInject(GuiScreen guiScreenIn, CallbackInfo ci) {
     	if(guiScreenIn instanceof GuiMainMenu) {
-			displayGuiScreen(Glide.getInstance().getApi().getMainMenu());
+			displayGuiScreen(Glide.getInstance().getMainMenu());
     	}
     }
     

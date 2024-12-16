@@ -3,7 +3,6 @@ package me.eldodebug.soar.gui.modmenu.category.impl;
 import java.awt.Color;
 
 import me.eldodebug.soar.Glide;
-import me.eldodebug.soar.GlideAPI;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.gui.modmenu.category.Category;
 import me.eldodebug.soar.management.cape.CapeCategory;
@@ -19,7 +18,6 @@ import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.management.nanovg.font.Icon;
-import me.eldodebug.soar.management.notification.NotificationType;
 import me.eldodebug.soar.utils.ColorUtils;
 import me.eldodebug.soar.utils.SearchUtils;
 import me.eldodebug.soar.utils.mouse.MouseUtils;

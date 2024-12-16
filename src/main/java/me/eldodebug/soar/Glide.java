@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
+import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import org.apache.commons.lang3.ArrayUtils;
 
 import me.eldodebug.soar.injection.mixin.GlideTweaker;
@@ -33,7 +35,6 @@ public class Glide {
 
 	private static Glide instance = new Glide();
 	private Minecraft mc = Minecraft.getMinecraft();
-	private GlideAPI api;
 	
 	private String name, version;
 	
@@ -52,6 +53,10 @@ public class Glide {
 	private QuickPlayManager quickPlayManager;
 	private ChangelogManager changelogManager;
 	private WaypointManager waypointManager;
+	private GuiModMenu modMenu;
+	private GuiGlideMainMenu mainMenu;
+	private long launchTime;
+	private File firstLoginFile;
 	
 	public Glide() {
 		name = "Glide";
@@ -59,11 +64,11 @@ public class Glide {
 	}
 	
 	public void start() {
-		
 		OptifineUtils.disableFastRender();
 		this.removeOptifineZoom();
 		
 		fileManager = new FileManager();
+		firstLoginFile = new File(fileManager.getCacheDir(), "first.tmp");
 		languageManager = new LanguageManager();
 		eventManager = new EventManager();
 		modManager = new ModManager();
@@ -73,10 +78,11 @@ public class Glide {
 		capeManager = new CapeManager();
 		colorManager = new ColorManager();
 		profileManager = new ProfileManager();
-		
-		api = new GlideAPI();
-		api.init();
-		
+
+		modMenu = new GuiModMenu();
+		mainMenu = new GuiGlideMainMenu();
+		launchTime = System.currentTimeMillis();
+
 		commandManager = new CommandManager();
 		screenshotManager = new ScreenshotManager();
 		notificationManager = new NotificationManager();
@@ -127,10 +133,6 @@ public class Glide {
     
 	public static Glide getInstance() {
 		return instance;
-	}
-
-	public GlideAPI getApi() {
-		return api;
 	}
 
 	public String getName() {
@@ -205,4 +207,22 @@ public class Glide {
 	public WaypointManager getWaypointManager() {
 		return waypointManager;
 	}
+
+	public GuiModMenu getModMenu() {
+		return modMenu;
+	}
+
+	public GuiGlideMainMenu getMainMenu() {
+		return mainMenu;
+	}
+
+	public long getLaunchTime() {
+		return launchTime;
+	}
+
+	public void createFirstLoginFile() {
+		Glide.getInstance().getFileManager().createFile(firstLoginFile);
+	}
+
+	public boolean isFirstLogin() {return !firstLoginFile.exists();}
 }

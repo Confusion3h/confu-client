@@ -21,7 +21,7 @@ public class AnimationsMod extends Mod {
 	private BooleanSetting armorDamageSetting = new BooleanSetting(TranslateText.ARMOR_DAMAGE, this, false);
 	private BooleanSetting itemSwitchSetting = new BooleanSetting(TranslateText.ITEM_SWITCH, this, false);
 	private BooleanSetting rodSetting = new BooleanSetting(TranslateText.ROD, this, false);
-	
+
 	public AnimationsMod() {
 		super(TranslateText.OLD_ANIMATION, TranslateText.OLD_ANIMATION_DESCRIPTION, ModCategory.RENDER, "oldoam1.7smoothsneak");
 		

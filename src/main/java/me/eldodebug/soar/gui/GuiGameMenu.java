@@ -114,7 +114,7 @@ public class GuiGameMenu extends GuiScreen {
         }
         offset += standardPadding;
         if (MouseUtils.isInside(mouseX, mouseY, x, y + offset, width, 22)) {
-            mc.displayGuiScreen(Glide.getInstance().getApi().getModMenu());
+            mc.displayGuiScreen(Glide.getInstance().getModMenu());
         }
         offset += standardPadding;
         if (MouseUtils.isInside(mouseX, mouseY, x, y + offset, width, 22)) {

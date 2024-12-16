@@ -24,7 +24,7 @@ public class PlayTimeDisplayMod extends SimpleHUDMod {
 	@Override
 	public String getText() {
 		
-		int sec = (int) ((System.currentTimeMillis() - Glide.getInstance().getApi().getLaunchTime()) / 1000);
+		int sec = (int) ((System.currentTimeMillis() - Glide.getInstance().getLaunchTime()) / 1000);
 		int min = (sec % 3600) / 60;
 		int hour = sec / 3600;
 		sec = sec % 60;

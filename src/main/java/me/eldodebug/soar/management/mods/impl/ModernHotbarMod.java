@@ -18,6 +18,7 @@ import me.eldodebug.soar.management.mods.settings.impl.combo.Option;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.utils.ColorUtils;
 import me.eldodebug.soar.utils.animation.simple.SimpleAnimation;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -35,7 +36,10 @@ public class ModernHotbarMod extends HUDMod {
 			new Option(TranslateText.NORMAL), new Option(TranslateText.SOAR), new Option(TranslateText.CHILL), new Option(TranslateText.CLIENT))));
 	
 	private BooleanSetting smoothSetting = new BooleanSetting(TranslateText.SMOOTH, this, true);
-	
+
+	private ComboSetting pickupAnimation = new ComboSetting(TranslateText.PICKUP_ANIM, this, TranslateText.PICKUP_POP, new ArrayList<Option>(Arrays.asList(
+			new Option(TranslateText.PICKUP_POP), new Option(TranslateText.PICKUP_BREAD), new Option(TranslateText.PICKUP_VANILLA))));
+
 	public ModernHotbarMod() {
 		super(TranslateText.MODERN_HOTBAR, TranslateText.MODERN_HOTBAR_DESCRIPTION);
 		
@@ -79,28 +83,38 @@ public class ModernHotbarMod extends HUDMod {
 	}
 	
     private void renderHotBarItem(int index, int xPos, int yPos, float partialTicks, EntityPlayer entityPlayer) {
-    	
-        ItemStack itemstack = entityPlayer.inventory.mainInventory[index];
-        RenderItem itemRenderer = mc.getRenderItem();
+		Option option = pickupAnimation.getOption();
+		ItemStack itemstack =  entityPlayer.inventory.mainInventory[index];
+		boolean animTreatment = option.getTranslate().equals(TranslateText.PICKUP_BREAD);
 
-        if (itemstack != null) {
-            float f = (float) itemstack.animationsToGo - partialTicks;
+		if (itemstack != null) {
+			float take = (animTreatment) ? partialTicks / 2 : partialTicks;
+			float progress = (float)itemstack.animationsToGo - take;
+			if (progress > 0.0F) {
+				// from betterhotbarmod
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(xPos + 8, yPos + 12, 0.0F);
+				if(option.getTranslate().equals(TranslateText.PICKUP_BREAD)) {
+					float scaleAmount = 1.0F + progress / 2.5F;
+					GlStateManager.scale(Math.max(1.0F, scaleAmount / (1.0F / (scaleAmount/2))), scaleAmount, 1.0F);
+				} else if(option.getTranslate().equals(TranslateText.PICKUP_POP)) {
+					float scaleAmount = 1.0F + progress / 5.0F;
+					GlStateManager.scale(scaleAmount, scaleAmount, 1.0F);
+				} else {
+					float scaleAmount = 1.0F + progress / 5.0F;
+					GlStateManager.scale(1.0F / scaleAmount, (scaleAmount + 1.0F) / 2.0F, 1.0F);
+				}
 
-            if (f > 0.0F) {
-                GlStateManager.pushMatrix();
-                float f1 = 1.0F + f / 5.0F;
-                GlStateManager.translate((float) (xPos + 8), (float) (yPos + 12), 0.0F);
-                GlStateManager.scale(1.0F / f1, (f1 + 1.0F) / 2.0F, 1.0F);
-                GlStateManager.translate((float) (-(xPos + 8)), (float) (-(yPos + 12)), 0.0F);
-            }
+				GlStateManager.translate(-(xPos + 8), -(yPos + 12), 0.0F);
+			}
 
-            itemRenderer.renderItemAndEffectIntoGUI(itemstack, xPos, yPos);
+			mc.getRenderItem().renderItemAndEffectIntoGUI(itemstack, xPos, yPos);
 
-            if (f > 0.0F) {
+            if (progress > 0.0F) {
                 GlStateManager.popMatrix();
             }
 
-            itemRenderer.renderItemOverlays(mc.fontRendererObj, itemstack, xPos, yPos);
+			mc.getRenderItem().renderItemOverlays(mc.fontRendererObj, itemstack, xPos, yPos);
         }
     }
     

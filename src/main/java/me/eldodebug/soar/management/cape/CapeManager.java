@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import me.eldodebug.soar.Glide;
-import me.eldodebug.soar.GlideAPI;
 import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.management.cape.impl.Cape;
 import me.eldodebug.soar.management.cape.impl.CustomCape;

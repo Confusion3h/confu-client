@@ -249,7 +249,7 @@ public class GuiEditHUD extends GuiScreen {
 	public void keyTyped(char typedChar, int keyCode) {
 		if(keyCode == Keyboard.KEY_ESCAPE) {
 			if(fromModMenu) {
-				mc.displayGuiScreen(Glide.getInstance().getApi().getModMenu());
+				mc.displayGuiScreen(Glide.getInstance().getModMenu());
 			}else {
 				introAnimation.setDirection(Direction.BACKWARDS);
 			}

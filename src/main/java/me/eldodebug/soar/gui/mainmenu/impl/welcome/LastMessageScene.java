@@ -49,7 +49,7 @@ public class LastMessageScene extends MainMenuScene {
 		}
 		
 		if(blurAnimation.isDone(Direction.BACKWARDS)) {
-			Glide.getInstance().getApi().createFirstLoginFile();
+			Glide.getInstance().createFirstLoginFile();
 			this.setCurrentScene(this.getSceneByClass(MainScene.class));
 		}
 		

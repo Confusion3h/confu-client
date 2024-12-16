@@ -137,32 +137,22 @@ public class BackgroundScene extends MainMenuScene {
 				if(MouseUtils.isInside(mouseX, mouseY, acX + 11 + offsetX, acY + 35 + offsetY, 102.5F, 57.5F)) {
 					
 					if(bg.getId() == 999) {
-						
-						if(instance.getApi().isSpecialUser()) {
-							Multithreading.runAsync(() -> {
-								File file = FileUtils.selectImageFile();
-								File bgCacheDir = new File(fileManager.getCacheDir(), "background");
-								
-								if(file != null && bgCacheDir.exists() && file.exists() && FileUtils.getExtension(file).equals("png")) {
-									
-									File destFile = new File(bgCacheDir, file.getName());
-									
-									try {
-										FileUtils.copyFile(file, destFile);
-										backgroundManager.addCustomBackground(destFile);
-									} catch (IOException e) {}
+						Multithreading.runAsync(() -> {
+							File file = FileUtils.selectImageFile();
+							File bgCacheDir = new File(fileManager.getCacheDir(), "background");
+
+							if (file != null && bgCacheDir.exists() && file.exists() && FileUtils.getExtension(file).equals("png")) {
+
+								File destFile = new File(bgCacheDir, file.getName());
+
+								try {
+									FileUtils.copyFile(file, destFile);
+									backgroundManager.addCustomBackground(destFile);
+								} catch (IOException e) {
 								}
-							});
-						} else {
-							instance.getNotificationManager().post(TranslateText.ERROR, TranslateText.PREMIUM_ONLY, NotificationType.ERROR);
-						}
+							}
+						});
 					}else {
-						
-						if(bg instanceof CustomBackground && !instance.getApi().isSpecialUser()) {
-							instance.getNotificationManager().post(TranslateText.ERROR, TranslateText.PREMIUM_ONLY, NotificationType.ERROR);
-							return;
-						}
-						
 						backgroundManager.setCurrentBackground(bg);
 					}
 				}
