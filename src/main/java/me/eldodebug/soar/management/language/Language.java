@@ -11,7 +11,8 @@ public enum Language {
 	FRENCH("fr-fr", "Français (France)", new ResourceLocation("soar/flag/fr.png")),
 	SPANISH("es-es", "Español (España)", new ResourceLocation("soar/flag/es.png")),
 	VIETNAMESE("vi-vn", "Tiếng Việt (Việt Nam)", new ResourceLocation("soar/flag/vn.png")), 
-	RUSSIAN("ru-ru", "русский", new ResourceLocation("soar/flag/ru.png")), 
+	RUSSIAN("ru-ru", "русский (россия)", new ResourceLocation("soar/flag/ru.png")), 
+	PORTUGESE("pt-pt", "Português (Portugal)", new ResourceLocation("soar/flag/pt.png")), 
 	LOLCAT("lc-koc", "LOLCAT (Kinduim ov catos)", new ResourceLocation("soar/flag/koc.png"));
 	
 	private SimpleAnimation animation = new SimpleAnimation();
