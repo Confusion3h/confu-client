@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import me.eldodebug.soar.gui.mainmenu.impl.UpdateScene;
 import me.eldodebug.soar.gui.mainmenu.impl.welcome.*;
 import org.lwjgl.input.Mouse;
 
@@ -56,11 +57,16 @@ public class GuiGlideMainMenu extends GuiScreen {
 		scenes.add(new LanguageSelectScene(this));
 		scenes.add(new AccentColorSelectScene(this));
 		scenes.add(new LastMessageScene(this));
-		
-		if(instance.isFirstLogin()) {
+		scenes.add(new UpdateScene(this));
+
+		if (instance.isFirstLogin()) {
 			currentScene = getSceneByClass(WelcomeMessageScene.class);
 		} else {
+			if (instance.getUpdateNeeded()) {
+				currentScene = getSceneByClass(UpdateScene.class);
+			} else {
 				currentScene = getSceneByClass(MainScene.class);
+			}
 		}
 	}
 	

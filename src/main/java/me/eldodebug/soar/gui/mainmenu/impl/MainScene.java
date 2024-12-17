@@ -25,8 +25,12 @@ public class MainScene extends MainMenuScene {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
 		Glide instance = Glide.getInstance();
+		if(instance.getUpdateNeeded()){
+			instance.setUpdateNeeded(false);
+			this.setCurrentScene(this.getSceneByClass(UpdateScene.class));
+		}
 		NanoVGManager nvg = instance.getNanoVGManager();
-	
+
 		nvg.setupAndDraw(() -> drawNanoVG(nvg));
 	}
 	

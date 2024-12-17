@@ -1,4 +1,4 @@
-package me.eldodebug.soar.management.changelog;
+package me.eldodebug.soar.management.remote.changelog;
 
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;

@@ -1,4 +1,4 @@
-package me.eldodebug.soar.management.changelog;
+package me.eldodebug.soar.management.remote.changelog;
 
 import java.awt.Color;
 
@@ -8,7 +8,7 @@ public enum ChangelogType {
 	ADDED(0, TranslateText.ADDED, new Color(68, 200, 129)),
 	FIXED(1, TranslateText.FIXED, new Color(220, 220, 68)),
 	REMOVED(2, TranslateText.REMOVED, new Color(220, 68, 68)),
-	ERROR(999, TranslateText.ERROR, new Color(220, 68, 68));
+	ERROR(999, TranslateText.ERROR, new Color(255, 0, 0));
 	
 	private int id;
 	private TranslateText translateText;

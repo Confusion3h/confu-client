@@ -6,12 +6,14 @@ import java.util.Arrays;
 
 import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
+import me.eldodebug.soar.management.remote.update.Update;
+import me.eldodebug.soar.management.remote.update.UpdateManager;
 import org.apache.commons.lang3.ArrayUtils;
 
 import me.eldodebug.soar.injection.mixin.GlideTweaker;
 import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.management.cape.CapeManager;
-import me.eldodebug.soar.management.changelog.ChangelogManager;
+import me.eldodebug.soar.management.remote.changelog.ChangelogManager;
 import me.eldodebug.soar.management.color.ColorManager;
 import me.eldodebug.soar.management.command.CommandManager;
 import me.eldodebug.soar.management.event.EventManager;
@@ -35,8 +37,9 @@ public class Glide {
 
 	private static Glide instance = new Glide();
 	private Minecraft mc = Minecraft.getMinecraft();
-	
+	private boolean updateNeeded;
 	private String name, version;
+	private int verIdentifier;
 	
 	private NanoVGManager nanoVGManager;
 	private FileManager fileManager;
@@ -52,15 +55,17 @@ public class Glide {
 	private SecurityFeatureManager securityFeatureManager;
 	private QuickPlayManager quickPlayManager;
 	private ChangelogManager changelogManager;
-	private WaypointManager waypointManager;
+    private WaypointManager waypointManager;
 	private GuiModMenu modMenu;
 	private GuiGlideMainMenu mainMenu;
 	private long launchTime;
 	private File firstLoginFile;
+	private Update update;
 	
 	public Glide() {
 		name = "Glide";
 		version = "7.2";
+		verIdentifier = 7200;
 	}
 	
 	public void start() {
@@ -68,12 +73,14 @@ public class Glide {
 		this.removeOptifineZoom();
 		
 		fileManager = new FileManager();
+		update = new Update();
 		firstLoginFile = new File(fileManager.getCacheDir(), "first.tmp");
 		languageManager = new LanguageManager();
 		eventManager = new EventManager();
 		modManager = new ModManager();
 		
 		modManager.init();
+		new UpdateManager();
 		
 		capeManager = new CapeManager();
 		colorManager = new ColorManager();
@@ -90,7 +97,7 @@ public class Glide {
 		quickPlayManager = new QuickPlayManager();
 		changelogManager = new ChangelogManager();
 		waypointManager = new WaypointManager();
-		
+
 		eventManager.register(new GlideHandler());
 		
 		setupLibraryPath();
@@ -139,9 +146,9 @@ public class Glide {
 		return name;
 	}
 
-	public String getVersion() {
-		return version;
-	}
+	public String getVersion() {return version;}
+
+	public int getVersionIdentifier() {return verIdentifier;}
 
 	public FileManager getFileManager() {
 		return fileManager;
@@ -225,4 +232,10 @@ public class Glide {
 	}
 
 	public boolean isFirstLogin() {return !firstLoginFile.exists();}
+
+	public Update getUpdateInstance(){
+		return update;
+	}
+	public void setUpdateNeeded(boolean in) {updateNeeded = in;}
+	public boolean getUpdateNeeded() {return updateNeeded;}
 }

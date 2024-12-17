@@ -2,14 +2,13 @@ package me.eldodebug.soar.gui.modmenu.category.impl;
 
 import java.awt.Color;
 import java.awt.Desktop;
-import java.io.File;
 import java.net.URL;
 
 import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.gui.modmenu.category.Category;
-import me.eldodebug.soar.management.changelog.Changelog;
-import me.eldodebug.soar.management.changelog.ChangelogManager;
+import me.eldodebug.soar.management.remote.changelog.Changelog;
+import me.eldodebug.soar.management.remote.changelog.ChangelogManager;
 import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.color.ColorManager;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
@@ -19,8 +18,6 @@ import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.management.nanovg.font.Icon;
 import me.eldodebug.soar.utils.mouse.MouseUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
 
 public class HomeCategory extends Category {
 

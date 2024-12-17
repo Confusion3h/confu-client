@@ -1,4 +1,4 @@
-package me.eldodebug.soar.management.changelog;
+package me.eldodebug.soar.management.remote.changelog;
 
 public class Changelog {
 
