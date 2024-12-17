@@ -35,33 +35,36 @@ public class HomeCategory extends Category {
 		AccentColor currentColor = colorManager.getCurrentColor();
 		ChangelogManager changelogManager = instance.getChangelogManager();
 
+		nvg.drawCenteredText("This GUI is a work in progress!", this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2 - 7,  palette.getFontColor(ColorType.DARK), 13.5F, Fonts.MEDIUM );
 		// Changelog
-		
-		int offsetY = 0;
-		
-		nvg.drawRoundedRect(this.getX() + 230, this.getY() + 15, 174, 136, 8, palette.getBackgroundColor(ColorType.DARK));
-		nvg.drawRect(this.getX() + 230, this.getY() + 15 + 24, 174, 1, palette.getBackgroundColor(ColorType.NORMAL));
-		nvg.drawText(TranslateText.CHANGELOG.getText(), this.getX() + 230 + 8, this.getY() + 15 + 8, palette.getFontColor(ColorType.DARK), 13.5F, Fonts.MEDIUM);
-		
-		for(Changelog c : changelogManager.getChangelogs()) {
-			
-			nvg.drawRoundedRect(this.getX() + 230 + 8, this.getY() + 45 + offsetY, 48, 13, 2.5F, c.getType().getColor());
-			nvg.drawCenteredText(c.getType().getText(), this.getX() + 230 + 8 + (48 / 2), this.getY() + 48.5F + offsetY, Color.WHITE, 8, Fonts.MEDIUM);
-			nvg.drawText(c.getText(), this.getX() + 230 + 61, this.getY() + 48F + offsetY, palette.getFontColor(ColorType.DARK), 9, Fonts.MEDIUM);
-			
-			offsetY+=16;
-		}
-		
-		// Discord
-		
-		nvg.drawGradientRoundedRect(this.getX() + 15, this.getY() + 164, 389, 70, 8, currentColor.getColor1(), currentColor.getColor2());
-		nvg.drawText(TranslateText.JOIN_OUR_DISCORD_SERVER.getText(), this.getX() + 15 + 50, this.getY() + 164 + 11, Color.WHITE, 13.5F, Fonts.MEDIUM);
-		nvg.drawText(TranslateText.DISCORD_DESCRIPTION.getText(), this.getX() + 15 + 50, this.getY() + 164 + 27, Color.WHITE, 9, Fonts.REGULAR);
-		nvg.drawRoundedRect(this.getX() + 15 + 10, this.getY() + 164 + 11, 34, 34, 34 / 2, Color.WHITE);
-		nvg.drawText(Icon.DISCORD, this.getX() + 15 + 18.5F, this.getY() + 164 + 20.5F, currentColor.getInterpolateColor(), 17, Fonts.ICON);
-		
-		nvg.drawRoundedRect(this.getX() + 15 + 50, this.getY() + 164 + 43, 52, 18, 8, Color.WHITE);
-		nvg.drawCenteredText(TranslateText.JOIN.getText() + " >", this.getX() + 15 + 50 + (52 / 2), this.getY() + 164 + 48, currentColor.getInterpolateColor(), 9, Fonts.REGULAR);
+//
+//		int offsetY = 0;
+//
+//		nvg.drawRoundedRect(this.getX() + 230, this.getY() + 15, 174, 136, 8, palette.getBackgroundColor(ColorType.DARK));
+//		nvg.drawRect(this.getX() + 230, this.getY() + 15 + 24, 174, 1, palette.getBackgroundColor(ColorType.NORMAL));
+//		nvg.drawText(TranslateText.CHANGELOG.getText(), this.getX() + 230 + 8, this.getY() + 15 + 8, palette.getFontColor(ColorType.DARK), 13.5F, Fonts.MEDIUM);
+//
+//		for(Changelog c : changelogManager.getChangelogs()) {
+//
+//			nvg.drawRoundedRect(this.getX() + 230 + 8, this.getY() + 45 + offsetY, 48, 13, 2.5F, c.getType().getColor());
+//			nvg.drawCenteredText(c.getType().getText(), this.getX() + 230 + 8 + (48 / 2), this.getY() + 48.5F + offsetY, Color.WHITE, 8, Fonts.MEDIUM);
+//			nvg.drawText(c.getText(), this.getX() + 230 + 61, this.getY() + 48F + offsetY, palette.getFontColor(ColorType.DARK), 9, Fonts.MEDIUM);
+//
+//			offsetY+=16;
+//		}
+//
+//		// Discord
+//
+//		nvg.drawGradientRoundedRect(this.getX() + 15, this.getY() + 164, 389, 70, 8, currentColor.getColor1(), currentColor.getColor2());
+//		nvg.drawText(TranslateText.JOIN_OUR_DISCORD_SERVER.getText(), this.getX() + 15 + 50, this.getY() + 164 + 11, Color.WHITE, 13.5F, Fonts.MEDIUM);
+//		nvg.drawText(TranslateText.DISCORD_DESCRIPTION.getText(), this.getX() + 15 + 50, this.getY() + 164 + 27, Color.WHITE, 9, Fonts.REGULAR);
+//		nvg.drawRoundedRect(this.getX() + 15 + 10, this.getY() + 164 + 11, 34, 34, 34 / 2, Color.WHITE);
+//		nvg.drawText(Icon.DISCORD, this.getX() + 15 + 18.5F, this.getY() + 164 + 20.5F, currentColor.getInterpolateColor(), 17, Fonts.ICON);
+//
+//		nvg.drawRoundedRect(this.getX() + 15 + 50, this.getY() + 164 + 43, 52, 18, 8, Color.WHITE);
+//		nvg.drawCenteredText(TranslateText.JOIN.getText() + " >", this.getX() + 15 + 50 + (52 / 2), this.getY() + 164 + 48, currentColor.getInterpolateColor(), 9, Fonts.REGULAR);
+//
+//
 	}
 	
 	@Override
