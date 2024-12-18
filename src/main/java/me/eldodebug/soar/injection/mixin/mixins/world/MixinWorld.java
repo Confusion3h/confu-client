@@ -24,7 +24,6 @@ import me.eldodebug.soar.management.mods.impl.WeatherChangerMod;
 import me.eldodebug.soar.management.mods.settings.impl.ComboSetting;
 import me.eldodebug.soar.management.mods.settings.impl.combo.Option;
 import me.eldodebug.soar.utils.EnumFacings;
-import me.eldodebug.soar.viaversion.fixes.FixedSoundEngine;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFallingBlock;
@@ -132,9 +131,5 @@ public abstract class MixinWorld implements IMixinWorld {
     public EnumFacing[] isBlockIndirectlyGettingPowered$getCachedArray() {
         return EnumFacings.FACINGS;
     }
-    
-    @Overwrite
-    public boolean destroyBlock(BlockPos pos, boolean dropBlock) {
-    	return FixedSoundEngine.destroyBlock((World) (Object) this, pos, dropBlock);
-    }
+
 }

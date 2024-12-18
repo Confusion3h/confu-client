@@ -10,7 +10,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import me.eldodebug.soar.management.event.impl.EventReceivePacket;
 import me.eldodebug.soar.management.event.impl.EventSendPacket;
-import me.eldodebug.soar.viaversion.netty.event.CompressionReorderEvent;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 
@@ -41,9 +40,5 @@ public class MixinNetworkManager {
 			ci.cancel();
 		}
 	}
-	
-	@Inject(method = "setCompressionTreshold", at = @At("TAIL"))
-    public void setUserEvent(int treshold, CallbackInfo ci) {
-		this.channel.pipeline().fireUserEventTriggered(new CompressionReorderEvent());
-    }
+
 }

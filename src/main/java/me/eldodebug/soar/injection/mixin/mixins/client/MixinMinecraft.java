@@ -33,8 +33,6 @@ import me.eldodebug.soar.management.mods.impl.FPSLimiterMod;
 import me.eldodebug.soar.management.mods.impl.FPSSpooferMod;
 import me.eldodebug.soar.management.mods.impl.HitDelayFixMod;
 import me.eldodebug.soar.management.mods.impl.AnimationsMod;
-import me.eldodebug.soar.management.mods.impl.ViaVersionMod;
-import me.eldodebug.soar.viaversion.fixes.AttackOrder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -364,20 +362,12 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     
     @Redirect(method = "clickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;swingItem()V"))
     private void redirectSwing() {
-    	if(ViaVersionMod.getInstance().isToggled() && ViaVersionMod.getInstance().isLoaded()) {
-    		AttackOrder.sendConditionalSwing(objectMouseOver);
-    	}else {
     		thePlayer.swingItem();
-    	}
     }
     
     @Redirect(method = "clickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;attackEntity(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/entity/Entity;)V"))
     private void redirectAttack() {
-    	if(ViaVersionMod.getInstance().isToggled() && ViaVersionMod.getInstance().isLoaded()) {
-    		AttackOrder.sendFixedAttack(thePlayer, objectMouseOver.entityHit);
-    	}else {
     		playerController.attackEntity(thePlayer, objectMouseOver.entityHit);
-    	}
     }
     
 	@Overwrite

@@ -130,7 +130,6 @@ public class ModManager {
 		mods.add(new ToggleSneakMod());
 		mods.add(new ToggleSprintMod());
 		mods.add(new UHCOverlayMod());
-		mods.add(new ViaVersionMod());
 		mods.add(new WaveyCapesMod());
 		mods.add(new WaypointMod());
 		mods.add(new WeatherChangerMod());

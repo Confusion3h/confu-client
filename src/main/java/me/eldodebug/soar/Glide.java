@@ -65,7 +65,7 @@ public class Glide {
 	public Glide() {
 		name = "Glide";
 		version = "7.2";
-		verIdentifier = 7200;
+		verIdentifier = 7199;
 	}
 	
 	public void start() {
@@ -99,9 +99,7 @@ public class Glide {
 		waypointManager = new WaypointManager();
 
 		eventManager.register(new GlideHandler());
-		
-		setupLibraryPath();
-		
+
 		GlobalSettingsMod.getInstance().setToggled(true);
 		mc.updateDisplay();
 	}
@@ -125,17 +123,6 @@ public class Glide {
             mc.gameSettings.keyBindings = ArrayUtils.remove(mc.gameSettings.keyBindings, Arrays.asList(mc.gameSettings.keyBindings).indexOf(key));
             key.setKeyCode(0);
         }
-    }
-	
-    private void setupLibraryPath() {
-    	
-    	File cefDir = new File(fileManager.getExternalDir(), "cef");
-    	
-        try {
-			System.setProperty("jcef.path", cefDir.getCanonicalPath());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
     }
     
 	public static Glide getInstance() {

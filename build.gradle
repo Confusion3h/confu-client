@@ -67,6 +67,8 @@ dependencies {
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
+    embed(files('libs/lwjgl-soar.jar'))
+    embed(files('libs/lwjgl-soar-natives.jar'))
 }
 
 mixin {
