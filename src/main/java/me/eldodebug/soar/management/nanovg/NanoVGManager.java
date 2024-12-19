@@ -317,6 +317,20 @@ public class NanoVGManager {
 		NanoVG.nvgFillColor(nvg, nvgColor);
 		NanoVG.nvgText(nvg, x, y, text);
 	}
+
+	public void drawTextBox(String text, float x, float y, float maxWidth, Color color, float size, Font font) {
+
+		y += size / 2;
+
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgFontSize(nvg, size);
+		NanoVG.nvgFontFace(nvg, font.getName());
+		NanoVG.nvgTextAlign(nvg, NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_MIDDLE);
+		NVGColor nvgColor = getColor(color);
+
+		NanoVG.nvgFillColor(nvg, nvgColor);
+		NanoVG.nvgTextBox(nvg, x, y, maxWidth, text);
+	}
 	
 	public void drawCenteredText(String text, float x, float y, Color color, float size, Font font) {
 		
@@ -346,6 +360,35 @@ public class NanoVGManager {
 	    NanoVG.nvgTextBounds(nvg, 0, 0, text, bounds);
 
 	    return bounds[3] - bounds[1];
+	}
+
+	public float getTextBoxHeight(String text, float size, Font font, float maxWidth) {
+		float[] bounds = new float[4];
+
+		NanoVG.nvgFontSize(nvg, size);
+		NanoVG.nvgFontFace(nvg, font.getName());
+		NanoVG.nvgTextBoxBounds(nvg, 0, 0, maxWidth, text, bounds);
+
+		return bounds[3] - bounds[1];
+	}
+
+	public String getLimitText(String inputText, float fontSize, Font font, float width) {
+
+		String text = inputText;
+		boolean isInRange = false;
+		boolean isRemoved = false;
+
+		while(!isInRange) {
+
+			if(getTextWidth(text, fontSize, font) > width) {
+				text = text.substring(0, text.length() - 1);
+				isRemoved = true;
+			} else {
+				isInRange = true;
+			}
+		}
+
+		return text + (isRemoved ? "..." : "");
 	}
 	
 	public void scale(float x, float y, float scale) {
@@ -608,25 +651,6 @@ public class NanoVGManager {
 		colorCache.put(color.getRGB(), nvgColor);
 		
 		return nvgColor;
-	}
-	
-	public String getLimitText(String inputText, float fontSize, Font font, float width) {
-		
-		String text = inputText;
-		boolean isInRange = false;
-		boolean isRemoved = false;
-		
-		while(!isInRange) {
-			
-			if(getTextWidth(text, fontSize, font) > width) {
-				text = text.substring(0, text.length() - 1);
-				isRemoved = true;
-			} else {
-				isInRange = true;
-			}
-		}
-		
-		return text + (isRemoved ? "..." : "");
 	}
 	
 	public long getContext() {

@@ -46,7 +46,6 @@
     "gui.MixinGuiScreenBook",
     "gui.MixinGuiScreenResourcePacks",
     "item.MixinEntityItem",
-    "item.MixinItemBlock",
     "item.MixinItemFood",
     "item.MixinItemStack",
     "item.MixinRenderItem",

@@ -23,7 +23,7 @@ public class ChangelogManager {
 	
 	private void loadChangelog() {
 		
-		JsonObject jsonObject = HttpUtils.readJson("https://glideclient.github.io/changelogs/versions/" + Glide.getInstance().getVersion().toString() + ".json", null);
+		JsonObject jsonObject = HttpUtils.readJson("https://glideclient.github.io/changelogs/versions/" + Glide.getInstance().getVersionIdentifier() + ".json", null);
 		
 		if(jsonObject != null) {
 			

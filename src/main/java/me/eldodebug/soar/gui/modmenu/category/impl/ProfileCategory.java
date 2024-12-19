@@ -40,7 +40,7 @@ public class ProfileCategory extends Category {
 	private CompTextBox serverIpBox = new CompTextBox();
 	
 	public ProfileCategory(GuiModMenu parent) {
-		super(parent, TranslateText.PROFILE, Icon.EDIT, true);
+		super(parent, TranslateText.PROFILE, Icon.EDIT, true, true);
 	}
 
 	@Override

@@ -59,7 +59,7 @@ public class ModuleCategory extends Category {
 	private ArrayList<ModuleSetting> comps = new ArrayList<ModuleSetting>();
 	
 	public ModuleCategory(GuiModMenu parent) {
-		super(parent, TranslateText.MODULE, Icon.ARCHIVE, true);
+		super(parent, TranslateText.MODULE, Icon.ARCHIVE, true, true);
 	}
 	
 	@Override

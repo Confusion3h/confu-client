@@ -1,7 +1,6 @@
 package me.eldodebug.soar.gui.modmenu;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -36,7 +35,6 @@ import me.eldodebug.soar.utils.mouse.Scroll;
 import me.eldodebug.soar.utils.render.BlurUtils;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.util.ResourceLocation;
 
 public class GuiModMenu extends GuiScreen {
 
@@ -125,16 +123,14 @@ public class GuiModMenu extends GuiScreen {
 		
 		nvg.drawRoundedRect(x, y, width, height, 12, palette.getBackgroundColor(ColorType.NORMAL));
 		nvg.drawRoundedRectVarying(x, y, 32, height, 12, 0, 12, 0, palette.getBackgroundColor(ColorType.DARK));
-		nvg.drawRect(x + 32, y + 30, width - 32, 1, palette.getBackgroundColor(ColorType.DARK));
-		
 		nvg.drawGradientRoundedRect(x + 5, y + 7, 22, 22, 11, currentColor.getColor1(), currentColor.getColor2());
 		nvg.drawText(Icon.SOAR, x + 8, y + 10, Color.WHITE, 16, Fonts.ICON);
-		
-		nvg.save();
-		nvg.translate(currentCategory.getTextAnimation().getValue() * 15, 0);
-		nvg.drawText(currentCategory.getName(), x + 32, y + 10, palette.getFontColor(ColorType.DARK, (int) (currentCategory.getTextAnimation().getValue() * 255)), 15, Fonts.MEDIUM);
-
-		nvg.restore();
+		if(currentCategory.isShowTitle()) {
+			nvg.save();
+			nvg.translate(currentCategory.getTextAnimation().getValue() * 15, 0);
+			nvg.drawText(currentCategory.getName(), x + 32, y + 10, palette.getFontColor(ColorType.DARK, (int) (currentCategory.getTextAnimation().getValue() * 255)), 15, Fonts.MEDIUM);
+			nvg.restore();
+		}
 		
 		int offsetY = 0;
 		
@@ -179,8 +175,8 @@ public class GuiModMenu extends GuiScreen {
 					searchBox.setPosition(x + width - 175, y + 6.5F, 160, 18);
 					searchBox.draw(mouseX, mouseY, partialTicks);
 				}
-				
-				nvg.scissor(x + 32, y + 31, width - 32, height - 31);
+				int yOff = (currentCategory.isShowTitle()) ? 31 : 0;
+				nvg.scissor(x + 32, y + yOff, width - 32, height - yOff);
 				nvg.translate(0, 50 - (c.getCategoryAnimation().getValue() * 50));
 				
 				c.drawScreen(mouseX, mouseY, partialTicks);

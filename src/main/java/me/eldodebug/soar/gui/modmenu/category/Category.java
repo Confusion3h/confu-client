@@ -26,14 +26,16 @@ public class Category {
 	public Scroll scroll;
 	
 	private boolean showSearchBox;
-	
-	public Category(GuiModMenu parent, TranslateText nameTranslate, String icon, boolean showSearchBox) {
+	private boolean showTitle;
+
+	public Category(GuiModMenu parent, TranslateText nameTranslate, String icon, boolean showSearchBox, boolean showTitle) {
 		this.nameTranslate = nameTranslate;
 		this.parent = parent;
 		this.icon = icon;
 		this.initialized = false;
 		this.scroll = parent.getScroll();
 		this.showSearchBox = showSearchBox;
+		this.showTitle = showTitle;
 	}
 	
 	public void initGui() {}
@@ -65,7 +67,8 @@ public class Category {
 	}
 	
 	public int getY() {
-		return parent.getY() + 31;
+		int yOff = (showTitle) ? 31 : 0;
+		return parent.getY() + yOff;
 	}
 	
 	public int getWidth() {
@@ -73,7 +76,8 @@ public class Category {
 	}
 	
 	public int getHeight() {
-		return parent.getHeight() - 31;
+		int yOff = (showTitle) ? 31 : 0;
+		return parent.getHeight() - yOff;
 	}
 
 	public ColorAnimation getTextColorAnimation() {
@@ -99,6 +103,8 @@ public class Category {
 	public boolean isShowSearchBox() {
 		return showSearchBox;
 	}
+
+	public boolean isShowTitle() {return showTitle;}
 	
 	public CompSearchBox getSearchBox() {
 		return parent.getSearchBox();

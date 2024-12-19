@@ -29,7 +29,7 @@ public class ScreenshotCategory extends Category {
 	private SimpleAnimation trashAnimation = new SimpleAnimation();
 	
 	public ScreenshotCategory(GuiModMenu parent) {
-		super(parent, TranslateText.SCREENSHOT, Icon.CAMERA, false);
+		super(parent, TranslateText.SCREENSHOT, Icon.CAMERA, false, true);
 	}
 	
 	@Override

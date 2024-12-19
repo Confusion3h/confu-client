@@ -27,7 +27,7 @@ public class CosmeticsCategory extends Category {
 	private CapeCategory currentCategory;
 	
 	public CosmeticsCategory(GuiModMenu parent) {
-		super(parent, TranslateText.COSMETICS, Icon.SHOPPING, true);
+		super(parent, TranslateText.COSMETICS, Icon.SHOPPING, true, true);
 	}
 
 	@Override

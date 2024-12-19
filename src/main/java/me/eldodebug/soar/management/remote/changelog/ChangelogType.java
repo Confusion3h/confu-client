@@ -3,20 +3,21 @@ package me.eldodebug.soar.management.remote.changelog;
 import java.awt.Color;
 
 import me.eldodebug.soar.management.language.TranslateText;
+import me.eldodebug.soar.management.nanovg.font.Icon;
 
 public enum ChangelogType {
-	ADDED(0, TranslateText.ADDED, new Color(68, 200, 129)),
-	FIXED(1, TranslateText.FIXED, new Color(220, 220, 68)),
-	REMOVED(2, TranslateText.REMOVED, new Color(220, 68, 68)),
-	ERROR(999, TranslateText.ERROR, new Color(255, 0, 0));
+	ADDED(0, Icon.PLUS, new Color(68, 200, 129)),
+	FIXED(1, Icon.REFRESH, new Color(220, 220, 68)),
+	REMOVED(2, Icon.MINUS, new Color(220, 68, 68)),
+	ERROR(999, Icon.PROHIBITED, new Color(255, 0, 0));
 	
 	private int id;
-	private TranslateText translateText;
+	private String string;
 	private Color color;
 	
-	private ChangelogType(int id, TranslateText translateText, Color color) {
+	private ChangelogType(int id, String string, Color color) {
 		this.id = id;
-		this.translateText = translateText;
+		this.string = string;
 		this.color = color;
 	}
 	
@@ -25,7 +26,7 @@ public enum ChangelogType {
 	}
 
 	public String getText() {
-		return translateText.getText();
+		return string;
 	}
 
 	public Color getColor() {

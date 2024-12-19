@@ -29,7 +29,7 @@ public class SettingCategory extends Category {
 	private SettingScene currentScene;
 	
 	public SettingCategory(GuiModMenu parent) {
-		super(parent, TranslateText.SETTINGS, Icon.SETTINGS, false);
+		super(parent, TranslateText.SETTINGS, Icon.SETTINGS, false, true);
 		
 		scenes.add(new AppearanceScene(this));
 		scenes.add(new LanguageScene(this));
