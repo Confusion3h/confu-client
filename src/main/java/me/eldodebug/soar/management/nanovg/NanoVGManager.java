@@ -134,23 +134,40 @@ public class NanoVGManager {
 		NanoVG.nvgFillColor(nvg, nvgColor);
 		NanoVG.nvgFill(nvg);
 	}
-	
-	public void drawGradientRect(float x, float y, float width, float height, Color color1, Color color2) {
-		
+
+	public void drawVerticalGradientRect(float x, float y, float width, float height, Color color1, Color color2) {
+
 		NVGPaint bg = NVGPaint.create();
-		
-		float tick = ((System.currentTimeMillis() % 3600) / 570F);
-		float max = Math.max(width, height);
-		
+
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgRect(nvg, x, y, width, height);
-		
+
 		NVGColor nvgColor1 = getColor(color1);
 		NVGColor nvgColor2 = getColor(color2);
-		
+
 		NanoVG.nvgFillColor(nvg, nvgColor1);
 		NanoVG.nvgFillColor(nvg, nvgColor2);
-		
+
+		NanoVG.nvgFillPaint(nvg, NanoVG.nvgLinearGradient(nvg, x, y, x, y+height, nvgColor1, nvgColor2, bg));
+		NanoVG.nvgFill(nvg);
+	}
+
+	public void drawGradientRect(float x, float y, float width, float height, Color color1, Color color2) {
+
+		NVGPaint bg = NVGPaint.create();
+
+		float tick = ((System.currentTimeMillis() % 3600) / 570F);
+		float max = Math.max(width, height);
+
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgRect(nvg, x, y, width, height);
+
+		NVGColor nvgColor1 = getColor(color1);
+		NVGColor nvgColor2 = getColor(color2);
+
+		NanoVG.nvgFillColor(nvg, nvgColor1);
+		NanoVG.nvgFillColor(nvg, nvgColor2);
+
 		NanoVG.nvgFillPaint(nvg, NanoVG.nvgLinearGradient(nvg, x + width / 2 - (max / 2) * MathUtils.cos(tick), y + height / 2 - (max / 2) * MathUtils.sin(tick), x + width / 2 + (max / 2) * MathUtils.cos(tick), y + height / 2 + (max + 2f) * MathUtils.sin(tick), nvgColor1, nvgColor2, bg));
 		NanoVG.nvgFill(nvg);
 	}
@@ -259,6 +276,17 @@ public class NanoVGManager {
 			alpha+=3;
 		}
 	}
+	public void drawRoundedGlow(float x, float y, float width, float height, float radius, Color color1, int strength) {
+
+		int alpha = 1;
+
+		for(float f = strength; f > 0; f--) {
+			drawGradientOutlineRoundedRect(x - (f / 2), y - (f / 2), width + f, height + f, radius + 2, f, ColorUtils.applyAlpha(color1, alpha), ColorUtils.applyAlpha(color1, alpha));
+
+			alpha+=2;
+		}
+	}
+
 	
 	public void drawCircle(float x, float y, float radius, Color color) {
 		
@@ -317,6 +345,29 @@ public class NanoVGManager {
 		NanoVG.nvgFillColor(nvg, nvgColor);
 		NanoVG.nvgText(nvg, x, y, text);
 	}
+
+	public void drawTextGlowing(String text, float x, float y, Color color, float blurRadius, float size, Font font) {
+		drawTextGlowingBg(text, x, y, color, size, blurRadius, font);
+		drawText(text, x,y, color, size, font);
+	}
+
+	private void drawTextGlowingBg(String text, float x, float y, Color color, float size, float blurRadius, Font font) {
+		y+=size / 2;
+
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgFontSize(nvg, size);
+		NanoVG.nvgFontFace(nvg, font.getName());
+		NanoVG.nvgTextAlign(nvg, NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_MIDDLE);
+		NVGColor nvgColor = getColor(color);
+		NanoVG.nvgFillColor(nvg, nvgColor);
+		save();
+		fontBlur(blurRadius);
+		NanoVG.nvgText(nvg, x, y, text);
+		restore();
+	}
+
+
+
 
 	public void drawTextBox(String text, float x, float y, float maxWidth, Color color, float size, Font font) {
 

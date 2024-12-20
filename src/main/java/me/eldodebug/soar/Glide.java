@@ -1,11 +1,12 @@
 package me.eldodebug.soar;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 
 import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
+import me.eldodebug.soar.management.remote.discord.DiscordStats;
+import me.eldodebug.soar.management.remote.discord.DiscordManager;
 import me.eldodebug.soar.management.remote.update.Update;
 import me.eldodebug.soar.management.remote.update.UpdateManager;
 import org.apache.commons.lang3.ArrayUtils;
@@ -55,6 +56,7 @@ public class Glide {
 	private SecurityFeatureManager securityFeatureManager;
 	private QuickPlayManager quickPlayManager;
 	private ChangelogManager changelogManager;
+	private DiscordStats discordStats;
     private WaypointManager waypointManager;
 	private GuiModMenu modMenu;
 	private GuiGlideMainMenu mainMenu;
@@ -65,7 +67,7 @@ public class Glide {
 	public Glide() {
 		name = "Glide";
 		version = "7.2";
-		verIdentifier = 7199;
+		verIdentifier = 7200;
 	}
 	
 	public void start() {
@@ -96,6 +98,8 @@ public class Glide {
 		securityFeatureManager = new SecurityFeatureManager();
 		quickPlayManager = new QuickPlayManager();
 		changelogManager = new ChangelogManager();
+		discordStats = new DiscordStats();
+		new DiscordManager();
 		waypointManager = new WaypointManager();
 
 		eventManager.register(new GlideHandler());
@@ -140,7 +144,6 @@ public class Glide {
 	public FileManager getFileManager() {
 		return fileManager;
 	}
-
 
 	public ModManager getModManager() {
 		return modManager;
@@ -196,6 +199,10 @@ public class Glide {
 
 	public ChangelogManager getChangelogManager() {
 		return changelogManager;
+	}
+
+	public DiscordStats getDiscordStats() {
+		return discordStats;
 	}
 
 	public WaypointManager getWaypointManager() {

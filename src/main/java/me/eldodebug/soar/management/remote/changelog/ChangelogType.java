@@ -6,10 +6,10 @@ import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.nanovg.font.Icon;
 
 public enum ChangelogType {
-	ADDED(0, Icon.PLUS, new Color(68, 200, 129)),
-	FIXED(1, Icon.REFRESH, new Color(220, 220, 68)),
-	REMOVED(2, Icon.MINUS, new Color(220, 68, 68)),
-	ERROR(999, Icon.PROHIBITED, new Color(255, 0, 0));
+	ADDED(0, Icon.PLUS, new Color(0, 142, 65)),
+	FIXED(1, Icon.REFRESH, new Color(207, 112, 3)),
+	REMOVED(2, Icon.MINUS, new Color(209, 34, 34)),
+	ERROR(999, Icon.PROHIBITED, new Color(143, 0, 0));
 	
 	private int id;
 	private String string;
