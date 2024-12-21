@@ -18,6 +18,7 @@
     "chunk.MixinChunkRenderDispatcher",
     "chunk.MixinRenderChunk",
     "chunk.MixinVisGraph",
+    "client.MixinLanguageManager",
     "client.MixinMinecraft",
     "entity.MixinAbstractClientPlayer",
     "entity.MixinBaseAttribute",
