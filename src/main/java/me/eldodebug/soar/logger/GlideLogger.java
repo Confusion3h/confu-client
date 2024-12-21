@@ -8,19 +8,19 @@ public class GlideLogger {
     public static final Logger logger = LogManager.getLogger("Glide Client");
     
     public static void info(String message) {
-    	logger.info("[SC/INFO] " + message);
+    	logger.info("[GC/INFO] " + message);
     }
     
     public static void warn(String message) {
-    	logger.warn("[SC/WARN] " + message);
+    	logger.warn("[GC/WARN] " + message);
     }
 
     public static void error(String message) {
-    	logger.error("[SC/ERROR] " + message);
+    	logger.error("[GC/ERROR] " + message);
     }
     
     public static void error(String message, Exception e) {
-    	logger.error("[SC/ERROR] " + message, e);
+    	logger.error("[GC/ERROR] " + message, e);
     }
 
 	public static Logger getLogger() {
