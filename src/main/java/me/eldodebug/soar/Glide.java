@@ -71,8 +71,10 @@ public class Glide {
 	}
 	
 	public void start() {
-		OptifineUtils.disableFastRender();
-		this.removeOptifineZoom();
+		try {
+			OptifineUtils.disableFastRender();
+			this.removeOptifineZoom();
+		} catch(Exception ignored) {}
 		
 		fileManager = new FileManager();
 		update = new Update();
