@@ -80,6 +80,7 @@ public class CapeManager {
 		add("Parrot", "soar/parrot-sample.png", "soar/parrot.png", CapeCategory.SOAR);
 		add("Skylight", "soar/skylight-sample.png", "soar/skylight.png", CapeCategory.SOAR);
 		add("Sour Apple", "soar/sourapple-sample.png", "soar/sourapple.png", CapeCategory.SOAR);
+		add("Glide", "soar/glide-sample.png", "soar/glide.png", CapeCategory.SOAR);
 
 		add("Aurora", "cartoon/aurora-sample.png", "cartoon/aurora.png", CapeCategory.CARTOON);
 		add("Beach Girl", "cartoon/beachgirl-sample.png", "cartoon/beachgirl.png", CapeCategory.CARTOON);
