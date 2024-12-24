@@ -67,12 +67,14 @@ public class Glide {
 	public Glide() {
 		name = "Glide";
 		version = "7.2";
-		verIdentifier = 7200;
+		verIdentifier = 7199;
 	}
 	
 	public void start() {
-		OptifineUtils.disableFastRender();
-		this.removeOptifineZoom();
+		try {
+			OptifineUtils.disableFastRender();
+			this.removeOptifineZoom();
+		} catch(Exception ignored) {}
 		
 		fileManager = new FileManager();
 		update = new Update();
