@@ -3,7 +3,7 @@ package me.eldodebug.soar.gui;
 import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
-import me.eldodebug.soar.management.nanovg.font.Icon;
+import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
 import me.eldodebug.soar.utils.animation.normal.Animation;
 import me.eldodebug.soar.utils.animation.normal.Direction;
 import me.eldodebug.soar.utils.animation.normal.easing.EaseInOutCirc;
@@ -57,32 +57,32 @@ public class GuiGameMenu extends GuiScreen {
 
     private void drawNanoVG(NanoVGManager nvg) {
         nvg.drawRect(-5, -5, scaledWidth + 10, scaledHeight + 10,  new Color(0,0,0, 140));
-        nvg.drawText(Icon.ARROW_LEFT, x, y + 5, new Color(255,255,255, 140),11, Fonts.ICON);
-        nvg.drawCenteredText("Game Menu", centre, y + 5,  new Color(255,255,255, 200), 13, Fonts.MEDIUM);
+        nvg.drawText(LegacyIcon.ARROW_LEFT, x, y + 5, new Color(255,255,255, 140),11, Fonts.LEGACYICON);
+        nvg.drawCenteredText("Game Menu", centre, y + 5,  new Color(255,255,255, 200), 13, Fonts.DEMIBOLD);
 
         float standardPadding = 29.5f;
         float offset = 29.5F;
-        drawButton(nvg, "Minecraft Options", Icon.SLIDERS, offset);
+        drawButton(nvg, "Minecraft Options", LegacyIcon.SLIDERS, offset);
         offset += standardPadding;
         if(this.mc.isSingleplayer() && !this.mc.getIntegratedServer().getPublic()){
-            drawButton(nvg, "Open to Lan", Icon.USERS, offset);
+            drawButton(nvg, "Open to Lan", LegacyIcon.USERS, offset);
         } else {
-            drawButton(nvg, "Edit Hud", Icon.LAYOUT, offset);
+            drawButton(nvg, "Edit Hud", LegacyIcon.LAYOUT, offset);
         }
         offset += standardPadding;
-        drawButton(nvg, "Statistics", Icon.ARCHIVE, offset);
+        drawButton(nvg, "Statistics", LegacyIcon.ARCHIVE, offset);
         offset += standardPadding;
-        drawButton(nvg, "Achievements", Icon.MAP, offset);
+        drawButton(nvg, "Achievements", LegacyIcon.MAP, offset);
         offset += standardPadding;
-        drawButton(nvg, "Open Glide Menu", Icon.SOAR, offset);
+        drawButton(nvg, "Open Glide Menu", LegacyIcon.SOAR, offset);
         offset += standardPadding;
-        drawButton(nvg, !this.mc.isIntegratedServerRunning() ? "Disconnect" : "Return to Main Menu", Icon.LOGOUT, offset);
+        drawButton(nvg, !this.mc.isIntegratedServerRunning() ? "Disconnect" : "Return to Main Menu", LegacyIcon.LOGOUT, offset);
     }
 
     private void drawButton(NanoVGManager nvg, String s, String i, Float offset){
         nvg.drawRoundedRect(x, y + offset, width , 22, 6, new Color(230, 230, 230, 80));
         float startX = (nvg.getTextWidth(s, 9.5F, Fonts.MEDIUM) + 14) /2;
-        nvg.drawText(i, centre - startX, y + offset + 5.5F, Color.WHITE, 9.5F, Fonts.ICON);
+        nvg.drawText(i, centre - startX, y + offset + 5.5F, Color.WHITE, 9.5F, Fonts.LEGACYICON);
         nvg.drawText(s, centre - startX + 14, y + offset + 7F, Color.WHITE, 9.5F, Fonts.MEDIUM);
     }
 

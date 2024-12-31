@@ -1,7 +1,6 @@
 package me.eldodebug.soar.gui.mainmenu;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -12,11 +11,10 @@ import org.lwjgl.input.Mouse;
 import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.mainmenu.impl.BackgroundScene;
 import me.eldodebug.soar.gui.mainmenu.impl.MainScene;
-import me.eldodebug.soar.management.color.palette.ColorPalette;
 import me.eldodebug.soar.management.event.impl.EventRenderNotification;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
-import me.eldodebug.soar.management.nanovg.font.Icon;
+import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
 import me.eldodebug.soar.management.profile.mainmenu.impl.Background;
 import me.eldodebug.soar.management.profile.mainmenu.impl.CustomBackground;
 import me.eldodebug.soar.management.profile.mainmenu.impl.DefaultBackground;
@@ -27,7 +25,6 @@ import me.eldodebug.soar.utils.animation.simple.SimpleAnimation;
 import me.eldodebug.soar.utils.mouse.MouseUtils;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.util.ResourceLocation;
 
 public class GuiGlideMainMenu extends GuiScreen {
 
@@ -137,18 +134,18 @@ public class GuiGlideMainMenu extends GuiScreen {
 		closeFocusAnimation.setAnimation(MouseUtils.isInside(mouseX, mouseY, sr.getScaledWidth() - 28, 6, 22, 22) ? 1.0F : 0.0F, 16);
 		
 		nvg.drawRoundedRect(sr.getScaledWidth() - 28, 6, 22, 22, 4, this.getBackgroundColor());
-		nvg.drawCenteredText(Icon.X, sr.getScaledWidth() - 19F, 8F, new Color(255, 255 - (int) (closeFocusAnimation.getValue() * 200), 255 - (int) (closeFocusAnimation.getValue() * 200)), 18, Fonts.ICON);
+		nvg.drawCenteredText(LegacyIcon.X, sr.getScaledWidth() - 19F, 8F, new Color(255, 255 - (int) (closeFocusAnimation.getValue() * 200), 255 - (int) (closeFocusAnimation.getValue() * 200)), 18, Fonts.LEGACYICON);
 		
 		backgroundSelectFocusAnimation.setAnimation(MouseUtils.isInside(mouseX, mouseY, sr.getScaledWidth() - 28 - 28, 6, 22, 22) ? 1.0F : 0.0F, 16);
 		
 		nvg.drawRoundedRect(sr.getScaledWidth() - 28 - 28, 6, 22, 22, 4, this.getBackgroundColor());
-		nvg.drawCenteredText(Icon.IMAGE, sr.getScaledWidth() - 19F - 26.5F, 9.5F, new Color(255 - (int) (backgroundSelectFocusAnimation.getValue() * 200), 255, 255 - (int) (backgroundSelectFocusAnimation.getValue() * 200)), 15, Fonts.ICON);
+		nvg.drawCenteredText(LegacyIcon.IMAGE, sr.getScaledWidth() - 19F - 26.5F, 9.5F, new Color(255 - (int) (backgroundSelectFocusAnimation.getValue() * 200), 255, 255 - (int) (backgroundSelectFocusAnimation.getValue() * 200)), 15, Fonts.LEGACYICON);
 	}
 	
 	private void drawSplashScreen(ScaledResolution sr, NanoVGManager nvg) {
 		
 		if(fadeIconAnimation == null) {
-			fadeIconAnimation = new DecelerateAnimation(1000, 1);
+			fadeIconAnimation = new DecelerateAnimation(100, 1);
 			fadeIconAnimation.setDirection(Direction.FORWARDS);
 			fadeIconAnimation.reset();
 		}
@@ -156,13 +153,13 @@ public class GuiGlideMainMenu extends GuiScreen {
 		if(fadeIconAnimation != null) {
 			
 			if(fadeIconAnimation.isDone(Direction.FORWARDS) && fadeBackgroundAnimation == null) {
-				fadeBackgroundAnimation = new DecelerateAnimation(1000, 1);
+				fadeBackgroundAnimation = new DecelerateAnimation(500, 1);
 				fadeBackgroundAnimation.setDirection(Direction.FORWARDS);
 				fadeBackgroundAnimation.reset();
 			}
 			
 			nvg.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(0, 0, 0, fadeBackgroundAnimation != null ? (int) (255 - (fadeBackgroundAnimation.getValue() * 255)) : 255));
-			nvg.drawCenteredText(Icon.SOAR, sr.getScaledWidth() / 2, (sr.getScaledHeight() / 2) - (nvg.getTextHeight(Icon.SOAR, 130, Fonts.ICON) / 2) - 1, new Color(255, 255, 255, (int) (255 - (fadeIconAnimation.getValue() * 255))), 130, Fonts.ICON);
+			nvg.drawCenteredText(LegacyIcon.SOAR, sr.getScaledWidth() / 2, (sr.getScaledHeight() / 2) - (nvg.getTextHeight(LegacyIcon.SOAR, 130, Fonts.LEGACYICON) / 2) - 1, new Color(255, 255, 255, (int) (255 - (fadeIconAnimation.getValue() * 255))), 130, Fonts.LEGACYICON);
 		}
 	}
 	
@@ -181,7 +178,7 @@ public class GuiGlideMainMenu extends GuiScreen {
 				mc.shutdown();
 			}
 			
-			if(MouseUtils.isInside(mouseX, mouseY, sr.getScaledWidth() - 28 - 28, 6, 22, 22)) {
+			if(MouseUtils.isInside(mouseX, mouseY, sr.getScaledWidth() - 28 - 28, 6, 22, 22) && !this.getCurrentScene().equals(getSceneByClass(BackgroundScene.class))) {
 				this.setCurrentScene(this.getSceneByClass(BackgroundScene.class));
 			}
 

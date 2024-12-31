@@ -13,7 +13,7 @@ import me.eldodebug.soar.management.color.palette.ColorType;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
-import me.eldodebug.soar.management.nanovg.font.Icon;
+import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
 import me.eldodebug.soar.management.screenshot.Screenshot;
 import me.eldodebug.soar.management.screenshot.ScreenshotManager;
 import me.eldodebug.soar.utils.ColorUtils;
@@ -29,7 +29,7 @@ public class ScreenshotCategory extends Category {
 	private SimpleAnimation trashAnimation = new SimpleAnimation();
 	
 	public ScreenshotCategory(GuiModMenu parent) {
-		super(parent, TranslateText.SCREENSHOT, Icon.CAMERA, false, true);
+		super(parent, TranslateText.SCREENSHOT, LegacyIcon.CAMERA, false, true);
 	}
 	
 	@Override
@@ -76,7 +76,7 @@ public class ScreenshotCategory extends Category {
 			trashAnimation.setAnimation(MouseUtils.isInside(mouseX, mouseY, this.getX() + addX, this.getY() + addY, this.getWidth() - (addX * 2), this.getHeight() - (addY * 2) - 38) ? 1.0F : 0.0F, 16);
 			
 			nvg.drawRoundedImage(currentScreenshot.getImage(), this.getX() + addX, this.getY() + addY, this.getWidth() - (addX * 2), this.getHeight() - (addY * 2) - 38, 6);
-			nvg.drawText(Icon.TRASH, this.getX() + this.getWidth() - 59, this.getY() + addY + 6, palette.getMaterialRed((int) (trashAnimation.getValue() * 255)), 12, Fonts.ICON);
+			nvg.drawText(LegacyIcon.TRASH, this.getX() + this.getWidth() - 59, this.getY() + addY + 6, palette.getMaterialRed((int) (trashAnimation.getValue() * 255)), 12, Fonts.LEGACYICON);
 			
 			addX = 58;
 			
@@ -134,7 +134,7 @@ public class ScreenshotCategory extends Category {
 		}else {
 			
 			nvg.drawRoundedRect(this.getX() + addX, this.getY() + addY, this.getWidth() - (addX * 2), this.getHeight() - (addY * 2) - 38, 6, palette.getBackgroundColor(ColorType.DARK));
-			nvg.drawCenteredText(Icon.CAMERA, this.getX() + addX + ((this.getWidth() - (addX * 2)) / 2), this.getY() + 68, palette.getFontColor(ColorType.NORMAL), 64, Fonts.ICON);
+			nvg.drawCenteredText(LegacyIcon.CAMERA, this.getX() + addX + ((this.getWidth() - (addX * 2)) / 2), this.getY() + 68, palette.getFontColor(ColorType.NORMAL), 64, Fonts.LEGACYICON);
 			
 			addX = 58;
 			

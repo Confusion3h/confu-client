@@ -69,7 +69,7 @@ public class Notification {
 		
 		nvg.drawShadow(x, y, maxWidth, 29, 6);
 		nvg.drawGradientRoundedRect(x, y, maxWidth, 29, 6, ColorUtils.applyAlpha(currentColor.getColor1(), 220), ColorUtils.applyAlpha(currentColor.getColor2(), 220));
-		nvg.drawText(type.getIcon(), x + 5, y + 6F, Color.WHITE, 17, Fonts.ICON);
+		nvg.drawText(type.getIcon(), x + 5, y + 6F, Color.WHITE, 17, Fonts.LEGACYICON);
 		nvg.drawText(title.getText(), x + 26, y + 6F, Color.white, 9.6F, Fonts.MEDIUM);
 		nvg.drawText(message.getText(), x + 26, y + 17.5F, Color.WHITE, 7.5F, Fonts.REGULAR);
 		

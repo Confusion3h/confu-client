@@ -22,7 +22,7 @@ import me.eldodebug.soar.management.color.palette.ColorType;
 import me.eldodebug.soar.management.event.impl.EventRenderNotification;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
-import me.eldodebug.soar.management.nanovg.font.Icon;
+import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
 import me.eldodebug.soar.ui.comp.impl.field.CompSearchBox;
 import me.eldodebug.soar.utils.MathUtils;
 import me.eldodebug.soar.utils.animation.normal.Animation;
@@ -124,11 +124,11 @@ public class GuiModMenu extends GuiScreen {
 		nvg.drawRoundedRect(x, y, width, height, 12, palette.getBackgroundColor(ColorType.NORMAL));
 		nvg.drawRoundedRectVarying(x, y, 32, height, 12, 0, 12, 0, palette.getBackgroundColor(ColorType.DARK));
 		nvg.drawGradientRoundedRect(x + 5, y + 7, 22, 22, 11, currentColor.getColor1(), currentColor.getColor2());
-		nvg.drawText(Icon.SOAR, x + 8, y + 10, Color.WHITE, 16, Fonts.ICON);
+		nvg.drawText(LegacyIcon.SOAR, x + 8, y + 10, Color.WHITE, 16, Fonts.LEGACYICON);
 		if(currentCategory.isShowTitle()) {
 			nvg.save();
 			nvg.translate(currentCategory.getTextAnimation().getValue() * 15, 0);
-			nvg.drawText(currentCategory.getName(), x + 32, y + 10, palette.getFontColor(ColorType.DARK, (int) (currentCategory.getTextAnimation().getValue() * 255)), 15, Fonts.MEDIUM);
+			nvg.drawText(currentCategory.getName(), x + 32, y + 10, palette.getFontColor(ColorType.DARK, (int) (currentCategory.getTextAnimation().getValue() * 255)), 15, Fonts.DEMIBOLD);
 			nvg.restore();
 		}
 		
@@ -146,7 +146,7 @@ public class GuiModMenu extends GuiScreen {
 			
 			c.getTextAnimation().setAnimation(c.equals(currentCategory) ? 1.0F : 0.0F, 14);
 			
-			nvg.drawText(c.getIcon(), x + 9F, y + 42 + offsetY, textColor, 14, Fonts.ICON);
+			nvg.drawText(c.getIcon(), x + 9F, y + 42 + offsetY, textColor, 14, Fonts.LEGACYICON);
 			
 			offsetY+=30;
 		}
@@ -154,7 +154,7 @@ public class GuiModMenu extends GuiScreen {
 		nvg.restore();
 		
 		nvg.drawGradientRoundedRect(x + 5.5F, y + height - 30, 21, 21, 4, currentColor.getColor1(), currentColor.getColor2());
-		nvg.drawText(Icon.LAYOUT, x + 9, y + height - 26.5F, Color.WHITE, 14, Fonts.ICON);
+		nvg.drawText(LegacyIcon.LAYOUT, x + 9, y + height - 26.5F, Color.WHITE, 14, Fonts.LEGACYICON);
 		
 		for(Category c : categories) {
 			

@@ -11,7 +11,7 @@ import me.eldodebug.soar.management.language.LanguageManager;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
-import me.eldodebug.soar.management.nanovg.font.Icon;
+import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
 import me.eldodebug.soar.utils.ColorUtils;
 import me.eldodebug.soar.utils.mouse.MouseUtils;
 import me.eldodebug.soar.utils.mouse.Scroll;
@@ -19,7 +19,7 @@ import me.eldodebug.soar.utils.mouse.Scroll;
 public class LanguageScene extends SettingScene {
 
 	public LanguageScene(SettingCategory parent) {
-		super(parent, TranslateText.LANGUAGE, TranslateText.LANGUAGE_DESCRIPTION, Icon.TRANSLATE);
+		super(parent, TranslateText.LANGUAGE, TranslateText.LANGUAGE_DESCRIPTION, LegacyIcon.TRANSLATE);
 	}
 
 	private Scroll categoryScroll = new Scroll();
@@ -52,7 +52,7 @@ public class LanguageScene extends SettingScene {
 			
 			lang.getAnimation().setAnimation(lang.equals(languageManager.getCurrentLanguage()) ? 1.0F : 0.0F, 16);
 			
-			nvg.drawText(Icon.CHECK, this.getX() + this.getWidth() - 28, this.getY() + 12 + offsetY, ColorUtils.applyAlpha(currentColor.getInterpolateColor(), (int) (lang.getAnimation().getValue() * 255)), 16, Fonts.ICON);
+			nvg.drawText(LegacyIcon.CHECK, this.getX() + this.getWidth() - 28, this.getY() + 12 + offsetY, ColorUtils.applyAlpha(currentColor.getInterpolateColor(), (int) (lang.getAnimation().getValue() * 255)), 16, Fonts.LEGACYICON);
 			
 			offsetY+=50;
 		}

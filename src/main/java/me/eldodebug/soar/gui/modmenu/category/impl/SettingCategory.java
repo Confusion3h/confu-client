@@ -15,7 +15,7 @@ import me.eldodebug.soar.management.color.palette.ColorType;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
-import me.eldodebug.soar.management.nanovg.font.Icon;
+import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
 import me.eldodebug.soar.utils.animation.normal.Animation;
 import me.eldodebug.soar.utils.animation.normal.Direction;
 import me.eldodebug.soar.utils.animation.normal.other.SmoothStepAnimation;
@@ -29,7 +29,7 @@ public class SettingCategory extends Category {
 	private SettingScene currentScene;
 	
 	public SettingCategory(GuiModMenu parent) {
-		super(parent, TranslateText.SETTINGS, Icon.SETTINGS, false, true);
+		super(parent, TranslateText.SETTINGS, LegacyIcon.SETTINGS, false, true);
 		
 		scenes.add(new AppearanceScene(this));
 		scenes.add(new LanguageScene(this));
@@ -73,7 +73,7 @@ public class SettingCategory extends Category {
 			
 			nvg.drawRoundedRect(this.getX() + 15, this.getY() + offsetY, this.getWidth() - 30, 40, 8, palette.getBackgroundColor(ColorType.DARK));
 			nvg.drawText(scene.getName(), this.getX() + 52, this.getY() + offsetY + 15F, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
-			nvg.drawText(scene.getIcon(), this.getX() + 26, this.getY() + offsetY + 14, palette.getFontColor(ColorType.DARK), 14, Fonts.ICON);
+			nvg.drawText(scene.getIcon(), this.getX() + 26, this.getY() + offsetY + 14, palette.getFontColor(ColorType.DARK), 14, Fonts.LEGACYICON);
 			nvg.drawText(scene.getDescription(), this.getX() + (nvg.getTextWidth(scene.getName(), 14, Fonts.MEDIUM)) + 56, this.getY() + offsetY + 17, palette.getFontColor(ColorType.NORMAL), 9, Fonts.REGULAR);
 			nvg.drawText(">", this.getX() + this.getWidth() - 32, this.getY() + offsetY + 17, palette.getFontColor(ColorType.NORMAL), 10, Fonts.MEDIUM);
 			

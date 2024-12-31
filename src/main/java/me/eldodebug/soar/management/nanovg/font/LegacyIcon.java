@@ -1,7 +1,7 @@
 package me.eldodebug.soar.management.nanovg.font;
 
 
-public class Icon {
+public class LegacyIcon {
 
 	public static final String ACTIVITY = "@";
 	public static final String ALERT_TRIANGLE = "A";

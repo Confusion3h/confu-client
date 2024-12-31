@@ -17,7 +17,7 @@ import me.eldodebug.soar.management.color.palette.ColorType;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
-import me.eldodebug.soar.management.nanovg.font.Icon;
+import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
 import me.eldodebug.soar.utils.ColorUtils;
 import me.eldodebug.soar.utils.SearchUtils;
 import me.eldodebug.soar.utils.mouse.MouseUtils;
@@ -27,7 +27,7 @@ public class CosmeticsCategory extends Category {
 	private CapeCategory currentCategory;
 	
 	public CosmeticsCategory(GuiModMenu parent) {
-		super(parent, TranslateText.COSMETICS, Icon.SHOPPING, true, true);
+		super(parent, TranslateText.COSMETICS, LegacyIcon.SHOPPING, true, true);
 	}
 
 	@Override
