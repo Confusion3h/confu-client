@@ -31,7 +31,7 @@ import me.eldodebug.soar.utils.animation.normal.other.SmoothStepAnimation;
 import me.eldodebug.soar.utils.mouse.MouseUtils;
 
 public class ProfileCategory extends Category {
-
+// todo: ADD SCROLL tf why isnt that here xd
 	private ProfileType currentType;
 	private Animation profileAnimation;
 	private boolean openProfile;
@@ -328,6 +328,8 @@ public class ProfileCategory extends Category {
 			if(keyCode == Keyboard.KEY_ESCAPE) {
 				openProfile = false;
 			}
+		} else {
+			if (keyCode != 0xD0 && keyCode != 0xC8) this.getSearchBox().setFocused(true);
 		}
 	}
 	

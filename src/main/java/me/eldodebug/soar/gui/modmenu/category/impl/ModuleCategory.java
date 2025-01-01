@@ -55,6 +55,7 @@ public class ModuleCategory extends Category {
 	private boolean openSetting;
 	private Animation settingAnimation;
 	private Mod currentMod;
+	Color noColour = new Color(0, 0, 0, 0);
 	
 	private ArrayList<ModuleSetting> comps = new ArrayList<ModuleSetting>();
 	
@@ -169,7 +170,11 @@ public class ModuleCategory extends Category {
 		}
 		
 		nvg.restore();
+		nvg.drawVerticalGradientRect(getX() + 15,  this.getY(), getWidth() - 30, 12,  palette.getBackgroundColor(ColorType.NORMAL), noColour); //top
+		nvg.drawVerticalGradientRect(getX() + 15,  this.getY()+ this.getHeight() - 12, getWidth() - 30, 12, noColour, palette.getBackgroundColor(ColorType.NORMAL)); // bottom
 		nvg.restore();
+
+
 		
 		//Draw mod setting scene
 		
@@ -313,6 +318,7 @@ public class ModuleCategory extends Category {
 				
 				if(MouseUtils.isInside(mouseX, mouseY, this.getX() + 15 + offsetX, this.getY() + offsetY - 3, textWidth + 20, 16) && mouseButton == 0) {
 					currentCategory = c;
+					scroll.reset();
 				}
 				
 				offsetX+=textWidth + 28;
@@ -550,8 +556,12 @@ public class ModuleCategory extends Category {
 			return;
 		}
 
-		if(openSetting && keyCode == Keyboard.KEY_ESCAPE  && !binding) {
+		if(openSetting && keyCode == Keyboard.KEY_ESCAPE) {
 			openSetting = false;
+		}
+		if(!openSetting) {
+			scroll.onKey(keyCode);
+			if(keyCode != 0xD0 && keyCode != 0xC8) this.getSearchBox().setFocused(true);
 		}
 	}
 	
