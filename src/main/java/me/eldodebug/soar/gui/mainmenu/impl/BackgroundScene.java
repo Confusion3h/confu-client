@@ -71,7 +71,7 @@ public class BackgroundScene extends MainMenuScene {
 		scroll.onAnimation();
 
 		nvg.drawRoundedRect(acX, acY, acWidth, acHeight, 8, this.getBackgroundColor());
-		nvg.drawCenteredText(TranslateText.SELECT_BACKGROUND.getText(), acX + (acWidth / 2), acY + 8, Color.WHITE, 14, Fonts.DEMIBOLD);
+		nvg.drawCenteredText(TranslateText.SELECT_BACKGROUND.getText(), acX + (acWidth / 2), acY + 8, Color.WHITE, 14, Fonts.SEMIBOLD);
 
 		nvg.save();
 		nvg.scissor(acX, acY + 25, acWidth, acHeight - 25);

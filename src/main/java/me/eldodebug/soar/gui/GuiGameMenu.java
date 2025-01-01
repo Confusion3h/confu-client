@@ -58,7 +58,7 @@ public class GuiGameMenu extends GuiScreen {
     private void drawNanoVG(NanoVGManager nvg) {
         nvg.drawRect(-5, -5, scaledWidth + 10, scaledHeight + 10,  new Color(0,0,0, 140));
         nvg.drawText(LegacyIcon.ARROW_LEFT, x, y + 5, new Color(255,255,255, 140),11, Fonts.LEGACYICON);
-        nvg.drawCenteredText("Game Menu", centre, y + 5,  new Color(255,255,255, 200), 13, Fonts.DEMIBOLD);
+        nvg.drawCenteredText("Game Menu", centre, y + 5,  new Color(255,255,255, 200), 13, Fonts.SEMIBOLD);
 
         float standardPadding = 29.5f;
         float offset = 29.5F;

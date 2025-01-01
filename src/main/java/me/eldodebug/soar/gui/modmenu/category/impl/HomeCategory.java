@@ -55,7 +55,7 @@ public class HomeCategory extends Category {
 		int offsetY = 0;
 
 		nvg.drawRoundedRect(this.getX() + 230, this.getY() + outerPadding, 174, 151, 8, palette.getBackgroundColor(ColorType.DARK));
-		nvg.drawText(TranslateText.CHANGELOG.getText(), this.getX() + 230 + 8, this.getY() + 15 + 8, palette.getFontColor(ColorType.DARK), 11F, Fonts.DEMIBOLD);
+		nvg.drawText(TranslateText.CHANGELOG.getText(), this.getX() + 230 + 8, this.getY() + 15 + 8, palette.getFontColor(ColorType.DARK), 11F, Fonts.SEMIBOLD);
 
 		nvg.save();
 		nvg.scissor(this.getX() + 230, this.getY() + outerPadding + 20, 174, 131);
@@ -88,7 +88,7 @@ public class HomeCategory extends Category {
 		nvg.drawRoundedRectVarying(discordStartX + discordWidth - 22, discordStartY, 22, 22, 0, 8, 8, 0, new Color(114, 137, 214));
 		nvg.drawCenteredText(LegacyIcon.DISCORD, discordStartX  + discordWidth - 11, discordStartY + 4, Color.WHITE, 14F, Fonts.LEGACYICON);
 		// txt
-		nvg.drawText(TranslateText.JOIN_OUR_DISCORD_SERVER.getText(), discordStartX + standardPadding, discordStartY + standardPadding, palette.getFontColor(ColorType.DARK), 11F, Fonts.DEMIBOLD);
+		nvg.drawText(TranslateText.JOIN_OUR_DISCORD_SERVER.getText(), discordStartX + standardPadding, discordStartY + standardPadding, palette.getFontColor(ColorType.DARK), 11F, Fonts.SEMIBOLD);
 		nvg.drawTextBox(TranslateText.DISCORD_DESCRIPTION.getText(), discordStartX + standardPadding, discordStartY + 26, discordWidth - 16, palette.getFontColor(ColorType.DARK), 8, Fonts.REGULAR);
 		// stats
 		if(discStat.getMemberCount() != -1){

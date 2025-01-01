@@ -120,7 +120,7 @@ public class ScreenshotCategory extends Category {
 			nvg.translate(10 - (leftValue * 10), 0);
 			
 			nvg.drawRoundedRect(this.getX() + 20, this.getY() + (this.getHeight() / 2) - 30.5F, 12, 24, 4, palette.getBackgroundColor(ColorType.DARK, (int) (leftValue * 255)));
-			nvg.drawText("<", this.getX() + 23F, this.getY() + (this.getHeight() / 2) - 22F, palette.getFontColor(ColorType.DARK, (int) (leftValue * 255)), 9, Fonts.DEMIBOLD);
+			nvg.drawText("<", this.getX() + 23F, this.getY() + (this.getHeight() / 2) - 22F, palette.getFontColor(ColorType.DARK, (int) (leftValue * 255)), 9, Fonts.SEMIBOLD);
 			
 			nvg.restore();
 			
@@ -128,7 +128,7 @@ public class ScreenshotCategory extends Category {
 			nvg.translate(-10 + (rightValue * 10), 0);
 			
 			nvg.drawRoundedRect(this.getX() + this.getWidth() - 32, this.getY() + (this.getHeight() / 2) - 30.5F, 12, 24, 4, palette.getBackgroundColor(ColorType.DARK, (int) (rightValue * 255)));
-			nvg.drawText(">", this.getX() + this.getWidth() - 29, this.getY() + (this.getHeight() / 2) - 22F, palette.getFontColor(ColorType.DARK, (int) (rightValue * 255)), 9, Fonts.DEMIBOLD);
+			nvg.drawText(">", this.getX() + this.getWidth() - 29, this.getY() + (this.getHeight() / 2) - 22F, palette.getFontColor(ColorType.DARK, (int) (rightValue * 255)), 9, Fonts.SEMIBOLD);
 			
 			nvg.restore();
 		}else {

@@ -128,7 +128,7 @@ public class GuiModMenu extends GuiScreen {
 		if(currentCategory.isShowTitle()) {
 			nvg.save();
 			nvg.translate(currentCategory.getTextAnimation().getValue() * 15, 0);
-			nvg.drawText(currentCategory.getName(), x + 32, y + 10, palette.getFontColor(ColorType.DARK, (int) (currentCategory.getTextAnimation().getValue() * 255)), 15, Fonts.DEMIBOLD);
+			nvg.drawText(currentCategory.getName(), x + 32, y + 10, palette.getFontColor(ColorType.DARK, (int) (currentCategory.getTextAnimation().getValue() * 255)), 15, Fonts.SEMIBOLD);
 			nvg.restore();
 		}
 		
