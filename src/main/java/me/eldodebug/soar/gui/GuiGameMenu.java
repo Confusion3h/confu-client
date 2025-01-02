@@ -1,27 +1,27 @@
 package me.eldodebug.soar.gui;
 
 import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
 import me.eldodebug.soar.utils.animation.normal.Animation;
 import me.eldodebug.soar.utils.animation.normal.Direction;
 import me.eldodebug.soar.utils.animation.normal.easing.EaseInOutCirc;
+import me.eldodebug.soar.utils.animation.normal.easing.EaseLiner;
 import me.eldodebug.soar.utils.buffer.ScreenAnimation;
 import me.eldodebug.soar.utils.mouse.MouseUtils;
 import me.eldodebug.soar.utils.render.BlurUtils;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.gui.achievement.GuiStats;
+import net.minecraft.client.resources.I18n;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 
 
 public class GuiGameMenu extends GuiScreen {
-
-    // yo eldo im sorry for this mess xd -breadcat
-    // Todo: translate text
 
     private Animation introAnimation;
     private final ScreenAnimation screenAnimation = new ScreenAnimation();
@@ -30,7 +30,6 @@ public class GuiGameMenu extends GuiScreen {
     @Override
     public void initGui() {
         ScaledResolution sr = new ScaledResolution(mc);
-
         scaledWidth = sr.getScaledWidth();
         scaledHeight = sr.getScaledHeight();
         centre = scaledWidth / 2;
@@ -39,7 +38,7 @@ public class GuiGameMenu extends GuiScreen {
         width = 180;
         height = 220;
 
-        introAnimation = new EaseInOutCirc(150, 1.0F);
+        introAnimation = new EaseLiner(80, 1.0f);
         introAnimation.setDirection(Direction.FORWARDS);
     }
 
@@ -58,31 +57,31 @@ public class GuiGameMenu extends GuiScreen {
     private void drawNanoVG(NanoVGManager nvg) {
         nvg.drawRect(-5, -5, scaledWidth + 10, scaledHeight + 10,  new Color(0,0,0, 140));
         nvg.drawText(LegacyIcon.ARROW_LEFT, x, y + 5, new Color(255,255,255, 140),11, Fonts.LEGACYICON);
-        nvg.drawCenteredText("Game Menu", centre, y + 5,  new Color(255,255,255, 200), 13, Fonts.SEMIBOLD);
+        nvg.drawCenteredText( I18n.format("menu.game"), centre, y + 5,  new Color(255,255,255, 200), 13, Fonts.SEMIBOLD);
 
         float standardPadding = 29.5f;
         float offset = 29.5F;
         drawButton(nvg, "Minecraft Options", LegacyIcon.SLIDERS, offset);
         offset += standardPadding;
         if(this.mc.isSingleplayer() && !this.mc.getIntegratedServer().getPublic()){
-            drawButton(nvg, "Open to Lan", LegacyIcon.USERS, offset);
+            drawButton(nvg, I18n.format("menu.shareToLan"), LegacyIcon.USERS, offset);
         } else {
-            drawButton(nvg, "Edit Hud", LegacyIcon.LAYOUT, offset);
+            drawButton(nvg, TranslateText.EDIT_HUD.getText(), LegacyIcon.LAYOUT, offset);
         }
         offset += standardPadding;
-        drawButton(nvg, "Statistics", LegacyIcon.ARCHIVE, offset);
+        drawButton(nvg, I18n.format("gui.stats"), LegacyIcon.ARCHIVE, offset);
         offset += standardPadding;
-        drawButton(nvg, "Achievements", LegacyIcon.MAP, offset);
+        drawButton(nvg, I18n.format("gui.achievements"), LegacyIcon.MAP, offset);
         offset += standardPadding;
-        drawButton(nvg, "Open Glide Menu", LegacyIcon.SOAR, offset);
+        drawButton(nvg, TranslateText.OPEN_MOD_MENU.getText(), LegacyIcon.SOAR, offset);
         offset += standardPadding;
-        drawButton(nvg, !this.mc.isIntegratedServerRunning() ? "Disconnect" : "Return to Main Menu", LegacyIcon.LOGOUT, offset);
+        drawButton(nvg, !this.mc.isIntegratedServerRunning() ? I18n.format("menu.disconnect") : TranslateText.EXIT_WORLD_SINGLEPLAYER.getText(), LegacyIcon.LOGOUT, offset);
     }
 
     private void drawButton(NanoVGManager nvg, String s, String i, Float offset){
         nvg.drawRoundedRect(x, y + offset, width , 22, 6, new Color(230, 230, 230, 80));
         float startX = (nvg.getTextWidth(s, 9.5F, Fonts.MEDIUM) + 14) /2;
-        nvg.drawText(i, centre - startX, y + offset + 5.5F, Color.WHITE, 9.5F, Fonts.LEGACYICON);
+        nvg.drawText(i, centre - startX, y + offset + 6.5F, Color.WHITE, 9.5F, Fonts.LEGACYICON);
         nvg.drawText(s, centre - startX + 14, y + offset + 7F, Color.WHITE, 9.5F, Fonts.MEDIUM);
     }
 
