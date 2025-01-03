@@ -211,6 +211,7 @@ public class ScreenshotCategory extends Category {
 	@Override
 	public void keyTyped(char typedChar, int keyCode) {
 		ScreenshotManager screenshotManager = Glide.getInstance().getScreenshotManager();
+		if(currentScreenshot == null) return;
 		if(keyCode == Keyboard.KEY_LEFT) {
 			currentScreenshot = screenshotManager.getBackScreenshot(currentScreenshot);
 		}

@@ -92,7 +92,7 @@ public class GuiWaypoint extends GuiScreen {
 		nvg.drawShadow(x, y, width, height, 10);
 		nvg.drawRoundedRect(x, y, width, height, 10, palette.getBackgroundColor(ColorType.NORMAL));
 		nvg.drawText("Waypoint", x + 8, y + 8, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
-		nvg.drawRect(x, y + 24, width, 1, palette.getBackgroundColor(ColorType.DARK));
+		//nvg.drawRect(x, y + 24, width, 1, palette.getBackgroundColor(ColorType.DARK));
 		
 		for(Waypoint waypoint : waypointManager.getWaypoints()) {
 			
