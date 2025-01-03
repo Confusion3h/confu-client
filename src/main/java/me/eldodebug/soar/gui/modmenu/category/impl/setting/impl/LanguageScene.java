@@ -22,11 +22,11 @@ public class LanguageScene extends SettingScene {
 		super(parent, TranslateText.LANGUAGE, TranslateText.LANGUAGE_DESCRIPTION, LegacyIcon.TRANSLATE);
 	}
 
-	private Scroll categoryScroll = new Scroll();
+	private Scroll languageScroll = new Scroll();
 
 	@Override
 	public void initGui() {
-		categoryScroll.resetAll();
+		languageScroll.resetAll();
 	}
 
 
@@ -42,7 +42,7 @@ public class LanguageScene extends SettingScene {
 		float offsetY = 0;
 
 		nvg.scissor(this.getX(), this.getY() - 15, this.getWidth(), this.getHeight() + 45);
-		nvg.translate(0, categoryScroll.getValue());
+		nvg.translate(0, languageScroll.getValue());
 		
 		for(Language lang : Language.values()) {
 			
@@ -57,12 +57,9 @@ public class LanguageScene extends SettingScene {
 			offsetY+=50;
 		}
 
-		if(MouseUtils.isInside(mouseX, mouseY, this.getX(), this.getY() - 15, this.getWidth(), this.getHeight() + 45)) {
-			categoryScroll.onScroll();
-		}
-
-		categoryScroll.onAnimation();
-		categoryScroll.setMaxScroll((Language.values().length - 4.5F) * 50);
+		languageScroll.onScroll();
+		languageScroll.onAnimation();
+		languageScroll.setMaxScroll((Language.values().length - 4.5F) * 50);
 	}
 	
 	@Override
@@ -71,7 +68,7 @@ public class LanguageScene extends SettingScene {
 		Glide instance = Glide.getInstance();
 		LanguageManager languageManager = instance.getLanguageManager();
 
-		float offsetY = 0 + categoryScroll.getValue();
+		float offsetY = 0 + languageScroll.getValue();
 		if (!MouseUtils.isInside(mouseX, mouseY, this.getX(), this.getY() - 15,  this.getWidth(), this.getHeight() + 45)) {return;}
 		for(Language lang : Language.values()) {
 			

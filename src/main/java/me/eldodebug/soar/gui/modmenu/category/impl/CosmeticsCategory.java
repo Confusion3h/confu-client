@@ -21,6 +21,7 @@ import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
 import me.eldodebug.soar.utils.ColorUtils;
 import me.eldodebug.soar.utils.SearchUtils;
 import me.eldodebug.soar.utils.mouse.MouseUtils;
+import org.lwjgl.input.Keyboard;
 
 public class CosmeticsCategory extends Category {
 
@@ -177,7 +178,7 @@ public class CosmeticsCategory extends Category {
 	@Override
 	public void keyTyped(char typedChar, int keyCode) {
 		scroll.onKey(keyCode);
-		if (keyCode != 0xD0 && keyCode != 0xC8) this.getSearchBox().setFocused(true);
+		if(keyCode != 0xD0 && keyCode != 0xC8 && keyCode != Keyboard.KEY_ESCAPE)  this.getSearchBox().setFocused(true);
 	}
 
 	private boolean filterCape(Cape cape) {

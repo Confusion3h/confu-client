@@ -19,8 +19,11 @@ import me.eldodebug.soar.management.screenshot.ScreenshotManager;
 import me.eldodebug.soar.utils.ColorUtils;
 import me.eldodebug.soar.utils.animation.simple.SimpleAnimation;
 import me.eldodebug.soar.utils.mouse.MouseUtils;
+import org.lwjgl.input.Keyboard;
 
 public class ScreenshotCategory extends Category {
+
+	// todo: add delete confirm dialog
 
 	private Screenshot currentScreenshot;
 	
@@ -202,6 +205,17 @@ public class ScreenshotCategory extends Category {
 			if(MouseUtils.isInside(mouseX, mouseY, this.getX() + this.getWidth() - 32, this.getY() + (this.getHeight() / 2) - 30.5F, 12, 24)) {
 				currentScreenshot = screenshotManager.getNextScreenshot(currentScreenshot);
 			}
+		}
+	}
+
+	@Override
+	public void keyTyped(char typedChar, int keyCode) {
+		ScreenshotManager screenshotManager = Glide.getInstance().getScreenshotManager();
+		if(keyCode == Keyboard.KEY_LEFT) {
+			currentScreenshot = screenshotManager.getBackScreenshot(currentScreenshot);
+		}
+		if(keyCode == Keyboard.KEY_RIGHT) {
+			currentScreenshot = screenshotManager.getNextScreenshot(currentScreenshot);
 		}
 	}
 }

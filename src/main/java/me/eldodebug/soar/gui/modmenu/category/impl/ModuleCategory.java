@@ -561,7 +561,7 @@ public class ModuleCategory extends Category {
 		}
 		if(!openSetting) {
 			scroll.onKey(keyCode);
-			if(keyCode != 0xD0 && keyCode != 0xC8) this.getSearchBox().setFocused(true);
+			if(keyCode != 0xD0 && keyCode != 0xC8 && keyCode != Keyboard.KEY_ESCAPE) this.getSearchBox().setFocused(true);
 		}
 	}
 	
