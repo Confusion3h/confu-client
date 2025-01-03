@@ -138,7 +138,7 @@ public class GuiModMenu extends GuiScreen {
 		
 		nvg.save();
 
-		nvg.drawGradientRoundedRect(x + 5.5F, y + 38.5F + moveAnimation.getValue(), 21, 21, 4, currentColor.getColor1(), currentColor.getColor2());
+		nvg.drawGradientRoundedRect(x + 5.5F, y + 38.5F + moveAnimation.getValue(), 21, 21, 5, currentColor.getColor1(), currentColor.getColor2());
 		
 		for(Category c : categories) {
 			
@@ -153,7 +153,7 @@ public class GuiModMenu extends GuiScreen {
 		
 		nvg.restore();
 		
-		nvg.drawGradientRoundedRect(x + 5.5F, y + height - 30, 21, 21, 4, currentColor.getColor1(), currentColor.getColor2());
+		nvg.drawGradientRoundedRect(x + 5.5F, y + height - 30, 21, 21, 6, currentColor.getColor1(), currentColor.getColor2());
 		nvg.drawText(LegacyIcon.LAYOUT, x + 9, y + height - 26.5F, Color.WHITE, 14, Fonts.LEGACYICON);
 		
 		for(Category c : categories) {

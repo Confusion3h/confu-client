@@ -187,6 +187,7 @@ public class HUDMod extends Mod {
 		boolean isLight = theme.getTranslate().equals(TranslateText.LIGHT);
 		boolean isRect = theme.getTranslate().equals(TranslateText.RECT);
 		boolean isModern = theme.getTranslate().equals(TranslateText.MODERN);
+		boolean isSimpGrad = theme.getTranslate().equals(TranslateText.GRADIENT_SIMPLE);
 
 		
 		float lastWidth = width * scale;
@@ -219,8 +220,11 @@ public class HUDMod extends Mod {
 		} else if(isDark) {
 			nvg.drawRoundedRect(x, y, lastWidth, lastHeight, radius, new Color(20, 20, 20, 220));
 		}
-		if(isRect) {
+		if(isRect || isSimpGrad) {
 			nvg.drawRect(x, y, lastWidth, lastHeight, new Color(20, 20, 20, 165));
+		}
+		if(isSimpGrad){
+			nvg.drawHorizontalGradientRect(x, y - (2 * scale), lastWidth, (2* scale),  ColorUtils.interpolateColors(8, 0, currentColor.getColor1(), currentColor.getColor2()), ColorUtils.interpolateColors(10, 20, currentColor.getColor1(), currentColor.getColor2()));
 		}
 		if(isModern) {
 			nvg.drawRoundedRect(x, y, lastWidth, lastHeight, radius, new Color(0, 0, 0, 150));

@@ -19,7 +19,7 @@ import me.eldodebug.soar.utils.mouse.Scroll;
 public class LanguageScene extends SettingScene {
 
 	public LanguageScene(SettingCategory parent) {
-		super(parent, TranslateText.LANGUAGE, TranslateText.LANGUAGE_DESCRIPTION, LegacyIcon.TRANSLATE);
+		super(parent, TranslateText.LANGUAGE, TranslateText.LANGUAGE_DESCRIPTION, LegacyIcon.GLOBE);
 	}
 
 	private Scroll languageScroll = new Scroll();
@@ -59,7 +59,7 @@ public class LanguageScene extends SettingScene {
 
 		languageScroll.onScroll();
 		languageScroll.onAnimation();
-		languageScroll.setMaxScroll((Language.values().length - 4.5F) * 50);
+		languageScroll.setMaxScroll((Language.values().length - 5.25F) * 50);
 	}
 	
 	@Override
@@ -78,5 +78,9 @@ public class LanguageScene extends SettingScene {
 			
 			offsetY+=50;
 		}
+	}
+
+	public void keyTyped(char typedChar, int keyCode) {
+		languageScroll.onKey(keyCode);
 	}
 }

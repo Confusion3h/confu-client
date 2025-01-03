@@ -24,7 +24,7 @@ public class GlobalSettingsMod extends Mod {
 	private ComboSetting modThemeSetting = new ComboSetting(TranslateText.HUD_THEME, this, TranslateText.NORMAL, new ArrayList<Option>(Arrays.asList(
 			new Option(TranslateText.NORMAL), new Option(TranslateText.GLOW), new Option(TranslateText.OUTLINE), new Option(TranslateText.VANILLA),
 			new Option(TranslateText.OUTLINE_GLOW), new Option(TranslateText.VANILLA_GLOW), new Option(TranslateText.SHADOW),
-			new Option(TranslateText.DARK), new Option(TranslateText.LIGHT), new Option(TranslateText.RECT), new Option(TranslateText.MODERN), new Option(TranslateText.TEXT))));
+			new Option(TranslateText.DARK), new Option(TranslateText.LIGHT), new Option(TranslateText.RECT), new Option(TranslateText.MODERN), new Option(TranslateText.TEXT), new Option(TranslateText.GRADIENT_SIMPLE))));
 	
 	private NumberSetting volumeSetting = new NumberSetting(TranslateText.VOLUME, this, 0.8, 0, 1, false);
 	private KeybindSetting modMenuKeybindSetting = new KeybindSetting(TranslateText.KEYBIND, this, Keyboard.KEY_RSHIFT);
@@ -59,6 +59,10 @@ public class GlobalSettingsMod extends Mod {
 
 	public ComboSetting getModThemeSetting() {
 		return modThemeSetting;
+	}
+
+	public KeybindSetting getModMenuKeybindSetting() {
+		return modMenuKeybindSetting;
 	}
 
 	public String getCapeConfigName(){
