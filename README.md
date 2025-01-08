@@ -1,4 +1,7 @@
-<p align="center"><img src="/.github/assets/GlideClientLogo.png" alt="Glide Client. An updated version of Soar client" title="GlideClient"></p>
+<p align="center">
+  <img src="/.github/assets/GlideClientLogo.png" alt="Glide Client. An updated version of Soar client" title="GlideClient">
+</p>
+
 ## More features, fixes and quality of life.
 ### Join our discord! https://glideclient.github.io/discord
 <br>
