@@ -11,7 +11,7 @@ import me.eldodebug.soar.management.color.Theme;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
 import me.eldodebug.soar.management.color.palette.ColorType;
 import me.eldodebug.soar.management.language.TranslateText;
-import me.eldodebug.soar.management.mods.impl.GlobalSettingsMod;
+import me.eldodebug.soar.management.mods.impl.InternalSettingsMod;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
@@ -32,7 +32,7 @@ public class AppearanceScene extends SettingScene {
 
 	@Override
 	public void initGui() {
-		modTheme = new CompComboBox(75, GlobalSettingsMod.getInstance().getModThemeSetting());
+		modTheme = new CompComboBox(75, InternalSettingsMod.getInstance().getModThemeSetting());
 	}
 	
 	@Override
