@@ -19,6 +19,7 @@ public class GeneralScene extends SettingScene {
 
 	private CompKeybind modMenuKeybind;
 	private CompToggleButton clickEffectSetting;
+	private CompToggleButton soundsUISetting;
 
 	public GeneralScene(SettingCategory parent) {
 		super(parent, TranslateText.GENERAL, TranslateText.GENERAL_DESCRIPTION, LegacyIcon.LIST);
@@ -28,6 +29,7 @@ public class GeneralScene extends SettingScene {
 	public void initGui() {
 		modMenuKeybind = new CompKeybind(75, InternalSettingsMod.getInstance().getModMenuKeybindSetting());
 		clickEffectSetting = new CompToggleButton(InternalSettingsMod.getInstance().getClickEffectsSetting());
+		soundsUISetting  = new CompToggleButton(InternalSettingsMod.getInstance().getSoundsUISetting());
 	}
 	
 	@Override
@@ -38,9 +40,9 @@ public class GeneralScene extends SettingScene {
 		ColorManager colorManager = instance.getColorManager();
 		ColorPalette palette = colorManager.getPalette();
 		int offsetY = 0;
-		drawItemInList(TranslateText.OPEN_MOD_MENU.getText(), "NOT IMPLIMENTED YET", this.getY(), offsetY, 87, modMenuKeybind, nvg, palette, mouseX, mouseY, partialTicks); offsetY += 51;
+		drawItemInList(TranslateText.OPEN_MOD_MENU.getText(), "Choose which key should open this GUI", this.getY(), offsetY, 87, modMenuKeybind, nvg, palette, mouseX, mouseY, partialTicks); offsetY += 51;
 		drawItemInList(TranslateText.CLICK_EFFECT.getText(), TranslateText.CLICK_EFFECT_DESCRIPTION.getText(), this.getY(), offsetY, 46, clickEffectSetting, nvg, palette, mouseX, mouseY, partialTicks); offsetY += 51;
-
+		drawItemInList(TranslateText.UI_SOUNDS.getText(), TranslateText.UI_SOUNDS_DESCRIPTION.getText(), this.getY(), offsetY, 46, soundsUISetting, nvg, palette, mouseX, mouseY, partialTicks); offsetY += 51;
 	}
 
 	 private void drawItemInList(String title, String description, float y, float offset, float xRemove, Comp comp, NanoVGManager nvg, ColorPalette palette, int mouseX, int mouseY, float partialTicks) {
@@ -57,6 +59,7 @@ public class GeneralScene extends SettingScene {
 		Glide instance = Glide.getInstance();
 		modMenuKeybind.mouseClicked(mouseX, mouseY, mouseButton);
 		clickEffectSetting.mouseClicked(mouseX, mouseY, mouseButton);
+		soundsUISetting.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	public void keyTyped(char typedChar, int keyCode) {

@@ -34,6 +34,8 @@ public class InternalSettingsMod extends Mod {
 
 	private BooleanSetting clickEffectsSetting = new BooleanSetting(TranslateText.CLICK_EFFECT, this, true);
 
+	private BooleanSetting soundsUISetting = new BooleanSetting(TranslateText.UI_SOUNDS, this, true);
+
 	public InternalSettingsMod() {
 		super(TranslateText.NONE, TranslateText.NONE, ModCategory.OTHER);
 		
@@ -66,25 +68,19 @@ public class InternalSettingsMod extends Mod {
 //		}
 	}
 
-	public static InternalSettingsMod getInstance() {
-		return instance;
-	}
+	public static InternalSettingsMod getInstance() {return instance;}
 
 	public BooleanSetting getClickEffectsSetting(){return clickEffectsSetting;}
 
-	public NumberSetting getVolumeSetting() {
-		return volumeSetting;
-	}
+	public BooleanSetting getSoundsUISetting(){return soundsUISetting;}
+
+	public NumberSetting getVolumeSetting() {return volumeSetting;}
 
 	public ComboSetting getModThemeSetting() {return modThemeSetting;}
 
 	public KeybindSetting getModMenuKeybindSetting() {return modMenuKeybindSetting;}
 
-	public String getCapeConfigName(){
-		return capeNameSetting.getText();
-	}
+	public String getCapeConfigName(){return capeNameSetting.getText();}
 
-	public void setCapeConfigName(String a){
-		capeNameSetting.setText(a);
-	}
+	public void setCapeConfigName(String a){capeNameSetting.setText(a);}
 }
