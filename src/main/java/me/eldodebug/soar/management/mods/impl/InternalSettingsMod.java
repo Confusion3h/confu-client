@@ -27,6 +27,8 @@ public class InternalSettingsMod extends Mod {
 
 	private final BooleanSetting blurSetting = new BooleanSetting(TranslateText.UI_BLUR, this, true);
 
+	private final BooleanSetting mcFontSetting = new BooleanSetting(TranslateText.MC_FONT, this, true);
+
 	private final NumberSetting volumeSetting = new NumberSetting(TranslateText.VOLUME, this, 0.8, 0, 1, false);
 
 	private final KeybindSetting modMenuKeybindSetting = new KeybindSetting(TranslateText.KEYBIND, this, Keyboard.KEY_RSHIFT);
@@ -84,6 +86,8 @@ public class InternalSettingsMod extends Mod {
 	public BooleanSetting getBlurSetting() {return blurSetting;}
 
 	public KeybindSetting getModMenuKeybindSetting() {return modMenuKeybindSetting;}
+
+	public BooleanSetting getMCHUDFont() {return mcFontSetting;}
 
 	public String getCapeConfigName(){return capeNameSetting.getText();}
 

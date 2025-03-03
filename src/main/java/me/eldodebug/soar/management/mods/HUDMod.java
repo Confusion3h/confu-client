@@ -16,6 +16,7 @@ import me.eldodebug.soar.management.mods.settings.impl.combo.Option;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Font;
 import eu.shoroa.contrib.shader.UIShader;
+import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.utils.ColorUtils;
 import net.minecraft.util.ResourceLocation;
 
@@ -405,4 +406,19 @@ public class HUDMod extends Mod {
 	public void setDraggable(boolean draggable) {
 		this.draggable = draggable;
 	}
+
+	public Font getHudFont(int in){
+		if(InternalSettingsMod.getInstance().getMCHUDFont().isToggled()) return Fonts.MOJANGLES;
+		switch (in) {
+			case 1:
+				return Fonts.REGULAR;
+			case 2:
+				return Fonts.MEDIUM;
+			case 3:
+				return Fonts.SEMIBOLD;
+			default:
+				return Fonts.REGULAR;
+		}
+	}
+
 }
