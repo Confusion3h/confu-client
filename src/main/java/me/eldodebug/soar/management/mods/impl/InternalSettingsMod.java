@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import me.eldodebug.soar.management.mods.settings.impl.*;
 import me.eldodebug.soar.utils.mouse.MouseUtils;
+import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 
 import me.eldodebug.soar.Glide;
@@ -67,6 +68,8 @@ public class InternalSettingsMod extends Mod {
 //			} else {
 //				modeIndex = max - 1;
 //			}
+//
+//			mcFontSetting.setToggled(!mcFontSetting.isToggled());
 //
 //			modThemeSetting.setOption(modThemeSetting.getOptions().get(modeIndex));
 //

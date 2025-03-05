@@ -202,7 +202,7 @@ public class HUDMod extends Mod {
 		if (isBlur) ShBlur.getInstance().drawBlur(x,y,lastWidth,lastHeight,radius);
 
 		if(isNormal || isVanilla || isShadow || isDark || isLight || isModern) {
-			nvg.drawShadow(x, y, lastWidth, lastHeight, radius);
+			nvg.drawShadow(x, y, lastWidth, lastHeight, radius - 0.75F);
 		}else if(isGlow || isVanillaGlow) {
 			nvg.drawGradientShadow(x, y, lastWidth, lastHeight, radius, currentColor.getColor1(), currentColor.getColor2());
 		}else if(isOutline || isOutlineGlow) {
@@ -252,6 +252,11 @@ public class HUDMod extends Mod {
 	}
 
 	public void drawText(String text, float addX, float addY, float size, Font font, Color color) {
+
+		if(font == Fonts.MOJANGLES) {
+			addX = addX  - 0.5F;
+			addY = addY  - 1.3F;
+		}
 
 		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		float lastSize = size * scale;
