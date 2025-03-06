@@ -234,7 +234,7 @@ public class HUDMod extends Mod {
 		}
 		if(isModern) {
 			nvg.drawRoundedRect(x, y, lastWidth, lastHeight, radius, new Color(0, 0, 0, 110));
-			nvg.drawOutlineRoundedRect(x - 0.5F, y - 0.5F, lastWidth + 1, lastHeight + 1, radius + 0.5F, 0.5F,  new Color(255,255,255,110));
+			nvg.drawOutlineRoundedRect(x - 0.5F, y - 0.5F, lastWidth + 1, lastHeight + 1, radius + 0.5F, 0.7F,  new Color(255,255,255,110));
 		}
 
 	}
