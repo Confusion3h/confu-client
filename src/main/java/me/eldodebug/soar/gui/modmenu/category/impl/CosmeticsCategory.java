@@ -132,6 +132,8 @@ public class CosmeticsCategory extends Category {
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 
+		if(!MouseUtils.isInside(mouseX, mouseY, getX(), getY(), getWidth(), getHeight())) return;
+
 		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 

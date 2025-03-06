@@ -5,9 +5,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import eu.shoroa.contrib.render.ShBlur;
 import me.eldodebug.soar.gui.modmenu.category.impl.*;
 import me.eldodebug.soar.management.file.FileManager;
 import me.eldodebug.soar.management.language.TranslateText;
+import me.eldodebug.soar.management.mods.impl.InternalSettingsMod;
 import me.eldodebug.soar.management.nanovg.font.FontManager;
 import me.eldodebug.soar.utils.file.FileUtils;
 import org.lwjgl.input.Keyboard;
@@ -121,9 +123,16 @@ public class GuiModMenu extends GuiScreen {
 		if(introAnimation.isDone(Direction.BACKWARDS)) {
 			mc.displayGuiScreen(toEditHUD ? new GuiEditHUD(true) : null);
 		}
-		
 		nvg.drawRoundedRect(x, y, width, height, 12, palette.getBackgroundColor(ColorType.NORMAL));
-		nvg.drawRoundedRectVarying(x, y, 32, height, 12, 0, 12, 0, palette.getBackgroundColor(ColorType.DARK));
+
+		if (InternalSettingsMod.getInstance().getBlurSetting().isToggled()) {
+			ShBlur.getInstance().drawBlur(() -> nvg.drawRoundedRectVarying(x, y, 32, height, 12, 0, 12, 0, palette.getBackgroundColor(ColorType.DARK)));
+			Color colsidebar = palette.getBackgroundColor(ColorType.DARK);
+			nvg.drawRoundedRectVarying(x, y, 32, height, 12, 0, 12, 0, new Color(colsidebar.getRed(), colsidebar.getGreen(), colsidebar.getBlue(), 210));
+		} else {
+			nvg.drawRoundedRectVarying(x, y, 32, height, 12, 0, 12, 0,  palette.getBackgroundColor(ColorType.DARK));
+		}
+
 		nvg.drawGradientRoundedRect(x + 5, y + 7, 22, 22, 11, currentColor.getColor1(), currentColor.getColor2());
 		nvg.drawText(LegacyIcon.SOAR, x + 8, y + 10, Color.WHITE, 16, Fonts.LEGACYICON);
 		if(currentCategory.isShowTitle()) {

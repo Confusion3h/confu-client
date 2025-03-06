@@ -176,4 +176,18 @@ public class ShBlur {
 
         paint.free();
     }
+
+    public void drawBlur(Runnable r) {
+        long ctx = Glide.getInstance().getNanoVGManager().getContext();
+        ScaledResolution sr = new ScaledResolution(mc);
+        NVGPaint paint = NVGPaint.calloc();
+        NanoVG.nvgBeginPath(ctx);
+        r.run();
+        NanoVG.nvgImagePattern(ctx, 0f, 0f, sr.getScaledWidth(), sr.getScaledHeight(), 0f, nvgImage, 1f, paint);
+        NanoVG.nvgFillPaint(ctx, paint);
+        NanoVG.nvgFill(ctx);
+        NanoVG.nvgClosePath(ctx);
+
+        paint.free();
+    }
 }
