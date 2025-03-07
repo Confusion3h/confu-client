@@ -6,6 +6,7 @@ import java.util.Arrays;
 import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.management.remote.discord.DiscordStats;
+import me.eldodebug.soar.management.remote.news.NewsManager;
 import me.eldodebug.soar.management.remote.update.Update;
 import me.eldodebug.soar.ui.ClickEffects;
 import me.eldodebug.soar.utils.Sound;
@@ -56,6 +57,7 @@ public class Glide {
 	private SecurityFeatureManager securityFeatureManager;
 	private QuickPlayManager quickPlayManager;
 	private ChangelogManager changelogManager;
+	private NewsManager newsManager;
 	private DiscordStats discordStats;
     private WaypointManager waypointManager;
 	private GuiModMenu modMenu;
@@ -98,6 +100,7 @@ public class Glide {
 		securityFeatureManager = new SecurityFeatureManager();
 		quickPlayManager = new QuickPlayManager();
 		changelogManager = new ChangelogManager();
+		newsManager = new NewsManager();
 		discordStats = new DiscordStats();
 		discordStats.check();
 		update = new Update();
@@ -205,6 +208,7 @@ public class Glide {
 	public ChangelogManager getChangelogManager() {
 		return changelogManager;
 	}
+	public NewsManager getNewsManager() { return newsManager; }
 
 	public DiscordStats getDiscordStats() {
 		return discordStats;

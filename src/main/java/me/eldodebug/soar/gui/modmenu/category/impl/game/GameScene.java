@@ -1,7 +1,6 @@
 package me.eldodebug.soar.gui.modmenu.category.impl.game;
 
 import me.eldodebug.soar.gui.modmenu.category.impl.GamesCategory;
-import me.eldodebug.soar.management.language.TranslateText;
 
 public class GameScene {
 
