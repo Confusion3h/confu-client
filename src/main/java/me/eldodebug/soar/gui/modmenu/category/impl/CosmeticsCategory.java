@@ -54,6 +54,7 @@ public class CosmeticsCategory extends Category {
 		Color defaultColor = palette.getBackgroundColor(ColorType.DARK);
 
 		int offsetX = 0;
+		int capeCount = 0;
 		float offsetY = 13;
 		int index = 1;
 		int prevIndex = 1;
@@ -82,6 +83,7 @@ public class CosmeticsCategory extends Category {
 
 		offsetX = 0;
 		offsetY = offsetY + 23;
+		capeCount = 0;
 
 		for (Cape cape : capeManager.getCapes()) {
 
@@ -120,11 +122,21 @@ public class CosmeticsCategory extends Category {
 			}
 
 			index++;
+			capeCount++;
 		}
 
 		scroll.setMaxScroll(prevIndex == 1 ? 0 : offsetY - (147 / 1.48F));
 
 		nvg.restore();
+		if(currentCategory.equals(CapeCategory.CUSTOM)){
+			if (capeCount == 0){
+				nvg.drawCenteredText("You have no custom capes.", getX()+(getWidth()/2), getY() + (getHeight()/2) - 14, palette.getFontColor(ColorType.DARK), 12, Fonts.SEMIBOLD);
+				nvg.drawCenteredText("You can click the folder button at the top to open the folder!", getX()+(getWidth()/2), getY() + (getHeight()/2), palette.getFontColor(ColorType.DARK), 9, Fonts.MEDIUM);
+				nvg.drawCenteredText("(Glide only supports capes that are PNG using Minecraft layout. You may need to restart Glide!)", getX()+(getWidth()/2), getY() + (getHeight()/2) + 12, palette.getFontColor(ColorType.NORMAL), 7, Fonts.REGULAR);
+			}
+			// you may need to reload the game
+		}
+
 		nvg.drawVerticalGradientRect(getX() + 15,  this.getY(), getWidth() - 30, 12,  palette.getBackgroundColor(ColorType.NORMAL), noColour); //top
 		nvg.drawVerticalGradientRect(getX() + 15,  this.getY()+ this.getHeight() - 12, getWidth() - 30, 12, noColour, palette.getBackgroundColor(ColorType.NORMAL)); // bottom
 	}

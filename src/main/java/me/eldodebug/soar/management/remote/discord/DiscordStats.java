@@ -19,6 +19,7 @@ public class DiscordStats {
         this.membersCount = in;
     }
     public int getMemberCount(){return membersCount;}
+
     public void setMemberOnline(int in){
         this.membersOnline = in;
     }

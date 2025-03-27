@@ -1,8 +1,8 @@
 package me.eldodebug.soar.management.mods;
 
 import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.management.language.TranslateText;
-import me.eldodebug.soar.utils.Sound;
 import me.eldodebug.soar.utils.animation.simple.SimpleAnimation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -17,7 +17,7 @@ public class Mod {
 	private SimpleAnimation animation = new SimpleAnimation();
 	private ModCategory category;
 	private String alias = "\u200B"; // zerowidth space
-	private Boolean banable = false;
+	private Boolean restricted = false;
 	
 	public Mod(TranslateText nameTranslate, TranslateText descriptionTranslate, ModCategory category) {
 		
@@ -40,14 +40,14 @@ public class Mod {
 		this.setup();
 	}
 
-	public Mod(TranslateText nameTranslate, TranslateText descriptionTranslate, ModCategory category, String alias, boolean banable) {
+	public Mod(TranslateText nameTranslate, TranslateText descriptionTranslate, ModCategory category, String alias, boolean restricted) {
 
 		this.nameTranslate = nameTranslate;
 		this.descriptionTranslate = descriptionTranslate;
 		this.toggled = false;
 		this.category = category;
 		this.alias = alias;
-		this.banable = banable;
+		this.restricted = restricted;
 
 		this.setup();
 	}
@@ -55,11 +55,19 @@ public class Mod {
 	public void setup() {}
 	
 	public void onEnable() {
-		Glide.getInstance().getEventManager().register(this);
+		if(Glide.getInstance().getRestrictedMod().checkAllowed(this)){
+			Glide.getInstance().getEventManager().register(this);
+			GlideLogger.info("[MODULE] " + getName() + " was enabled");
+			Glide.getInstance().getModManager().playToggleSound(true, this);
+		} else {
+			this.setToggled(false);
+		}
 	}
 	
 	public void onDisable() {
 		Glide.getInstance().getEventManager().unregister(this);
+		GlideLogger.info("[MODULE] " + getName() + " was disabled");
+		Glide.getInstance().getModManager().playToggleSound(false, this);
 	}
 	
 	public void toggle() {
@@ -68,10 +76,8 @@ public class Mod {
 		
 		if(toggled) {
 			onEnable();
-			Glide.getInstance().getModManager().playToggleSound(true, this);
 		}else {
 			onDisable();
-			Glide.getInstance().getModManager().playToggleSound(false, this);
 		}
 	}
 	
@@ -126,5 +132,5 @@ public class Mod {
 		return this.alias;
 	}
 
-	public Boolean isBanable() {return this.banable;}
+	public Boolean isRestricted() {return this.restricted;}
 }

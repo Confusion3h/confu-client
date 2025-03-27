@@ -45,49 +45,50 @@ public class ProfileManager {
 	}
 	
 	public void loadProfiles(boolean loadDefaultProfile) {
-		
-		File profileDir = Glide.getInstance().getFileManager().getProfileDir();
-		int id = 0;
-		
-		profiles.clear();
-		
-		for(File f : profileDir.listFiles()) {
-			
-			if(FileUtils.getExtension(f).equals("json")) {
-				
-				if(f.getName().equals("Default.json")) {
-					if(loadDefaultProfile) {
-						load(f);
-					}
-				}else {
-					try (FileReader reader = new FileReader(f)) {
-						
-						String serverIp = "";
-						ProfileIcon icon = ProfileIcon.GRASS;
-						ProfileType type = ProfileType.ALL;
-						
-						Gson gson = new Gson();
-			            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-			            JsonObject profileData = JsonUtils.getObjectProperty(jsonObject, "Profile Data");
-			            
-			            serverIp = JsonUtils.getStringProperty(profileData, "Server", "");
-			            icon = ProfileIcon.getIconById(JsonUtils.getIntProperty(profileData, "Icon", ProfileIcon.GRASS.getId()));
-			            type = ProfileType.getTypeById(JsonUtils.getIntProperty(profileData, "Type", ProfileType.ALL.getId()));
-			            
-			            Profile p = new Profile(id, serverIp, f, icon);
-			            
-			            p.setType(type);
-			            
-			            profiles.add(p);
-			            
-			            id++;
-					} catch(Exception e) {
-						GlideLogger.error("Failed to load profile", e);
+
+		try {
+			File profileDir = Glide.getInstance().getFileManager().getProfileDir();
+			int id = 0;
+
+			profiles.clear();
+
+			for (File f : profileDir.listFiles()) {
+
+				if (FileUtils.getExtension(f).equals("json")) {
+
+					if (f.getName().equals("Default.json")) {
+						if (loadDefaultProfile) {
+							load(f);
+						}
+					} else {
+						try (FileReader reader = new FileReader(f)) {
+
+							String serverIp = "";
+							ProfileIcon icon = ProfileIcon.GRASS;
+							ProfileType type = ProfileType.ALL;
+
+							Gson gson = new Gson();
+							JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+							JsonObject profileData = JsonUtils.getObjectProperty(jsonObject, "Profile Data");
+
+							serverIp = JsonUtils.getStringProperty(profileData, "Server", "");
+							icon = ProfileIcon.getIconById(JsonUtils.getIntProperty(profileData, "Icon", ProfileIcon.GRASS.getId()));
+							type = ProfileType.getTypeById(JsonUtils.getIntProperty(profileData, "Type", ProfileType.ALL.getId()));
+
+							Profile p = new Profile(id, serverIp, f, icon);
+
+							p.setType(type);
+
+							profiles.add(p);
+
+							id++;
+						} catch (Exception e) {
+							GlideLogger.error("Failed to load profile", e);
+						}
 					}
 				}
 			}
-		}
-		
+		} catch (Exception ignored) {}
 		profiles.add(new Profile(999, "", null, null));
 	}
 	

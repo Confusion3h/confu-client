@@ -4,19 +4,14 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 
+import me.eldodebug.soar.management.event.impl.*;
+import me.eldodebug.soar.management.mods.RestrictedMod;
 import org.apache.commons.lang3.StringUtils;
 
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.management.cape.CapeManager;
 import me.eldodebug.soar.management.cape.impl.Cape;
 import me.eldodebug.soar.management.event.EventTarget;
-import me.eldodebug.soar.management.event.impl.EventClickMouse;
-import me.eldodebug.soar.management.event.impl.EventJoinServer;
-import me.eldodebug.soar.management.event.impl.EventLocationCape;
-import me.eldodebug.soar.management.event.impl.EventLocationSkin;
-import me.eldodebug.soar.management.event.impl.EventReceivePacket;
-import me.eldodebug.soar.management.event.impl.EventTick;
-import me.eldodebug.soar.management.event.impl.EventUpdate;
 import me.eldodebug.soar.management.profile.Profile;
 import me.eldodebug.soar.utils.OptifineUtils;
 import me.eldodebug.soar.utils.TargetUtils;
@@ -52,6 +47,13 @@ public class GlideHandler {
 				break;
 			}
 		}
+
+		instance.getRestrictedMod().joinServer(event.getIp());
+	}
+
+	@EventTarget
+	public void onLoadWorld(EventLoadWorld event) {
+		instance.getRestrictedMod().joinWorld();
 	}
 	
 	@EventTarget

@@ -41,7 +41,7 @@ public class ClockMod extends SimpleHUDMod {
 		if(modeSetting.getOption().getTranslate().equals(TranslateText.SIMPLE)) {
 			this.draw();
 		}else {
-			Glide.getInstance().getNanoVGManager().setupAndDraw(() -> drawNanoVG());
+			Glide.getInstance().getNanoVGManager().setupAndDraw(this::drawNanoVG);
 		}
 	}
 	

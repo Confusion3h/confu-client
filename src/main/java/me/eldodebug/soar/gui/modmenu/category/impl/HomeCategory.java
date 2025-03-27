@@ -35,8 +35,7 @@ public class HomeCategory extends Category {
 	public void initGui() {
 		changelogScroll.resetAll();
 		newsScroll.resetAll();
-		new ChangelogManager();
-		new NewsManager();
+		Glide.getInstance().getDiscordStats().check();
 	}
 
 	Color onlineColour = new Color(85, 155, 89, 255);
@@ -64,14 +63,14 @@ public class HomeCategory extends Category {
 		nvg.save();
 		nvg.scissor(this.getX() + outerPadding, this.getY() + outerPadding + 20, 200, 230);
 		nvg.translate(0, newsScroll.getValue());
-		
+
 		for(News n : newsManager.getNews()) {
 			float titleSize = nvg.getTextBoxHeight(n.getTitle(), 10, Fonts.SEMIBOLD, 180);
 			nvg.drawTextBox(n.getTitle(), this.getX() + outerPadding + 8, this.getY() + 43F + offsetNewsY, 180, palette.getFontColor(ColorType.DARK), 10, Fonts.SEMIBOLD);
-			offsetNewsY += (int) (titleSize + 2);
+			offsetNewsY += (int) (titleSize);
 			float subTitleSize = nvg.getTextBoxHeight(n.getSubTitle(), 8.5F, Fonts.MEDIUM, 180);
 			nvg.drawTextBox(n.getSubTitle(), this.getX() + outerPadding + 8, this.getY() + 43F + offsetNewsY, 180, palette.getFontColor(ColorType.DARK), 8.5F, Fonts.MEDIUM);
-			offsetNewsY += (int) (subTitleSize + 2);
+			offsetNewsY += (int) (subTitleSize + 1);
 			float bodySize = nvg.getTextBoxHeight(n.getBody(), 8, Fonts.REGULAR, 180);
 			nvg.drawTextBox(n.getBody(), this.getX() + outerPadding + 8, this.getY() + 43F + offsetNewsY, 180, palette.getFontColor(ColorType.DARK), 8, Fonts.REGULAR);
 			offsetNewsY += (int) (bodySize + 9);
@@ -132,7 +131,6 @@ public class HomeCategory extends Category {
 			nvg.drawRoundedGlow(discordStartX + 10, discordStartY + 66, 6, 6, 3, onlineColour, 7);
 			nvg.drawTextGlowing(discStat.getMemberCount() + " Members", discordStartX + 20, discordStartY + 62, onlineColour, 4, 8, Fonts.REGULAR);
 			nvg.drawTextGlowing(discStat.getMemberOnline() + " Online", discordStartX + 20, discordStartY + 70, onlineColour, 4, 8, Fonts.REGULAR);
-
 		}
 		// join button
 		nvg.drawRoundedRect(discordStartX + discordWidth - 60, discordStartY + 60, 52, 18, 9,  new Color(114, 137, 214));

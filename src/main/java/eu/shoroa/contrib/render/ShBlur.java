@@ -49,9 +49,9 @@ public class ShBlur {
         framebuffer2.createFramebuffer(mc.displayWidth / 6, mc.displayHeight / 6);
         framebuffer3.createFramebuffer(mc.displayWidth / 6, mc.displayHeight / 6);
 
-        framebuffer.setFramebufferFilter(GL11.GL_LINEAR);
-        framebuffer1.setFramebufferFilter(GL11.GL_LINEAR);
-        framebuffer2.setFramebufferFilter(GL11.GL_LINEAR);
+//        framebuffer.setFramebufferFilter(GL11.GL_LINEAR);
+//        framebuffer1.setFramebufferFilter(GL11.GL_LINEAR);
+//        framebuffer2.setFramebufferFilter(GL11.GL_LINEAR);
         framebuffer3.setFramebufferFilter(GL11.GL_LINEAR);
 
         cacheRadius(radius);
@@ -81,9 +81,9 @@ public class ShBlur {
         framebuffer3.deleteFramebuffer();
         framebuffer3 = new Framebuffer(mc.displayWidth / 6, mc.displayHeight / 6, false);
 
-        framebuffer.setFramebufferFilter(GL11.GL_LINEAR);
-        framebuffer1.setFramebufferFilter(GL11.GL_LINEAR);
-        framebuffer2.setFramebufferFilter(GL11.GL_LINEAR);
+//        framebuffer.setFramebufferFilter(GL11.GL_LINEAR);
+//        framebuffer1.setFramebufferFilter(GL11.GL_LINEAR);
+//        framebuffer2.setFramebufferFilter(GL11.GL_LINEAR);
         framebuffer3.setFramebufferFilter(GL11.GL_LINEAR);
     }
 

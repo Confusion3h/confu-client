@@ -24,7 +24,7 @@ public class CalendarMod extends HUDMod {
 		
 		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		
-		nvg.setupAndDraw(() -> drawNanoVG());
+		nvg.setupAndDraw(this::drawNanoVG);
 	}
 	
 	private void drawNanoVG() {
@@ -54,7 +54,7 @@ public class CalendarMod extends HUDMod {
 		for(String s : dayOfWeek) {
 			
 			this.drawText(s, 6 + offsetX, 22, 6.5F, getHudFont(2));
-			
+
 			offsetX+=13.4;
 		}
 		
@@ -65,7 +65,7 @@ public class CalendarMod extends HUDMod {
 		for(int i = 1; i <= maxDay; i++) {
 			
 			if(i == day) {
-				this.drawRoundedRect(4.5F + offsetX, 30F + offsetY, 10.5F, 10.5F, 10.5F / 2);
+				this.drawRoundedRect(4.5F + offsetX, 30.5F + offsetY, 10F, 10F, 10F / 2);
 			}
 			
 			this.drawCenteredText(String.valueOf(i), 10 + offsetX, 33 + offsetY, 6, getHudFont(1), i == day ? currentColor.getInterpolateColor() : this.getFontColor());

@@ -59,7 +59,7 @@ public class AppearanceScene extends SettingScene {
         nvg.scissor(this.getX(), this.getY() + 24, this.getWidth(), 72);
         nvg.translate(themeScroll.getValue(), 0);
 
-        if (MouseUtils.isInside(mouseX, mouseY, this.getX(), this.getY() + 24, this.getWidth(), 72)) {
+        if (MouseUtils.isInside(mouseX, mouseY, this.getX(), this.getY() + 18, this.getWidth(), 50)) {
             themeScroll.onScroll();
             themeScroll.onAnimation();
         }
@@ -84,14 +84,13 @@ public class AppearanceScene extends SettingScene {
 
         offsetX = 0;
 
-//		nvg.drawRoundedRect(this.getX(), this.getY() + 91, this.getWidth(), 72, 6, palette.getBackgroundColor(ColorType.DARK));
         nvg.drawText(TranslateText.ACCENT_COLOR.getText(), this.getX() + 8, this.getY() + 99 - yMov2, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
 
         nvg.save();
         nvg.scissor(this.getX(), this.getY() + 91 - yMov2, this.getWidth(), 72);
         nvg.translate(accentScroll.getValue(), 0f);
 
-        if (MouseUtils.isInside(mouseX, mouseY, this.getX(), this.getY() + 91 - yMov2, this.getWidth(), 72)) {
+        if (MouseUtils.isInside(mouseX, mouseY, this.getX(), this.getY() + 18 + 91 - yMov2, this.getWidth(), 50)) {
             accentScroll.onScroll();
             accentScroll.onAnimation();
         }

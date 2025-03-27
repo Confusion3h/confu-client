@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
+import me.eldodebug.soar.management.mods.RestrictedMod;
+import me.eldodebug.soar.management.remote.blacklists.BlacklistManager;
 import me.eldodebug.soar.management.remote.discord.DiscordStats;
 import me.eldodebug.soar.management.remote.news.NewsManager;
 import me.eldodebug.soar.management.remote.update.Update;
@@ -66,6 +68,8 @@ public class Glide {
 	private File firstLoginFile;
 	private Update update;
 	private ClickEffects clickEffects;
+	private BlacklistManager blacklistManager;
+	private RestrictedMod restrictedMod;
 	
 	public Glide() {
 		name = "Glide";
@@ -78,6 +82,8 @@ public class Glide {
 			OptifineUtils.disableFastRender();
 			this.removeOptifineZoom();
 		} catch(Exception ignored) {}
+		blacklistManager = new BlacklistManager();
+		restrictedMod = new RestrictedMod();
 		fileManager = new FileManager();
 		firstLoginFile = new File(fileManager.getCacheDir(), "first.tmp");
 		languageManager = new LanguageManager();
@@ -247,4 +253,7 @@ public class Glide {
 	public boolean getSoar8Released() {return soar8Released;}
 
 	public ClickEffects getClickEffects() {return clickEffects;}
+
+	public BlacklistManager getBlacklistManager() { return blacklistManager; }
+	public RestrictedMod getRestrictedMod() { return restrictedMod; }
 }

@@ -1,5 +1,6 @@
 package me.eldodebug.soar.management.remote.changelog;
 
+import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -9,6 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.utils.JsonUtils;
 import me.eldodebug.soar.utils.Multithreading;
 import me.eldodebug.soar.utils.network.HttpUtils;
@@ -16,15 +18,16 @@ import me.eldodebug.soar.utils.network.HttpUtils;
 public class ChangelogManager {
 
 	private CopyOnWriteArrayList<Changelog> changelogs = new CopyOnWriteArrayList<Changelog>();
-	
+
 	public ChangelogManager() {
 		Multithreading.runAsync(() -> loadChangelog());
 	}
 	
 	private void loadChangelog() {
-		
+
 		JsonObject jsonObject = HttpUtils.readJson("https://glideclient.github.io/changelogs/versions/" + Glide.getInstance().getVersionIdentifier() + ".json", null);
-		
+
+
 		if(jsonObject != null) {
 			
 			JsonArray jsonArray = JsonUtils.getArrayProperty(jsonObject, "changelogs");
