@@ -25,6 +25,7 @@ public class RestrictedMod {
         }
         return true; // Mod is allowed
     }
+
     public void joinServer(String ip) {
         blm.check();
     }

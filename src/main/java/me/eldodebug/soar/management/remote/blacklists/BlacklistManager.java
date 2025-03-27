@@ -8,12 +8,11 @@ import me.eldodebug.soar.utils.JsonUtils;
 import me.eldodebug.soar.utils.Multithreading;
 import me.eldodebug.soar.utils.network.HttpUtils;
 
-import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class BlacklistManager {
 
-	private final CopyOnWriteArrayList<Server> blacklist = new CopyOnWriteArrayList<Server>();
+	private final CopyOnWriteArrayList<Server> blacklist = new CopyOnWriteArrayList<>();
 	
 	public BlacklistManager() {
 		check();
@@ -33,27 +32,23 @@ public class BlacklistManager {
 			
 			if(jsonArray != null) {
 
-				Iterator<JsonElement> iterator = jsonArray.iterator();
+                for (JsonElement jsonElement : jsonArray) {
 
-				while(iterator.hasNext()) {
-
-
-					JsonElement jsonElement = (JsonElement) iterator.next();
                     Gson gson = new Gson();
                     JsonObject serverJsonObject = gson.fromJson(jsonElement, JsonObject.class);
 
-					String serverIp = JsonUtils.getStringProperty(serverJsonObject, "serverip", "null");
-					JsonArray modsArray = JsonUtils.getArrayProperty(serverJsonObject, "mods");
-					CopyOnWriteArrayList<String> modsList = new CopyOnWriteArrayList<>();
+                    String serverIp = JsonUtils.getStringProperty(serverJsonObject, "serverip", "null");
+                    JsonArray modsArray = JsonUtils.getArrayProperty(serverJsonObject, "mods");
+                    CopyOnWriteArrayList<String> modsList = new CopyOnWriteArrayList<>();
 
-					if (modsArray != null) {
-						for (JsonElement modElement : modsArray) {
-							modsList.add(modElement.getAsString());
-						}
-					}
+                    if (modsArray != null) {
+                        for (JsonElement modElement : modsArray) {
+                            modsList.add(modElement.getAsString());
+                        }
+                    }
 
-					blacklist.add(new Server(serverIp, modsList));
-				}
+                    blacklist.add(new Server(serverIp, modsList));
+                }
 			}
 		}
 	}
