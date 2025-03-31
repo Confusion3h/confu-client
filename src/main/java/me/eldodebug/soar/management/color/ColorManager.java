@@ -51,6 +51,8 @@ public class ColorManager {
 		add("Mocha Rose", new Color(245, 194, 231), new Color(243, 139, 168));
 		add("Muted Ocean", new Color(131, 165, 152), new Color(69, 133, 136));
 		add("Algae", new Color(142, 192, 124), new Color(104, 157, 106));
+		add("greys", new Color(140, 140, 140), new Color(189, 189, 189));
+		add("pandas", new Color(182, 182, 182), new Color(54, 54, 54));
 		
 		currentColor = getColorByName("Default");
 	}

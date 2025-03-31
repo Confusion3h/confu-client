@@ -5,6 +5,7 @@ import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.gui.modmenu.category.Category;
 import me.eldodebug.soar.gui.modmenu.category.impl.game.GameScene;
 import me.eldodebug.soar.gui.modmenu.category.impl.game.impl.BirdScene;
+import me.eldodebug.soar.gui.modmenu.category.impl.game.impl.ClickyCatScene;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
 import me.eldodebug.soar.management.color.palette.ColorType;
 import me.eldodebug.soar.management.language.TranslateText;
@@ -30,6 +31,7 @@ public class GamesCategory extends Category {
 		super(parent, TranslateText.SETTINGS, LegacyIcon.GAME, false, false);
 
 		scenes.add(new BirdScene(this));
+		scenes.add(new ClickyCatScene(this));
 		
 	}
 	

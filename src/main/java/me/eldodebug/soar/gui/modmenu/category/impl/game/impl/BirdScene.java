@@ -8,7 +8,6 @@ import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.color.ColorManager;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
 import me.eldodebug.soar.management.color.palette.ColorType;
-import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.mods.impl.InternalSettingsMod;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
@@ -64,18 +63,11 @@ public class BirdScene extends GameScene {
 
 		nvg.save();
 		nvg.scissor(x, y, width, height);
-		if (InternalSettingsMod.getInstance().getBlurSetting().isToggled()) {
-			ShBlur.getInstance().drawBlur(() -> nvg.drawRect(x, y, width, height,  palette.getBackgroundColor(ColorType.DARK)));
-			Color colsidebar = palette.getBackgroundColor(ColorType.DARK);
-			nvg.drawRect(x, y, width, height,  new Color(colsidebar.getRed(), colsidebar.getGreen(), colsidebar.getBlue(), 210));
-		} else {
-			nvg.drawRect(x, y, width, height,  palette.getBackgroundColor(ColorType.DARK));
-		}
+		drawBackground(nvg, palette);
 		if(gameStarted){
 			nvg.drawText(score + "", x + 10, y + 10, currentColor.getColor1(), 8, Fonts.MEDIUM);
 			drawPlayer(nvg, currentColor);
 			drawPipes(nvg);
-			nvg.restore();
 			if (!isPlayerDead) { detectCollisions(); }
 		} else {
 			if(isPlayerDead) {
@@ -95,6 +87,7 @@ public class BirdScene extends GameScene {
 				}
 			}
 		}
+		nvg.restore();
 		nvg.drawOutlineRoundedRect(x, y, width, height, 10, 8, palette.getBackgroundColor(ColorType.NORMAL));
 	}
 
@@ -159,7 +152,7 @@ public class BirdScene extends GameScene {
 	private void drawPlayer(NanoVGManager nvg, AccentColor currentColor){
 		if(!isPlayerDead) {
 			playerTargetYPosition = Math.min(height - 5, playerTargetYPosition + (gravity * deltaTime)) ;
-			playerActualYPosition = linear(playerActualYPosition, playerTargetYPosition, 10F);
+			playerActualYPosition = anim(playerActualYPosition, playerTargetYPosition, 10F, deltaTime);
 		}
 		nvg.drawGradientRoundedRect(playerX - (playerWidth/2), y + playerActualYPosition - (playerWidth/2), playerWidth, playerWidth, 3, currentColor.getColor1(), currentColor.getColor2());
 	}
@@ -204,13 +197,4 @@ public class BirdScene extends GameScene {
 		gameStarted = true;
 	}
 
-
-	public static float linear(float prevVal, float finalVal, float rate) {
-		if (prevVal == finalVal || rate == 0) { return finalVal; }
-		float difference = finalVal - prevVal;
-		float nextValue = prevVal + (difference * (DeltaTime.getInstance().getDeltaTime() * rate));
-		return finalVal > prevVal
-				? Math.min(nextValue, finalVal)
-				: Math.max(nextValue, finalVal);
-	}
 }

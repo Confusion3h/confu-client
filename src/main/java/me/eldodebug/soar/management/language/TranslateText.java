@@ -136,7 +136,7 @@ public enum TranslateText {
 	PRICING_PLANS("text.pricingplans"), PRICING_PLANS_DESCRIPTION("text.pricingplans.description"), PREMIUM("text.premium"), SOON("text.soon"), PURCHASE("text.purchase"), LIFETIME("text.lifetime"), MONTH("text.month"),
 	SPECIAL_BADGE("text.specialbadge"), SPECIAL_CAPE("text.specialcape"), CUSTOM_CAPE("text.customcape"), CLICK_EFFECT("text.clickeffect.name"), CLICK_EFFECT_DESCRIPTION("text.clickeffect.description"), ERROR("text.error"),
 	PREMIUM_ONLY("text.premiumonly"), JOIN_OUR_DISCORD_SERVER("text.joindiscordserver"), JOIN("text.join"), DISCORD_DESCRIPTION("text.discorddescription"), KILL_SOUNDS("text.killsounds.name"), KILL_SOUNDS_DESCRIPTION("text.killsounds.description"),
-	CUSTOM_SOUND("text.customsound"), ADDED("text.added"), FIXED("text.fixed"), REMOVED("text.removed"), CHANGELOG("text.changelog"), WAYPOINT("text.waypoint.name"), WAYPOINT_DESCRIPTION("text.waypoint.description"),
+	CUSTOM_SOUND("text.customsound"), ADDED("text.added"), FIXED("text.fixed"), REMOVED("text.removed"),  WAYPOINT("text.waypoint.name"), WAYPOINT_DESCRIPTION("text.waypoint.description"),
 	AUTO_TEXT("text.autotext.name"), AUTO_TEXT_DESCRIPTION("text.autotext.description"), TEXT_1("text.text1"), TEXT_1_KEY("text.text1key"), TEXT_2("text.text2"), TEXT_2_KEY("text.text2key"), TEXT_3("text.text3"), TEXT_3_KEY("text.text3key"),
 	LOADING("text.loading"), PING_DISPLAY("text.pingdisplay.name"), PING_DISPLAY_DESCRIPTION("text.pingdisplay.description"), SESSION_INFO("text.sessioninfo.name"), SESSION_INFO_DESCRIPTION("text.sessioninfo.description"), MINEMEN("text.minemen.name"),
 	MINEMEN_DESCRIPTION("text.minemen.description"), CLIPBOARD("text.clipboard"), VIA_VERSION("text.viaversion.name"), VIA_VERSION_DESCRIPTION("text.viaversion.description"), WEB_BROWSER("text.webbrowser.name"), WEB_BROWSER_DESCRIPTION("text.webbrowser.description"),
@@ -148,7 +148,7 @@ public enum TranslateText {
 	SEARCH_FAILED("text.search_failed"), SPOTIFY_AUTH_MANUAL_REQUIRED("Please authorize in the browser and then click 'Complete Authorization'"), SPOTIFY_AUTH_SUCCESS("Authorization completed successfully"), SPOTIFY_AUTH_TOKEN_RECEIVED("text.spotify.auth.token_received"),
 	SPOTIFY_NO_ACTIVE_DEVICE("text.spotify.no_active_device"), SPOTIFY_PLAYBACK_STARTED("text.spotify.playback.started"), SPOTIFY_FAIL_BROWSER("text.spotify.fail_browser"), SPOTIFY_CONNECT("text.spotify.connect"), AUTO_GL("text.autogl"), AUTO_GL_DELAY("text.autogldelay"),
 	UI_SOUNDS("text.ui.sounds"), UI_SOUNDS_DESCRIPTION("text.ui.sounds.description") ,EXIT_WORLD_SINGLEPLAYER("text.gamemenu.exitworldsingleplayer"), OPEN_MOD_MENU("text.gamemenu.openglidemenu"), EDIT_HUD("text.gamemenu.edithud"), GRADIENT_SIMPLE("text.gradientsimple"), GENERAL("text.general"),  GENERAL_DESCRIPTION("text.general.description"),
-	UI_BLUR("text.ui.blur"), MC_FONT("text.hud.mcfont");
+	UI_BLUR("text.ui.blur"), MC_FONT("text.hud.mcfont"), CHANGELOG("text.changelog"), NEWS("text.news"), SEARCH("text.search");
 
 	private String key, text;
 

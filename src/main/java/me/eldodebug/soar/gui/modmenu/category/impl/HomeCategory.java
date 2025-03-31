@@ -58,7 +58,7 @@ public class HomeCategory extends Category {
 		// news
 		int offsetNewsY = 0;
 		nvg.drawRoundedRect(this.getX() + outerPadding, this.getY() + outerPadding, 200, 250, 8, palette.getBackgroundColor(ColorType.DARK));
-		nvg.drawText("News", this.getX() + outerPadding + 8, this.getY() + 15 + 8, palette.getFontColor(ColorType.DARK), 11F, Fonts.SEMIBOLD);
+		nvg.drawText(TranslateText.NEWS.getText(), this.getX() + outerPadding + 8, this.getY() + 15 + 8, palette.getFontColor(ColorType.DARK), 11F, Fonts.SEMIBOLD);
 
 		nvg.save();
 		nvg.scissor(this.getX() + outerPadding, this.getY() + outerPadding + 20, 200, 230);

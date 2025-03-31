@@ -19,7 +19,7 @@ public enum Theme {
 	CALIFORNIA(10, "California",  new Color(22, 22, 25), new Color(0, 0, 0), new Color(230,230,230), new Color(130,130,130)),
 	LAVENDER(11, "Lavender",  new Color(228, 229, 241), new Color(250, 250, 250), new Color(72,75,105), new Color(147,148,165)),
 	CAMELLIA(12, "Camellia", new Color(30, 31, 36), new Color(23, 24, 28), new Color(228, 229, 231), new Color(250, 56, 103)),
-	TERMINAL(13, "Terminal", new Color(7, 7, 7), new Color(12, 12, 12), new Color(32, 96, 7), new Color(54, 73, 0)),
+	TERMINAL(13, "Terminal", new Color(7, 7, 7), new Color(12, 12, 12), new Color(33, 96, 7), new Color(54, 73, 0)),
 	NORD(14, "Nord", new Color(59, 66, 82), new Color(46, 52, 64), new Color(236, 239, 244), new Color(216, 222, 233)),
 	GRUVBOX(15, "Gruvbox Dark Med", new Color(0x3C3836), new Color(0x282828), new Color(0xEBDBB2), new Color(0xA89984));
 
