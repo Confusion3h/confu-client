@@ -74,7 +74,7 @@ public class Glide {
 	public Glide() {
 		name = "Glide";
 		version = "7.2";
-		verIdentifier = 7199;
+		verIdentifier = 7200;
 	}
 	
 	public void start() {

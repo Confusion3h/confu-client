@@ -13,7 +13,6 @@ public class ModManager {
 
 	private ArrayList<Mod> mods = new ArrayList<Mod>();
 	private ArrayList<Setting> settings = new ArrayList<Setting>();
-	public boolean canPlaySound = false;
 	
 	public void init() {
 		mods.add(new AnimationsMod());
@@ -218,16 +217,13 @@ public class ModManager {
 	}
 	
 	public void disableAll() {
-		canPlaySound = false;
 		for(Mod m : mods) {
 			m.setToggled(false);
 		}
 		InternalSettingsMod.getInstance().setToggled(true);
-		canPlaySound = true;
 	}
 
-	public void playToggleSound(boolean toggled, Mod m){
-		if (!canPlaySound) return;
+	public void playToggleSound(boolean toggled){
 		if(toggled){
 			Sound.play("soar/audio/positive.wav", true);
 		} else {

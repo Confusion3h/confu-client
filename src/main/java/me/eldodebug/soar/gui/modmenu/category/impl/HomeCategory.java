@@ -100,7 +100,7 @@ public class HomeCategory extends Category {
 		for(Changelog c : changelogManager.getChangelogs()) {
 			float tbSize = nvg.getTextBoxHeight(c.getText(), 8, Fonts.MEDIUM, 174 - 33);
 			nvg.drawRoundedRect(this.getX() + 230 + 8, this.getY() + 40 + offsetChangelogY + ((tbSize/2)-4), 13, 13, 7F, c.getType().getColor());
-			nvg.drawCenteredText(c.getType().getText(), this.getX() + 230 + 8 + (13 / 2), this.getY() + 42F + offsetChangelogY + ((tbSize/2)-4), Color.WHITE, 9, Fonts.LEGACYICON);
+			nvg.drawCenteredText(c.getType().getText(), this.getX() + 230 + 8 + (13 / 2), this.getY() + 42F + offsetChangelogY + ((tbSize/2)-3), Color.WHITE, 7, Fonts.LEGACYICON);
 			nvg.drawTextBox(c.getText(), this.getX() + 230 + 25, this.getY() + 43F + offsetChangelogY, 174 - 33, palette.getFontColor(ColorType.DARK), 8, Fonts.MEDIUM);
 			offsetChangelogY+= (int) (tbSize + 9);
 		}

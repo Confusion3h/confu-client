@@ -101,7 +101,7 @@ public class GuiModMenu extends GuiScreen {
 		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
-		BlurUtils.drawBlurScreen((float) (Math.min(introAnimation.getValue(), 1) * 20) + 1F);
+		if(InternalSettingsMod.getInstance().getBlurSetting().isToggled()) BlurUtils.drawBlurScreen((float) (Math.min(introAnimation.getValue(), 1) * 20) + 1F);
 		screenAnimation.wrap(() -> {
 			nvg.drawShadow(x, y, width, height, 12);
 		}, 2 - introAnimation.getValueFloat(), Math.min(introAnimation.getValueFloat(), 1));

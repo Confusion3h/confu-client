@@ -69,7 +69,7 @@ public class InternalSettingsMod extends Mod {
 //				modeIndex = max - 1;
 //			}
 //
-//			mcFontSetting.setToggled(!mcFontSetting.isToggled());
+//			//mcFontSetting.setToggled(!mcFontSetting.isToggled());
 //
 //			modThemeSetting.setOption(modThemeSetting.getOptions().get(modeIndex));
 //

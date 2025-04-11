@@ -87,14 +87,14 @@ public class ShBlur {
         framebuffer3.setFramebufferFilter(GL11.GL_LINEAR);
     }
 
-    private int nvgImageFromHandle(int texture, int width, int height, int flags) {
-        return NanoVGGL2.nvglCreateImageFromHandle(Glide.getInstance().getNanoVGManager().getContext(), texture, width, height, flags);
+    private int nvgImageFromHandle(int texture, int width, int height) {
+        return NanoVGGL2.nvglCreateImageFromHandle(Glide.getInstance().getNanoVGManager().getContext(), texture, width, height, NanoVG.NVG_IMAGE_FLIPY);
     }
 
     public void render() {
         if (!InternalSettingsMod.getInstance().getBlurSetting().isToggled()) return;
         if (nvgImage == -1) {
-            nvgImage = nvgImageFromHandle(framebuffer3.framebufferTexture, mc.displayWidth, mc.displayHeight, NanoVG.NVG_IMAGE_FLIPY);
+            nvgImage = nvgImageFromHandle(framebuffer3.framebufferTexture, mc.displayWidth, mc.displayHeight);
         }
         ScaledResolution sr = new ScaledResolution(mc);
         if (System.currentTimeMillis() - lastUpdate > 15) {

@@ -3,6 +3,7 @@ package me.eldodebug.soar.management.mods;
 import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.management.language.TranslateText;
+import me.eldodebug.soar.management.notification.NotificationType;
 import me.eldodebug.soar.utils.animation.simple.SimpleAnimation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -58,37 +59,35 @@ public class Mod {
 		if(Glide.getInstance().getRestrictedMod().checkAllowed(this)){
 			Glide.getInstance().getEventManager().register(this);
 			GlideLogger.info("[MODULE] " + getName() + " was enabled");
-			Glide.getInstance().getModManager().playToggleSound(true, this);
 		} else {
 			this.setToggled(false);
+			Glide.getInstance().getNotificationManager().post(this.nameTranslate.getText(),  "Disabled due to serverside blacklist" , NotificationType.INFO);
 		}
 	}
 	
 	public void onDisable() {
 		Glide.getInstance().getEventManager().unregister(this);
 		GlideLogger.info("[MODULE] " + getName() + " was disabled");
-		Glide.getInstance().getModManager().playToggleSound(false, this);
 	}
 	
 	public void toggle() {
-		
-		toggled = !toggled;
-		
-		if(toggled) {
-			onEnable();
-		}else {
-			onDisable();
-		}
+		setToggled(!toggled, true);
+	}
+
+	public void setToggled(boolean toggled) {
+		setToggled(toggled, false);
 	}
 	
-	public void setToggled(boolean toggled) {
+	public void setToggled(boolean toggled, boolean sound) {
 		
 		this.toggled = toggled;
 		
 		if(toggled) {
 			onEnable();
+			if (sound) Glide.getInstance().getModManager().playToggleSound(true);
 		}else {
 			onDisable();
+			if (sound) Glide.getInstance().getModManager().playToggleSound(false);
 		}
 	}
 	

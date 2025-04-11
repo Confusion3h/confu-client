@@ -3,6 +3,7 @@ package me.eldodebug.soar.management.mods.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import me.eldodebug.soar.utils.Sound;
 import org.lwjgl.opengl.GL11;
 
 import me.eldodebug.soar.injection.interfaces.IMixinShaderGroup;
@@ -104,6 +105,9 @@ public class MotionBlurMod extends Mod {
 		            
 		            if (error == 1282) {
 		            	this.setToggled(false);
+						try{
+							Sound.play("soar/audio/error.wav", false);
+						} catch (Exception ignored) {}
 		            }
 		        }
 			}

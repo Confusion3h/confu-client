@@ -227,8 +227,6 @@ public class ProfileManager {
 		ColorManager colorManager = instance.getColorManager();
 		FileManager fileManager = instance.getFileManager();
 
-		modManager.canPlaySound = false;
-
 		if(file == null) {
 			return;
 		}
@@ -352,7 +350,6 @@ public class ProfileManager {
 		} catch (Exception e) {
 			GlideLogger.error("Failed to load profile", e);
 		}
-		modManager.canPlaySound = true;
 	}
 	
 	public void delete(Profile profile) {
