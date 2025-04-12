@@ -571,6 +571,10 @@ public class ModuleCategory extends Category {
 		if(m.isHide()) {
 			return true;
 		}
+
+		if (!m.getAllowed()) {
+			return true;
+		}
 		
 		if(!currentCategory.equals(ModCategory.ALL) && !m.getCategory().equals(currentCategory)) {
 			return true;

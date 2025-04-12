@@ -20,11 +20,13 @@ public class RestrictedMod {
             if (currentServerIP.contains(server.getServerIp())) {
                 List<String> blacklistedMods = server.getMods();
                 if (blacklistedMods.contains(m.getNameKey())) {
-                    return false; // Mod is not allowed
+                    m.setAllowed(false);
+                    return false;
                 }
             }
         }
-        return true; // Mod is allowed
+        m.setAllowed(true);
+        return true;
     }
 
     public void joinServer(String ip) {
@@ -34,7 +36,7 @@ public class RestrictedMod {
     public void joinWorld(){
         this.currentServerIP = ServerUtils.getServerIP();
         for(Mod m : Glide.getInstance().getModManager().getMods()){
-            if(!checkAllowed(m)){
+            if(!checkAllowed(m) && m.isToggled()){
                 m.setToggled(false);
                 Glide.getInstance().getNotificationManager().post(m.getName(),  "Disabled due to serverside blacklist" , NotificationType.INFO);
             }
