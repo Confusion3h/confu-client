@@ -11,17 +11,20 @@ import java.util.List;
 public class RestrictedMod {
 
     String currentServerIP = "";
+    public Boolean shouldCheck = true;
 
     BlacklistManager blm = Glide.getInstance().getBlacklistManager();
 
     public boolean checkAllowed(Mod m) {
-        List<Server> servers = blm.getBlacklist();
-        for (Server server : servers) {
-            if (currentServerIP.contains(server.getServerIp())) {
-                List<String> blacklistedMods = server.getMods();
-                if (blacklistedMods.contains(m.getNameKey())) {
-                    m.setAllowed(false);
-                    return false;
+        if (shouldCheck) {
+            List<Server> servers = blm.getBlacklist();
+            for (Server server : servers) {
+                if (currentServerIP.contains(server.getServerIp())) {
+                    List<String> blacklistedMods = server.getMods();
+                    if (blacklistedMods.contains(m.getNameKey())) {
+                        m.setAllowed(false);
+                        return false;
+                    }
                 }
             }
         }

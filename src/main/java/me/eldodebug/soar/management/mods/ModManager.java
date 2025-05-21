@@ -60,7 +60,6 @@ public class ModManager {
 		mods.add(new FPSSpooferMod());
 		mods.add(new FreelookMod());
 		mods.add(new FullbrightMod());
-		mods.add(new GameModeDisplayMod());
 		mods.add(new GlintColorMod());
 		mods.add(new InternalSettingsMod());
 		mods.add(new GodbridgeAssistMod());

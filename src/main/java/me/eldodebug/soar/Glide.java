@@ -36,6 +36,7 @@ import me.eldodebug.soar.utils.OptifineUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
+import org.lwjgl.opengl.Display;
 
 public class Glide {
 
@@ -74,7 +75,7 @@ public class Glide {
 	public Glide() {
 		name = "Glide";
 		version = "7.2";
-		verIdentifier = 7200;
+		verIdentifier = 7201;
 	}
 	
 	public void start() {
@@ -84,6 +85,9 @@ public class Glide {
 		} catch(Exception ignored) {}
 		blacklistManager = new BlacklistManager();
 		restrictedMod = new RestrictedMod();
+		try {
+			restrictedMod.shouldCheck = !System.getProperty("me.eldodebug.soar.glideclient.blacklistchecks", "true").equalsIgnoreCase("false");
+		} catch (Exception ignored) {}
 		fileManager = new FileManager();
 		firstLoginFile = new File(fileManager.getCacheDir(), "first.tmp");
 		languageManager = new LanguageManager();
