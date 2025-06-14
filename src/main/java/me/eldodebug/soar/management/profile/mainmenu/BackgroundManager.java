@@ -48,7 +48,7 @@ public class BackgroundManager {
 		backgrounds.add(new DefaultBackground(2, TranslateText.DOLPHIN, new ResourceLocation("soar/mainmenu/background-dolphin.png")));
 		backgrounds.add(new DefaultBackground(3, TranslateText.UNITY, new ResourceLocation("soar/mainmenu/background-unity.png")));
 		backgrounds.add(new DefaultBackground(999, TranslateText.ADD, null));
-		
+
 		ArrayList<String> removeImages = load();
 		
 		for(File f : bgCacheDir.listFiles()) {
