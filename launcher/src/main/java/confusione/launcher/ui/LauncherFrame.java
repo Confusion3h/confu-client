@@ -16,9 +16,11 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import confusione.launcher.core.AccountStore;
 import confusione.launcher.core.ClientLocator;
 import confusione.launcher.core.GameInstaller;
 import confusione.launcher.core.GameLauncher;
+import confusione.launcher.core.MicrosoftAuth;
 import confusione.launcher.core.Progress;
 import confusione.launcher.core.Settings;
 
@@ -42,6 +44,10 @@ public final class LauncherFrame extends JFrame {
 	private final Anim indicator = new Anim(root, 0, 12);
 	private final Anim energy = new Anim(root, 0, 2);
 	private volatile boolean working;
+	private volatile boolean signInCancel;
+	private volatile Thread signInThread;
+	private String deviceUrl = "";
+	private String deviceCode = "";
 
 	public LauncherFrame(Settings s) {
 		super("CONFUSION3H");
@@ -79,7 +85,15 @@ public final class LauncherFrame extends JFrame {
 		min.onClick(new Runnable() { public void run() { setState(ICONIFIED); } });
 		close.onClick(new Runnable() { public void run() { settings.save(); System.exit(0); } });
 		home.play.onClick(new Runnable() { public void run() { launch(); } });
+		home.onAccount(new Runnable() {
+			public void run() { setMicrosoft(false); }
+		}, new Runnable() {
+			public void run() { setMicrosoft(true); }
+		}, new Runnable() {
+			public void run() { accountAction(); }
+		});
 		settingsPage.onChange(new Runnable() { public void run() { refreshClient(); } });
+		refreshAccount();
 
 		Ambient.setReduceMotion(s.reduceMotion);
 		Ambient.register(root);
@@ -202,17 +216,149 @@ public final class LauncherFrame extends JFrame {
 		}, "build").start();
 	}
 
+	private void setMicrosoft(boolean on) {
+		if (on == settings.microsoft) {
+			return;
+		}
+		settings.microsoft = on;
+		settings.save();
+		if (!on) {
+			cancelSignIn();
+		}
+		refreshAccount();
+	}
+
+	private void refreshAccount() {
+		AccountStore store = AccountStore.load();
+		boolean polling = signInThread != null;
+		home.setAccount(settings.microsoft, store.signedIn() ? store.name : "", polling, deviceUrl, deviceCode);
+	}
+
+	private void accountAction() {
+		if (signInThread != null) {
+			cancelSignIn();
+			home.setStatus("Sign-in cancelled.", Theme.MUTED);
+			return;
+		}
+		AccountStore store = AccountStore.load();
+		if (store.signedIn()) {
+			store.clear();
+			refreshAccount();
+			home.setStatus("Signed out of Microsoft.", Theme.MUTED);
+			return;
+		}
+		startSignIn();
+	}
+
+	private void cancelSignIn() {
+		signInCancel = true;
+		signInThread = null;
+		deviceUrl = "";
+		deviceCode = "";
+		refreshAccount();
+	}
+
+	private void startSignIn() {
+		if (!MicrosoftAuth.validClientId(settings.msClientId)) {
+			home.setStatus("Set a Microsoft client ID in Settings.", Theme.ERROR);
+			return;
+		}
+		signInCancel = false;
+		final Progress p = uiProgress();
+		signInThread = new Thread(new Runnable() {
+			public void run() {
+				try {
+					final MicrosoftAuth.Device d = MicrosoftAuth.start(settings.msClientId);
+					SwingUtilities.invokeAndWait(new Runnable() {
+						public void run() {
+							deviceUrl = d.verificationUri;
+							deviceCode = d.userCode;
+							home.setStatus("Enter " + d.userCode + " at " + d.verificationUri, Theme.MUTED);
+							refreshAccount();
+						}
+					});
+					p.log("Microsoft sign-in: open " + d.verificationUri + " and enter " + d.userCode);
+					browse(d.verificationUri);
+					while (!signInCancel && System.currentTimeMillis() < d.expiresAt) {
+						final MicrosoftAuth.Session session = MicrosoftAuth.poll(settings.msClientId, d, p);
+						if (session != null) {
+							SwingUtilities.invokeLater(new Runnable() {
+								public void run() {
+									signInThread = null;
+									deviceUrl = "";
+									deviceCode = "";
+									refreshAccount();
+									home.setStatus("Signed in as " + session.name + ".", Theme.OK);
+								}
+							});
+							return;
+						}
+						Thread.sleep(Math.max(1, d.interval) * 1000L);
+					}
+					if (!signInCancel) {
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								signInThread = null;
+								deviceUrl = "";
+								deviceCode = "";
+								refreshAccount();
+								home.setStatus("Sign-in code expired. Try again.", Theme.ERROR);
+							}
+						});
+					}
+				} catch (final Exception e) {
+					final String msg = e.getMessage() == null ? e.toString() : e.getMessage();
+					p.log("ERROR: " + msg);
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							signInThread = null;
+							deviceUrl = "";
+							deviceCode = "";
+							refreshAccount();
+							if (!signInCancel) {
+								home.setStatus(msg, Theme.ERROR);
+							}
+						}
+					});
+				}
+			}
+		}, "microsoft-login");
+		signInThread.setDaemon(true);
+		signInThread.start();
+		refreshAccount();
+		home.setStatus("Starting Microsoft sign-in\u2026", Theme.MUTED);
+	}
+
+	private static void browse(String url) {
+		try {
+			if (java.awt.Desktop.isDesktopSupported()) {
+				java.awt.Desktop.getDesktop().browse(new java.net.URI(url));
+			}
+		} catch (Exception ignored) {
+		}
+	}
+
 	private void launch() {
 		if (working) {
 			return;
 		}
-		String name = home.username.getText().trim();
-		if (!name.matches("[A-Za-z0-9_]{3,16}")) {
-			home.setStatus("Username: 3-16 letters, digits or _", Theme.ERROR);
+		if (signInThread != null) {
+			home.setStatus("Finish Microsoft sign-in first.", Theme.ERROR);
 			return;
 		}
-		settings.username = name;
-		settings.save();
+		final boolean ms = settings.microsoft;
+		String name = home.username.getText().trim();
+		if (!ms) {
+			if (!name.matches("[A-Za-z0-9_]{3,16}")) {
+				home.setStatus("Username: 3-16 letters, digits or _", Theme.ERROR);
+				return;
+			}
+			settings.username = name;
+			settings.save();
+		} else if (!AccountStore.load().signedIn()) {
+			home.setStatus("Sign in with Microsoft, or switch to Offline.", Theme.ERROR);
+			return;
+		}
 		final File jar = ClientLocator.find(settings.clientJar);
 		if (jar == null) {
 			home.setStatus("No client jar. Build it or set the path in Settings.", Theme.ERROR);
@@ -223,8 +369,17 @@ public final class LauncherFrame extends JFrame {
 		new Thread(new Runnable() {
 			public void run() {
 				try {
+					MicrosoftAuth.Session session = null;
+					if (ms) {
+						session = MicrosoftAuth.ensure(settings.msClientId, p);
+						final String signedIn = session.name;
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() { refreshAccount(); home.setStatus("Signed in as " + signedIn + ".", Theme.OK); }
+						});
+					}
+					final String playing = session != null ? session.name : settings.username;
 					GameInstaller.Result r = new GameInstaller(new File(settings.gameDir), p).install();
-					List<String> cmd = GameLauncher.command(settings, r, jar);
+					List<String> cmd = GameLauncher.command(settings, r, jar, session);
 					p.log("$ " + GameLauncher.toShell(cmd));
 					p.stage("Starting Minecraft");
 					final Process proc = GameLauncher.start(cmd, new File(settings.gameDir), p);
@@ -236,7 +391,7 @@ public final class LauncherFrame extends JFrame {
 							home.logo.setBusy(false);
 							home.play.setState(PlayButton.State.RUNNING, "RUNNING");
 							home.play.setSub("");
-							home.setStatus("Minecraft is running as " + settings.username + ".", Theme.OK);
+							home.setStatus("Minecraft is running as " + playing + ".", Theme.OK);
 							if (!settings.keepOpen) {
 								setState(ICONIFIED);
 							}

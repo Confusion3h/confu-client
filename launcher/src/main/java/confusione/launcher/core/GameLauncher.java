@@ -27,7 +27,7 @@ public final class GameLauncher {
 		return UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8));
 	}
 
-	public static List<String> command(Settings s, GameInstaller.Result r, File clientJar) {
+	public static List<String> command(Settings s, GameInstaller.Result r, File clientJar, MicrosoftAuth.Session session) {
 		File gameDir = new File(s.gameDir);
 		List<String> cmd = new ArrayList<String>();
 		cmd.add(javaExecutable(s));
@@ -59,8 +59,12 @@ public final class GameLauncher {
 		cp.append(File.pathSeparatorChar).append(r.gameJar.getAbsolutePath());
 		cmd.add(cp.toString());
 		cmd.add("net.minecraft.launchwrapper.Launch");
+		String username = session != null ? session.name : s.username;
+		String uuid = session != null ? session.uuid : offlineUuid(s.username).toString().replace("-", "");
+		String token = session != null ? session.accessToken : "0";
+		String userType = session != null ? "msa" : "legacy";
 		cmd.add("--username");
-		cmd.add(s.username);
+		cmd.add(username);
 		cmd.add("--version");
 		cmd.add(GameInstaller.VERSION);
 		cmd.add("--gameDir");
@@ -70,13 +74,13 @@ public final class GameLauncher {
 		cmd.add("--assetIndex");
 		cmd.add(r.assetIndex);
 		cmd.add("--uuid");
-		cmd.add(offlineUuid(s.username).toString().replace("-", ""));
+		cmd.add(uuid);
 		cmd.add("--accessToken");
-		cmd.add("0");
+		cmd.add(token);
 		cmd.add("--userProperties");
 		cmd.add("{}");
 		cmd.add("--userType");
-		cmd.add("legacy");
+		cmd.add(userType);
 		cmd.add("--tweakClass");
 		cmd.add(ClientLocator.tweakClass(clientJar));
 		return cmd;
@@ -105,11 +109,17 @@ public final class GameLauncher {
 	/** For display: quotes args with spaces. */
 	public static String toShell(List<String> cmd) {
 		StringBuilder b = new StringBuilder();
+		boolean redactNext = false;
 		for (String a : cmd) {
 			if (b.length() > 0) {
 				b.append(' ');
 			}
-			b.append(a.contains(" ") || a.contains("{") ? "'" + a + "'" : a);
+			String shown = a;
+			if (redactNext && !"0".equals(a)) {
+				shown = "<redacted>";
+			}
+			redactNext = "--accessToken".equals(a);
+			b.append(shown.contains(" ") || shown.contains("{") ? "'" + shown + "'" : shown);
 		}
 		return b.toString();
 	}

@@ -63,7 +63,7 @@ public class Glide {
 	private RestrictedMod restrictedMod;
 	
 	public Glide() {
-		name = "Glide";
+		name = "CONFUSION3H Client";
 		version = "7.2";
 		verIdentifier = 7201;
 	}

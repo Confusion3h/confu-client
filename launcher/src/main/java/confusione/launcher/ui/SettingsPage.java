@@ -13,7 +13,7 @@ import confusione.launcher.core.Settings;
 public final class SettingsPage extends JComponent implements PageHost.Entrance {
 
 	private final Settings s;
-	private final TextInput gameDir, javaPath, clientJar;
+	private final TextInput gameDir, javaPath, clientJar, msClientId;
 	private final Slider ram;
 	private final Toggle reduceMotion, keepOpen;
 	private final Anim enter = new Anim(this, 1, 6);
@@ -26,6 +26,7 @@ public final class SettingsPage extends JComponent implements PageHost.Entrance 
 		gameDir = field("Game directory", s.gameDir);
 		javaPath = field("Java 8 executable (empty = this JVM)", s.javaPath);
 		clientJar = field("Client jar (empty = auto-detect build/libs)", s.clientJar);
+		msClientId = field("Microsoft client ID (Azure app, no secret)", s.msClientId);
 		long maxMb = Math.max(2048, Runtime.getRuntime().maxMemory() / 1024 / 1024 * 4);
 		ram = new Slider("Memory", 1024, (int) Math.min(16384, Math.max(4096, maxMb)), 512, s.ramMb);
 		ram.setListener(new Slider.Listener() {
@@ -63,6 +64,7 @@ public final class SettingsPage extends JComponent implements PageHost.Entrance 
 		s.gameDir = gameDir.getText().trim();
 		s.javaPath = javaPath.getText().trim();
 		s.clientJar = clientJar.getText().trim();
+		s.msClientId = msClientId.getText().trim();
 		changed();
 	}
 
@@ -82,10 +84,10 @@ public final class SettingsPage extends JComponent implements PageHost.Entrance 
 	public void doLayout() {
 		int x = 48, w = Math.min(560, getWidth() - 96);
 		float e = enter.get();
-		JComponent[] rows = { gameDir, javaPath, clientJar, ram, reduceMotion, keepOpen };
+		JComponent[] rows = { gameDir, javaPath, clientJar, msClientId, ram, reduceMotion, keepOpen };
 		int y = 110;
 		for (int i = 0; i < rows.length; i++) {
-			int h = i < 3 ? 52 : 56;
+			int h = i < 4 ? 52 : 56;
 			int off = Math.round(20 * (1 - clamp((e - i * 0.08f) / 0.6f)));
 			rows[i].setBounds(x + off, y, w, h);
 			y += h + 12;
@@ -108,7 +110,7 @@ public final class SettingsPage extends JComponent implements PageHost.Entrance 
 		g.drawString("Settings", 48, 70);
 		g.setFont(Theme.regular(13));
 		g.setColor(Theme.MUTED);
-		g.drawString("Saved to ~/.CONFUSION3H/launcher.properties as you type.", 48, 92);
+		g.drawString("Saved as you type. The Microsoft refresh token is stored separately, not here.", 48, 92);
 		g.dispose();
 	}
 }

@@ -1,6 +1,8 @@
 package confusione.launcher.ui;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GradientPaint;
@@ -77,6 +79,26 @@ public final class Theme {
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 		g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+	}
+
+	/** Alpha already applied to this graphics by a parent fade. */
+	public static float compositeAlpha(Graphics2D g) {
+		Composite c = g.getComposite();
+		if (c instanceof AlphaComposite) {
+			return ((AlphaComposite) c).getAlpha();
+		}
+		return 1f;
+	}
+
+	/** SrcOver at parentAlpha * factor, so a child fade cannot punch through a page transition. */
+	public static void modulate(Graphics2D g, float factor) {
+		float a = compositeAlpha(g) * factor;
+		if (a < 0f) {
+			a = 0f;
+		} else if (a > 1f) {
+			a = 1f;
+		}
+		g.setComposite(AlphaComposite.SrcOver.derive(a));
 	}
 
 	public static Color alpha(Color c, float a) {

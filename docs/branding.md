@@ -66,7 +66,9 @@ Files: `branding/CONFUSION3H-{mark,app-icon,app-icon-small}-mono.svg`,
 `icon_*.png`. In code: `launcher/.../ui/Theme.java`.
 
 ## Type
-Inter (SIL OFL 1.1), Regular and SemiBold, uppercase wordmark "CONFUSION3H" (always written exactly so in user-facing text).
+Inter (SIL OFL 1.1), Regular and SemiBold. The launcher wordmark stays **CONFUSION3H**.
+Inside the game the product name is exactly **CONFUSION3H Client** (window title, splash,
+main-menu footer, menus, welcome, credits, Discord status).
 
 ## Attribution
 CONFUSION3H is a GPL-3.0 fork of Glide Client, itself based on Soar Client by

@@ -47,6 +47,10 @@ public final class Settings {
 	public String clientJar = "";     // empty: auto-detect
 	public boolean reduceMotion = false;
 	public boolean keepOpen = false;
+	/** Microsoft account instead of the offline name. Refresh token is not stored here. */
+	public boolean microsoft = false;
+	/** Azure app registration (public client). Not a secret. */
+	public String msClientId = "";
 
 	public static Settings load() {
 		Settings s = new Settings();
@@ -68,6 +72,8 @@ public final class Settings {
 		s.clientJar = p.getProperty("clientJar", s.clientJar);
 		s.reduceMotion = Boolean.parseBoolean(p.getProperty("reduceMotion", "false"));
 		s.keepOpen = Boolean.parseBoolean(p.getProperty("keepOpen", "false"));
+		s.microsoft = Boolean.parseBoolean(p.getProperty("microsoft", "false"));
+		s.msClientId = p.getProperty("msClientId", "").trim();
 		try {
 			s.ramMb = Integer.parseInt(p.getProperty("ramMb", "2048"));
 		} catch (NumberFormatException ignored) {
@@ -84,6 +90,8 @@ public final class Settings {
 		p.setProperty("clientJar", clientJar);
 		p.setProperty("reduceMotion", Boolean.toString(reduceMotion));
 		p.setProperty("keepOpen", Boolean.toString(keepOpen));
+		p.setProperty("microsoft", Boolean.toString(microsoft));
+		p.setProperty("msClientId", msClientId == null ? "" : msClientId.trim());
 		try {
 			HOME.mkdirs();
 			OutputStream out = new FileOutputStream(FILE);

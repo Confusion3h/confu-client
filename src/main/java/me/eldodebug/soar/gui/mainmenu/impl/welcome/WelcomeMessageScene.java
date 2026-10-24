@@ -36,9 +36,9 @@ public class WelcomeMessageScene extends MainMenuScene {
 		ScaledResolution sr = new ScaledResolution(mc);
 		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		String hello = "Hello!";
-		String welcomeMessage = "Welcome to CONFUSION3H";
+		String welcomeMessage = "Welcome to CONFUSION3H Client";
 		String setupMessage = "An Updated Version of Soar Client";
-		String setupMessage2 = "Time to setup Glide.";
+		String setupMessage2 = "Time to set up CONFUSION3H Client.";
 		
 		BlurUtils.drawBlurScreen(14);
 		

@@ -63,8 +63,10 @@ public class GuiSplashScreen {
 	        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	        
 			nvg.setupAndDraw(() -> {
+				int splashAlpha = (int) (fadeAnimation.getValue() * 255);
 				nvg.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), Color.BLACK);
-				nvg.drawCenteredLogo(sr.getScaledWidth() / 2, sr.getScaledHeight() / 2, 120, new Color(255, 255, 255, (int) (fadeAnimation.getValue() * 255)));
+				nvg.drawCenteredLogo(sr.getScaledWidth() / 2, sr.getScaledHeight() / 2, 120, new Color(255, 255, 255, splashAlpha));
+				nvg.drawCenteredText("CONFUSION3H Client", sr.getScaledWidth() / 2f, sr.getScaledHeight() / 2f + 68, new Color(255, 255, 255, splashAlpha), 16, Fonts.MEDIUM);
 			});
 			
 	        framebuffer.unbindFramebuffer();

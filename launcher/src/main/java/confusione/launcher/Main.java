@@ -11,6 +11,7 @@ import javax.swing.UIManager;
 import confusione.launcher.core.ClientLocator;
 import confusione.launcher.core.GameInstaller;
 import confusione.launcher.core.GameLauncher;
+import confusione.launcher.core.MicrosoftAuth;
 import confusione.launcher.core.Progress;
 import confusione.launcher.core.Settings;
 import confusione.launcher.ui.LauncherFrame;
@@ -98,11 +99,15 @@ public final class Main {
 			System.err.println("Client jar not found (build it with ./gradlew build, or pass --client).");
 			return 1;
 		}
+		MicrosoftAuth.Session session = null;
+		if (!mode.equals("setup-only") && s.microsoft) {
+			session = MicrosoftAuth.ensure(s.msClientId, Progress.CONSOLE);
+		}
 		GameInstaller.Result r = new GameInstaller(new File(s.gameDir), Progress.CONSOLE).install();
 		if (mode.equals("setup-only")) {
 			return 0;
 		}
-		List<String> cmd = GameLauncher.command(s, r, jar);
+		List<String> cmd = GameLauncher.command(s, r, jar, session);
 		if (mode.equals("dry-run")) {
 			System.out.println("Client jar : " + jar);
 			System.out.println("Tweak class: " + ClientLocator.tweakClass(jar));

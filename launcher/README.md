@@ -12,13 +12,19 @@ Swing/Java2D UI, JDK HTTPS, a tiny JSON reader.
    If the repo is found but not built, the home screen offers to run `gradlew build`.
 2. Reads the tweak class from the client jar manifest (`TweakClass`, falls back to
    `me.eldodebug.soar.injection.mixin.GlideTweaker`).
-3. Installs vanilla 1.8.9 into the game dir (default `~/.CONFUSION3H/minecraft`) from
-   Mojang's HTTPS metadata: version JSON, client jar, libraries (OS rules applied),
-   natives (extracted to `versions/1.8.9/natives`), asset index + objects. Everything is
-   SHA-1 verified; already-present files are skipped. Adds `launchwrapper-1.12` and
-   `asm-all-5.0.3`, which vanilla 1.8.9 lacks.
+3. Installs vanilla 1.8.9 into the game dir (default `~/.CONFUSION3H/minecraft`,
+   `%APPDATA%\.CONFUSION3H\minecraft` on Windows) from Mojang's HTTPS metadata: version
+   JSON, client jar, libraries (OS rules applied), natives (extracted to
+   `versions/1.8.9/natives`), asset index + objects. Each file is written to a unique
+   temp file, SHA-1 checked, then moved into place. Names that share a hash are fetched
+   once. A library that still mismatches aborts setup; an asset that still mismatches
+   after retries is logged and skipped. Adds `launchwrapper-1.12` and `asm-all-5.0.3`,
+   which vanilla 1.8.9 lacks.
 4. Runs `net.minecraft.launchwrapper.Launch --tweakClass <tweaker>` with the client jar
-   first on the classpath, offline session (`--userType legacy`, offline UUID).
+   first on the classpath. Offline (default): `--userType legacy` and an offline UUID.
+   Microsoft: device-code login, refresh on launch, `--userType msa` with the real
+   profile. See `docs/microsoft-login.md`. The refresh token stays in `msa.properties`
+   next to the settings file and is never committed.
 
 ## CLI
     --setup-only        download/verify game files only
@@ -27,4 +33,5 @@ Swing/Java2D UI, JDK HTTPS, a tiny JSON reader.
     --screenshot F.png [--page home|settings|console] [--progress 0.4]
     --gamedir DIR  --username NAME  --client JAR      (one-off overrides)
 
-Settings live in `~/.CONFUSION3H/launcher.properties`.
+Settings live in `~/.CONFUSION3H/launcher.properties` (`%APPDATA%\.CONFUSION3H` on Windows).
+The Microsoft client ID is a setting there; the refresh token is not.

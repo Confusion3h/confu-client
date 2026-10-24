@@ -48,11 +48,12 @@ public final class TextInput extends JTextField {
 		g.setColor(Theme.STROKE);
 		g.draw(r);
 		if (f > 0.01f) {
+			float base = Theme.compositeAlpha(g);
 			g.setPaint(Theme.accent(0, 0, w, h));
-			g.setComposite(java.awt.AlphaComposite.SrcOver.derive(f));
+			g.setComposite(java.awt.AlphaComposite.SrcOver.derive(base * f));
 			g.setStroke(new java.awt.BasicStroke(1.5f));
 			g.draw(r);
-			g.setComposite(java.awt.AlphaComposite.SrcOver);
+			g.setComposite(java.awt.AlphaComposite.SrcOver.derive(base));
 		}
 		g.setFont(Theme.semibold(10));
 		g.setColor(Theme.mix(Theme.MUTED, Theme.A2, f));

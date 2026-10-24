@@ -66,10 +66,11 @@ public final class Toggle extends JComponent {
 		g.setColor(Theme.PANEL_HI);
 		g.fill(track);
 		if (k > 0.01f) {
-			g.setComposite(java.awt.AlphaComposite.SrcOver.derive(k));
+			float base = Theme.compositeAlpha(g);
+			g.setComposite(java.awt.AlphaComposite.SrcOver.derive(base * k));
 			g.setPaint(Theme.accent2(tx, 0, tx + tw, 0));
 			g.fill(track);
-			g.setComposite(java.awt.AlphaComposite.SrcOver);
+			g.setComposite(java.awt.AlphaComposite.SrcOver.derive(base));
 		}
 		float d = th - 6;
 		g.setColor(Theme.mix(Theme.TEXT, Theme.ON_ACCENT, k));

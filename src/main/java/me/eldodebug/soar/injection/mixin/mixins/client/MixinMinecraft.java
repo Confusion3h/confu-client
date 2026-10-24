@@ -254,7 +254,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     
 	@Redirect(method = "createDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V"))
 	public void overrideTitle(String title) {
-		Display.setTitle("CONFUSION3H");
+		Display.setTitle("CONFUSION3H Client");
 	}
 	
     @Inject(method = "updateFramebufferSize", at = @At("HEAD"))

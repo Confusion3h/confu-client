@@ -5,6 +5,7 @@ import java.awt.Cursor;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
@@ -32,6 +33,15 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 	private boolean clientOk;
 	private Runnable buildAction;
 	private final Anim linkHover = new Anim(this, 0, 14);
+	private boolean microsoft;
+	private String accountName = "";
+	private String deviceUrl = "";
+	private String deviceCode = "";
+	private boolean polling;
+	private final Rectangle offlineChip = new Rectangle();
+	private final Rectangle msChip = new Rectangle();
+	private final Rectangle actionChip = new Rectangle();
+	private Runnable onOffline, onMicrosoft, onAccountAction;
 
 	public HomePage(String user) {
 		setOpaque(false);
@@ -42,14 +52,35 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		add(play);
 		MouseAdapter link = new MouseAdapter() {
 			public void mouseMoved(MouseEvent e) {
-				boolean in = !clientOk && buildAction != null && linkBounds().contains(e.getPoint());
-				linkHover.set(in ? 1 : 0);
+				boolean in = hit(e);
+				linkHover.set(!clientOk && buildAction != null && linkBounds().contains(e.getPoint()) ? 1 : 0);
 				setCursor(Cursor.getPredefinedCursor(in ? Cursor.HAND_CURSOR : Cursor.DEFAULT_CURSOR));
 			}
 			public void mouseReleased(MouseEvent e) {
+				if (offlineChip.contains(e.getPoint()) && onOffline != null) {
+					onOffline.run();
+					return;
+				}
+				if (msChip.contains(e.getPoint()) && onMicrosoft != null) {
+					onMicrosoft.run();
+					return;
+				}
+				if (microsoft && actionChip.width > 0 && actionChip.contains(e.getPoint()) && onAccountAction != null) {
+					onAccountAction.run();
+					return;
+				}
 				if (!clientOk && buildAction != null && linkBounds().contains(e.getPoint())) {
 					buildAction.run();
 				}
+			}
+			private boolean hit(MouseEvent e) {
+				if (offlineChip.contains(e.getPoint()) || msChip.contains(e.getPoint())) {
+					return true;
+				}
+				if (microsoft && actionChip.width > 0 && actionChip.contains(e.getPoint())) {
+					return true;
+				}
+				return !clientOk && buildAction != null && linkBounds().contains(e.getPoint());
 			}
 		};
 		addMouseListener(link);
@@ -67,6 +98,24 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		repaint();
 	}
 
+	public void onAccount(Runnable offline, Runnable microsoft, Runnable action) {
+		onOffline = offline;
+		onMicrosoft = microsoft;
+		onAccountAction = action;
+	}
+
+	/** @param name profile name, empty when signed out */
+	public void setAccount(boolean microsoft, String name, boolean polling, String url, String code) {
+		this.microsoft = microsoft;
+		this.accountName = name == null ? "" : name;
+		this.polling = polling;
+		this.deviceUrl = url == null ? "" : url;
+		this.deviceCode = code == null ? "" : code;
+		username.setVisible(!microsoft);
+		revalidate();
+		repaint();
+	}
+
 	public void setClient(String info, boolean ok, Runnable build) {
 		clientInfo = info;
 		clientOk = ok;
@@ -81,8 +130,17 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 	@Override
 	public void doLayout() {
 		logo.setBounds(40, 54, 92, 92);
-		username.setBounds(48, 262, 320, 52);
-		play.setBounds(42, 330, 332, 84);
+		username.setVisible(!microsoft);
+		username.setBounds(48, 268, 320, 52);
+		play.setBounds(42, 336, 332, 84);
+		offlineChip.setBounds(48, 224, 84, 26);
+		msChip.setBounds(140, 224, 108, 26);
+		if (microsoft) {
+			String label = polling ? "Cancel" : (accountName.isEmpty() ? "Sign in" : "Sign out");
+			actionChip.setBounds(48, 276, label.length() > 8 ? 96 : 88, 30);
+		} else {
+			actionChip.setBounds(0, 0, 0, 0);
+		}
 	}
 
 	@Override
@@ -103,9 +161,28 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		g.setFont(Theme.semibold(26));
 		g.setColor(Theme.TEXT);
 		g.drawString("Ready when you are.", 48, 212);
-		g.setFont(Theme.regular(13));
-		g.setColor(Theme.MUTED);
-		g.drawString("Offline play \u2014 pick a name and hit play.", 48, 236);
+		chip(g, offlineChip, "Offline", !microsoft);
+		chip(g, msChip, "Microsoft", microsoft);
+		if (microsoft) {
+			String action = polling ? "Cancel" : (accountName.isEmpty() ? "Sign in" : "Sign out");
+			chip(g, actionChip, action, true);
+			g.setFont(Theme.regular(13));
+			g.setColor(Theme.TEXT);
+			String detail;
+			if (polling) {
+				detail = deviceCode.isEmpty() ? "Contacting Microsoft\u2026" : deviceCode;
+			} else if (accountName.isEmpty()) {
+				detail = "Not signed in";
+			} else {
+				detail = accountName;
+			}
+			g.drawString(ellipsize(g.getFontMetrics(), detail, 220), actionChip.x + actionChip.width + 12, actionChip.y + 20);
+			if (polling && !deviceUrl.isEmpty()) {
+				g.setFont(Theme.regular(11));
+				g.setColor(Theme.MUTED);
+				g.drawString(ellipsize(g.getFontMetrics(), deviceUrl, 300), 48, 322);
+			}
+		}
 
 		// status line under the button
 		if (!status.isEmpty()) {
@@ -131,7 +208,7 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 			float k = clamp((e - i * 0.15f) / 0.7f);
 			float k2 = 1 - (1 - k) * (1 - k);
 			Graphics2D gc = (Graphics2D) g.create();
-			gc.setComposite(java.awt.AlphaComposite.SrcOver.derive(k2));
+			Theme.modulate(gc, k2);
 			gc.translate(30 * (1 - k2), 0);
 			float y = cy + i * 108;
 			RoundRectangle2D.Float card = new RoundRectangle2D.Float(cx, y, 290, 94, 18, 18);
@@ -154,6 +231,27 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 
 	private static float clamp(float v) {
 		return Math.max(0, Math.min(1, v));
+	}
+
+	private static void chip(Graphics2D g, Rectangle r, String text, boolean on) {
+		if (r.width <= 0) {
+			return;
+		}
+		RoundRectangle2D.Float rr = new RoundRectangle2D.Float(r.x, r.y, r.width, r.height, r.height, r.height);
+		if (on) {
+			g.setPaint(Theme.accent(r.x, r.y, r.x + r.width, r.y));
+			g.fill(rr);
+			g.setColor(Theme.ON_ACCENT);
+		} else {
+			g.setColor(Theme.PANEL);
+			g.fill(rr);
+			g.setColor(Theme.STROKE);
+			g.draw(rr);
+			g.setColor(Theme.TEXT);
+		}
+		g.setFont(Theme.semibold(12));
+		FontMetrics fm = g.getFontMetrics();
+		g.drawString(text, r.x + (r.width - fm.stringWidth(text)) / 2f, r.y + (r.height + fm.getAscent() - fm.getDescent()) / 2f - 1);
 	}
 
 	static String ellipsize(FontMetrics fm, String s, int max) {

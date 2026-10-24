@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 
@@ -67,19 +68,37 @@ public final class PageHost extends JComponent {
 	@Override
 	protected void paintChildren(Graphics g0) {
 		float p = t.get();
-		if (previous != null && p < 0.999f) {
-			Graphics2D g = (Graphics2D) g0.create();
-			g.setComposite(AlphaComposite.SrcOver.derive(Math.max(0, 1 - p * 1.6f)));
-			g.translate(0, -direction * 18 * p);
-			previous.paint(g);
-			g.dispose();
+		boolean fading = previous != null && p < 0.999f;
+		if (!fading) {
+			if (current != null) {
+				current.paint(g0);
+			}
+			return;
+		}
+		// Paint each page into its own image, then blit with the transition alpha.
+		// Home's news cards (and any child that calls setComposite) would otherwise
+		// replace this alpha and stay fully opaque for the rest of the ~0.6s ease.
+		float outA = Math.max(0f, 1f - p * 1.6f);
+		if (outA > 0.02f) {
+			blit(g0, previous, outA, -direction * 18f * p);
 		}
 		if (current != null) {
-			Graphics2D g = (Graphics2D) g0.create();
-			g.setComposite(AlphaComposite.SrcOver.derive(Math.min(1, p)));
-			g.translate(0, direction * 24 * (1 - p));
-			current.paint(g);
-			g.dispose();
+			blit(g0, current, Math.min(1f, p), direction * 24f * (1f - p));
 		}
+	}
+
+	private void blit(Graphics g0, JComponent page, float alpha, float dy) {
+		int w = Math.max(1, getWidth());
+		int h = Math.max(1, getHeight());
+		BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D pg = img.createGraphics();
+		pg.setComposite(AlphaComposite.SrcOver);
+		page.paint(pg);
+		pg.dispose();
+		Graphics2D g = (Graphics2D) g0.create();
+		g.setComposite(AlphaComposite.SrcOver.derive(Math.max(0f, Math.min(1f, alpha))));
+		g.translate(0, dy);
+		g.drawImage(img, 0, 0, null);
+		g.dispose();
 	}
 }

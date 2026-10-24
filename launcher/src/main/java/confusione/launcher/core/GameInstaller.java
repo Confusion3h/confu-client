@@ -8,8 +8,11 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -130,7 +133,7 @@ public final class GameInstaller {
 		jobs.add(new String[] { Json.str(clientDl, "url"), r.gameJar.getPath(), Json.str(clientDl, "sha1") });
 
 		p.stage("Libraries (" + jobs.size() + " files)");
-		runParallel(jobs, 0.0, 0.35);
+		runParallel(jobs, 0.0, 0.35, true);
 
 		p.stage("Extracting natives");
 		r.nativesDir = new File(versionDir, "natives");
@@ -148,44 +151,74 @@ public final class GameInstaller {
 		Http.download(Json.str(ai, "url"), indexFile, Json.str(ai, "sha1"), null);
 		Map<String, Object> objects = Json.obj(Json.obj(Json.parse(new String(Files.readAllBytes(indexFile.toPath()), StandardCharsets.UTF_8))).get("objects"));
 		List<String[]> assetJobs = new ArrayList<String[]>();
+		Set<String> seen = new HashSet<String>();
+		int shared = 0;
 		for (Object o : objects.values()) {
 			Map<String, Object> obj = Json.obj(o);
 			String hash = Json.str(obj, "hash");
 			String rel = hash.substring(0, 2) + "/" + hash;
 			File f = new File(r.assetsDir, "objects/" + rel);
-			// cheap cache check for ~1000 small files: right size means done
-			if (f.isFile() && f.length() == Json.num(obj, "size")) {
+			// Several names (icons/minecraft.icns and minecraft/icons/minecraft.icns) share one
+			// hash. Queueing both made two workers write the same .part and fail SHA-1.
+			if (!seen.add(f.getAbsolutePath())) {
+				shared++;
 				continue;
+			}
+			long size = Json.num(obj, "size");
+			if (f.isFile() && f.length() == size && hash.equalsIgnoreCase(Http.sha1(f))) {
+				continue;
+			}
+			if (f.isFile()) {
+				f.delete();
 			}
 			assetJobs.add(new String[] { RESOURCES + rel, f.getPath(), hash });
 		}
+		if (shared > 0) {
+			p.log("Asset index reuses " + shared + " files; each is downloaded once");
+		}
 		p.stage("Assets (" + assetJobs.size() + " of " + objects.size() + " to fetch)");
-		runParallel(assetJobs, 0.35, 1.0);
+		int skipped = runParallel(assetJobs, 0.35, 1.0, false);
+		if (skipped > 0) {
+			p.log("WARNING: " + skipped + " asset(s) failed SHA-1 checks after retries and were skipped. Minecraft can still start; those sounds or textures will be missing.");
+		}
 
 		p.progress(1);
-		p.stage("Game files ready");
+		p.stage(skipped > 0 ? "Game files ready (" + skipped + " asset(s) skipped)" : "Game files ready");
 		return r;
 	}
 
-	private void runParallel(final List<String[]> jobs, final double from, final double to) throws IOException {
+	/** @param required when false, a download that still fails after retries is logged and skipped
+	 *  @return number of skipped jobs */
+	private int runParallel(final List<String[]> jobs, final double from, final double to, final boolean required) throws IOException {
 		if (jobs.isEmpty()) {
 			p.progress(to);
-			return;
+			return 0;
 		}
 		ExecutorService pool = Executors.newFixedThreadPool(8);
+		final List<String> errors = Collections.synchronizedList(new ArrayList<String>());
 		try {
 			final int[] done = { 0 };
 			List<Future<?>> futures = new ArrayList<Future<?>>();
 			for (final String[] j : jobs) {
 				futures.add(pool.submit(new java.util.concurrent.Callable<Void>() {
 					public Void call() throws IOException {
-						long n = Http.download(j[0], new File(j[1]), j[2], null);
-						synchronized (done) {
-							done[0]++;
-							p.progress(from + (to - from) * done[0] / jobs.size());
-						}
-						if (n > 0 && !j[1].contains("objects")) {
-							p.log("Downloaded " + new File(j[1]).getName());
+						try {
+							long n = Http.download(j[0], new File(j[1]), j[2], null);
+							if (n > 0 && !j[1].contains("objects")) {
+								p.log("Downloaded " + new File(j[1]).getName());
+							}
+						} catch (IOException e) {
+							if (required) {
+								throw e;
+							}
+							errors.add(j[0] + " — " + e.getMessage());
+							p.log("ERROR: asset skipped after retries: " + j[0]);
+							p.log("       " + e.getMessage());
+						} finally {
+							synchronized (done) {
+								done[0]++;
+								p.progress(from + (to - from) * done[0] / jobs.size());
+							}
 						}
 						return null;
 					}
@@ -205,6 +238,7 @@ public final class GameInstaller {
 		} finally {
 			pool.shutdownNow();
 		}
+		return errors.size();
 	}
 
 	private void extractNatives(File jar, File dir) throws IOException {

@@ -124,13 +124,14 @@ public final class PlayButton extends JComponent {
 				Graphics2D gc = (Graphics2D) g.create();
 				gc.clip(pill);
 				gc.setPaint(Theme.accent(x, y, x + bw, y + bh));
+				float base = Theme.compositeAlpha(gc);
 				if (indeterminate && bm > 0.5f) {
-					gc.setComposite(AlphaComposite.SrcOver.derive(0.35f + 0.25f * (float) Math.sin(t * 4)));
+					gc.setComposite(AlphaComposite.SrcOver.derive(base * (0.35f + 0.25f * (float) Math.sin(t * 4))));
 				}
 				gc.fill(new RoundRectangle2D.Float(x, y, fw, bh, arc, arc));
 				// moving stripes while busy
 				if (bm > 0.01f) {
-					gc.setComposite(AlphaComposite.SrcOver.derive(0.12f * bm));
+					gc.setComposite(AlphaComposite.SrcOver.derive(base * 0.12f * bm));
 					gc.setColor(Color.WHITE);
 					float off = (t * 40) % 24;
 					for (float sx = x - bh + off - 24; sx < x + fw; sx += 24) {

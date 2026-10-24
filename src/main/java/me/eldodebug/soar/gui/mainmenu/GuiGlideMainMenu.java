@@ -126,7 +126,7 @@ public class GuiGlideMainMenu extends GuiScreen {
 		}
 
 		nvg.drawText(copyright, sr.getScaledWidth() - (nvg.getTextWidth(copyright, 9, Fonts.REGULAR)) - 4, sr.getScaledHeight() - 12, new Color(255, 255, 255), 9, Fonts.REGULAR);
-		nvg.drawText("CONFUSION3H v" + instance.getVersion() + " · based on Glide & Soar (GPL-3.0)", 4, sr.getScaledHeight() - 12, new Color(255, 255, 255), 9, Fonts.REGULAR);
+		nvg.drawText("CONFUSION3H Client v" + instance.getVersion() + " · based on Glide & Soar (GPL-3.0)", 4, sr.getScaledHeight() - 12, new Color(255, 255, 255), 9, Fonts.REGULAR);
 	}
 	
 	private void drawButtons(int mouseX, int mouseY, ScaledResolution sr, NanoVGManager nvg) {
@@ -159,7 +159,9 @@ public class GuiGlideMainMenu extends GuiScreen {
 			}
 			
 			nvg.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(0, 0, 0, fadeBackgroundAnimation != null ? (int) (255 - (fadeBackgroundAnimation.getValue() * 255)) : 255));
-			nvg.drawCenteredLogo(sr.getScaledWidth() / 2, sr.getScaledHeight() / 2, 120, new Color(255, 255, 255, (int) (255 - (fadeIconAnimation.getValue() * 255))));
+			int splashAlpha = (int) (255 - (fadeIconAnimation.getValue() * 255));
+			nvg.drawCenteredLogo(sr.getScaledWidth() / 2, sr.getScaledHeight() / 2, 120, new Color(255, 255, 255, splashAlpha));
+			nvg.drawCenteredText("CONFUSION3H Client", sr.getScaledWidth() / 2f, sr.getScaledHeight() / 2f + 68, new Color(255, 255, 255, splashAlpha), 16, Fonts.MEDIUM);
 		}
 	}
 	
