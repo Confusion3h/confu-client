@@ -12,7 +12,16 @@ import java.util.Properties;
 public final class Settings {
 
 	private static final File LEGACY_HOME = new File(System.getProperty("user.home"), ".confusione");
-	public static final File HOME = migrate(new File(System.getProperty("user.home"), ".CONFUSION3H"));
+	public static final File HOME = migrate(new File(baseDir(), ".CONFUSION3H"));
+
+	/** Windows: %APPDATA% (like vanilla .minecraft); elsewhere the home directory. */
+	static File baseDir() {
+		String appData = System.getenv("APPDATA");
+		if (System.getProperty("os.name", "").toLowerCase().contains("win") && appData != null && !appData.isEmpty()) {
+			return new File(appData);
+		}
+		return new File(System.getProperty("user.home"));
+	}
 
 	private static File migrate(File home) {
 		if (!home.exists() && LEGACY_HOME.isDirectory()) {

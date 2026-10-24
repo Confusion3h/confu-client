@@ -30,6 +30,10 @@ public final class ClientLocator {
 		if (prop != null && new File(prop).isFile()) {
 			return new File(prop);
 		}
+		File installed = installedJar();
+		if (installed != null) {
+			return installed;
+		}
 		File repo = findRepo();
 		if (repo != null) {
 			File[] jars = new File(repo, "build/libs").listFiles();
@@ -64,6 +68,17 @@ public final class ClientLocator {
 			}
 		}
 		return null;
+	}
+
+	/** Installed layout (Windows installer): <dir>/client/CONFUSION3H-Release.jar beside the launcher jar. */
+	static File installedJar() {
+		try {
+			File self = new File(ClientLocator.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+			File f = new File(self.getParentFile(), "client" + File.separator + "CONFUSION3H-Release.jar");
+			return f.isFile() ? f : null;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public static String tweakClass(File clientJar) {
