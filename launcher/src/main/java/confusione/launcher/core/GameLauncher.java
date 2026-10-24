@@ -32,8 +32,18 @@ public final class GameLauncher {
 		List<String> cmd = new ArrayList<String>();
 		cmd.add(javaExecutable(s));
 		cmd.add("-Xmx" + s.ramMb + "M");
-		cmd.add("-Xms" + Math.min(512, s.ramMb) + "M");
+		cmd.add("-Xms" + Math.min(1024, s.ramMb) + "M");
+		// G1 tuned for a game loop: short pauses, a roomy young gen for the many
+		// short-lived per-frame objects 1.8.9 allocates, and no explicit-GC stalls
 		cmd.add("-XX:+UseG1GC");
+		cmd.add("-XX:+UnlockExperimentalVMOptions");
+		cmd.add("-XX:MaxGCPauseMillis=50");
+		cmd.add("-XX:G1NewSizePercent=20");
+		cmd.add("-XX:G1ReservePercent=20");
+		cmd.add("-XX:G1HeapRegionSize=16M");
+		cmd.add("-XX:+ParallelRefProcEnabled");
+		cmd.add("-XX:+DisableExplicitGC");
+		cmd.add("-XX:-UseBiasedLocking"); // fewer safepoint pauses from revocation
 		cmd.add("-Djava.library.path=" + r.nativesDir.getAbsolutePath());
 		cmd.add("-Dminecraft.launcher.brand=CONFUSION3H");
 		if (OS.NAME.equals("osx")) {

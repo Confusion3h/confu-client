@@ -132,16 +132,28 @@ public class Glide {
 			return;
 		}
 
+		// FPS-related mods on by default: the counter HUD and the boost mod
+		for (me.eldodebug.soar.management.mods.Mod m : modManager.getMods()) {
+			if (m instanceof me.eldodebug.soar.management.mods.impl.FPSDisplayMod
+					|| m instanceof me.eldodebug.soar.management.mods.impl.FPSBoostMod) {
+				m.setToggled(true);
+			}
+		}
+
 		GameSettings gs = mc.gameSettings;
-		gs.fancyGraphics = false;
-		gs.clouds = 0;
-		gs.ambientOcclusion = 0;
+		gs.fancyGraphics = false;       // fast leaves: the biggest single cost in forests
+		gs.clouds = 1;                  // fast clouds: flat, nearly free, keeps the sky alive
+		gs.ambientOcclusion = 1;        // smooth lighting "minimum": cheap, removes flat-shaded look
+		gs.renderDistanceChunks = 8;    // 8 chunks: smooth on iGPUs, still plenty for PvP
+		gs.mipmapLevels = 4;            // removes distant texture shimmer at ~no cost
+		gs.useVbo = true;               // VBOs cut driver overhead on chunk drawing
 		gs.particleSetting = 1;
 		gs.entityShadows = false;
 		gs.enableVsync = false;
 		gs.limitFramerate = (int) GameSettings.Options.FRAMERATE_LIMIT.getValueMax();
 		Display.setVSyncEnabled(false);
 		gs.saveOptions();
+		profileManager.save();
 	}
 
 	private void removeOptifineZoom() {
