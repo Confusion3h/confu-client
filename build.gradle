@@ -69,6 +69,9 @@ dependencies {
     }
     embed(files('libs/lwjgl-soar.jar'))
     embed(files('libs/lwjgl-soar-natives.jar'))
+    // Pure-Java MP3 decoder for the local music player (LGPL-2.1). OGG uses JOrbis from
+    // Minecraft's own codecjorbis library; WAV/AIFF use javax.sound. No natives, no FFmpeg.
+    embed('javazoom:jlayer:1.0.1')
 }
 
 mixin {
