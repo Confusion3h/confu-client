@@ -1,7 +1,5 @@
 package me.eldodebug.soar.management.event;
 
-import java.lang.reflect.InvocationTargetException;
-
 import me.eldodebug.soar.Glide;
 
 public abstract class Event {
@@ -23,20 +21,19 @@ public abstract class Event {
 	}
 
 	private static void call(Event event) {
-		
-		Glide instance = Glide.getInstance();
-		EventManager eventManager = instance.getEventManager();
-		ArrayHelper<Data> dataList = eventManager.get(event.getClass());
-		
-		if (dataList != null) {
-			for (Data data : dataList) {
-				try {
-					data.target.invoke(data.source, event);
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				}
+		Data[] handlers = Glide.getInstance().getEventManager().get(event.getClass());
+
+		if (handlers == null) {
+			return;
+		}
+
+		// snapshot array: handlers that (un)register during dispatch don't disturb this loop
+		for (int i = 0; i < handlers.length; i++) {
+			Data data = handlers[i];
+			try {
+				data.handle.invokeExact(data.source, event);
+			} catch (Throwable t) {
+				t.printStackTrace();
 			}
 		}
 	}

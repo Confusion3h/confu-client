@@ -4,129 +4,86 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
+/**
+ * Copy-on-write registry: (un)registering rebuilds a small array, dispatch only reads it.
+ * Registration happens on mod toggle; dispatch happens many times per frame.
+ */
 public class EventManager {
 
-	private Map<Class<?>, ArrayHelper<Data>> REGISTRY_MAP = new HashMap<Class<?>, ArrayHelper<Data>>();
+	private static final Data[] EMPTY = new Data[0];
+
+	private final Map<Class<?>, Data[]> registry = new HashMap<Class<?>, Data[]>();
 
 	public void register(Object o) {
-
 		for (Method method : o.getClass().getDeclaredMethods()) {
-			if (!isMethodBad(method)) {
+			if (isHandler(method)) {
 				register(method, o);
 			}
 		}
 	}
 
-	public void register(Object o, Class<? extends Event> clazz) {
-		for (Method method : o.getClass().getDeclaredMethods()) {
-			if (!isMethodBad(method, clazz)) {
-				register(method, o);
-			}
-		}
-	}
-
-	@SuppressWarnings("unchecked")
 	private void register(Method method, Object o) {
 		Class<?> clazz = method.getParameterTypes()[0];
-		final Data methodData = new Data(o, method, method.getAnnotation(EventTarget.class).value());
-
-		if (!methodData.target.isAccessible()) {
-			methodData.target.setAccessible(true);
+		Data[] current = registry.get(clazz);
+		if (current == null) {
+			current = EMPTY;
 		}
 
-		if (REGISTRY_MAP.containsKey(clazz)) {
-			if (!REGISTRY_MAP.get(clazz).contains(methodData)) {
-				REGISTRY_MAP.get(clazz).add(methodData);
-				sortListValue((Class<? extends Event>) clazz);
-			}
-		} else {
-			REGISTRY_MAP.put((Class<? extends Event>) clazz, new ArrayHelper<Data>() {
-				{
-					this.add(methodData);
-				}
-			});
-		}
-	}
-
-	public void unregister(final Object o) {
-
-		for (ArrayHelper<Data> flexibalArray : REGISTRY_MAP.values()) {
-			for (Data methodData : flexibalArray) {
-				if (methodData.source.equals(o)) {
-					flexibalArray.remove(methodData);
-				}
+		for (Data d : current) {
+			if (d.source == o && d.target.equals(method)) {
+				return;
 			}
 		}
 
-		cleanMap(true);
+		Data data = new Data(o, method, method.getAnnotation(EventTarget.class).value());
+
+		// insert keeping priority order (stable for equal priorities)
+		Data[] next = new Data[current.length + 1];
+		int i = 0;
+		while (i < current.length && current[i].priority <= data.priority) {
+			next[i] = current[i];
+			i++;
+		}
+		next[i] = data;
+		System.arraycopy(current, i, next, i + 1, current.length - i);
+		registry.put(clazz, next);
 	}
 
-	public void unregister(final Object o, final Class<? extends Event> clazz) {
-		if (REGISTRY_MAP.containsKey(clazz)) {
-			for (final Data methodData : REGISTRY_MAP.get(clazz)) {
-				if (methodData.source.equals(o)) {
-					REGISTRY_MAP.get(clazz).remove(methodData);
+	public void unregister(Object o) {
+		Iterator<Map.Entry<Class<?>, Data[]>> it = registry.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<Class<?>, Data[]> entry = it.next();
+			Data[] current = entry.getValue();
+			int keep = 0;
+			for (Data d : current) {
+				if (d.source != o) {
+					keep++;
 				}
 			}
-
-			cleanMap(true);
-		}
-	}
-
-	public void cleanMap(boolean b) {
-
-		Iterator<Entry<Class<?>, ArrayHelper<Data>>> iterator = REGISTRY_MAP.entrySet().iterator();
-
-		while (iterator.hasNext()) {
-			if (!b || iterator.next().getValue().isEmpty()) {
-				iterator.remove();
+			if (keep == current.length) {
+				continue;
 			}
-		}
-	}
-
-	public void removeEnty(Class<? extends Event> clazz) {
-
-		Iterator<Entry<Class<?>, ArrayHelper<Data>>> iterator = REGISTRY_MAP.entrySet().iterator();
-
-		while (iterator.hasNext()) {
-			if (iterator.next().getKey().equals(clazz)) {
-				iterator.remove();
-				break;
+			if (keep == 0) {
+				it.remove();
+				continue;
 			}
-		}
-	}
-
-	private void sortListValue(Class<? extends Event> clazz) {
-
-		ArrayHelper<Data> flexibleArray = new ArrayHelper<Data>();
-
-		for (byte b : Priority.VALUE_ARRAY) {
-			for (Data methodData : REGISTRY_MAP.get(clazz)) {
-				if (methodData.priority == b) {
-					flexibleArray.add(methodData);
+			Data[] next = new Data[keep];
+			int j = 0;
+			for (Data d : current) {
+				if (d.source != o) {
+					next[j++] = d;
 				}
 			}
+			entry.setValue(next);
 		}
-
-		REGISTRY_MAP.put(clazz, flexibleArray);
 	}
 
-	private boolean isMethodBad(final Method method) {
-		return method.getParameterTypes().length != 1 || !method.isAnnotationPresent(EventTarget.class);
+	private static boolean isHandler(Method method) {
+		return method.getParameterTypes().length == 1 && method.isAnnotationPresent(EventTarget.class);
 	}
 
-	private boolean isMethodBad(Method method, Class<? extends Event> clazz) {
-		return isMethodBad(method) || method.getParameterTypes()[0].equals(clazz);
+	Data[] get(Class<? extends Event> clazz) {
+		return registry.get(clazz);
 	}
-
-	public ArrayHelper<Data> get(final Class<? extends Event> clazz) {
-		return REGISTRY_MAP.get(clazz);
-	}
-
-	public void shutdown() {
-		REGISTRY_MAP.clear();
-	}
-
 }
