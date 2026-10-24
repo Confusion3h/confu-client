@@ -70,7 +70,8 @@ public final class CapeStore {
 
 	private Entry entry(File f) throws CapeImage.Invalid, IOException {
 		CapeImage img = CapeImage.load(f);
-		File preview = new File(cacheDir, "preview-" + CapeImage.hash(f) + ".png");
+		// per file *and* content: duplicates never share (and delete) one preview
+		File preview = new File(cacheDir, "preview-" + Integer.toHexString(f.getName().hashCode()) + "-" + CapeImage.hash(f) + ".png");
 		if (!preview.isFile()) {
 			cacheDir.mkdirs();
 			ImageIO.write(img.preview(200), "png", preview);
