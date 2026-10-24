@@ -1,0 +1,14 @@
+// Standalone launcher: plain Java 8, no dependencies (Swing/Java2D + JDK HTTP).
+apply plugin: 'java'
+
+sourceCompatibility = targetCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
+
+version = '0.1.0'
+archivesBaseName = 'confusione-launcher'
+
+jar {
+    manifest.attributes('Main-Class': 'confusione.launcher.Main',
+                        'Implementation-Title': 'confusione launcher',
+                        'Implementation-Version': version)
+}
