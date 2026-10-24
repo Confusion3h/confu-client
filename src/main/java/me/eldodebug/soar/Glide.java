@@ -6,10 +6,6 @@ import java.util.Arrays;
 import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.management.mods.RestrictedMod;
-import me.eldodebug.soar.management.remote.blacklists.BlacklistManager;
-import me.eldodebug.soar.management.remote.discord.DiscordStats;
-import me.eldodebug.soar.management.remote.news.NewsManager;
-import me.eldodebug.soar.management.remote.update.Update;
 import me.eldodebug.soar.ui.ClickEffects;
 import me.eldodebug.soar.utils.Sound;
 import org.apache.commons.lang3.ArrayUtils;
@@ -17,7 +13,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import me.eldodebug.soar.injection.mixin.GlideTweaker;
 import me.eldodebug.soar.logger.GlideLogger;
 import me.eldodebug.soar.management.cape.CapeManager;
-import me.eldodebug.soar.management.remote.changelog.ChangelogManager;
 import me.eldodebug.soar.management.color.ColorManager;
 import me.eldodebug.soar.management.command.CommandManager;
 import me.eldodebug.soar.management.event.EventManager;
@@ -42,7 +37,6 @@ public class Glide {
 
 	private static Glide instance = new Glide();
 	private Minecraft mc = Minecraft.getMinecraft();
-	private boolean updateNeeded, soar8Released;
 	private String name, version;
 	private int verIdentifier;
 	
@@ -60,17 +54,12 @@ public class Glide {
 	private NotificationManager notificationManager;
 	private SecurityFeatureManager securityFeatureManager;
 	private QuickPlayManager quickPlayManager;
-	private ChangelogManager changelogManager;
-	private NewsManager newsManager;
-	private DiscordStats discordStats;
     private WaypointManager waypointManager;
 	private GuiModMenu modMenu;
 	private GuiGlideMainMenu mainMenu;
 	private long launchTime;
 	private File firstLoginFile;
-	private Update update;
 	private ClickEffects clickEffects;
-	private BlacklistManager blacklistManager;
 	private RestrictedMod restrictedMod;
 	
 	public Glide() {
@@ -84,10 +73,9 @@ public class Glide {
 			OptifineUtils.disableFastRender();
 			this.removeOptifineZoom();
 		} catch(Exception ignored) {}
-		blacklistManager = new BlacklistManager();
 		restrictedMod = new RestrictedMod();
 		try {
-			restrictedMod.shouldCheck = !System.getProperty("me.eldodebug.soar.glideclient.blacklistchecks", "true").equalsIgnoreCase("false");
+			restrictedMod.shouldCheck = !System.getProperty("confusione.blacklistchecks", "true").equalsIgnoreCase("false");
 		} catch (Exception ignored) {}
 		fileManager = new FileManager();
 		musicManager = new me.eldodebug.soar.management.music.MusicManager(fileManager.getMusicDir());
@@ -111,12 +99,6 @@ public class Glide {
 		notificationManager = new NotificationManager();
 		securityFeatureManager = new SecurityFeatureManager();
 		quickPlayManager = new QuickPlayManager();
-		changelogManager = new ChangelogManager();
-		newsManager = new NewsManager();
-		discordStats = new DiscordStats();
-		discordStats.check();
-		update = new Update();
-		update.check();
 		waypointManager = new WaypointManager();
 
 		eventManager.register(new GlideHandler());
@@ -247,14 +229,7 @@ public class Glide {
 		return quickPlayManager;
 	}
 
-	public ChangelogManager getChangelogManager() {
-		return changelogManager;
-	}
-	public NewsManager getNewsManager() { return newsManager; }
 
-	public DiscordStats getDiscordStats() {
-		return discordStats;
-	}
 
 	public WaypointManager getWaypointManager() {
 		return waypointManager;
@@ -278,19 +253,11 @@ public class Glide {
 
 	public boolean isFirstLogin() {return !firstLoginFile.exists();}
 
-	public Update getUpdateInstance(){
-		return update;
-	}
 
-	public void setUpdateNeeded(boolean in) {updateNeeded = in;}
-	public boolean getUpdateNeeded() {return updateNeeded;}
 
-	public void setSoar8Released(boolean in) {soar8Released = in;}
-	public boolean getSoar8Released() {return soar8Released;}
 
 	public ClickEffects getClickEffects() {return clickEffects;}
 
-	public BlacklistManager getBlacklistManager() { return blacklistManager; }
 	public RestrictedMod getRestrictedMod() { return restrictedMod; }
 
 	public me.eldodebug.soar.management.music.MusicManager getMusicManager() {

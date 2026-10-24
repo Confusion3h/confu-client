@@ -1,150 +1,143 @@
 package me.eldodebug.soar.gui.modmenu.category.impl;
 
 import java.awt.Color;
-import java.awt.Desktop;
-import java.net.URL;
 
 import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.gui.modmenu.category.Category;
-import me.eldodebug.soar.management.remote.changelog.Changelog;
-import me.eldodebug.soar.management.remote.changelog.ChangelogManager;
 import me.eldodebug.soar.management.color.AccentColor;
-import me.eldodebug.soar.management.color.ColorManager;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
 import me.eldodebug.soar.management.color.palette.ColorType;
 import me.eldodebug.soar.management.language.TranslateText;
+import me.eldodebug.soar.management.mods.Mod;
+import me.eldodebug.soar.management.mods.impl.FPSDisplayMod;
+import me.eldodebug.soar.management.mods.impl.InternalSettingsMod;
+import me.eldodebug.soar.management.mods.impl.MusicPlayerMod;
+import me.eldodebug.soar.management.music.NowPlaying;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
-import me.eldodebug.soar.management.remote.discord.DiscordStats;
-import me.eldodebug.soar.management.remote.news.News;
-import me.eldodebug.soar.management.remote.news.NewsManager;
 import me.eldodebug.soar.utils.mouse.MouseUtils;
-import me.eldodebug.soar.utils.mouse.Scroll;
 
+/**
+ * Local-only home: client info, quick toggles, tips, now playing. No network content
+ * (the upstream news/changelog/Discord cards were fetched from Glide's servers).
+ */
 public class HomeCategory extends Category {
+
+	private static final int PAD = 15, LEFT_W = 200, RIGHT_X = 230, RIGHT_W = 174;
+	private static final String[] TIPS = {
+			"Right Shift opens this menu anywhere.",
+			"FPS mode (Settings > General) turns off blur, glow and particles.",
+			"Music: drop MP3/OGG/WAV in glide/music, or use .soarcmd music connect for Spotify.",
+			"Capes: Cosmetics > Custom > + to add a PNG; F5 to see it.",
+			"Profiles can switch automatically per server IP.",
+	};
 
 	public HomeCategory(GuiModMenu parent) {
 		super(parent, TranslateText.HOME, LegacyIcon.HOME, false, false);
 	}
-	private Scroll changelogScroll = new Scroll();
-	private Scroll newsScroll = new Scroll();
 
-	@Override
-	public void initGui() {
-		changelogScroll.resetAll();
-		newsScroll.resetAll();
-		Glide.getInstance().getDiscordStats().check();
+	private interface Toggle {
+		String label();
+		boolean on();
+		void flip();
 	}
 
-	Color onlineColour = new Color(85, 155, 89, 255);
-	Color noColour = new Color(0, 0, 0, 0);
+	private final Toggle[] toggles = {
+			new Toggle() {
+				public String label() { return "FPS mode"; }
+				public boolean on() { return InternalSettingsMod.isFpsMode(); }
+				public void flip() { InternalSettingsMod.getInstance().getFpsModeSetting().setToggled(!on()); }
+			},
+			modToggle("FPS display", FPSDisplayMod.class),
+			modToggle("Music player", MusicPlayerMod.class),
+	};
+
+	private static Toggle modToggle(final String label, final Class<? extends Mod> type) {
+		return new Toggle() {
+			Mod find() {
+				for (Mod m : Glide.getInstance().getModManager().getMods()) {
+					if (type.isInstance(m)) {
+						return m;
+					}
+				}
+				return null;
+			}
+			public String label() { return label; }
+			public boolean on() { Mod m = find(); return m != null && m.isToggled(); }
+			public void flip() { Mod m = find(); if (m != null) m.toggle(); }
+		};
+	}
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		
 		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
-		ColorManager colorManager = instance.getColorManager();
-		ColorPalette palette = colorManager.getPalette();
-		AccentColor currentColor = colorManager.getCurrentColor();
-		ChangelogManager changelogManager = instance.getChangelogManager();
-		NewsManager newsManager = instance.getNewsManager();
-		DiscordStats discStat = instance.getDiscordStats();
-		int standardPadding = 8;
-		int outerPadding = 15;
+		ColorPalette palette = instance.getColorManager().getPalette();
+		AccentColor accent = instance.getColorManager().getCurrentColor();
+		Color card = palette.getBackgroundColor(ColorType.DARK);
+		Color text = palette.getFontColor(ColorType.DARK);
+		Color muted = palette.getFontColor(ColorType.NORMAL);
+		float x = getX(), y = getY();
 
-		// news
-		int offsetNewsY = 0;
-		nvg.drawRoundedRect(this.getX() + outerPadding, this.getY() + outerPadding, 200, 250, 8, palette.getBackgroundColor(ColorType.DARK));
-		nvg.drawText(TranslateText.NEWS.getText(), this.getX() + outerPadding + 8, this.getY() + 15 + 8, palette.getFontColor(ColorType.DARK), 11F, Fonts.SEMIBOLD);
-
-		nvg.save();
-		nvg.scissor(this.getX() + outerPadding, this.getY() + outerPadding + 20, 200, 230);
-		nvg.translate(0, newsScroll.getValue());
-
-		for(News n : newsManager.getNews()) {
-			float titleSize = nvg.getTextBoxHeight(n.getTitle(), 10, Fonts.SEMIBOLD, 180);
-			nvg.drawTextBox(n.getTitle(), this.getX() + outerPadding + 8, this.getY() + 43F + offsetNewsY, 180, palette.getFontColor(ColorType.DARK), 10, Fonts.SEMIBOLD);
-			offsetNewsY += (int) (titleSize);
-			float subTitleSize = nvg.getTextBoxHeight(n.getSubTitle(), 8.5F, Fonts.MEDIUM, 180);
-			nvg.drawTextBox(n.getSubTitle(), this.getX() + outerPadding + 8, this.getY() + 43F + offsetNewsY, 180, palette.getFontColor(ColorType.DARK), 8.5F, Fonts.MEDIUM);
-			offsetNewsY += (int) (subTitleSize + 1);
-			float bodySize = nvg.getTextBoxHeight(n.getBody(), 8, Fonts.REGULAR, 180);
-			nvg.drawTextBox(n.getBody(), this.getX() + outerPadding + 8, this.getY() + 43F + offsetNewsY, 180, palette.getFontColor(ColorType.DARK), 8, Fonts.REGULAR);
-			offsetNewsY += (int) (bodySize + 9);
+		// left: identity + quick toggles
+		nvg.drawRoundedRect(x + PAD, y + PAD, LEFT_W, 250, 8, card);
+		nvg.drawLogo(x + PAD + 10, y + PAD + 12, 34, accent.getInterpolateColor());
+		nvg.drawText("CONFUSION3H", x + PAD + 52, y + PAD + 16, text, 14, Fonts.SEMIBOLD);
+		nvg.drawText("v" + instance.getVersion() + " \u00b7 Minecraft 1.8.9", x + PAD + 52, y + PAD + 33, muted, 8, Fonts.REGULAR);
+		nvg.drawText("Quick toggles", x + PAD + 10, y + PAD + 66, text, 10, Fonts.SEMIBOLD);
+		for (int i = 0; i < toggles.length; i++) {
+			float ry = y + PAD + 84 + i * 30;
+			nvg.drawText(toggles[i].label(), x + PAD + 10, ry + 5, text, 9, Fonts.MEDIUM);
+			boolean on = toggles[i].on();
+			float sx = x + PAD + LEFT_W - 44;
+			nvg.drawRoundedRect(sx, ry, 32, 17, 8.5F, on ? accent.getInterpolateColor() : palette.getBackgroundColor(ColorType.NORMAL));
+			nvg.drawRoundedRect(on ? sx + 17 : sx + 2, ry + 2, 13, 13, 6.5F, Color.WHITE);
 		}
-		nvg.restore();
+		nvg.drawTextBox("Based on Glide Client and Soar Client by EldoDebug \u00b7 GPL-3.0. Full credits in Settings > Credits.",
+				x + PAD + 10, y + PAD + 210, LEFT_W - 20, muted, 7.5F, Fonts.REGULAR);
 
-		if(MouseUtils.isInside(mouseX, mouseY,this.getX() + outerPadding, this.getY() + outerPadding, 200, 250)) {newsScroll.onScroll();}
-		newsScroll.onAnimation();
-		newsScroll.setMaxScroll(Math.max(offsetNewsY - 225, 0));
-
-		// shadow
-		nvg.drawVerticalGradientRect(this.getX() + outerPadding + 8, this.getY() + outerPadding + 20, 200 - 16, 8, palette.getBackgroundColor(ColorType.DARK), noColour);
-		nvg.drawVerticalGradientRect(this.getX() + outerPadding + 8, this.getY() + outerPadding +  250 - 8, 200 - 16, 8, noColour, palette.getBackgroundColor(ColorType.DARK));
-
-
-		// Changelog
-
-		int offsetChangelogY = 0;
-
-		nvg.drawRoundedRect(this.getX() + 230, this.getY() + outerPadding, 174, 151, 8, palette.getBackgroundColor(ColorType.DARK));
-		nvg.drawText(TranslateText.CHANGELOG.getText(), this.getX() + 230 + 8, this.getY() + 15 + 8, palette.getFontColor(ColorType.DARK), 11F, Fonts.SEMIBOLD);
-
-		nvg.save();
-		nvg.scissor(this.getX() + 230, this.getY() + outerPadding + 20, 174, 131);
-		nvg.translate(0, changelogScroll.getValue());
-
-		for(Changelog c : changelogManager.getChangelogs()) {
-			float tbSize = nvg.getTextBoxHeight(c.getText(), 8, Fonts.MEDIUM, 174 - 33);
-			nvg.drawRoundedRect(this.getX() + 230 + 8, this.getY() + 40 + offsetChangelogY + ((tbSize/2)-4), 13, 13, 7F, c.getType().getColor());
-			nvg.drawCenteredText(c.getType().getText(), this.getX() + 230 + 8 + (13 / 2), this.getY() + 42F + offsetChangelogY + ((tbSize/2)-3), Color.WHITE, 7, Fonts.LEGACYICON);
-			nvg.drawTextBox(c.getText(), this.getX() + 230 + 25, this.getY() + 43F + offsetChangelogY, 174 - 33, palette.getFontColor(ColorType.DARK), 8, Fonts.MEDIUM);
-			offsetChangelogY+= (int) (tbSize + 9);
+		// right top: tips
+		nvg.drawRoundedRect(x + RIGHT_X, y + PAD, RIGHT_W, 151, 8, card);
+		nvg.drawText("Tips", x + RIGHT_X + 8, y + PAD + 8, text, 11, Fonts.SEMIBOLD);
+		float ty = y + PAD + 28;
+		for (String tip : TIPS) {
+			nvg.drawRoundedRect(x + RIGHT_X + 9, ty + 3, 4, 4, 2, accent.getInterpolateColor());
+			nvg.drawTextBox(tip, x + RIGHT_X + 18, ty, RIGHT_W - 26, text, 7.5F, Fonts.REGULAR);
+			ty += 23;
 		}
-		nvg.restore();
-		if(offsetChangelogY > 130 && MouseUtils.isInside(mouseX, mouseY,this.getX() + 230, this.getY() + outerPadding, 174, 151)) {changelogScroll.onScroll();}
-		changelogScroll.onAnimation();
-		changelogScroll.setMaxScroll(Math.max(offsetChangelogY - 120, 0));
 
-		nvg.drawVerticalGradientRect(this.getX() + 230 + 8, this.getY() + outerPadding + 20, 174 - 16, 8, palette.getBackgroundColor(ColorType.DARK), noColour);
-		nvg.drawVerticalGradientRect(this.getX() + 230 + 8, this.getY() + outerPadding +  151 - 8, 174 - 16, 8, noColour, palette.getBackgroundColor(ColorType.DARK));
-
-
-		// Discord
-		int discordStartX = this.getX() + 230;
-		int discordStartY = this.getY() + 179;
-		int discordWidth = 174;
-		//bg
-		nvg.drawRoundedRect(discordStartX, discordStartY, discordWidth, 86, 8, palette.getBackgroundColor(ColorType.DARK));
-		// Discord branding
-		nvg.drawRoundedRectVarying(discordStartX + discordWidth - 22, discordStartY, 22, 22, 0, 8, 8, 0, new Color(114, 137, 214));
-		nvg.drawCenteredText(LegacyIcon.DISCORD, discordStartX  + discordWidth - 11, discordStartY + 4, Color.WHITE, 14F, Fonts.LEGACYICON);
-		// txt
-		nvg.drawText(TranslateText.JOIN_OUR_DISCORD_SERVER.getText(), discordStartX + standardPadding, discordStartY + standardPadding, palette.getFontColor(ColorType.DARK), 11F, Fonts.SEMIBOLD);
-		nvg.drawTextBox(TranslateText.DISCORD_DESCRIPTION.getText(), discordStartX + standardPadding, discordStartY + 26, discordWidth - 16, palette.getFontColor(ColorType.DARK), 8, Fonts.REGULAR);
-		// stats
-		if(discStat.getMemberCount() != -1){
-			nvg.drawRoundedRect(discordStartX + 10, discordStartY + 66, 6, 6, 3, onlineColour);
-			nvg.drawRoundedGlow(discordStartX + 10, discordStartY + 66, 6, 6, 3, onlineColour, 7);
-			nvg.drawTextGlowing(discStat.getMemberCount() + " Members", discordStartX + 20, discordStartY + 62, onlineColour, 4, 8, Fonts.REGULAR);
-			nvg.drawTextGlowing(discStat.getMemberOnline() + " Online", discordStartX + 20, discordStartY + 70, onlineColour, 4, 8, Fonts.REGULAR);
+		// right bottom: now playing
+		float by = y + PAD + 164;
+		nvg.drawRoundedRect(x + RIGHT_X, by, RIGHT_W, 86, 8, card);
+		nvg.drawText("Now playing", x + RIGHT_X + 8, by + 8, text, 11, Fonts.SEMIBOLD);
+		NowPlaying np = instance.getMusicManager().getNowPlaying();
+		if (np.isEmpty()) {
+			nvg.drawTextBox("Nothing yet. Enable Music Player in Mods, then .soarcmd music play.", x + RIGHT_X + 8, by + 30, RIGHT_W - 16, muted, 8, Fonts.REGULAR);
+		} else {
+			nvg.drawTextBox(np.title, x + RIGHT_X + 8, by + 28, RIGHT_W - 16, text, 9, Fonts.MEDIUM);
+			if (np.artist != null) {
+				nvg.drawText(np.artist, x + RIGHT_X + 8, by + 50, muted, 8, Fonts.REGULAR);
+			}
+			if (np.durationMs > 0) {
+				float frac = Math.min(1F, np.positionNow() / (float) np.durationMs);
+				nvg.drawRoundedRect(x + RIGHT_X + 8, by + 70, RIGHT_W - 16, 3, 1.5F, palette.getBackgroundColor(ColorType.NORMAL));
+				nvg.drawRoundedRect(x + RIGHT_X + 8, by + 70, (RIGHT_W - 16) * frac, 3, 1.5F, accent.getInterpolateColor());
+			}
 		}
-		// join button
-		nvg.drawRoundedRect(discordStartX + discordWidth - 60, discordStartY + 60, 52, 18, 9,  new Color(114, 137, 214));
-		nvg.drawCenteredText(TranslateText.JOIN.getText() + " >", discordStartX + discordWidth - 60 + (52 / 2), discordStartY + 66,  Color.WHITE, 7, Fonts.REGULAR);
-
 	}
 
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-		int discordStartX = this.getX() + 230;
-		int discordStartY = this.getY() + 179;
-			if(MouseUtils.isInside(mouseX, mouseY, discordStartX + 174 - 60, discordStartY + 60, 52, 18)) {
-				try {
-					Desktop.getDesktop().browse(new URL("https://glideclient.github.io/discord").toURI());
-				} catch (Exception e) {}}
+		if (mouseButton != 0) {
+			return;
+		}
+		for (int i = 0; i < toggles.length; i++) {
+			float ry = getY() + PAD + 84 + i * 30;
+			if (MouseUtils.isInside(mouseX, mouseY, getX() + PAD + 6, ry - 4, LEFT_W - 12, 25)) {
+				toggles[i].flip();
+			}
+		}
 	}
 }
