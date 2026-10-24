@@ -43,6 +43,14 @@ public class NanoVGManager {
 	private Minecraft mc = Minecraft.getMinecraft();
 	
 	private HashMap<Integer, NVGColor> colorCache = new HashMap<Integer, NVGColor>();
+	/**
+	 * One paint struct reused by every draw call. NanoVG copies the paint into its
+	 * state in nvgFillPaint, so nothing holds on to it; previously each gradient,
+	 * shadow and image draw allocated a fresh direct buffer (create) or malloc'd one.
+	 */
+	private final NVGPaint paint = NVGPaint.create();
+	/** Scratch output for nvgText*Bounds, render thread only. */
+	private final float[] bounds = new float[4];
 	
 	private long nvg;
 	
@@ -88,7 +96,7 @@ public class NanoVGManager {
     
     public void drawAlphaBar(float x, float y, float width, float height, float radius, Color color) {
     	
-        NVGPaint bg = NVGPaint.create();
+        NVGPaint bg = paint;
         
         NanoVG.nvgBeginPath(nvg);
         NanoVG.nvgRoundedRect(nvg, x, y, width, height, radius);
@@ -102,7 +110,7 @@ public class NanoVGManager {
     	
         drawRoundedRect(x, y, width, height, radius, color);
 
-        NVGPaint bg = NVGPaint.create();
+        NVGPaint bg = paint;
         NanoVG.nvgBeginPath(nvg);
         NanoVG.nvgRoundedRect(nvg, x, y, width, height, radius);
         NVGColor nvgColor = getColor(Color.WHITE);
@@ -110,7 +118,7 @@ public class NanoVGManager {
         NanoVG.nvgFillPaint(nvg, NanoVG.nvgLinearGradient(nvg, x + 8, y + 8, x + width, y, nvgColor, nvgColor2, bg));
         NanoVG.nvgFill(nvg);
 
-        NVGPaint bg2 = NVGPaint.create();
+        NVGPaint bg2 = paint;
         NanoVG.nvgBeginPath(nvg);
         NanoVG.nvgRoundedRect(nvg, x, y, width, height, radius);
         NVGColor nvgColor3 = getColor(new Color(0, 0, 0, 0));
@@ -155,7 +163,7 @@ public class NanoVGManager {
 
 	public void drawVerticalGradientRect(float x, float y, float width, float height, Color color1, Color color2) {
 
-		NVGPaint bg = NVGPaint.create();
+		NVGPaint bg = paint;
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgRect(nvg, x, y, width, height);
@@ -172,7 +180,7 @@ public class NanoVGManager {
 
 	public void drawHorizontalGradientRect(float x, float y, float width, float height, Color color1, Color color2) {
 
-		NVGPaint bg = NVGPaint.create();
+		NVGPaint bg = paint;
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgRect(nvg, x, y, width, height);
@@ -189,7 +197,7 @@ public class NanoVGManager {
 
 	public void drawGradientRect(float x, float y, float width, float height, Color color1, Color color2) {
 
-		NVGPaint bg = NVGPaint.create();
+		NVGPaint bg = paint;
 
 		float tick = ((System.currentTimeMillis() % 3600) / 570F);
 		float max = Math.max(width, height);
@@ -209,7 +217,7 @@ public class NanoVGManager {
 	
 	public void drawGradientRoundedRect(float x, float y, float width, float height, float radius, Color color1, Color color2) {
 		
-		NVGPaint bg = NVGPaint.create();
+		NVGPaint bg = paint;
 		
 		float tick = ((System.currentTimeMillis() % 3600) / 570F);
 		float max = Math.max(width, height);
@@ -240,7 +248,7 @@ public class NanoVGManager {
 	
 	public void drawGradientOutlineRoundedRect(float x, float y, float width, float height, float radius, float strokeWidth, Color color1, Color color2) {
 		
-		NVGPaint bg = NVGPaint.create();
+		NVGPaint bg = paint;
 		
 		float tick = ((System.currentTimeMillis() % 3600) / 570F);
 		float max = Math.max(width, height);
@@ -288,15 +296,26 @@ public class NanoVGManager {
 	
 	public void drawShadow(float x, float y, float width, float height, float radius, int strength) {
 		
-		int alpha = 1;
-		
-		for(float f = strength; f > 0; f--) {
-			drawOutlineRoundedRect(x - (f / 2), y - (f / 2), width + f, height + f, radius + 2, f, new Color(0, 0, 0, alpha));
+		int i = 0;
 
-			alpha+=2;
+		for(float f = strength; f > 0; f--) {
+			drawOutlineRoundedRect(x - (f / 2), y - (f / 2), width + f, height + f, radius + 2, f, shadowColor(i++));
 		}
 	}
 	
+	/** Shadow ring colors are a fixed ramp (alpha 1, 3, 5, ...); build them once. */
+	private static final Color[] SHADOW_COLORS = new Color[64];
+
+	static {
+		for(int i = 0; i < SHADOW_COLORS.length; i++) {
+			SHADOW_COLORS[i] = new Color(0, 0, 0, Math.min(255, 1 + i * 2));
+		}
+	}
+
+	private static Color shadowColor(int i) {
+		return i < SHADOW_COLORS.length ? SHADOW_COLORS[i] : new Color(0, 0, 0, Math.min(255, 1 + i * 2));
+	}
+
 	public void drawShadow(float x, float y, float width, float height, float radius) {
 		drawShadow(x, y, width, height, radius, 7);
 	}
@@ -347,7 +366,7 @@ public class NanoVGManager {
 	
 	public void drawGradientCircle(float x, float y, float radius, Color color1, Color color2) {
 		
-		NVGPaint bg = NVGPaint.create();
+		NVGPaint bg = paint;
 		
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgCircle(nvg, x, y, radius);
@@ -428,7 +447,6 @@ public class NanoVGManager {
 	
 	public float getTextWidth(String text, float size, Font font) {
 		
-	    float[] bounds = new float[4];
 	    
 	    NanoVG.nvgFontSize(nvg, size);
 	    NanoVG.nvgFontFace(nvg, font.getName());
@@ -441,7 +459,6 @@ public class NanoVGManager {
 	
 	public float getTextHeight(String text, float size, Font font) {
 		
-	    float[] bounds = new float[4];
 	    
 	    NanoVG.nvgFontSize(nvg, size);
 	    NanoVG.nvgFontFace(nvg, font.getName());
@@ -451,7 +468,6 @@ public class NanoVGManager {
 	}
 
 	public float getTextBoxHeight(String text, float size, Font font, float maxWidth) {
-		float[] bounds = new float[4];
 
 		NanoVG.nvgFontSize(nvg, size);
 		NanoVG.nvgFontFace(nvg, font.getName());
@@ -513,7 +529,7 @@ public class NanoVGManager {
 		
         if (assetManager.loadSvg(nvg, location, width, height)) {
         	
-            NVGPaint imagePaint = NVGPaint.calloc();
+            NVGPaint imagePaint = paint;
             
             int image = assetManager.getSvg(location, width, height);
             
@@ -527,7 +543,6 @@ public class NanoVGManager {
             NanoVG.nvgFillPaint(nvg, imagePaint);
             NanoVG.nvgFill(nvg);            
 
-            imagePaint.free();
         }
 	}
 	
@@ -535,7 +550,7 @@ public class NanoVGManager {
 		
 		if(assetManager.loadImage(nvg, location)) {
 			
-			NVGPaint imagePaint = NVGPaint.calloc();
+			NVGPaint imagePaint = paint;
 			
 			int image = assetManager.getImage(location);
 			
@@ -546,7 +561,6 @@ public class NanoVGManager {
 			NanoVG.nvgFillPaint(nvg, imagePaint);
 			NanoVG.nvgFill(nvg);
 			
-			imagePaint.free();
 		}
 	}
 	
@@ -554,7 +568,7 @@ public class NanoVGManager {
 		
 		if(assetManager.loadImage(nvg, file)) {
 			
-			NVGPaint imagePaint = NVGPaint.calloc();
+			NVGPaint imagePaint = paint;
 			
 			int image = assetManager.getImage(file);
 			
@@ -565,7 +579,6 @@ public class NanoVGManager {
 			NanoVG.nvgFillPaint(nvg, imagePaint);
 			NanoVG.nvgFill(nvg);
 			
-			imagePaint.free();
 		}
 	}
 
@@ -576,7 +589,7 @@ public class NanoVGManager {
 			int image = assetManager.getImage(texture);
 			
 			NanoVG.nvgImageSize(nvg, image, new int[]{(int) width}, new int[]{-(int) height});
-	        NVGPaint p = NVGPaint.calloc();
+	        NVGPaint p = paint;
 	        
 	        NanoVG.nvgImagePattern(nvg, x, y, width, height, 0, image, alpha, p);
 	        NanoVG.nvgBeginPath(nvg);
@@ -585,7 +598,6 @@ public class NanoVGManager {
 	        NanoVG.nvgFill(nvg);
 	        NanoVG.nvgClosePath(nvg);
 	        
-	        p.free();
 		}
 	}
 	
@@ -600,7 +612,7 @@ public class NanoVGManager {
 			int image = assetManager.getImage(texture);
 			
 			NanoVG.nvgImageSize(nvg, image, new int[]{(int) width}, new int[]{-(int) height});
-	        NVGPaint p = NVGPaint.calloc();
+	        NVGPaint p = paint;
 	        
 	        NanoVG.nvgImagePattern(nvg, x, y, width, height, 0, image, alpha, p);
 	        NanoVG.nvgBeginPath(nvg);
@@ -609,7 +621,6 @@ public class NanoVGManager {
 	        NanoVG.nvgFill(nvg);
 	        NanoVG.nvgClosePath(nvg);
 	        
-	        p.free();
 		}
 	}
 	
@@ -630,7 +641,7 @@ public class NanoVGManager {
 			int image = assetManager.getImage(texture);
 			
 			NanoVG.nvgImageSize(nvg, image, new int[]{(int) width}, new int[]{-(int) height});
-	        NVGPaint p = NVGPaint.calloc();
+	        NVGPaint p = paint;
 	        
 	        float sizeMultiplier = 8;
 	        
@@ -648,7 +659,6 @@ public class NanoVGManager {
 	        NanoVG.nvgFill(nvg);
 	        NanoVG.nvgClosePath(nvg);
 	        
-	        p.free();
 		}
 	}
 	
@@ -660,7 +670,7 @@ public class NanoVGManager {
 		
 		if(assetManager.loadImage(nvg, location)) {
 			
-			NVGPaint imagePaint = NVGPaint.calloc();
+			NVGPaint imagePaint = paint;
 			
 			int image = assetManager.getImage(location);
 			
@@ -671,7 +681,6 @@ public class NanoVGManager {
 			NanoVG.nvgFillPaint(nvg, imagePaint);
 			NanoVG.nvgFill(nvg);
 			
-			imagePaint.free();
 		}
 	}
 	
@@ -683,7 +692,7 @@ public class NanoVGManager {
 		
 		if(assetManager.loadImage(nvg, file)) {
 			
-			NVGPaint imagePaint = NVGPaint.calloc();
+			NVGPaint imagePaint = paint;
 			
 			int image = assetManager.getImage(file);
 			
@@ -694,7 +703,6 @@ public class NanoVGManager {
 			NanoVG.nvgFillPaint(nvg, imagePaint);
 			NanoVG.nvgFill(nvg);
 			
-			imagePaint.free();
 		}
 	}
 	
@@ -728,15 +736,21 @@ public class NanoVGManager {
 			color = Color.RED;
 		}
 		
-		if(colorCache.containsKey(color.getRGB())) {
-			return colorCache.get(color.getRGB());
+		Integer key = color.getRGB();
+		NVGColor nvgColor = colorCache.get(key);
+
+		if(nvgColor != null) {
+			return nvgColor;
 		}
-		
-		NVGColor nvgColor = NVGColor.create();
-		
+
+		// animated/faded colors produce endless distinct values; keep the cache bounded
+		if(colorCache.size() >= 4096) {
+			colorCache.clear();
+		}
+
+		nvgColor = NVGColor.create();
 		NanoVG.nvgRGBA((byte) color.getRed(), (byte) color.getGreen(), (byte) color.getBlue(), (byte) color.getAlpha(), nvgColor);
-		
-		colorCache.put(color.getRGB(), nvgColor);
+		colorCache.put(key, nvgColor);
 		
 		return nvgColor;
 	}
