@@ -44,6 +44,27 @@ Copied into the builds:
 
 Gradient: linear, (28,28) to (228,228) in the 256 box.
 
+These colours are the **client** palette (in-game assets, README art). 
+
+### Launcher palette (monochrome only)
+The launcher uses only black, greys and white: backdrop glows, the wordmark
+gradient, buttons, highlights, its logo and its window icons.
+
+| Name | Hex | Use |
+|---|---|---|
+| White | `#FFFFFF` | gradient start, centre dot, OK status |
+| Light grey | `#C8C8C8` | gradient middle (55 %) |
+| Mid grey | `#8C8C8C` | gradient end |
+| Ink | `#0A0A0A` | background, launcher icon square |
+| On-accent | `#111111` | text and knobs drawn on the light gradient |
+| Text | `#F5F5F5` | light text |
+| Muted | `#9A9A9A` | secondary text |
+| Error | `#D6D6D6` | error status (told apart by wording, not hue) |
+
+Files: `branding/CONFUSION3H-{mark,app-icon,app-icon-small}-mono.svg`,
+`branding/png/mark-mono-512.png`; `gen.py` also writes the launcher's
+`icon_*.png`. In code: `launcher/.../ui/Theme.java`.
+
 ## Type
 Inter (SIL OFL 1.1), Regular and SemiBold, uppercase wordmark "CONFUSION3H" (always written exactly so in user-facing text).
 
