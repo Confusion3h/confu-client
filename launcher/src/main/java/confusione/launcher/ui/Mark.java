@@ -48,9 +48,9 @@ final class Mark {
 		float main = 280 * Math.min(1, trim / 0.85f);
 		p.append(new Arc2D.Float(128 - 62, 128 - 62, 124, 124, -40, -main, Arc2D.OPEN), false);
 		if (trim > 0.85f) {
-			// tail = the SVG "A 30 30 0 0 0" segment: circle centre (167.47, 117.06), 74.5deg -> 160deg
+			// tail = the SVG "A 30 30 0 0 0" segment: circle centre (164.84, 116.19), 69.2deg -> 140.1deg
 			float k = (trim - 0.85f) / 0.15f;
-			p.append(new Arc2D.Float(167.47f - 30, 117.06f - 30, 60, 60, 74.5f, 85.5f * k, Arc2D.OPEN), true);
+			p.append(new Arc2D.Float(164.84f - 30, 116.19f - 30, 60, 60, 69.2f, 70.9f * k, Arc2D.OPEN), true);
 		}
 		return p;
 	}

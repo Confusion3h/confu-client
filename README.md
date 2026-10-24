@@ -1,3 +1,24 @@
+# confusione (CONFUSION3H)
+
+<p align="center"><img src="branding/png/mark-256.png" width="128" alt="confusione"></p>
+
+confusione is an FPS-first Minecraft 1.8.9 client, a GPL-3.0 fork of **Glide Client**,
+which is itself based on **Soar Client** by EldoDebug. It comes with a launcher
+(`launcher/`, see `launcher/README.md`). Branding: `docs/branding.md`.
+
+## CREDITS
+- **confusione (CONFUSION3H)**: rebrand, FPS mode, performance work, launcher, logo.
+- **Glide Client**: upstream fork, https://github.com/GlideClient/client
+- **Soar Client** by **EldoDebug**: the original client Glide and confusione build on.
+- Inter typeface (SIL OFL 1.1); see bundled licence files.
+
+Licensed under GPL-3.0 (see `LICENSE`), as upstream. Java packages keep the upstream
+`me.eldodebug.soar` names.
+
+---
+
+*Upstream Glide README follows.*
+
 <p align="center">
   <img src="/.github/assets/GlideClientLogo.png" alt="Glide Client. An updated version of Soar client" title="GlideClient">
 </p>
