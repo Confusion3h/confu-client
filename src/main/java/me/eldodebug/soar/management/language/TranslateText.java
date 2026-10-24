@@ -153,7 +153,7 @@ public enum TranslateText {
 	MUSIC_PLAYER("text.musicplayer.name"), MUSIC_PLAYER_DESCRIPTION("text.musicplayer.description"), MUSIC_SOURCE("text.music.source"),
 	MUSIC_LOCAL("text.music.local"), MUSIC_SPOTIFY("text.music.spotify"), SPOTIFY_CLIENT_ID("text.music.spotifyclientid"),
 	SHUFFLE("text.music.shuffle"), PROGRESS_BAR("text.music.progressbar"), PLAY_PAUSE_KEY("text.music.playpausekey"),
-	NEXT_TRACK_KEY("text.music.nextkey"), PREVIOUS_TRACK_KEY("text.music.previouskey");
+	NEXT_TRACK_KEY("text.music.nextkey"), PREVIOUS_TRACK_KEY("text.music.previouskey"), DISCORD_APP_ID("text.discordrpc.appid");
 
 	private String key, text;
 

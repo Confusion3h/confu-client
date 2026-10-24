@@ -12,9 +12,10 @@ public class DiscordRPC {
 
 	private IPCClient client;
 	
-	public void start() {
+	/** @param appId your own Discord application ID (upstream's app showed Glide branding) */
+	public void start(long appId) {
 		
-		client = new IPCClient(1059341815205068901L);
+		client = new IPCClient(appId);
 		client.setListener(new IPCListener() {
 			@Override
 			public void onReady(IPCClient client) {
