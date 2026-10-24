@@ -36,8 +36,7 @@ final class Mp3Decoder implements AudioDecoder {
 		}
 		int channels = pending.mode() == Header.SINGLE_CHANNEL ? 1 : 2;
 		format = AudioDecoder.pcm16(pending.frequency(), channels);
-		float total = pending.total_ms((int) f.length());
-		durationMs = total > 0 ? (long) total : -1;
+		durationMs = scanDurationMs(f);
 	}
 
 	public AudioFormat getFormat() {
@@ -94,6 +93,34 @@ final class Mp3Decoder implements AudioDecoder {
 			bitstream.close();
 		} catch (BitstreamException e) {
 			throw new IOException(e);
+		}
+	}
+
+	/**
+	 * Header-only pass over the file (no decoding, ~1 ms per MB). JLayer's
+	 * Header.total_ms() trusts the first frame, which on LAME/ffmpeg files is the
+	 * low-bitrate Xing/Info frame, and comes out about 2x too long.
+	 */
+	private static long scanDurationMs(File f) {
+		Bitstream bs = null;
+		try {
+			bs = new Bitstream(new java.io.BufferedInputStream(new java.io.FileInputStream(f), 1 << 16));
+			double ms = 0;
+			Header h;
+			while ((h = bs.readFrame()) != null) {
+				ms += h.ms_per_frame();
+				bs.closeFrame();
+			}
+			return ms > 0 ? (long) ms : -1;
+		} catch (Exception e) {
+			return -1;
+		} finally {
+			if (bs != null) {
+				try {
+					bs.close();
+				} catch (Exception ignored) {
+				}
+			}
 		}
 	}
 }

@@ -227,7 +227,11 @@ public final class LocalPlayer {
 		try {
 			dec = AudioDecoder.open(f);
 			AudioFormat fmt = dec.getFormat();
-			line = (SourceDataLine) AudioSystem.getLine(new DataLine.Info(SourceDataLine.class, fmt));
+			try {
+				line = (SourceDataLine) AudioSystem.getLine(new DataLine.Info(SourceDataLine.class, fmt));
+			} catch (IllegalArgumentException noDevice) {
+				throw new LineUnavailableException(noDevice.getMessage()); // no sound output at all
+			}
 			line.open(fmt, (int) fmt.getFrameRate() * fmt.getFrameSize() / 4); // ~250 ms buffer
 			line.start();
 			title = displayName(f);
