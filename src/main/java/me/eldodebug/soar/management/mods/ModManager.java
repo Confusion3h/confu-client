@@ -135,6 +135,7 @@ public class ModManager {
 		mods.add(new WeatherChangerMod());
 		mods.add(new WeatherDisplayMod());
 		mods.add(new ZoomMod());
+		mods.add(new MusicPlayerMod());
 	}
 	
 	public ArrayList<Mod> getMods() {

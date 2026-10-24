@@ -48,6 +48,7 @@ public class Glide {
 	
 	private NanoVGManager nanoVGManager;
 	private FileManager fileManager;
+	private me.eldodebug.soar.management.music.MusicManager musicManager;
 	private LanguageManager languageManager;
 	private EventManager eventManager;
 	private ModManager modManager;
@@ -89,6 +90,7 @@ public class Glide {
 			restrictedMod.shouldCheck = !System.getProperty("me.eldodebug.soar.glideclient.blacklistchecks", "true").equalsIgnoreCase("false");
 		} catch (Exception ignored) {}
 		fileManager = new FileManager();
+		musicManager = new me.eldodebug.soar.management.music.MusicManager(fileManager.getMusicDir());
 		firstLoginFile = new File(fileManager.getCacheDir(), "first.tmp");
 		languageManager = new LanguageManager();
 		eventManager = new EventManager();
@@ -290,4 +292,8 @@ public class Glide {
 
 	public BlacklistManager getBlacklistManager() { return blacklistManager; }
 	public RestrictedMod getRestrictedMod() { return restrictedMod; }
+
+	public me.eldodebug.soar.management.music.MusicManager getMusicManager() {
+		return musicManager;
+	}
 }

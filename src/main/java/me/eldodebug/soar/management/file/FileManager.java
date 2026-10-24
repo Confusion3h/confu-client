@@ -10,7 +10,7 @@ import net.minecraft.client.Minecraft;
 
 public class FileManager {
 
-	private File glideDir, profileDir, cacheDir, screenshotDir, soarDir, customCapeDir, capeCacheDir;
+	private File glideDir, profileDir, cacheDir, screenshotDir, soarDir, customCapeDir, capeCacheDir, musicDir;
 	private boolean migrationSuccess = false;
 	
 	public FileManager() {
@@ -22,6 +22,7 @@ public class FileManager {
 		screenshotDir = new File(glideDir, "screenshots");
 		customCapeDir = new File(cacheDir, "custom-cape");
 		capeCacheDir = new File(cacheDir, "cape");
+		musicDir = new File(glideDir, "music");
 
 		try{
 
@@ -39,6 +40,7 @@ public class FileManager {
 			if(!screenshotDir.exists()) createDir(screenshotDir);
 			if(!customCapeDir.exists()) createDir(customCapeDir);
 			if(!capeCacheDir.exists()) createDir(capeCacheDir);
+			if(!musicDir.exists()) createDir(musicDir);
 
 			createVersionFile();
 
@@ -74,6 +76,10 @@ public class FileManager {
 
 	public File getGlideDir() {
 		return glideDir;
+	}
+
+	public File getMusicDir() {
+		return musicDir;
 	}
 
 	public File getProfileDir() {

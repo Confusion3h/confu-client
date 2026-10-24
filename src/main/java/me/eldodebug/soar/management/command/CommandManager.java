@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.management.command.impl.ScreenshotCommand;
 import me.eldodebug.soar.management.command.impl.TranslateCommand;
+import me.eldodebug.soar.management.command.impl.MusicCommand;
 import me.eldodebug.soar.management.event.EventTarget;
 import me.eldodebug.soar.management.event.impl.EventSendChat;
 
@@ -16,6 +17,7 @@ public class CommandManager {
 		
 		commands.add(new ScreenshotCommand());
 		commands.add(new TranslateCommand());
+		commands.add(new MusicCommand());
 		
 		Glide.getInstance().getEventManager().register(this);
 	}
