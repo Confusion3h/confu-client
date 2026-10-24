@@ -17,6 +17,7 @@ import me.eldodebug.soar.ui.comp.impl.CompToggleButton;
 
 public class GeneralScene extends SettingScene {
 
+	private CompToggleButton fpsModeSetting;
 	private CompKeybind modMenuKeybind;
 	private CompToggleButton clickEffectSetting;
 	private CompToggleButton soundsUISetting;
@@ -28,6 +29,7 @@ public class GeneralScene extends SettingScene {
 
 	@Override
 	public void initGui() {
+		fpsModeSetting = new CompToggleButton(InternalSettingsMod.getInstance().getFpsModeSetting());
 		modMenuKeybind = new CompKeybind(75, InternalSettingsMod.getInstance().getModMenuKeybindSetting());
 		clickEffectSetting = new CompToggleButton(InternalSettingsMod.getInstance().getClickEffectsSetting());
 		soundsUISetting  = new CompToggleButton(InternalSettingsMod.getInstance().getSoundsUISetting());
@@ -42,6 +44,7 @@ public class GeneralScene extends SettingScene {
 		ColorManager colorManager = instance.getColorManager();
 		ColorPalette palette = colorManager.getPalette();
 		int offsetY = 0;
+		drawItemInList(TranslateText.FPS_MODE.getText(), TranslateText.FPS_MODE_DESCRIPTION.getText(), this.getY(), offsetY, 46, fpsModeSetting, nvg, palette, mouseX, mouseY, partialTicks); offsetY += 51;
 		drawItemInList(TranslateText.OPEN_MOD_MENU.getText(), "Choose which key should open this GUI", this.getY(), offsetY, 87, modMenuKeybind, nvg, palette, mouseX, mouseY, partialTicks); offsetY += 51;
 		drawItemInList(TranslateText.CLICK_EFFECT.getText(), TranslateText.CLICK_EFFECT_DESCRIPTION.getText(), this.getY(), offsetY, 46, clickEffectSetting, nvg, palette, mouseX, mouseY, partialTicks); offsetY += 51;
 		drawItemInList(TranslateText.UI_SOUNDS.getText(), TranslateText.UI_SOUNDS_DESCRIPTION.getText(), this.getY(), offsetY, 46, soundsUISetting, nvg, palette, mouseX, mouseY, partialTicks); offsetY += 51;
@@ -60,6 +63,7 @@ public class GeneralScene extends SettingScene {
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 		Glide instance = Glide.getInstance();
+		fpsModeSetting.mouseClicked(mouseX, mouseY, mouseButton);
 		modMenuKeybind.mouseClicked(mouseX, mouseY, mouseButton);
 		clickEffectSetting.mouseClicked(mouseX, mouseY, mouseButton);
 		soundsUISetting.mouseClicked(mouseX, mouseY, mouseButton);

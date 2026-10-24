@@ -26,6 +26,9 @@ public class InternalSettingsMod extends Mod {
 			new Option(TranslateText.DARK), new Option(TranslateText.LIGHT), new Option(TranslateText.RECT), new Option(TranslateText.MODERN),
 			new Option(TranslateText.TEXT), new Option(TranslateText.GRADIENT_SIMPLE))));
 
+	/** Performance preset. On by default so a fresh install starts in the cheap path. */
+	private final BooleanSetting fpsModeSetting = new BooleanSetting(TranslateText.FPS_MODE, this, true);
+
 	private final BooleanSetting blurSetting = new BooleanSetting(TranslateText.UI_BLUR, this, true);
 
 	private final BooleanSetting mcFontSetting = new BooleanSetting(TranslateText.MC_FONT, this, false);
@@ -58,22 +61,6 @@ public class InternalSettingsMod extends Mod {
 			mc.displayGuiScreen(Glide.getInstance().getModMenu());
 		}
 
-//		Uncomment to enable the ability to change the theme of the mod menu using the down arrow key
-//		if (event.getKeyCode() == Keyboard.KEY_DOWN) {
-//			int max = modThemeSetting.getOptions().size();
-//			int modeIndex = modThemeSetting.getOptions().indexOf(modThemeSetting.getOption());
-//
-//			if (modeIndex > 0) {
-//				modeIndex--;
-//			} else {
-//				modeIndex = max - 1;
-//			}
-//
-//			//mcFontSetting.setToggled(!mcFontSetting.isToggled());
-//
-//			modThemeSetting.setOption(modThemeSetting.getOptions().get(modeIndex));
-//
-//		}
 	}
 
 	public static InternalSettingsMod getInstance() {return instance;}
@@ -87,6 +74,18 @@ public class InternalSettingsMod extends Mod {
 	public ComboSetting getModThemeSetting() {return modThemeSetting;}
 
 	public BooleanSetting getBlurSetting() {return blurSetting;}
+
+	public BooleanSetting getFpsModeSetting() {return fpsModeSetting;}
+
+	/** True when FPS mode is on: skip blur/shader UI, particles, click effects, glow. */
+	public static boolean isFpsMode() {
+		return instance != null && instance.fpsModeSetting.isToggled();
+	}
+
+	/** UI blur actually drawn: user wants it and FPS mode is off. */
+	public static boolean isBlurEnabled() {
+		return instance != null && instance.blurSetting.isToggled() && !instance.fpsModeSetting.isToggled();
+	}
 
 	public KeybindSetting getModMenuKeybindSetting() {return modMenuKeybindSetting;}
 

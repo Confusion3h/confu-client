@@ -70,7 +70,7 @@ public class GuiEditHUD extends GuiScreen {
 		if(introAnimation.isDone(Direction.BACKWARDS)) {
 			mc.displayGuiScreen(null);
 		}
-		if (!InternalSettingsMod.getInstance().getBlurSetting().isToggled()) {
+		if (!InternalSettingsMod.isBlurEnabled()) {
 			BlurUtils.drawBlurScreen((float) (Math.min(introAnimation.getValue(), 1) * 20) + 1F);
 		}
 		
@@ -78,7 +78,7 @@ public class GuiEditHUD extends GuiScreen {
 
 			nvg.save();
 			NanoVG.nvgGlobalAlpha(nvg.getContext(), (float) introAnimation.getValue());
-			if (InternalSettingsMod.getInstance().getBlurSetting().isToggled()) {
+			if (InternalSettingsMod.isBlurEnabled()) {
 				ShBlur.getInstance().drawBlur(() -> nvg.drawRect(0,0, sr.getScaledWidth(), sr.getScaledHeight(), Color.WHITE));
 			}
 			nvg.restore();

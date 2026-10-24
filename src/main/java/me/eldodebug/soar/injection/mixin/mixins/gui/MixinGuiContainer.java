@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import me.eldodebug.soar.management.language.TranslateText;
 import me.eldodebug.soar.management.mods.impl.InventoryMod;
 import me.eldodebug.soar.management.mods.settings.impl.combo.Option;
+import me.eldodebug.soar.management.mods.impl.InternalSettingsMod;
 import me.eldodebug.soar.ui.particle.ParticleEngine;
 import me.eldodebug.soar.utils.animation.normal.Animation;
 import me.eldodebug.soar.utils.animation.normal.easing.EaseBackIn;
@@ -66,7 +67,7 @@ public abstract class MixinGuiContainer extends GuiScreen {
     		this.drawDefaultBackground();
     	}
     	
-    	if(mod.isToggled() && mod.getParticleSetting().isToggled()) {
+    	if(mod.isToggled() && mod.getParticleSetting().isToggled() && !InternalSettingsMod.isFpsMode()) {
     		particle.draw(mouseX, mouseY);
     	}
     	

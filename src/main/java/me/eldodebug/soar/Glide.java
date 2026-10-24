@@ -120,6 +120,7 @@ public class Glide {
 		eventManager.register(new GlideHandler());
 
 		InternalSettingsMod.getInstance().setToggled(true);
+		applyFpsPresetOnce();
 		clickEffects = new ClickEffects();
 		mc.updateDisplay();
 	}
@@ -130,6 +131,35 @@ public class Glide {
 
 	}
 	
+	/**
+	 * First launch only (marker file in cache dir): when FPS mode is on, pick cheap
+	 * vanilla video settings once. Later launches never touch the user's options.
+	 */
+	private void applyFpsPresetOnce() {
+		File marker = new File(fileManager.getCacheDir(), "fpsmode-preset.tmp");
+
+		if (marker.exists()) {
+			return;
+		}
+
+		fileManager.createFile(marker);
+
+		if (!InternalSettingsMod.isFpsMode()) {
+			return;
+		}
+
+		GameSettings gs = mc.gameSettings;
+		gs.fancyGraphics = false;
+		gs.clouds = 0;
+		gs.ambientOcclusion = 0;
+		gs.particleSetting = 1;
+		gs.entityShadows = false;
+		gs.enableVsync = false;
+		gs.limitFramerate = (int) GameSettings.Options.FRAMERATE_LIMIT.getValueMax();
+		Display.setVSyncEnabled(false);
+		gs.saveOptions();
+	}
+
 	private void removeOptifineZoom() {
 		if(GlideTweaker.hasOptifine) {
 			try {

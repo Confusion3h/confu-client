@@ -2,6 +2,7 @@ package me.eldodebug.soar.utils.render;
 
 import me.eldodebug.soar.injection.interfaces.IMixinMinecraft;
 import me.eldodebug.soar.injection.interfaces.IMixinShaderGroup;
+import me.eldodebug.soar.management.mods.impl.InternalSettingsMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.shader.Framebuffer;
@@ -31,6 +32,11 @@ public class BlurUtils {
     }
     
     public static void drawBlurScreen(float radius) {
+
+        // full-screen two-pass post shader: the most expensive UI effect, skipped in FPS mode
+        if (InternalSettingsMod.isFpsMode()) {
+            return;
+        }
     	
     	ScaledResolution sr = new ScaledResolution(mc);
     	

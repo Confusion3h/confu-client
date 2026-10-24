@@ -27,14 +27,14 @@ public abstract class MixinGuiScreen {
     
 	@Inject(method = "drawScreen", at = @At("TAIL"))
     public void postDrawScreen(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
-		if(InternalSettingsMod.getInstance().getClickEffectsSetting().isToggled()) {
+		if(InternalSettingsMod.getInstance().getClickEffectsSetting().isToggled() && !InternalSettingsMod.isFpsMode()) {
 			Glide.getInstance().getClickEffects().drawClickEffects();
 		}
 	}
 	
 	@Inject(method = "mouseClicked", at = @At("HEAD"))
 	public void preMouseClicked(int mouseX, int mouseY, int mouseButton, CallbackInfo ci) {
-		if(InternalSettingsMod.getInstance().getClickEffectsSetting().isToggled()) {
+		if(InternalSettingsMod.getInstance().getClickEffectsSetting().isToggled() && !InternalSettingsMod.isFpsMode()) {
 			Glide.getInstance().getClickEffects().addClickEffect(mouseX, mouseY);
 		}
 		Sound.play("soar/audio/click.wav", true);

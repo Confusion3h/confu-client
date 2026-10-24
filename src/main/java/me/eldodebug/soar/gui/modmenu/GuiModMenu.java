@@ -102,7 +102,7 @@ public class GuiModMenu extends GuiScreen {
 		Glide instance = Glide.getInstance();
 		NanoVGManager nvg = instance.getNanoVGManager();
 		
-		if(InternalSettingsMod.getInstance().getBlurSetting().isToggled()) BlurUtils.drawBlurScreen((float) (Math.min(introAnimation.getValue(), 1) * 20) + 1F);
+		if(InternalSettingsMod.isBlurEnabled()) BlurUtils.drawBlurScreen((float) (Math.min(introAnimation.getValue(), 1) * 20) + 1F);
 		screenAnimation.wrap(() -> {
 			nvg.drawShadow(x, y, width, height, 12);
 		}, 2 - introAnimation.getValueFloat(), Math.min(introAnimation.getValueFloat(), 1));
@@ -127,7 +127,7 @@ public class GuiModMenu extends GuiScreen {
 		}
 		nvg.drawRoundedRect(x, y, width, height, 12, palette.getBackgroundColor(ColorType.NORMAL));
 
-		if (InternalSettingsMod.getInstance().getBlurSetting().isToggled()) {
+		if (InternalSettingsMod.isBlurEnabled()) {
 			ShBlur.getInstance().drawBlur(() -> nvg.drawRoundedRectVarying(x, y, 32, height, 12, 0, 12, 0, palette.getBackgroundColor(ColorType.DARK)));
 			Color colsidebar = palette.getBackgroundColor(ColorType.DARK);
 			nvg.drawRoundedRectVarying(x, y, 32, height, 12, 0, 12, 0, new Color(colsidebar.getRed(), colsidebar.getGreen(), colsidebar.getBlue(), 210));

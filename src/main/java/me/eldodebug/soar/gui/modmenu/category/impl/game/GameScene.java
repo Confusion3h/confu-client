@@ -69,7 +69,7 @@ public class GameScene {
 	}
 
 	public void drawBackground(NanoVGManager nvg, ColorPalette palette) {
-		if (InternalSettingsMod.getInstance().getBlurSetting().isToggled()) {
+		if (InternalSettingsMod.isBlurEnabled()) {
 			ShBlur.getInstance().drawBlur(() -> nvg.drawRect(getX(), getY(), getWidth(), getHeight(),  palette.getBackgroundColor(ColorType.DARK)));
 			Color colsidebar = palette.getBackgroundColor(ColorType.DARK);
 			nvg.drawRect(getX(), getY(), getWidth(), getHeight(),  new Color(colsidebar.getRed(), colsidebar.getGreen(), colsidebar.getBlue(), 210));
