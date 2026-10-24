@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import me.eldodebug.soar.gui.modmenu.category.impl.setting.impl.GeneralScene;
+import me.eldodebug.soar.gui.modmenu.category.impl.setting.impl.CreditsScene;
 import org.lwjgl.input.Keyboard;
 
 import me.eldodebug.soar.Glide;
@@ -36,6 +37,7 @@ public class SettingCategory extends Category {
 		scenes.add(new AppearanceScene(this));
 		scenes.add(new LanguageScene(this));
 		scenes.add(new GeneralScene(this));
+		scenes.add(new CreditsScene(this));
 	}
 	
 	@Override
