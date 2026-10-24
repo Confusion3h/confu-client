@@ -43,6 +43,10 @@ public class ShBlur {
     private UIShader shader = new UIShader("soar/shaders/vertex.vert", "soar/shaders/blur.frag");
     private long lastUpdate = System.currentTimeMillis();
     private float radius = 4f;
+    /** Reused for every blurred rect instead of calloc/free per HUD element per frame. */
+    private final NVGPaint paint = NVGPaint.calloc();
+    /** Last time anything sampled the blur texture; passes are skipped when nobody does. */
+    private long lastRequest;
 
     public void init() {
         framebuffer.createFramebuffer(mc.displayWidth / 2, mc.displayHeight / 2);
@@ -73,6 +77,11 @@ public class ShBlur {
     }
 
     public void resize() {
+        // the NanoVG image wraps framebuffer3's texture, which is deleted below
+        if (nvgImage != -1) {
+            NanoVG.nvgDeleteImage(Glide.getInstance().getNanoVGManager().getContext(), nvgImage);
+            nvgImage = -1;
+        }
         framebuffer.deleteFramebuffer();
         framebuffer = new Framebuffer(mc.displayWidth / 2, mc.displayHeight / 2, false);
         framebuffer1.deleteFramebuffer();
@@ -95,6 +104,8 @@ public class ShBlur {
     public void render() {
         if (!InternalSettingsMod.isBlurEnabled()) return;
         if(Util.getOSType() == Util.EnumOS.OSX) return;
+        // 4 FBO passes over the whole screen: only worth it if a HUD/menu drew blur recently
+        if (System.currentTimeMillis() - lastRequest > 1000) return;
         if (nvgImage == -1) {
             nvgImage = nvgImageFromHandle(framebuffer3.framebufferTexture, mc.displayWidth, mc.displayHeight);
         }
@@ -161,7 +172,8 @@ public class ShBlur {
         Option theme = setting.getOption();
         boolean rectShape = theme.getTranslate().equals(TranslateText.RECT) || theme.getTranslate().equals(TranslateText.GRADIENT_SIMPLE);
 
-        NVGPaint paint = NVGPaint.calloc();
+        lastRequest = System.currentTimeMillis();
+        if (nvgImage == -1) return; // blur texture not produced yet (startup / just resized)
 
         NanoVG.nvgBeginPath(ctx);
         if (rectShape) {
@@ -174,7 +186,6 @@ public class ShBlur {
         NanoVG.nvgFill(ctx);
         NanoVG.nvgClosePath(ctx);
 
-        paint.free();
     }
 
     public void drawBlur(Runnable r) {
@@ -182,7 +193,8 @@ public class ShBlur {
         if(Util.getOSType() == Util.EnumOS.OSX) return;
         long ctx = Glide.getInstance().getNanoVGManager().getContext();
         ScaledResolution sr = new ScaledResolution(mc);
-        NVGPaint paint = NVGPaint.calloc();
+        lastRequest = System.currentTimeMillis();
+        if (nvgImage == -1) return; // blur texture not produced yet (startup / just resized)
         NanoVG.nvgBeginPath(ctx);
         r.run();
         NanoVG.nvgImagePattern(ctx, 0f, 0f, sr.getScaledWidth(), sr.getScaledHeight(), 0f, nvgImage, 1f, paint);
@@ -190,6 +202,5 @@ public class ShBlur {
         NanoVG.nvgFill(ctx);
         NanoVG.nvgClosePath(ctx);
 
-        paint.free();
     }
 }
