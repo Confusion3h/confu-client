@@ -108,7 +108,7 @@ public final class SettingsPage extends JComponent implements PageHost.Entrance 
 		g.drawString("Settings", 48, 70);
 		g.setFont(Theme.regular(13));
 		g.setColor(Theme.MUTED);
-		g.drawString("Saved to ~/.confusione/launcher.properties as you type.", 48, 92);
+		g.drawString("Saved to ~/.CONFUSION3H/launcher.properties as you type.", 48, 92);
 		g.dispose();
 	}
 }

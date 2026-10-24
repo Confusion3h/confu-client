@@ -12,7 +12,7 @@ Swing/Java2D UI, JDK HTTPS, a tiny JSON reader.
    If the repo is found but not built, the home screen offers to run `gradlew build`.
 2. Reads the tweak class from the client jar manifest (`TweakClass`, falls back to
    `me.eldodebug.soar.injection.mixin.GlideTweaker`).
-3. Installs vanilla 1.8.9 into the game dir (default `~/.confusione/minecraft`) from
+3. Installs vanilla 1.8.9 into the game dir (default `~/.CONFUSION3H/minecraft`) from
    Mojang's HTTPS metadata: version JSON, client jar, libraries (OS rules applied),
    natives (extracted to `versions/1.8.9/natives`), asset index + objects. Everything is
    SHA-1 verified; already-present files are skipped. Adds `launchwrapper-1.12` and
@@ -27,4 +27,4 @@ Swing/Java2D UI, JDK HTTPS, a tiny JSON reader.
     --screenshot F.png [--page home|settings|console] [--progress 0.4]
     --gamedir DIR  --username NAME  --client JAR      (one-off overrides)
 
-Settings live in `~/.confusione/launcher.properties`.
+Settings live in `~/.CONFUSION3H/launcher.properties`.

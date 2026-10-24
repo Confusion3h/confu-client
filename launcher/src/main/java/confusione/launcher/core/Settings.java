@@ -8,10 +8,27 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-/** ~/.confusione/launcher.properties */
+/** ~/.CONFUSION3H/launcher.properties (moved from the phase 2 ~/.confusione on first run) */
 public final class Settings {
 
-	public static final File HOME = new File(System.getProperty("user.home"), ".confusione");
+	private static final File LEGACY_HOME = new File(System.getProperty("user.home"), ".confusione");
+	public static final File HOME = migrate(new File(System.getProperty("user.home"), ".CONFUSION3H"));
+
+	private static File migrate(File home) {
+		if (!home.exists() && LEGACY_HOME.isDirectory()) {
+			LEGACY_HOME.renameTo(home); // same parent dir: an atomic rename, keeps the installed game
+		}
+		return home;
+	}
+
+	/** Paths saved before the rename still point into ~/.confusione. */
+	private static String rebase(String path) {
+		String old = LEGACY_HOME.getPath();
+		if (path != null && !LEGACY_HOME.exists() && (path.equals(old) || path.startsWith(old + File.separator))) {
+			return HOME.getPath() + path.substring(old.length());
+		}
+		return path;
+	}
 	private static final File FILE = new File(HOME, "launcher.properties");
 
 	public String username = "Player";
@@ -38,7 +55,7 @@ public final class Settings {
 		}
 		s.username = p.getProperty("username", s.username);
 		s.javaPath = p.getProperty("javaPath", s.javaPath);
-		s.gameDir = p.getProperty("gameDir", s.gameDir);
+		s.gameDir = rebase(p.getProperty("gameDir", s.gameDir));
 		s.clientJar = p.getProperty("clientJar", s.clientJar);
 		s.reduceMotion = Boolean.parseBoolean(p.getProperty("reduceMotion", "false"));
 		s.keepOpen = Boolean.parseBoolean(p.getProperty("keepOpen", "false"));
