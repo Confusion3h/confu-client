@@ -72,7 +72,7 @@ public final class Toggle extends JComponent {
 			g.setComposite(java.awt.AlphaComposite.SrcOver);
 		}
 		float d = th - 6;
-		g.setColor(Theme.TEXT);
+		g.setColor(Theme.mix(Theme.TEXT, Theme.ON_ACCENT, k));
 		g.fill(new Ellipse2D.Float(tx + 3 + (tw - d - 6) * k, ty + 3, d, d));
 		g.dispose();
 	}

@@ -14,18 +14,21 @@ import java.io.InputStream;
 /** Colors, fonts and paint helpers for the custom-drawn UI. */
 public final class Theme {
 
-	public static final Color BG = new Color(0x0B0A12);
+	// Monochrome only: black, greys and white (see docs/branding.md, launcher palette).
+	public static final Color BG = new Color(0x0A0A0A);
 	public static final Color PANEL = new Color(255, 255, 255, 14);
 	public static final Color PANEL_HI = new Color(255, 255, 255, 26);
 	public static final Color STROKE = new Color(255, 255, 255, 30);
-	public static final Color TEXT = new Color(0xF2F0FA);
-	public static final Color MUTED = new Color(0x9A96B0);
-	public static final Color ERROR = new Color(0xFF5A6E);
-	public static final Color OK = new Color(0x4FE3A3);
+	public static final Color TEXT = new Color(0xF5F5F5);
+	public static final Color MUTED = new Color(0x9A9A9A);
+	public static final Color ERROR = new Color(0xD6D6D6); // errors read by wording, not hue
+	public static final Color OK = new Color(0xFFFFFF);
 
-	public static final Color A1 = new Color(0x7C5CFF); // violet
-	public static final Color A2 = new Color(0xFF4FA3); // pink
-	public static final Color A3 = new Color(0xFFB547); // amber
+	public static final Color A1 = new Color(0xFFFFFF); // white
+	public static final Color A2 = new Color(0xC8C8C8); // light grey
+	public static final Color A3 = new Color(0x8C8C8C); // mid grey
+	/** Text/knobs drawn on top of the (light) accent gradient. */
+	public static final Color ON_ACCENT = new Color(0x111111);
 
 	private static final Font REGULAR = load("Inter-Regular.ttf", Font.PLAIN);
 	private static final Font SEMIBOLD = load("Inter-SemiBold.ttf", Font.BOLD);

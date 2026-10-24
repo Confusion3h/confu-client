@@ -11,6 +11,11 @@ GRAD = '''<defs>
       <stop offset="0.55" stop-color="#FF4FA3"/>
       <stop offset="1" stop-color="#FFB547"/>
     </linearGradient>
+    <linearGradient id="mg" x1="28" y1="28" x2="228" y2="228" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.55" stop-color="#C8C8C8"/>
+      <stop offset="1" stop-color="#8C8C8C"/>
+    </linearGradient>
   </defs>'''
 
 def pt(r, deg):
@@ -47,6 +52,10 @@ VARIANTS = {
     'CONFUSION3H-mark-white': svg('#FFFFFF', '#FFFFFF'),
     'CONFUSION3H-app-icon': svg('url(#cg)', '#FFB547', bg='#0B0A12'),
     'CONFUSION3H-app-icon-small': svg('url(#cg)', '#FFB547', bg='#0B0A12', small=True),
+    # launcher: monochrome only (black, greys, white)
+    'CONFUSION3H-mark-mono': svg('url(#mg)', '#FFFFFF'),
+    'CONFUSION3H-app-icon-mono': svg('url(#mg)', '#FFFFFF', bg='#0A0A0A'),
+    'CONFUSION3H-app-icon-small-mono': svg('url(#mg)', '#FFFFFF', bg='#0A0A0A', small=True),
 }
 
 def main():
@@ -65,6 +74,11 @@ def main():
     render('CONFUSION3H-mark', 256, os.path.join(out, 'mark-256.png'))
     render('CONFUSION3H-mark-white', 512, os.path.join(out, 'mark-white-512.png'))
     render('CONFUSION3H-app-icon', 1024, os.path.join(out, 'osx-1024.png'))
+    render('CONFUSION3H-mark-mono', 512, os.path.join(out, 'mark-mono-512.png'))
+    launcher = os.path.join(HERE, '..', 'launcher', 'src', 'main', 'resources', 'confusione', 'icons')
+    for s in (16, 32, 64, 128, 256):
+        render('CONFUSION3H-app-icon-small-mono' if s <= 32 else 'CONFUSION3H-app-icon-mono', s,
+               os.path.join(launcher, f'icon_{s}x{s}.png'))
 
 if __name__ == '__main__':
     main()

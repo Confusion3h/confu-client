@@ -41,9 +41,9 @@ final class Background {
 		g.fillRect(0, 0, w, h);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		float s = 0.12f + 0.25f * energy; // energy rises while launching
-		blob(g, w * (0.25f + 0.18f * (float) Math.sin(t * s * 1.0f)), h * (0.35f + 0.22f * (float) Math.cos(t * s * 1.3f)), w * 0.55f, Theme.A1, 0.55f);
-		blob(g, w * (0.75f + 0.15f * (float) Math.cos(t * s * 0.8f + 1)), h * (0.65f + 0.20f * (float) Math.sin(t * s * 1.1f + 2)), w * 0.50f, Theme.A2, 0.38f + 0.12f * energy);
-		blob(g, w * (0.55f + 0.25f * (float) Math.sin(t * s * 0.6f + 4)), h * (0.95f + 0.10f * (float) Math.cos(t * s * 0.9f)), w * 0.40f, Theme.A3, 0.22f + 0.10f * energy);
+		blob(g, w * (0.25f + 0.18f * (float) Math.sin(t * s * 1.0f)), h * (0.35f + 0.22f * (float) Math.cos(t * s * 1.3f)), w * 0.55f, Theme.A1, 0.16f); // grey-on-black glows: white is far brighter than the old hues
+		blob(g, w * (0.75f + 0.15f * (float) Math.cos(t * s * 0.8f + 1)), h * (0.65f + 0.20f * (float) Math.sin(t * s * 1.1f + 2)), w * 0.50f, Theme.A2, 0.11f + 0.06f * energy);
+		blob(g, w * (0.55f + 0.25f * (float) Math.sin(t * s * 0.6f + 4)), h * (0.95f + 0.10f * (float) Math.cos(t * s * 0.9f)), w * 0.40f, Theme.A3, 0.10f + 0.06f * energy);
 		// vignette baked into the small buffer too: no full-resolution alpha pass per frame
 		g.setPaint(new RadialGradientPaint(new Point2D.Float(w / 2f, h / 2f), Math.max(w, h) * 0.75f,
 				new float[] { 0.45f, 1f }, new Color[] { new Color(0, 0, 0, 0), new Color(0, 0, 0, 160) }));

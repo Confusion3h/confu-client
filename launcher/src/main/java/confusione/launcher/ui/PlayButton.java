@@ -170,13 +170,30 @@ public final class PlayButton extends JComponent {
 			g.setColor(Theme.OK);
 			g.fill(new Ellipse2D.Float(dx - 3.5f, ty - fm.getAscent() * 0.36f - 3.5f, 7, 7));
 		}
-		g.setColor(Theme.TEXT);
-		g.drawString(text, tx, ty);
-		if (!sub.isEmpty()) {
-			g.setFont(Theme.regular(bh * 0.17f));
-			FontMetrics fs = g.getFontMetrics();
-			g.setColor(Theme.alpha(Theme.TEXT, 0.75f));
-			g.drawString(sub, x + (bw - fs.stringWidth(sub)) / 2, ty + bh * 0.24f);
+		// light text over the dark track, dark text over the light (filled) part
+		float filled = state == State.RUNNING ? 0 : bw * (1 - bm) + bw * bm * (indeterminate ? 1 : fill.get());
+		for (int pass = 0; pass < 2; pass++) {
+			Graphics2D gt = (Graphics2D) g.create();
+			if (pass == 0) {
+				gt.clip(new java.awt.geom.Rectangle2D.Float(x + filled, 0, w, h));
+				gt.setColor(Theme.TEXT);
+			} else {
+				if (filled <= 0) {
+					gt.dispose();
+					break;
+				}
+				gt.clip(new java.awt.geom.Rectangle2D.Float(0, 0, x + filled, h));
+				gt.setColor(Theme.ON_ACCENT);
+			}
+			Color ink = gt.getColor();
+			gt.drawString(text, tx, ty);
+			if (!sub.isEmpty()) {
+				gt.setFont(Theme.regular(bh * 0.17f));
+				FontMetrics fs = gt.getFontMetrics();
+				gt.setColor(Theme.alpha(ink, 0.75f));
+				gt.drawString(sub, x + (bw - fs.stringWidth(sub)) / 2, ty + bh * 0.24f);
+			}
+			gt.dispose();
 		}
 		g.dispose();
 	}

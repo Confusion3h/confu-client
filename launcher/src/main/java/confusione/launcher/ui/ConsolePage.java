@@ -29,7 +29,7 @@ public final class ConsolePage extends JComponent {
 		setLayout(null);
 		area.setEditable(false);
 		area.setOpaque(false);
-		area.setForeground(new Color(0xCFCBE0));
+		area.setForeground(new Color(0xCFCFCF));
 		area.setFont(new java.awt.Font(java.awt.Font.MONOSPACED, java.awt.Font.PLAIN, 12));
 		area.setBorder(BorderFactory.createEmptyBorder(12, 14, 12, 14));
 		area.setLineWrap(false);

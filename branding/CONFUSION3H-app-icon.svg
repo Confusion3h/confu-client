@@ -6,6 +6,11 @@
       <stop offset="0.55" stop-color="#FF4FA3"/>
       <stop offset="1" stop-color="#FFB547"/>
     </linearGradient>
+    <linearGradient id="mg" x1="28" y1="28" x2="228" y2="228" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.55" stop-color="#C8C8C8"/>
+      <stop offset="1" stop-color="#8C8C8C"/>
+    </linearGradient>
   </defs>
   <rect width="256" height="256" rx="56" fill="#0B0A12"/>
   <circle cx="128" cy="128" r="110" fill="none" stroke="url(#cg)" stroke-width="16"/>
