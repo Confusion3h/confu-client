@@ -126,7 +126,7 @@ public final class LocalPlayer {
 		stop(); // outside the monitor: the old thread may need it to finish
 		synchronized (this) {
 			if (playlist.isEmpty()) {
-				listener.error("No music files in " + folder);
+				listener.error(folder == null ? "Music folder not scanned yet" : "No MP3/OGG/WAV files in " + folder.getName() + "/ (.soarcmd music folder)");
 				return;
 			}
 			index = Math.floorMod(i, playlist.size());

@@ -89,7 +89,7 @@ public final class MusicManager {
 				}
 			});
 		}
-		setSource(src);
+		applySource(src, true); // always (re)scan / start polling on enable
 	}
 
 	public synchronized void deactivate() {
@@ -112,7 +112,13 @@ public final class MusicManager {
 	}
 
 	public synchronized void setSource(Source src) {
-		if (src == source && (src != Source.SPOTIFY || poll != null)) {
+		applySource(src, false);
+	}
+
+	private void applySource(Source src, boolean force) {
+		// before: the LOCAL default short-circuited here on enable, so the folder was
+		// never scanned and "play" found an empty playlist
+		if (!force && src == source && (src != Source.SPOTIFY || poll != null)) {
 			return;
 		}
 		source = src;
