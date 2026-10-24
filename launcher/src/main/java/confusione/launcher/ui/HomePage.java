@@ -19,6 +19,7 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		{ "FPS mode", "On by default. Blur, glow, particles and click effects off; one toggle in Settings > General." },
 		{ "Leaner core", "Allocation-free event bus and NanoVG draw calls, cheaper HUD blur." },
 		{ "confusione launcher", "Sets up 1.8.9 from Mojang's servers and starts the client for you." },
+		{ "Credits", "confusione (CONFUSION3H). Based on Glide Client and Soar Client by EldoDebug · GPL-3.0." },
 	};
 
 	final LogoMark logo = new LogoMark();

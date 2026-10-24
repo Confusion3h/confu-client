@@ -1,37 +1,53 @@
 package confusione.launcher.ui;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.geom.Arc2D;
-import java.awt.geom.Ellipse2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-/** Static placeholder "C" mark rendered once per size (window icon, sidebar). */
+import javax.imageio.ImageIO;
+
+/** App icons rendered from branding/confusione-app-icon*.svg, plus vector mark images. */
 final class Icons {
 
-	private static final Map<Integer, BufferedImage> cache = new HashMap<Integer, BufferedImage>();
+	private static final int[] SIZES = { 16, 32, 64, 128, 256 };
+	private static final Map<Integer, BufferedImage> marks = new HashMap<Integer, BufferedImage>();
 
 	private Icons() {}
 
-	static BufferedImage app(int s) {
-		BufferedImage img = cache.get(s);
-		if (img != null) {
-			return img;
+	static List<Image> windowIcons() {
+		List<Image> list = new ArrayList<Image>();
+		for (int s : SIZES) {
+			InputStream in = Icons.class.getResourceAsStream("/confusione/icons/icon_" + s + "x" + s + ".png");
+			if (in == null) {
+				continue;
+			}
+			try {
+				try {
+					list.add(ImageIO.read(in));
+				} finally {
+					in.close();
+				}
+			} catch (java.io.IOException ignored) {
+			}
 		}
-		img = new BufferedImage(s, s, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = img.createGraphics();
-		Theme.hq(g);
-		float pad = s * 0.16f, d = s - pad * 2, stroke = s * 0.15f;
-		g.setStroke(new BasicStroke(stroke, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-		g.setPaint(Theme.accent(pad, pad, pad + d, pad + d));
-		g.draw(new Arc2D.Float(pad, pad, d, d, 35, 290, Arc2D.OPEN));
-		g.setColor(Theme.A3);
-		float dot = stroke * 0.8f;
-		g.fill(new Ellipse2D.Float(pad + d - dot / 2, s / 2f - dot / 2, dot, dot));
-		g.dispose();
-		cache.put(s, img);
+		return list;
+	}
+
+	/** Static gradient mark (no background), cached per size. */
+	static BufferedImage mark(int s) {
+		BufferedImage img = marks.get(s);
+		if (img == null) {
+			img = new BufferedImage(s, s, BufferedImage.TYPE_INT_ARGB);
+			java.awt.Graphics2D g = img.createGraphics();
+			Theme.hq(g);
+			Mark.paint(g, 0, 0, s, 360, 0, 1, 0);
+			g.dispose();
+			marks.put(s, img);
+		}
 		return img;
 	}
 }

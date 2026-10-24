@@ -55,7 +55,7 @@ public final class LauncherFrame extends JFrame {
 		} catch (UnsupportedOperationException ignored) {
 			// no shaped windows on this platform: square corners
 		}
-		setIconImage(Icons.app(64));
+		setIconImages(Icons.windowIcons());
 
 		home = new HomePage(s.username);
 		settingsPage = new SettingsPage(s);
@@ -304,7 +304,7 @@ public final class LauncherFrame extends JFrame {
 			g.setColor(Theme.STROKE);
 			g.drawLine(SIDEBAR, 0, SIDEBAR, getHeight());
 			// mini mark
-			g.drawImage(Icons.app(40), 18, 24, null);
+			g.drawImage(Icons.mark(40), 18, 24, null);
 			// sliding selection bar
 			float iy = 112 + indicator.get() * 56 + 14;
 			g.setPaint(Theme.accent(0, iy, 0, iy + 20));
