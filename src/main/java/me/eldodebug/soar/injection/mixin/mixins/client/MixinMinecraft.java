@@ -2,6 +2,7 @@ package me.eldodebug.soar.injection.mixin.mixins.client;
 
 import eu.shoroa.contrib.render.ShBlur;
 import me.eldodebug.soar.utils.MacOSUtils;
+import me.eldodebug.soar.utils.WindowIcon;
 import net.minecraft.util.Util;
 import org.apache.commons.lang3.SystemUtils;
 import org.lwjgl.input.Keyboard;
@@ -253,7 +254,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     
 	@Redirect(method = "createDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V"))
 	public void overrideTitle(String title) {
-		Display.setTitle("Glide Client v" + Glide.getInstance().getVersion() + " (" + Glide.getInstance().getVersionIdentifier() + ") for " + title);
+		Display.setTitle("confusione");
 	}
 	
     @Inject(method = "updateFramebufferSize", at = @At("HEAD"))
@@ -347,6 +348,11 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 	private void setGameIcon(CallbackInfo c) {
 		if(Util.getOSType() == Util.EnumOS.OSX) {
 			MacOSUtils.setDockIcon("/assets/minecraft/soar/osx.png");
+			c.cancel();
+			return;
+		}
+		// vanilla reads icons/ from the asset index, so set the confusione icons directly
+		if (WindowIcon.apply()) {
 			c.cancel();
 		}
 	}

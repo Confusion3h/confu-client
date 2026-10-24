@@ -546,6 +546,27 @@ public class NanoVGManager {
         }
 	}
 	
+	/** confusione mark (white PNG, tinted/faded via color). */
+	public static final ResourceLocation LOGO = new ResourceLocation("soar/logo/mark-white.png");
+
+	public void drawLogo(float x, float y, float size, Color color) {
+		if(assetManager.loadImage(nvg, LOGO)) {
+			NVGPaint imagePaint = paint;
+			int image = assetManager.getImage(LOGO);
+			NanoVG.nvgBeginPath(nvg);
+			NanoVG.nvgImagePattern(nvg, x, y, size, size, 0, image, 1, imagePaint);
+			imagePaint.innerColor(getColor(color));
+			imagePaint.outerColor(getColor(color));
+			NanoVG.nvgRect(nvg, x, y, size, size);
+			NanoVG.nvgFillPaint(nvg, imagePaint);
+			NanoVG.nvgFill(nvg);
+		}
+	}
+
+	public void drawCenteredLogo(float cx, float cy, float size, Color color) {
+		drawLogo(cx - size / 2, cy - size / 2, size, color);
+	}
+
 	public void drawImage(ResourceLocation location, float x, float y, float width, float height) {
 		
 		if(assetManager.loadImage(nvg, location)) {

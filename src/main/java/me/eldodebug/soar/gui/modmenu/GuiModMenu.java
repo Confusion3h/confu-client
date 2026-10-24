@@ -136,7 +136,7 @@ public class GuiModMenu extends GuiScreen {
 		}
 
 		nvg.drawGradientRoundedRect(x + 5, y + 7, 22, 22, 11, currentColor.getColor1(), currentColor.getColor2());
-		nvg.drawText(Icons.GLIDE, x + 8, y + 10, Color.WHITE, 16, Fonts.ICON_FILLED);
+		nvg.drawLogo(x + 7, y + 9, 18, Color.WHITE);
 		if(currentCategory.isShowTitle()) {
 			nvg.save();
 			nvg.translate(currentCategory.getTextAnimation().getValue() * 15, 0);

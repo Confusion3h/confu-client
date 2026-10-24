@@ -81,7 +81,11 @@ public class GuiGameMenu extends GuiScreen {
     private void drawButton(NanoVGManager nvg, String s, String i, Float offset){
         nvg.drawRoundedRect(x, y + offset, width , 22, 6, new Color(230, 230, 230, 80));
         float startX = (nvg.getTextWidth(s, 9.5F, Fonts.MEDIUM) + 14) /2;
-        nvg.drawText(i, centre - startX, y + offset + 6.5F, Color.WHITE, 9.5F, Fonts.LEGACYICON);
+        if (LegacyIcon.SOAR.equals(i)) {
+            nvg.drawLogo(centre - startX - 0.5F, y + offset + 5.5F, 11, Color.WHITE);
+        } else {
+            nvg.drawText(i, centre - startX, y + offset + 6.5F, Color.WHITE, 9.5F, Fonts.LEGACYICON);
+        }
         nvg.drawText(s, centre - startX + 14, y + offset + 7F, Color.WHITE, 9.5F, Fonts.MEDIUM);
     }
 

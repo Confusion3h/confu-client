@@ -43,7 +43,7 @@ public class MainScene extends MainMenuScene {
 		
 		float yPos = sr.getScaledHeight() / 2 - 22;
 		
-		nvg.drawCenteredText(LegacyIcon.SOAR, sr.getScaledWidth() / 2, sr.getScaledHeight() / 2 - (nvg.getTextHeight(LegacyIcon.SOAR, 54, Fonts.LEGACYICON) / 2) - 60, Color.WHITE, 54, Fonts.LEGACYICON);
+		nvg.drawCenteredLogo(sr.getScaledWidth() / 2, sr.getScaledHeight() / 2 - 60, 52, Color.WHITE);
 		
 		nvg.drawRoundedRect(sr.getScaledWidth() / 2 - (180 / 2), yPos, 180, 20, 4.5F, this.getBackgroundColor());
 		nvg.drawCenteredText(TranslateText.SINGLEPLAYER.getText(), sr.getScaledWidth() / 2, yPos + 6.5F, Color.WHITE, 9.5F, Fonts.REGULAR);
