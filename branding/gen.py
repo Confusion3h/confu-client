@@ -1,4 +1,4 @@
-"""Writes the hand-authored confusione SVGs (geometry spelled out in docs/branding.md)
+"""Writes the hand-authored CONFUSION3H SVGs (geometry spelled out in docs/branding.md)
 and renders PNGs with cairosvg. Run: python3 branding/gen.py"""
 import math, os
 import cairosvg
@@ -30,7 +30,7 @@ def svg(stroke, dot, bg=None, ring=True, small=False):
     else:
         r, sw, tail_r, tail_end, dot_r = 62, 20, 30, 34, 11
     parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">',
-             '  <!-- confusione mark (ring + swirl C). Original artwork, see docs/branding.md -->',
+             '  <!-- CONFUSION3H mark (ring + swirl C). Original artwork, see docs/branding.md -->',
              '  ' + GRAD]
     if bg:
         parts.append(f'  <rect width="256" height="256" rx="56" fill="{bg}"/>')
@@ -43,10 +43,10 @@ def svg(stroke, dot, bg=None, ring=True, small=False):
     return '\n'.join(parts)
 
 VARIANTS = {
-    'confusione-mark': svg('url(#cg)', '#FFB547'),
-    'confusione-mark-white': svg('#FFFFFF', '#FFFFFF'),
-    'confusione-app-icon': svg('url(#cg)', '#FFB547', bg='#0B0A12'),
-    'confusione-app-icon-small': svg('url(#cg)', '#FFB547', bg='#0B0A12', small=True),
+    'CONFUSION3H-mark': svg('url(#cg)', '#FFB547'),
+    'CONFUSION3H-mark-white': svg('#FFFFFF', '#FFFFFF'),
+    'CONFUSION3H-app-icon': svg('url(#cg)', '#FFB547', bg='#0B0A12'),
+    'CONFUSION3H-app-icon-small': svg('url(#cg)', '#FFB547', bg='#0B0A12', small=True),
 }
 
 def main():
@@ -59,12 +59,12 @@ def main():
         cairosvg.svg2png(url=os.path.join(HERE, name + '.svg'), write_to=dest,
                          output_width=size, output_height=size)
     for s in (16, 32, 64, 128, 256):
-        render('confusione-app-icon-small' if s <= 32 else 'confusione-app-icon', s,
+        render('CONFUSION3H-app-icon-small' if s <= 32 else 'CONFUSION3H-app-icon', s,
                os.path.join(out, f'icon_{s}x{s}.png'))
-    render('confusione-mark', 512, os.path.join(out, 'mark-512.png'))
-    render('confusione-mark', 256, os.path.join(out, 'mark-256.png'))
-    render('confusione-mark-white', 512, os.path.join(out, 'mark-white-512.png'))
-    render('confusione-app-icon', 1024, os.path.join(out, 'osx-1024.png'))
+    render('CONFUSION3H-mark', 512, os.path.join(out, 'mark-512.png'))
+    render('CONFUSION3H-mark', 256, os.path.join(out, 'mark-256.png'))
+    render('CONFUSION3H-mark-white', 512, os.path.join(out, 'mark-white-512.png'))
+    render('CONFUSION3H-app-icon', 1024, os.path.join(out, 'osx-1024.png'))
 
 if __name__ == '__main__':
     main()

@@ -62,7 +62,7 @@ public final class Settings {
 			HOME.mkdirs();
 			OutputStream out = new FileOutputStream(FILE);
 			try {
-				p.store(out, "confusione launcher");
+				p.store(out, "CONFUSION3H launcher");
 			} finally {
 				out.close();
 			}

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/** Builds and runs the LaunchWrapper command for 1.8.9 + the confusione tweaker. */
+/** Builds and runs the LaunchWrapper command for 1.8.9 + the CONFUSION3H tweaker. */
 public final class GameLauncher {
 
 	private GameLauncher() {}
@@ -35,7 +35,7 @@ public final class GameLauncher {
 		cmd.add("-Xms" + Math.min(512, s.ramMb) + "M");
 		cmd.add("-XX:+UseG1GC");
 		cmd.add("-Djava.library.path=" + r.nativesDir.getAbsolutePath());
-		cmd.add("-Dminecraft.launcher.brand=confusione");
+		cmd.add("-Dminecraft.launcher.brand=CONFUSION3H");
 		if (OS.NAME.equals("osx")) {
 			cmd.add("-XstartOnFirstThread");
 		}

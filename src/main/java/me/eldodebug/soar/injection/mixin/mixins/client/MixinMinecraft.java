@@ -254,7 +254,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     
 	@Redirect(method = "createDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V"))
 	public void overrideTitle(String title) {
-		Display.setTitle("confusione");
+		Display.setTitle("CONFUSION3H");
 	}
 	
     @Inject(method = "updateFramebufferSize", at = @At("HEAD"))
@@ -351,7 +351,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 			c.cancel();
 			return;
 		}
-		// vanilla reads icons/ from the asset index, so set the confusione icons directly
+		// vanilla reads icons/ from the asset index, so set the CONFUSION3H icons directly
 		if (WindowIcon.apply()) {
 			c.cancel();
 		}

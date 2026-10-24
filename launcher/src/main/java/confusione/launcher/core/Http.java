@@ -85,7 +85,7 @@ public final class Http {
 		HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
 		c.setConnectTimeout(15000);
 		c.setReadTimeout(30000);
-		c.setRequestProperty("User-Agent", "confusione-launcher");
+		c.setRequestProperty("User-Agent", "CONFUSION3H-launcher");
 		int code = c.getResponseCode();
 		if (code != 200) {
 			c.disconnect();

@@ -18,7 +18,7 @@ import java.util.zip.ZipFile;
 
 /**
  * Prepares a vanilla 1.8.9 game directory from Mojang's HTTPS metadata, plus the
- * LaunchWrapper + ASM libraries the confusione tweaker needs (vanilla 1.8.9 has neither).
+ * LaunchWrapper + ASM libraries the CONFUSION3H tweaker needs (vanilla 1.8.9 has neither).
  */
 public final class GameInstaller {
 

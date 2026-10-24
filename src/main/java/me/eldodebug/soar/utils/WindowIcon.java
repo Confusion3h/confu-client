@@ -10,7 +10,7 @@ import org.lwjgl.opengl.Display;
 
 import me.eldodebug.soar.logger.GlideLogger;
 
-/** Sets the LWJGL2 window icon to the confusione mark (16/32/64 px). */
+/** Sets the LWJGL2 window icon to the CONFUSION3H mark (16/32/64 px). */
 public final class WindowIcon {
 
 	private static final int[] SIZES = { 16, 32, 64 };

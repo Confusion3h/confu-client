@@ -546,7 +546,7 @@ public class NanoVGManager {
         }
 	}
 	
-	/** confusione mark (white PNG, tinted/faded via color). */
+	/** CONFUSION3H mark (white PNG, tinted/faded via color). */
 	public static final ResourceLocation LOGO = new ResourceLocation("soar/logo/mark-white.png");
 
 	public void drawLogo(float x, float y, float size, Color color) {

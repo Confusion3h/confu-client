@@ -16,7 +16,7 @@ import confusione.launcher.core.Settings;
 import confusione.launcher.ui.LauncherFrame;
 
 /**
- * confusione launcher.
+ * CONFUSION3H launcher.
  *   (no args)                 open the UI
  *   --setup-only              download/verify 1.8.9 files, no launch
  *   --dry-run                 setup, then print the launch command instead of running it

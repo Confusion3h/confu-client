@@ -44,7 +44,7 @@ public final class LauncherFrame extends JFrame {
 	private volatile boolean working;
 
 	public LauncherFrame(Settings s) {
-		super("confusione");
+		super("CONFUSION3H");
 		this.settings = s;
 		setUndecorated(true);
 		setSize(W, H);

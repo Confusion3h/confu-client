@@ -137,7 +137,7 @@ public final class LocalPlayer {
 			public void run() {
 				loop();
 			}
-		}, "confusione-music");
+		}, "CONFUSION3H-music");
 		thread.setDaemon(true);
 		thread.setPriority(Thread.NORM_PRIORITY - 1);
 		thread.start();

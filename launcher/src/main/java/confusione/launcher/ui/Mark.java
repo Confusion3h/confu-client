@@ -7,7 +7,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 
 /**
- * The confusione mark in Java2D, same geometry as branding/confusione-mark.svg
+ * The CONFUSION3H mark in Java2D, same geometry as branding/CONFUSION3H-mark.svg
  * (256-unit box): ring r110 w16, C arc r62 w20 from +40deg sweeping 280deg, tail arc
  * r30 curling inward, centre dot r11. Animated parameters only rotate/trim parts.
  */

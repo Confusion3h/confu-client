@@ -39,7 +39,7 @@ public class LastMessageScene extends MainMenuScene {
 		ScaledResolution sr = new ScaledResolution(mc);
 		NanoVGManager nvg = Glide.getInstance().getNanoVGManager();
 		String compMessage = "Setup is complete!";
-		String welcomeMessage = "Thank you for choosing confusione!";
+		String welcomeMessage = "Thank you for choosing CONFUSION3H!";
 		
 		BlurUtils.drawBlurScreen(1 + blurAnimation.getValueFloat());
 		

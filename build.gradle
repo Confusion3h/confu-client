@@ -27,7 +27,7 @@ apply plugin: 'java'
 
 version = "Release"
 group= "me.eldodebug"
-archivesBaseName = "GlideClient"
+archivesBaseName = "CONFUSION3H"
 
 sourceCompatibility = targetCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'

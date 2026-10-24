@@ -10,7 +10,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-/** App icons rendered from branding/confusione-app-icon*.svg, plus vector mark images. */
+/** App icons rendered from branding/CONFUSION3H-app-icon*.svg, plus vector mark images. */
 final class Icons {
 
 	private static final int[] SIZES = { 16, 32, 64, 128, 256 };

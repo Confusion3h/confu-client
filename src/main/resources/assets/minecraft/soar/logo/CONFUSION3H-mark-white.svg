@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
-  <!-- confusione mark (ring + swirl C). Original artwork, see docs/branding.md -->
+  <!-- CONFUSION3H mark (ring + swirl C). Original artwork, see docs/branding.md -->
   <defs>
     <linearGradient id="cg" x1="28" y1="28" x2="228" y2="228" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#7C5CFF"/>

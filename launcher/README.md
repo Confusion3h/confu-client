@@ -1,10 +1,10 @@
-# confusione launcher
+# CONFUSION3H launcher
 
-Standalone Java 8 launcher for the confusione client (Minecraft 1.8.9). No dependencies:
+Standalone Java 8 launcher for the CONFUSION3H client (Minecraft 1.8.9). No dependencies:
 Swing/Java2D UI, JDK HTTPS, a tiny JSON reader.
 
-    ./gradlew :launcher:build            # -> launcher/build/libs/confusione-launcher-0.1.0.jar
-    java -jar launcher/build/libs/confusione-launcher-0.1.0.jar
+    ./gradlew :launcher:build            # -> launcher/build/libs/CONFUSION3H-launcher-0.1.0.jar
+    java -jar launcher/build/libs/CONFUSION3H-launcher-0.1.0.jar
 
 ## What it does
 1. Finds the client jar: Settings path, `-Dconfusione.client=...`, or the newest jar in

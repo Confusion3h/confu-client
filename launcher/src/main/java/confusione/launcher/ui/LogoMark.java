@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import javax.swing.JComponent;
 
 /**
- * Animated confusione mark: the C draws itself in on start, the dot breathes on the
+ * Animated CONFUSION3H mark: the C draws itself in on start, the dot breathes on the
  * ambient clock, and while busy the ring opens into a spinning arc.
  */
 public final class LogoMark extends JComponent {

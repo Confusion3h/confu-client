@@ -5,10 +5,10 @@ sourceCompatibility = targetCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 
 version = '0.1.0'
-archivesBaseName = 'confusione-launcher'
+archivesBaseName = 'CONFUSION3H-launcher'
 
 jar {
     manifest.attributes('Main-Class': 'confusione.launcher.Main',
-                        'Implementation-Title': 'confusione launcher',
+                        'Implementation-Title': 'CONFUSION3H launcher',
                         'Implementation-Version': version)
 }

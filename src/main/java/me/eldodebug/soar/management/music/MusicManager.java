@@ -83,7 +83,7 @@ public final class MusicManager {
 		if (worker == null) {
 			worker = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
 				public Thread newThread(Runnable r) {
-					Thread t = new Thread(r, "confusione-music-worker");
+					Thread t = new Thread(r, "CONFUSION3H-music-worker");
 					t.setDaemon(true);
 					return t;
 				}
@@ -105,7 +105,7 @@ public final class MusicManager {
 			public void run() {
 				local.stop();
 			}
-		}, "confusione-music-stop");
+		}, "CONFUSION3H-music-stop");
 		t.setDaemon(true);
 		t.start();
 		now = NowPlaying.NOTHING;

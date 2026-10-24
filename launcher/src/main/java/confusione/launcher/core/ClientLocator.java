@@ -10,7 +10,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 /**
- * Finds the confusione client jar (the ForgeGradle tweaker-client output in build/libs)
+ * Finds the CONFUSION3H client jar (the ForgeGradle tweaker-client output in build/libs)
  * and the tweak class from its manifest; can build it with the repo's gradlew.
  */
 public final class ClientLocator {
