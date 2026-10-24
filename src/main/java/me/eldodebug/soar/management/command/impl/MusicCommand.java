@@ -20,6 +20,18 @@ public class MusicCommand extends Command {
 		MusicManager m = Glide.getInstance().getMusicManager();
 		String[] a = message.trim().split("\\s+");
 		String sub = a.length == 0 || a[0].equals("music") ? "status" : a[0].toLowerCase();
+		if ("add".equals(sub) || "link".equals(sub)) {
+			String rest = message.trim();
+			int sp = rest.indexOf(' ');
+			String url = sp < 0 ? "" : rest.substring(sp + 1).trim();
+			if (url.isEmpty()) {
+				net.minecraft.client.Minecraft.getMinecraft().displayGuiScreen(new me.eldodebug.soar.gui.GuiAddTrack());
+			} else {
+				me.eldodebug.soar.management.music.LinkGrabber.start(url);
+				say("Downloading. Progress shows on the Music Player HUD.");
+			}
+			return;
+		}
 		MusicPlayerMod mod = MusicPlayerMod.getInstance();
 		switch (sub) {
 		case "connect":
@@ -73,7 +85,7 @@ public class MusicCommand extends Command {
 					? (m.getSpotify().isAuthorized() ? " (connected)" : " (not connected)")
 					: " (" + m.getMusicDir().getAbsolutePath() + ")"));
 			say(np.isEmpty() ? "Nothing playing" : (np.playing ? "Playing: " : "Paused: ") + np.title + (np.artist != null ? " - " + np.artist : ""));
-			say("Commands: connect, disconnect, play, pause, toggle, next, prev, vol N, reload, folder");
+			say("Commands: add <url>, connect, disconnect, play, pause, toggle, next, prev, vol N, reload, folder");
 		}
 	}
 

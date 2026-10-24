@@ -9,8 +9,9 @@ The **Music Player** HUD mod (mod menu, off by default) has two sources:
 
 ## Install: nothing
 
-All decoding is pure Java and ships inside the client jar. **FFmpeg is not
-needed**, and neither are JavaFX, VLC/vlcj or OpenAL.
+Playback of files already on disk is pure Java and ships inside the client jar.
+Fetching a YouTube or SoundCloud link uses yt-dlp and FFmpeg, which Windows
+downloads once into `glide/tools` (see below). JavaFX, VLC and OpenAL are not used.
 
 | Format | Decoder | Where it comes from |
 |---|---|---|
@@ -24,6 +25,16 @@ Not supported: FLAC, AAC/M4A, Opus, WMA. Convert them, for example
 Output goes to the system default device through `javax.sound` (on Linux that is
 ALSA/PulseAudio/PipeWire, which every desktop already has). If there is no audio
 device, the mod shows "No audio output available" and stops.
+
+## Paste a YouTube or SoundCloud link
+
+1. Enable **Music Player**.
+2. In its settings, turn on **Add a YouTube or SoundCloud link**. A box opens. Paste the URL and press Download.
+   The same box is `.soarcmd music add` with no URL, or `.soarcmd music add <url>`.
+3. The first time on Windows, the client downloads pinned copies of `yt-dlp.exe` and `ffmpeg.exe` into `glide/tools` (next to the music folder) and checks their SHA-256. Nothing else has to be installed. Later downloads reuse those files. Spotify is unchanged and still optional.
+4. The file is saved as MP3 in the music folder and starts playing. Progress is a single snapshot the HUD reads; it does not do work every frame.
+
+Only `youtube.com`, `youtu.be` and `soundcloud.com` links are accepted.
 
 ## Local files
 

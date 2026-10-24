@@ -66,7 +66,7 @@ public class ThemeSelectScene extends MainMenuScene {
 		int index = 1;
 		
 		nvg.drawRoundedRect(x, y, width, height, 8, this.getBackgroundColor());
-		nvg.drawCenteredText("Choose a theme", x + (width / 2), y + 10, Color.WHITE, 16, Fonts.MEDIUM);
+		me.eldodebug.soar.utils.FittedText.drawCentered(nvg, "Choose a theme", x + (width / 2), y + 14, width - 24, 16, Fonts.MEDIUM, Color.WHITE);
 		nvg.drawRect(x, y + 27, width, 1, Color.WHITE);
 		
 		scroll.onScroll();

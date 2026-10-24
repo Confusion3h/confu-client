@@ -95,17 +95,23 @@ public final class PlayButton extends JComponent {
 		float bm = busyMix.get();
 		float t = Ambient.time();
 
-		float inset = 6 - hv * 2 + pr * 3;
-		float x = inset, y = inset + 2 - hv * 2 + pr * 1.5f, bw = w - inset * 2, bh = h - inset * 2 - 4;
+		// Stay inside the component, including the glow, so Windows DPI clipping cannot cut the pill.
+		float m = Math.max(8f, 12f - hv * 2f + pr);
+		float x = m, y = m, bw = w - m * 2f, bh = h - m * 2f;
+		if (bw < 24f || bh < 18f) {
+			g.dispose();
+			return;
+		}
 		float arc = bh;
 		Shape pill = new RoundRectangle2D.Float(x, y, bw, bh, arc, arc);
 
 		// glow
 		if (state != State.RUNNING) {
-			for (int i = 3; i >= 1; i--) {
-				float gpad = i * 3.5f;
-				g.setColor(Theme.alpha(Theme.A2, (0.05f + 0.06f * hv) * (1 - bm * 0.5f)));
-				g.fill(new RoundRectangle2D.Float(x - gpad, y - gpad + 3, bw + gpad * 2, bh + gpad * 2, arc + gpad * 2, arc + gpad * 2));
+			float room = m - 2f;
+			for (int i = 2; i >= 1; i--) {
+				float gpad = Math.min(room, i * 2.5f);
+				g.setColor(Theme.alpha(Theme.ACCENT, (0.06f + 0.05f * hv) * (1 - bm * 0.5f)));
+				g.fill(new RoundRectangle2D.Float(x - gpad, y - gpad, bw + gpad * 2, bh + gpad * 2, arc + gpad, arc + gpad));
 			}
 		}
 
@@ -123,7 +129,7 @@ public final class PlayButton extends JComponent {
 			if (fw > 1) {
 				Graphics2D gc = (Graphics2D) g.create();
 				gc.clip(pill);
-				gc.setPaint(Theme.accent(x, y, x + bw, y + bh));
+				gc.setPaint(new GradientPaint(x, y, Theme.ACCENT_HI, x, y + bh, Theme.ACCENT));
 				float base = Theme.compositeAlpha(gc);
 				if (indeterminate && bm > 0.5f) {
 					gc.setComposite(AlphaComposite.SrcOver.derive(base * (0.35f + 0.25f * (float) Math.sin(t * 4))));

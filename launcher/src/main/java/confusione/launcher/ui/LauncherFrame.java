@@ -1,19 +1,26 @@
 package confusione.launcher.ui;
 
+import java.awt.AWTEvent;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.MouseAdapter;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import confusione.launcher.core.AccountStore;
@@ -44,8 +51,11 @@ public final class LauncherFrame extends JFrame {
 	private final Anim indicator = new Anim(root, 0, 12);
 	private final Anim energy = new Anim(root, 0, 2);
 	private volatile boolean working;
-	private volatile boolean signInCancel;
+	private final AtomicBoolean signInCancel = new AtomicBoolean();
+	private final AtomicBoolean useDeviceCode = new AtomicBoolean();
 	private volatile Thread signInThread;
+	private Point dragAt;
+	private Point dragWindow;
 	private String deviceUrl = "";
 	private String deviceCode = "";
 
@@ -103,18 +113,7 @@ public final class LauncherFrame extends JFrame {
 			public void windowIconified(WindowEvent e) { Ambient.setFocused(false); }
 		});
 
-		MouseAdapter drag = new MouseAdapter() {
-			private Point start;
-			public void mousePressed(MouseEvent e) { start = e.getPoint(); }
-			public void mouseDragged(MouseEvent e) {
-				if (start != null) {
-					Point p = getLocation();
-					setLocation(p.x + e.getX() - start.x, p.y + e.getY() - start.y);
-				}
-			}
-		};
-		root.addMouseListener(drag);
-		root.addMouseMotionListener(drag);
+		installDrag();
 		refreshClient();
 	}
 
@@ -234,8 +233,63 @@ public final class LauncherFrame extends JFrame {
 		home.setAccount(settings.microsoft, store.signedIn() ? store.name : "", polling, deviceUrl, deviceCode);
 	}
 
+	private void installDrag() {
+		Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
+			public void eventDispatched(AWTEvent e) {
+				if (!(e instanceof MouseEvent) || !isShowing()) {
+					return;
+				}
+				MouseEvent me = (MouseEvent) e;
+				if (me.getID() == MouseEvent.MOUSE_PRESSED && me.getButton() == MouseEvent.BUTTON1) {
+					if (interactive(me)) {
+						dragAt = null;
+						return;
+					}
+					dragAt = me.getLocationOnScreen();
+					dragWindow = getLocation();
+				} else if (me.getID() == MouseEvent.MOUSE_DRAGGED && dragAt != null && dragWindow != null) {
+					Point now = me.getLocationOnScreen();
+					setLocation(dragWindow.x + now.x - dragAt.x, dragWindow.y + now.y - dragAt.y);
+				} else if (me.getID() == MouseEvent.MOUSE_RELEASED) {
+					dragAt = null;
+				}
+			}
+		}, AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+	}
+
+	private boolean interactive(MouseEvent me) {
+		Point screen = getLocationOnScreen();
+		Point p = new Point(me.getXOnScreen() - screen.x, me.getYOnScreen() - screen.y);
+		if (!containsLocal(p)) {
+			return true;
+		}
+		Component deep = SwingUtilities.getDeepestComponentAt(getContentPane(), p.x, p.y);
+		while (deep != null && deep != getContentPane()) {
+			if (deep instanceof TextInput || deep instanceof PlayButton || deep instanceof Slider
+					|| deep instanceof Toggle || deep instanceof NavButton || deep instanceof JButton
+					|| deep instanceof JTextArea || deep instanceof JScrollPane) {
+				return true;
+			}
+			if (deep instanceof HomePage) {
+				Point hp = SwingUtilities.convertPoint(getContentPane(), p, deep);
+				return ((HomePage) deep).hitsControl(hp);
+			}
+			deep = deep.getParent();
+		}
+		return false;
+	}
+
+	private boolean containsLocal(Point p) {
+		return p.x >= 0 && p.y >= 0 && p.x < getWidth() && p.y < getHeight();
+	}
+
 	private void accountAction() {
 		if (signInThread != null) {
+			if (deviceCode.isEmpty()) {
+				useDeviceCode.set(true);
+				home.setStatus("Switching to a sign-in code\u2026", Theme.MUTED);
+				return;
+			}
 			cancelSignIn();
 			home.setStatus("Sign-in cancelled.", Theme.MUTED);
 			return;
@@ -251,11 +305,24 @@ public final class LauncherFrame extends JFrame {
 	}
 
 	private void cancelSignIn() {
-		signInCancel = true;
+		signInCancel.set(true);
+		useDeviceCode.set(false);
 		signInThread = null;
 		deviceUrl = "";
 		deviceCode = "";
 		refreshAccount();
+	}
+
+	private void finishSignIn(final MicrosoftAuth.Session session) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				signInThread = null;
+				deviceUrl = "";
+				deviceCode = "";
+				refreshAccount();
+				home.setStatus("Signed in as " + session.name + ".", Theme.OK);
+			}
+		});
 	}
 
 	private void startSignIn() {
@@ -263,11 +330,29 @@ public final class LauncherFrame extends JFrame {
 			home.setStatus("Set a Microsoft client ID in Settings.", Theme.ERROR);
 			return;
 		}
-		signInCancel = false;
+		signInCancel.set(false);
+		useDeviceCode.set(false);
+		deviceCode = "";
 		final Progress p = uiProgress();
 		signInThread = new Thread(new Runnable() {
 			public void run() {
 				try {
+					try {
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								home.setStatus("Finish sign-in in the browser window.", Theme.MUTED);
+								refreshAccount();
+							}
+						});
+						MicrosoftAuth.Session session = MicrosoftAuth.signInWithBrowser(settings.msClientId, p, signInCancel, useDeviceCode);
+						finishSignIn(session);
+						return;
+					} catch (MicrosoftAuth.UseDeviceCode ignored) {
+						p.log("Microsoft sign-in: falling back to a device code");
+					}
+					if (signInCancel.get()) {
+						return;
+					}
 					final MicrosoftAuth.Device d = MicrosoftAuth.start(settings.msClientId);
 					SwingUtilities.invokeAndWait(new Runnable() {
 						public void run() {
@@ -277,25 +362,17 @@ public final class LauncherFrame extends JFrame {
 							refreshAccount();
 						}
 					});
-					p.log("Microsoft sign-in: open " + d.verificationUri + " and enter " + d.userCode);
+					p.log("Microsoft sign-in code: open " + d.verificationUri + " and enter " + d.userCode);
 					browse(d.verificationUri);
-					while (!signInCancel && System.currentTimeMillis() < d.expiresAt) {
+					while (!signInCancel.get() && System.currentTimeMillis() < d.expiresAt) {
 						final MicrosoftAuth.Session session = MicrosoftAuth.poll(settings.msClientId, d, p);
 						if (session != null) {
-							SwingUtilities.invokeLater(new Runnable() {
-								public void run() {
-									signInThread = null;
-									deviceUrl = "";
-									deviceCode = "";
-									refreshAccount();
-									home.setStatus("Signed in as " + session.name + ".", Theme.OK);
-								}
-							});
+							finishSignIn(session);
 							return;
 						}
 						Thread.sleep(Math.max(1, d.interval) * 1000L);
 					}
-					if (!signInCancel) {
+					if (!signInCancel.get()) {
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
 								signInThread = null;
@@ -308,6 +385,9 @@ public final class LauncherFrame extends JFrame {
 					}
 				} catch (final Exception e) {
 					final String msg = e.getMessage() == null ? e.toString() : e.getMessage();
+					if ("Sign-in cancelled.".equals(msg)) {
+						return;
+					}
 					p.log("ERROR: " + msg);
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
@@ -315,7 +395,7 @@ public final class LauncherFrame extends JFrame {
 							deviceUrl = "";
 							deviceCode = "";
 							refreshAccount();
-							if (!signInCancel) {
+							if (!signInCancel.get()) {
 								home.setStatus(msg, Theme.ERROR);
 							}
 						}
@@ -326,7 +406,7 @@ public final class LauncherFrame extends JFrame {
 		signInThread.setDaemon(true);
 		signInThread.start();
 		refreshAccount();
-		home.setStatus("Starting Microsoft sign-in\u2026", Theme.MUTED);
+		home.setStatus("Opening Microsoft sign-in\u2026", Theme.MUTED);
 	}
 
 	private static void browse(String url) {
@@ -462,7 +542,7 @@ public final class LauncherFrame extends JFrame {
 			g.drawImage(Icons.mark(40), 18, 24, null);
 			// sliding selection bar
 			float iy = 112 + indicator.get() * 56 + 14;
-			g.setPaint(Theme.accent(0, iy, 0, iy + 20));
+			g.setColor(Theme.ACCENT_HI);
 			g.fill(new RoundRectangle2D.Float(0, iy, 3.5f, 20, 3, 3));
 			g.setFont(Theme.regular(10));
 			g.setColor(Theme.alpha(Theme.MUTED, 0.7f));

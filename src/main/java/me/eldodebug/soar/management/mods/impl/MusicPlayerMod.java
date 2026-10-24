@@ -41,6 +41,7 @@ public class MusicPlayerMod extends HUDMod {
 	private final KeybindSetting playPauseKey = new KeybindSetting(TranslateText.PLAY_PAUSE_KEY, this, Keyboard.KEY_NONE);
 	private final KeybindSetting nextKey = new KeybindSetting(TranslateText.NEXT_TRACK_KEY, this, Keyboard.KEY_NONE);
 	private final KeybindSetting prevKey = new KeybindSetting(TranslateText.PREVIOUS_TRACK_KEY, this, Keyboard.KEY_NONE);
+	private final BooleanSetting addLinkSetting = new BooleanSetting(TranslateText.ADD_TRACK, this, false);
 
 	private MusicManager.Source lastSource;
 	private int lastVolume = -1;
@@ -100,6 +101,10 @@ public class MusicPlayerMod extends HUDMod {
 	/** 20 Hz, a handful of field compares: reacts to settings edited in the mod menu. */
 	@EventTarget
 	public void onTick(EventTick event) {
+		if (addLinkSetting.isToggled()) {
+			addLinkSetting.setToggled(false);
+			mc.displayGuiScreen(new me.eldodebug.soar.gui.GuiAddTrack(mc.currentScreen));
+		}
 		MusicManager.Source s = selectedSource();
 		if (s != lastSource) {
 			lastSource = s;
@@ -126,10 +131,11 @@ public class MusicPlayerMod extends HUDMod {
 	@EventTarget
 	public void onRender2D(EventRender2D event) {
 		NowPlaying np = music().getNowPlaying();
-		if (np.isEmpty() && !isEditing()) {
+		boolean grabbing = me.eldodebug.soar.management.music.LinkGrabber.active();
+		if (np.isEmpty() && !isEditing() && !grabbing) {
 			return; // nothing playing: no NanoVG frame at all
 		}
-		final NowPlaying shown = np.isEmpty() ? new NowPlaying(placeholder(), null, 0, -1, false, 0) : np;
+		final NowPlaying shown = np.isEmpty() ? new NowPlaying(grabbing ? me.eldodebug.soar.management.music.LinkGrabber.message() : placeholder(), null, 0, -1, false, 0) : np;
 		Glide.getInstance().getNanoVGManager().setupAndDraw(() -> drawNanoVG(shown));
 	}
 
@@ -137,7 +143,7 @@ public class MusicPlayerMod extends HUDMod {
 		if (selectedSource() == MusicManager.Source.SPOTIFY) {
 			return music().getSpotify().isAuthorized() ? "Spotify: nothing playing" : "Spotify: .soarcmd music connect";
 		}
-		return "Drop music in glide/music";
+		return "Add a link in this mod's settings, or drop files in glide/music";
 	}
 
 	private void drawNanoVG(NowPlaying np) {
@@ -159,6 +165,12 @@ public class MusicPlayerMod extends HUDMod {
 			float frac = Math.min(1F, np.positionNow() / (float) np.durationMs);
 			this.drawRoundedRect(textX, H - 8, maxW, 2.5F, 1.25F, this.getFontColor(60));
 			this.drawRoundedRect(textX, H - 8, maxW * frac, 2.5F, 1.25F, this.getFontColor());
+		} else if (me.eldodebug.soar.management.music.LinkGrabber.active()) {
+			float frac = me.eldodebug.soar.management.music.LinkGrabber.progress();
+			if (frac >= 0F) {
+				this.drawRoundedRect(textX, H - 8, maxW, 2.5F, 1.25F, this.getFontColor(60));
+				this.drawRoundedRect(textX, H - 8, maxW * Math.min(1F, frac), 2.5F, 1.25F, this.getFontColor());
+			}
 		}
 		this.setWidth((int) W);
 		this.setHeight((int) H);

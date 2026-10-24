@@ -28,6 +28,7 @@ import confusione.launcher.ui.LauncherFrame;
 public final class Main {
 
 	public static void main(String[] args) throws Exception {
+		System.setProperty("sun.java2d.dpiaware", "true");
 		final Settings s = Settings.load();
 		String mode = "ui", shot = null, page = "home";
 		double demo = -2;

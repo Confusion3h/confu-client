@@ -1,9 +1,21 @@
 package confusione.launcher.core;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Microsoft device-code login for Minecraft Java: Microsoft OAuth, Xbox Live, XSTS,
@@ -13,6 +25,13 @@ import java.util.Map;
 public final class MicrosoftAuth {
 
 	static final String SCOPE = "XboxLive.signin offline_access";
+	public static final int BROWSER_PORT = 63212;
+	public static final String BROWSER_REDIRECT = "http://127.0.0.1:63212/callback";
+
+	/** Thrown when the user asks for the device-code fallback while the browser flow is waiting. */
+	public static final class UseDeviceCode extends Exception {
+		public UseDeviceCode() { super("device"); }
+	}
 	private static final String DEVICE = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
 	private static final String TOKEN = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
 	private static final String XBL = "https://user.auth.xboxlive.com/user/authenticate";
@@ -67,6 +86,78 @@ public final class MicrosoftAuth {
 			throw new IOException("Microsoft did not return a device code.");
 		}
 		return d;
+	}
+
+	/**
+	 * Opens the system browser on Microsoft's sign-in page and waits on
+	 * {@link #BROWSER_REDIRECT}. {@code useCode} switches to the device-code fallback.
+	 */
+	public static Session signInWithBrowser(String clientId, Progress p, AtomicBoolean cancel, AtomicBoolean useCode) throws IOException, UseDeviceCode {
+		requireClient(clientId);
+		String verifier = pkceVerifier();
+		String challenge = pkceChallenge(verifier);
+		ServerSocket ss = new ServerSocket();
+		ss.setReuseAddress(true);
+		try {
+			ss.bind(new InetSocketAddress("127.0.0.1", BROWSER_PORT));
+		} catch (IOException e) {
+			ss.close();
+			throw new IOException("Could not listen on " + BROWSER_REDIRECT + ". Use a sign-in code instead.");
+		}
+		ss.setSoTimeout(400);
+		String url = "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?" + form(
+				"client_id", clientId,
+				"response_type", "code",
+				"redirect_uri", BROWSER_REDIRECT,
+				"response_mode", "query",
+				"scope", SCOPE,
+				"code_challenge", challenge,
+				"code_challenge_method", "S256",
+				"prompt", "select_account");
+		p.log("Microsoft sign-in (browser): " + url);
+		p.stage("Waiting for the browser");
+		openBrowser(url);
+		try {
+			long deadline = System.currentTimeMillis() + 5L * 60L * 1000L;
+			while (!cancel.get() && !useCode.get() && System.currentTimeMillis() < deadline) {
+				Socket sock;
+				try {
+					sock = ss.accept();
+				} catch (SocketTimeoutException e) {
+					continue;
+				}
+				try {
+					String req = readRequest(sock);
+					String err = query(req, "error");
+					String code = query(req, "code");
+					writeResponse(sock, code != null);
+					if (err != null) {
+						throw new IOException(explainOauth(err, ""));
+					}
+					if (code != null) {
+						MsToken ms;
+						try {
+							ms = token(form("client_id", clientId, "grant_type", "authorization_code",
+									"code", code, "redirect_uri", BROWSER_REDIRECT, "code_verifier", verifier));
+						} catch (Http.StatusException e) {
+							throw new IOException(explainOauth(errorCode(e.body), e.body));
+						}
+						return finish(ms, p);
+					}
+				} finally {
+					try { sock.close(); } catch (IOException ignored) {}
+				}
+			}
+			if (useCode.get()) {
+				throw new UseDeviceCode();
+			}
+			if (cancel.get()) {
+				throw new IOException("Sign-in cancelled.");
+			}
+			throw new IOException("The browser sign-in timed out. Try again, or use a code.");
+		} finally {
+			ss.close();
+		}
 	}
 
 	/** @return null while the user has not finished; throws on denial or expiry */
@@ -319,6 +410,69 @@ public final class MicrosoftAuth {
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static void openBrowser(String url) {
+		try {
+			if (java.awt.Desktop.isDesktopSupported()) {
+				java.awt.Desktop.getDesktop().browse(new java.net.URI(url));
+			}
+		} catch (Exception ignored) {
+		}
+	}
+
+	private static String pkceVerifier() {
+		byte[] b = new byte[32];
+		new SecureRandom().nextBytes(b);
+		return Base64.getUrlEncoder().withoutPadding().encodeToString(b);
+	}
+
+	private static String pkceChallenge(String verifier) throws IOException {
+		try {
+			byte[] d = MessageDigest.getInstance("SHA-256").digest(verifier.getBytes(StandardCharsets.US_ASCII));
+			return Base64.getUrlEncoder().withoutPadding().encodeToString(d);
+		} catch (java.security.NoSuchAlgorithmException e) {
+			throw new IOException(e);
+		}
+	}
+
+	private static String readRequest(Socket sock) throws IOException {
+		sock.setSoTimeout(5000);
+		BufferedReader r = new BufferedReader(new InputStreamReader(sock.getInputStream(), StandardCharsets.US_ASCII));
+		String line = r.readLine();
+		return line == null ? "" : line;
+	}
+
+	private static void writeResponse(Socket sock, boolean ok) throws IOException {
+		String body = ok
+				? "<html><body style=\"font-family:sans-serif;background:#111;color:#eee\"><p>CONFUSION3H is signed in. You can close this window.</p></body></html>"
+				: "<html><body style=\"font-family:sans-serif;background:#111;color:#eee\"><p>CONFUSION3H could not finish sign-in. Close this window and try again.</p></body></html>";
+		byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
+		String head = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: " + bytes.length + "\r\nConnection: close\r\n\r\n";
+		OutputStream out = sock.getOutputStream();
+		out.write(head.getBytes(StandardCharsets.US_ASCII));
+		out.write(bytes);
+		out.flush();
+	}
+
+	private static String query(String requestLine, String key) {
+		int q = requestLine.indexOf('?');
+		int sp = requestLine.indexOf(' ', q < 0 ? 0 : q);
+		if (q < 0) {
+			return null;
+		}
+		String query = requestLine.substring(q + 1, sp > q ? sp : requestLine.length());
+		String prefix = key + "=";
+		for (String part : query.split("&")) {
+			if (part.startsWith(prefix)) {
+				try {
+					return java.net.URLDecoder.decode(part.substring(prefix.length()), "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					return part.substring(prefix.length());
+				}
+			}
+		}
+		return null;
 	}
 
 	private static String jsonEscape(String s) {

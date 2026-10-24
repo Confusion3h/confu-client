@@ -7,6 +7,7 @@ import me.eldodebug.soar.gui.mainmenu.GuiGlideMainMenu;
 import me.eldodebug.soar.gui.mainmenu.MainMenuScene;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
+import me.eldodebug.soar.utils.FittedText;
 import me.eldodebug.soar.utils.TimerUtils;
 import me.eldodebug.soar.utils.animation.normal.Animation;
 import me.eldodebug.soar.utils.animation.normal.Direction;
@@ -67,9 +68,9 @@ public class WelcomeMessageScene extends MainMenuScene {
 			}
 			
 			nvg.setupAndDraw(() -> {
-				nvg.drawCenteredText(message, sr.getScaledWidth() / 2, 
-						(sr.getScaledHeight() / 2) - (nvg.getTextHeight(message, 26, Fonts.REGULAR) / 2), 
-						new Color(255, 255, 255, (int) (fadeAnimation.getValueFloat() * 255)), 26, Fonts.REGULAR);
+				FittedText.drawCentered(nvg, message, sr.getScaledWidth() / 2f, sr.getScaledHeight() / 2f,
+						sr.getScaledWidth() - 48f, 26, Fonts.REGULAR,
+						new Color(255, 255, 255, (int) (fadeAnimation.getValueFloat() * 255)));
 			});
 			
 			if(timer.delay(2500) && fadeAnimation.getDirection().equals(Direction.FORWARDS)) {

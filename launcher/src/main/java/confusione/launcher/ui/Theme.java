@@ -29,6 +29,9 @@ public final class Theme {
 	public static final Color A1 = new Color(0xFFFFFF); // white
 	public static final Color A2 = new Color(0xC8C8C8); // light grey
 	public static final Color A3 = new Color(0x8C8C8C); // mid grey
+	/** Quiet steel blue for Play, Sign in and the active nav. The rest of the UI stays grey. */
+	public static final Color ACCENT = new Color(0x7C93A8);
+	public static final Color ACCENT_HI = new Color(0xD5E2EC);
 	/** Text/knobs drawn on top of the (light) accent gradient. */
 	public static final Color ON_ACCENT = new Color(0x111111);
 

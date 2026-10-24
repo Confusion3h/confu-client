@@ -152,6 +152,7 @@ public enum TranslateText {
 	FPS_MODE("text.fpsmode"), FPS_MODE_DESCRIPTION("text.fpsmode.description"), CREDITS("text.credits"), CREDITS_DESCRIPTION("text.credits.description"),
 	MUSIC_PLAYER("text.musicplayer.name"), MUSIC_PLAYER_DESCRIPTION("text.musicplayer.description"), MUSIC_SOURCE("text.music.source"),
 	MUSIC_LOCAL("text.music.local"), MUSIC_SPOTIFY("text.music.spotify"), SPOTIFY_CLIENT_ID("text.music.spotifyclientid"),
+	ADD_TRACK("text.music.add"),
 	SHUFFLE("text.music.shuffle"), PROGRESS_BAR("text.music.progressbar"), PLAY_PAUSE_KEY("text.music.playpausekey"),
 	NEXT_TRACK_KEY("text.music.nextkey"), PREVIOUS_TRACK_KEY("text.music.previouskey"), DISCORD_APP_ID("text.discordrpc.appid");
 

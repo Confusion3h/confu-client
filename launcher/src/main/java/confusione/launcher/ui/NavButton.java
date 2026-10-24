@@ -66,7 +66,7 @@ public final class NavButton extends JComponent {
 		float s = windowCtl ? 4f : 8f + hv * 0.6f;
 		g.setStroke(new BasicStroke(windowCtl ? 1.6f : 2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		if (sel > 0.02f && !windowCtl) {
-			g.setPaint(Theme.accent(cx - s, cy - s, cx + s, cy + s));
+			g.setColor(Theme.mix(Theme.ACCENT, Theme.ACCENT_HI, sel));
 		} else {
 			g.setColor(Theme.mix(Theme.MUTED, Theme.TEXT, Math.max(hv, sel)));
 		}

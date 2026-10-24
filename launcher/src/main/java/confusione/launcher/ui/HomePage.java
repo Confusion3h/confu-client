@@ -132,12 +132,12 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		logo.setBounds(40, 54, 92, 92);
 		username.setVisible(!microsoft);
 		username.setBounds(48, 268, 320, 52);
-		play.setBounds(42, 336, 332, 84);
+		play.setBounds(42, 328, Math.min(360, Math.max(280, getWidth() - 420)), 100);
 		offlineChip.setBounds(48, 224, 84, 26);
 		msChip.setBounds(140, 224, 108, 26);
 		if (microsoft) {
-			String label = polling ? "Cancel" : (accountName.isEmpty() ? "Sign in" : "Sign out");
-			actionChip.setBounds(48, 276, label.length() > 8 ? 96 : 88, 30);
+			String label = accountActionLabel();
+			actionChip.setBounds(48, 276, Math.max(96, label.length() * 8 + 28), 30);
 		} else {
 			actionChip.setBounds(0, 0, 0, 0);
 		}
@@ -164,13 +164,13 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		chip(g, offlineChip, "Offline", !microsoft);
 		chip(g, msChip, "Microsoft", microsoft);
 		if (microsoft) {
-			String action = polling ? "Cancel" : (accountName.isEmpty() ? "Sign in" : "Sign out");
-			chip(g, actionChip, action, true);
+			String action = accountActionLabel();
+			chip(g, actionChip, action, true, accountName.isEmpty());
 			g.setFont(Theme.regular(13));
 			g.setColor(Theme.TEXT);
 			String detail;
 			if (polling) {
-				detail = deviceCode.isEmpty() ? "Contacting Microsoft\u2026" : deviceCode;
+				detail = deviceCode.isEmpty() ? "Waiting for the browser" : deviceCode;
 			} else if (accountName.isEmpty()) {
 				detail = "Not signed in";
 			} else {
@@ -188,7 +188,7 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		if (!status.isEmpty()) {
 			g.setFont(Theme.regular(12));
 			g.setColor(statusColor);
-			g.drawString(ellipsize(g.getFontMetrics(), status, 330), 48, 438);
+			g.drawString(ellipsize(g.getFontMetrics(), status, Math.max(200, getWidth() - 420)), 48, 452);
 		}
 
 		// client chip
@@ -233,12 +233,38 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		return Math.max(0, Math.min(1, v));
 	}
 
+	/** True when a press on the page itself hits a control rather than empty background. */
+	public boolean hitsControl(java.awt.Point p) {
+		if (offlineChip.contains(p) || msChip.contains(p)) {
+			return true;
+		}
+		if (microsoft && actionChip.width > 0 && actionChip.contains(p)) {
+			return true;
+		}
+		return !clientOk && buildAction != null && linkBounds().contains(p);
+	}
+
+	private String accountActionLabel() {
+		if (!polling) {
+			return accountName.isEmpty() ? "Sign in" : "Sign out";
+		}
+		return deviceCode.isEmpty() ? "Use a code" : "Cancel";
+	}
+
 	private static void chip(Graphics2D g, Rectangle r, String text, boolean on) {
+		chip(g, r, text, on, false);
+	}
+
+	private static void chip(Graphics2D g, Rectangle r, String text, boolean on, boolean accent) {
 		if (r.width <= 0) {
 			return;
 		}
 		RoundRectangle2D.Float rr = new RoundRectangle2D.Float(r.x, r.y, r.width, r.height, r.height, r.height);
-		if (on) {
+		if (on && accent) {
+			g.setPaint(new java.awt.GradientPaint(r.x, r.y, Theme.ACCENT_HI, r.x, r.y + r.height, Theme.ACCENT));
+			g.fill(rr);
+			g.setColor(Theme.ON_ACCENT);
+		} else if (on) {
 			g.setPaint(Theme.accent(r.x, r.y, r.x + r.width, r.y));
 			g.fill(rr);
 			g.setColor(Theme.ON_ACCENT);

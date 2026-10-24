@@ -312,6 +312,33 @@ public final class MusicManager {
 		toast("Disconnected from Spotify", NotificationType.INFO);
 	}
 
+	/** Called from the link worker; safe if the mod is off (plays once the folder is scanned). */
+	public void playDownloaded(final File file) {
+		Runnable job = new Runnable() {
+			public void run() {
+				local.scan(musicDir);
+				java.util.List<File> list = local.getPlaylist();
+				source = Source.LOCAL;
+				for (int i = 0; i < list.size(); i++) {
+					if (list.get(i).getAbsolutePath().equals(file.getAbsolutePath())) {
+						local.play(i);
+						return;
+					}
+				}
+			}
+		};
+		ScheduledExecutorService w = worker;
+		if (w != null) {
+			w.execute(job);
+		} else {
+			job.run();
+		}
+	}
+
+	public void toastPublic(String message, NotificationType type) {
+		toast(message, type);
+	}
+
 	public void rescan() {
 		async(new Runnable() {
 			public void run() {

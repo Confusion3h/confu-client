@@ -102,7 +102,7 @@ public class MechvibesMod extends Mod {
 				}
 			}
 			
-			if(keyboardSetting.isToggled()) {
+			if(keyboardSetting.isToggled() && uiSounds()) {
 				for(int keyCode = 0; keyCode < 256; keyCode++) {
 					if(Keyboard.isKeyDown(keyCode)) {
 						if(keyMap.get(keyCode) != null) {
@@ -118,7 +118,7 @@ public class MechvibesMod extends Mod {
 				}
 			}
 			
-			if(mouseSetting.isToggled()) {
+			if(mouseSetting.isToggled() && uiSounds()) {
 				
 				if(Mouse.isButtonDown(0) && !mouseLeftPress) {
 					mouseLeftPress = true;
@@ -141,6 +141,10 @@ public class MechvibesMod extends Mod {
 		}
 	}
 	
+	private static boolean uiSounds() {
+		return InternalSettingsMod.getInstance() == null || InternalSettingsMod.getInstance().getSoundsUISetting().isToggled();
+	}
+
 	private void loadKeyboardSounds(String type) {
 		
 		Multithreading.runAsync(()-> {

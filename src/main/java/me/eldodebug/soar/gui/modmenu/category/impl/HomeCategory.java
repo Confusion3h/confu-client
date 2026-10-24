@@ -29,7 +29,7 @@ public class HomeCategory extends Category {
 	private static final String[] TIPS = {
 			"Right Shift opens this menu anywhere.",
 			"FPS mode (Settings > General) turns off blur, glow and particles.",
-			"Music: drop MP3/OGG/WAV in glide/music, or use .soarcmd music connect for Spotify.",
+			"Music: paste a YouTube or SoundCloud link in Music Player, or drop files in glide/music.",
 			"Capes: Cosmetics > Custom > + to add a PNG; F5 to see it.",
 			"Profiles can switch automatically per server IP.",
 	};

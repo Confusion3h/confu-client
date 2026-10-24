@@ -74,7 +74,7 @@ public class AccentColorSelectScene extends MainMenuScene {
 		int index = 1;
 		
 		nvg.drawRoundedRect(x, y, width, height, 8, this.getBackgroundColor());
-		nvg.drawCenteredText("Choose a accent color", x + (width / 2), y + 10, Color.WHITE, 16, Fonts.MEDIUM);
+		me.eldodebug.soar.utils.FittedText.drawCentered(nvg, "Choose a accent color", x + (width / 2), y + 14, width - 24, 16, Fonts.MEDIUM, Color.WHITE);
 		nvg.drawRect(x, y + 27, width, 1, Color.WHITE);
 		
 		nvg.drawRoundedImage(new ResourceLocation("soar/backgrounds/example-vertical.png"), x + width - 108, y + 40, 96, 96, 6);
