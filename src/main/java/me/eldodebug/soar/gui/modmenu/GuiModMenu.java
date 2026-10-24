@@ -193,6 +193,13 @@ public class GuiModMenu extends GuiScreen {
 					float folderButtonY = y + 6.5F;
 					nvg.drawRoundedRect(folderButtonX, folderButtonY, 18,18, 6, palette.getBackgroundColor(ColorType.DARK));
 					nvg.drawCenteredText(LegacyIcon.FOLDER,folderButtonX + 8.5F, folderButtonY + 9 - (nvg.getTextHeight(LegacyIcon.FOLDER, 9, Fonts.LEGACYICON)/2), palette.getFontColor(ColorType.NORMAL), 9, Fonts.LEGACYICON);
+					// add (file chooser) and reload (rescan folder)
+					String[] icons = { LegacyIcon.PLUS, LegacyIcon.REFRESH };
+					for (int i = 0; i < icons.length; i++) {
+						float bx = folderButtonX - 24 * (i + 1);
+						nvg.drawRoundedRect(bx, folderButtonY, 18, 18, 6, palette.getBackgroundColor(ColorType.DARK));
+						nvg.drawCenteredText(icons[i], bx + 8.5F, folderButtonY + 9 - (nvg.getTextHeight(icons[i], 9, Fonts.LEGACYICON)/2), palette.getFontColor(ColorType.NORMAL), 9, Fonts.LEGACYICON);
+					}
 				}
 				nvg.scissor(x + 32, y + yOff, width - 32, height - yOff);
 				nvg.translate(0, 50 - (c.getCategoryAnimation().getValue() * 50));
@@ -248,6 +255,18 @@ public class GuiModMenu extends GuiScreen {
 			float folderButtonY = y + 6.5F;
 			if (MouseUtils.isInside(mouseX, mouseY, folderButtonX, folderButtonY, 18, 18)){
 				FileUtils.openFolderAtPath(Glide.getInstance().getFileManager().getCustomCapeDir());
+			}
+			if (MouseUtils.isInside(mouseX, mouseY, folderButtonX - 24, folderButtonY, 18, 18) && mouseButton == 0) {
+				// JFileChooser blocks: keep it off the render thread
+				me.eldodebug.soar.utils.Multithreading.runAsync(() -> {
+					File picked = FileUtils.selectImageFile();
+					if (picked != null) {
+						Glide.getInstance().getCapeManager().importCape(picked);
+					}
+				});
+			}
+			if (MouseUtils.isInside(mouseX, mouseY, folderButtonX - 48, folderButtonY, 18, 18) && mouseButton == 0) {
+				Glide.getInstance().getCapeManager().loadCustomCapes(true);
 			}
 		}
 		

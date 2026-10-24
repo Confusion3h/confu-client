@@ -735,6 +735,12 @@ public class NanoVGManager {
 		assetManager.loadImage(nvg, file);
 	}
 	
+	public void unloadImage(File file) {
+		if (assetManager.getImageOrNull(file) != null) {
+			assetManager.removeImage(nvg, file);
+		}
+	}
+
 	public void loadImage(ResourceLocation location) {
 		assetManager.loadImage(nvg, location);
 	}

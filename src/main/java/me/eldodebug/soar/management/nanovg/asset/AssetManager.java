@@ -159,6 +159,10 @@ public class AssetManager {
 		return imageCache.get(location.getResourcePath()).getImage();
 	}
 	
+	public NVGAsset getImageOrNull(File file) {
+		return imageCache.get(file.getName());
+	}
+
 	public int getImage(File file) {
 		return imageCache.get(file.getName()).getImage();
 	}

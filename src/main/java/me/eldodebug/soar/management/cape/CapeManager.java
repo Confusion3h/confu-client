@@ -1,11 +1,8 @@
 package me.eldodebug.soar.management.cape;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 
 import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.logger.GlideLogger;
@@ -14,8 +11,7 @@ import me.eldodebug.soar.management.cape.impl.CustomCape;
 import me.eldodebug.soar.management.cape.impl.NormalCape;
 import me.eldodebug.soar.management.file.FileManager;
 import me.eldodebug.soar.management.mods.impl.InternalSettingsMod;
-import me.eldodebug.soar.utils.ImageUtils;
-import me.eldodebug.soar.utils.file.FileUtils;
+import me.eldodebug.soar.management.notification.NotificationType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
@@ -92,44 +88,9 @@ public class CapeManager {
 		add("Horse", "misc/horse-sample.png", "misc/horse.png", CapeCategory.MISC);
 		add("Trans Arch", "misc/transarch-sample.png", "misc/transarch.png", CapeCategory.MISC);
 
-		currentCape = getCapeByName(InternalSettingsMod.getInstance().getCapeConfigName());
+		store = new CapeStore(customCapeDir, cacheDir);
+		loadCustomCapes(false);
 
-		for(File f : customCapeDir.listFiles()) {
-			
-			if(FileUtils.isImageFile(f)) {
-				
-				File file = new File(cacheDir, f.getName() + ".png");
-				
-				if(!file.exists()) {
-					
-					try {
-						BufferedImage image = ImageIO.read(f);
-						int width = image.getWidth();
-						int height = image.getHeight();
-					
-						BufferedImage outputImage = ImageUtils.scissor(image, (int) (width * 0.03125), (int) (height * 0.0625), (int) (width * 0.125), (int) (height * 0.46875));
-						
-						ImageIO.write(ImageUtils.resize(outputImage, 1000, 1700), "png", file);
-					} catch (IOException e) {
-						GlideLogger.error("Failed to load image", e);
-						continue;
-					}
-				}
-				
-				if(file.exists()) {
-					
-					try {
-						DynamicTexture cape = new DynamicTexture(ImageIO.read(f));
-						
-						addCustomCape(f.getName().replace("." + FileUtils.getExtension(f), ""), file,
-								mc.getTextureManager().getDynamicTextureLocation(String.valueOf(f.getName().hashCode()), cape), CapeCategory.CUSTOM);
-					} catch(Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-		
 		for(Cape c : capes) {
 			
 			if(c instanceof NormalCape) {
@@ -162,32 +123,139 @@ public class CapeManager {
 		capes.add(new NormalCape(name, new ResourceLocation(cosmeticPath + samplePath), new ResourceLocation(cosmeticPath + capePath), category));
 	}
 	
-	private void addCustomCape(String name, File sample, ResourceLocation cape, CapeCategory category) {
-		capes.add(new CustomCape(name, sample, cape, category));
+	// ---- custom capes ---------------------------------------------------------------
+
+	private CapeStore store;
+	private String resolvedFor;
+
+	/** (Re)reads the custom-cape folder. Main thread only (creates GL textures). */
+	public void loadCustomCapes(boolean notify) {
+		for (Cape c : new ArrayList<Cape>(capes)) {
+			if (c instanceof CustomCape) {
+				release((CustomCape) c);
+			}
+		}
+		final int[] bad = { 0 };
+		for (CapeStore.Entry e : store.scan(new CapeStore.Problem() {
+			public void report(File file, String message) {
+				bad[0]++;
+				GlideLogger.warn("Skipping custom cape " + file.getName() + ": " + message);
+			}
+		})) {
+			register(e);
+		}
+		resolvedFor = null; // re-resolve the selected cape against the new list
+		if (notify) {
+			int n = 0;
+			for (Cape c : capes) {
+				if (c instanceof CustomCape) {
+					n++;
+				}
+			}
+			toast(n + " custom cape" + (n == 1 ? "" : "s") + (bad[0] > 0 ? ", " + bad[0] + " skipped (see log)" : ""),
+					bad[0] > 0 ? NotificationType.WARNING : NotificationType.SUCCESS);
+		}
+	}
+
+	private CustomCape register(CapeStore.Entry e) {
+		String name = e.name;
+		while (getCapeOrNull(name) != null) {
+			name = name + " (custom)";
+		}
+		DynamicTexture tex = new DynamicTexture(e.image.texture);
+		ResourceLocation loc = mc.getTextureManager().getDynamicTextureLocation("confusione_cape_" + Integer.toHexString(e.file.getName().hashCode()), tex);
+		CustomCape cape = new CustomCape(name, e, loc, CapeCategory.CUSTOM);
+		capes.add(cape);
+		return cape;
+	}
+
+	private void release(CustomCape c) {
+		capes.remove(c);
+		mc.getTextureManager().deleteTexture(c.getCape());
+		Glide.getInstance().getNanoVGManager().unloadImage(c.getSample());
+	}
+
+	/** Validates and imports a picked file. Safe from any thread; UI changes run on the main thread. */
+	public void importCape(final File file) {
+		final CapeStore.Entry entry;
+		try {
+			entry = store.importFile(file);
+		} catch (CapeImage.Invalid e) {
+			toast(e.getMessage(), NotificationType.ERROR);
+			return;
+		} catch (Exception e) {
+			GlideLogger.error("Cape import failed", e);
+			toast("Import failed: " + e.getMessage(), NotificationType.ERROR);
+			return;
+		}
+		mc.addScheduledTask(new Runnable() {
+			public void run() {
+				setCurrentCape(register(entry));
+				toast("Cape \"" + entry.name + "\" added and equipped", NotificationType.SUCCESS);
+			}
+		});
+	}
+
+	/** Deletes a custom cape's file and preview; falls back to None if it was equipped. */
+	public void removeCape(CustomCape cape) {
+		boolean wasCurrent = cape.equals(getCurrentCape());
+		release(cape);
+		if (!store.remove(cape.getEntry())) {
+			toast("Could not delete " + cape.getEntry().file.getName(), NotificationType.ERROR);
+		} else {
+			toast("Cape \"" + cape.getName() + "\" removed", NotificationType.INFO);
+		}
+		if (wasCurrent) {
+			setCurrentCape(getCapeByName("None"));
+		}
+	}
+
+	public File getCustomCapeDir() {
+		return store.getDir();
+	}
+
+	private static void toast(String msg, NotificationType type) {
+		Glide g = Glide.getInstance();
+		if (g != null && g.getNotificationManager() != null) {
+			g.getNotificationManager().post("Capes", msg, type);
+		}
 	}
 	
 	public ArrayList<Cape> getCapes() {
 		return capes;
 	}
 	
+	/**
+	 * The saved name lives in the profile, which loads after this manager is built and
+	 * can change on profile switch, so resolve lazily (one string compare per call).
+	 */
 	public Cape getCurrentCape() {
+		String name = InternalSettingsMod.getInstance().getCapeConfigName();
+		if (currentCape == null || !name.equals(resolvedFor)) {
+			resolvedFor = name;
+			currentCape = getCapeByName(name);
+		}
 		return currentCape;
 	}
 
 	public void setCurrentCape(Cape currentCape) {
 		this.currentCape = currentCape;
+		this.resolvedFor = currentCape.getName();
 		InternalSettingsMod.getInstance().setCapeConfigName(currentCape.getName());
 	}
 
-	public Cape getCapeByName(String name) {
-		
+	public Cape getCapeOrNull(String name) {
 		for(Cape c : capes) {
 			if(c.getName().equals(name)) {
 				return c;
 			}
 		}
-		
-		return getCapeByName("None");
+		return null;
+	}
+
+	public Cape getCapeByName(String name) {
+		Cape c = getCapeOrNull(name);
+		return c != null ? c : capes.get(0); // "None"
 	}
 	
 }

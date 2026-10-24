@@ -110,6 +110,11 @@ public class CosmeticsCategory extends Category {
 					nvg.drawRoundedImage(c.getSample(), this.getX() + 24 + offsetX, this.getY() + offsetY + 9, 70, 105, 8);
 				}
 			}
+			if (cape instanceof CustomCape && MouseUtils.isInside(mouseX, mouseY - (int) scroll.getValue(), this.getX() + 15 + offsetX, this.getY() + offsetY, 88, 135)) {
+				// remove button (hover only)
+				nvg.drawRoundedRect(this.getX() + 15 + offsetX + 88 - 20, this.getY() + offsetY + 4, 16, 16, 5, new Color(0, 0, 0, 150));
+				nvg.drawCenteredText(LegacyIcon.TRASH, this.getX() + 15 + offsetX + 88 - 12, this.getY() + offsetY + 7.5F, Color.WHITE, 9, Fonts.LEGACYICON);
+			}
 			Color cColour = palette.getFontColor(ColorType.DARK);
 			nvg.drawCenteredText(cape.getName(), this.getX() + 15 + offsetX + (88 / 2), this.getY() + offsetY + 120.5F, cColour, 10, Fonts.MEDIUM);
 
@@ -131,8 +136,8 @@ public class CosmeticsCategory extends Category {
 		if(currentCategory.equals(CapeCategory.CUSTOM)){
 			if (capeCount == 0){
 				nvg.drawCenteredText("You have no custom capes.", getX()+(getWidth()/2), getY() + (getHeight()/2) - 14, palette.getFontColor(ColorType.DARK), 12, Fonts.SEMIBOLD);
-				nvg.drawCenteredText("You can click the folder button at the top to open the folder!", getX()+(getWidth()/2), getY() + (getHeight()/2), palette.getFontColor(ColorType.DARK), 9, Fonts.MEDIUM);
-				nvg.drawCenteredText("(Glide only supports capes that are PNG using Minecraft layout. You may need to restart Glide!)", getX()+(getWidth()/2), getY() + (getHeight()/2) + 12, palette.getFontColor(ColorType.NORMAL), 7, Fonts.REGULAR);
+				nvg.drawCenteredText("Click + at the top to add a PNG, or drop files in the folder and press reload.", getX()+(getWidth()/2), getY() + (getHeight()/2), palette.getFontColor(ColorType.DARK), 9, Fonts.MEDIUM);
+				nvg.drawCenteredText("PNG, 64x32 cape texture (or 128x64, 256x128...) or 22x17 cape art (or 44x34...).", getX()+(getWidth()/2), getY() + (getHeight()/2) + 12, palette.getFontColor(ColorType.NORMAL), 7, Fonts.REGULAR);
 			}
 			// you may need to reload the game
 		}
@@ -174,6 +179,10 @@ public class CosmeticsCategory extends Category {
 				continue;
 			}
 
+			if (cape instanceof CustomCape && MouseUtils.isInside(mouseX, mouseY, this.getX() + 15 + offsetX + 88 - 20, this.getY() + offsetY + 4, 16, 16) && mouseButton == 0) {
+				capeManager.removeCape((CustomCape) cape);
+				return; // list changed under us
+			}
 			if (MouseUtils.isInside(mouseX, mouseY, this.getX() + 15 + offsetX, this.getY() + offsetY, 88, 135) && mouseButton == 0) {
 				capeManager.setCurrentCape(cape);
 			}

@@ -81,7 +81,7 @@ public class GlideHandler {
 		
 		CapeManager capeManager = instance.getCapeManager();
 		
-		if(event.getPlayerInfo() != null && event.getPlayerInfo().getGameProfile().getId().equals(mc.thePlayer.getGameProfile().getId())) {
+		if(event.getPlayerInfo() != null && mc.thePlayer != null && event.getPlayerInfo().getGameProfile().getId().equals(mc.thePlayer.getGameProfile().getId())) {
 			
 			Cape currentCape = capeManager.getCurrentCape();
 			
