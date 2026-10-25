@@ -19,7 +19,32 @@ public final class GameLauncher {
 			return s.javaPath;
 		}
 		boolean win = OS.NAME.equals("windows");
-		return new File(System.getProperty("java.home"), "bin/" + (win ? "javaw.exe" : "java")).getPath();
+		File home = new File(System.getProperty("java.home"), "bin/" + (win ? "javaw.exe" : "java"));
+		if (home.isFile() || !MacFocus.isMac()) {
+			return home.getPath();
+		}
+		File bundled = new File(launcherDir(), "jre/bin/java");
+		return bundled.isFile() ? bundled.getPath() : home.getPath();
+	}
+
+	/** Folder holding the launcher jar. In the macOS app that is Contents/Resources. */
+	static File launcherDir() {
+		try {
+			File jar = new File(GameLauncher.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+			return jar.isDirectory() ? jar : jar.getParentFile();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/** The Confu icon bundled beside the launcher jar, or null outside the macOS app. */
+	static File macIcon() {
+		File dir = launcherDir();
+		if (dir == null) {
+			return null;
+		}
+		File icns = new File(dir, "confusion3h.icns");
+		return icns.isFile() ? icns : null;
 	}
 
 	/** Offline-mode UUID, same derivation as vanilla servers use for offline players. */
@@ -44,6 +69,10 @@ public final class GameLauncher {
 			cmd.add("-XstartOnFirstThread");
 			cmd.add("-Dapple.awt.application.name=Confu Client");
 			cmd.add("-Xdock:name=Confu Client");
+			File icon = macIcon();
+			if (icon != null) {
+				cmd.add("-Xdock:icon=" + icon.getAbsolutePath());
+			}
 		}
 		cmd.add("-Xmx" + s.ramMb + "M");
 		cmd.add("-Xms" + Math.min(1024, s.ramMb) + "M");
