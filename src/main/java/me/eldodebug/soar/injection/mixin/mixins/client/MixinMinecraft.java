@@ -1,7 +1,6 @@
 package me.eldodebug.soar.injection.mixin.mixins.client;
 
 import eu.shoroa.contrib.render.ShBlur;
-import me.eldodebug.soar.utils.MacOSUtils;
 import me.eldodebug.soar.utils.WindowIcon;
 import net.minecraft.util.Util;
 import org.apache.commons.lang3.SystemUtils;
@@ -271,11 +270,6 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 		Display.setTitle("Confu Client");
 	}
 
-	@Inject(method = "createDisplay", at = @At("TAIL"))
-	private void confuOrderWindowFront(CallbackInfo ci) {
-		MacOSUtils.orderGameWindowFront();
-	}
-	
     @Inject(method = "updateFramebufferSize", at = @At("HEAD"))
     private void onUpdateFramebufferSize(CallbackInfo ci) {
     	if(Glide.getInstance().getEventManager() != null) {
@@ -390,7 +384,6 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 	@Inject(method = "setWindowIcon", at = @At("HEAD"), cancellable = true)
 	private void setGameIcon(CallbackInfo c) {
 		if(Util.getOSType() == Util.EnumOS.OSX) {
-			MacOSUtils.setDockIcon("/assets/minecraft/soar/osx.png");
 			c.cancel();
 			return;
 		}
