@@ -5,8 +5,8 @@
 # confu-java links to the JRE's java binary from inside Contents/MacOS. That keeps
 # the process inside this bundle, so Info.plist (NSHighResolutionCapable, icon)
 # applies to it. Without it, AppKit scales the launcher up from 1x on Retina.
-# No -XstartOnFirstThread here: that flag deadlocks the Swing launcher. GameLauncher
-# adds it only to the game JVM on macOS.
+# No -XstartOnFirstThread here or in the game JVM: the Swing launcher deadlocks with
+# it, and vanilla 1.8.9 on macOS does not pass it.
 set -eu
 here=$(cd "$(dirname "$0")" && pwd -P)
 res=$(cd "$here/../Resources" && pwd -P)

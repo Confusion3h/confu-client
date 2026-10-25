@@ -192,8 +192,8 @@ pack_mac() {
   rm -rf "$app/Contents/Resources/jre/bundle"
   # Paths come from the launcher's own location, so the bundle works in
   # ~/Downloads or any other folder. Nothing points at /Applications.
-  # No -XstartOnFirstThread here: that flag deadlocks the Swing launcher.
-  # GameLauncher adds it only to the game JVM.
+  # No -XstartOnFirstThread here or in the game JVM: the Swing launcher deadlocks
+  # with it, and vanilla 1.8.9 on macOS does not pass it.
   cp scripts/macos/confu-launcher.sh "$app/Contents/MacOS/confu"
   chmod 755 "$app/Contents/MacOS/confu"
   # The JRE's java runs from inside Contents/MacOS, so macOS treats the bundle as

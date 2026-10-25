@@ -60,13 +60,10 @@ public final class GameLauncher {
 		File gameDir = new File(s.gameDir);
 		List<String> cmd = new ArrayList<String>();
 		cmd.add(javaExecutable(s));
-		// The launcher JVM must not get this flag: it deadlocks Swing and the dock
-		// icon bounces with no window. The game JVM on macOS does need it. 1.8.9
-		// loads LWJGL 2.9.2 there (the 2.9.4 jars are disallowed on osx), and that
-		// Display only maps a visible window when the process is started on the
-		// AppKit thread.
+		// macOS: no -XstartOnFirstThread, as vanilla 1.8.9 does. Vanilla uses LWJGL
+		// 2.9.2 on osx, which marshals window creation onto the AppKit thread itself.
+		// Loom sets that flag only for LWJGL 3 versions.
 		if (OS.NAME.equals("osx")) {
-			cmd.add("-XstartOnFirstThread");
 			cmd.add("-Dapple.awt.application.name=Confu Client");
 			cmd.add("-Xdock:name=Confu Client");
 			File icon = macIcon();
