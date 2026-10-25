@@ -29,6 +29,9 @@ public final class Main {
 
 	public static void main(String[] args) throws Exception {
 		System.setProperty("sun.java2d.dpiaware", "true");
+		System.setProperty("apple.awt.graphics.UseQuartz", "true");
+		System.setProperty("awt.useSystemAAFontSettings", "on");
+		System.setProperty("swing.aatext", "true");
 		final Settings s = Settings.load();
 		String mode = "ui", shot = null, page = "home", fpsBench = null;
 		double demo = -2;

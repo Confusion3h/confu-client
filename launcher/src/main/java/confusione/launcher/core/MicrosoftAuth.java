@@ -1,11 +1,14 @@
 package confusione.launcher.core;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -21,8 +24,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Microsoft login for Minecraft Java, with nothing for the user to register.
  * Uses the public Minecraft Live client ({@code 00000000402b5328}) and the
  * desktop redirect {@code https://login.live.com/oauth20_desktop.srf}. A small
- * Edge or Chrome window loads Microsoft's own page; the authorization code is
- * read from that window and exchanged for Xbox Live, XSTS and a Minecraft token.
+ * Edge or Chrome window loads Microsoft's own page. When neither is installed,
+ * the default browser opens the same page (Safari included) and the code is
+ * read from that tab. The code is exchanged for Xbox Live, XSTS and a Minecraft token.
  * There is no client secret. A 16-hex {@code msClientId} in launcher.properties
  * is an optional override; an Azure UUID left over from an older build is ignored.
  */
@@ -76,11 +80,17 @@ public final class MicrosoftAuth {
 		String clientId = resolveClientId(clientOverride);
 		String url = authorizeUrl(clientId);
 		File browser = findBrowser();
-		if (browser == null) {
-			throw new IOException("Could not open the Microsoft sign-in window. Install Microsoft Edge or Google Chrome, then press Sign in again.");
+		if (browser != null) {
+			p.log("Microsoft sign-in window (" + browser.getName() + ")");
+			p.stage("Waiting for Microsoft sign-in");
+			return signInWithDevtools(clientId, url, browser, p, cancel);
 		}
-		p.log("Microsoft sign-in window (" + browser.getName() + ")");
+		p.log("Microsoft sign-in in the default browser");
 		p.stage("Waiting for Microsoft sign-in");
+		return signInWithDefaultBrowser(clientId, url, p, cancel);
+	}
+
+	private static Session signInWithDevtools(String clientId, String url, File browser, Progress p, AtomicBoolean cancel) throws IOException {
 		int port = freePort();
 		File profile = new File(System.getProperty("java.io.tmpdir"), "c3h-ms-" + Long.toHexString(System.nanoTime()));
 		if (!profile.mkdirs() && !profile.isDirectory()) {
@@ -113,22 +123,7 @@ public final class MicrosoftAuth {
 				Hit hit = scan(body);
 				if (hit != null) {
 					closeTarget(livePort, hit.id);
-					if (hit.error != null && (hit.code == null || hit.code.isEmpty())) {
-						throw new IOException(explainRedirect(hit.error, hit.description));
-					}
-					if (cancel.get()) {
-						throw new IOException("Sign-in cancelled.");
-					}
-					MsToken ms;
-					try {
-						ms = token(codeTokenBody(clientId, hit.code));
-					} catch (Http.StatusException e) {
-						throw new IOException(explainOauth(errorCode(e.body), e.body));
-					}
-					if (cancel.get()) {
-						throw new IOException("Sign-in cancelled.");
-					}
-					return finish(ms, p);
+					return exchange(clientId, hit, p, cancel);
 				}
 				if (!proc.isAlive()) {
 					throw new IOException("The sign-in window closed before Microsoft returned a login. Try again.");
@@ -199,6 +194,23 @@ public final class MicrosoftAuth {
 
 	static String mcLoginBody(String uhs, String xsts) {
 		return "{\"identityToken\":\"XBL3.0 x=" + jsonEscape(uhs) + ";" + jsonEscape(xsts) + "\"}";
+	}
+
+	static Hit hitFromUrl(String url) {
+		if (!isDesktopRedirect(url)) {
+			return null;
+		}
+		String code = queryParam(url, "code");
+		String err = queryParam(url, "error");
+		if ((code == null || code.isEmpty()) && (err == null || err.isEmpty())) {
+			return null;
+		}
+		Hit h = new Hit();
+		h.code = code;
+		h.error = err;
+		h.description = queryParam(url, "error_description");
+		h.id = "";
+		return h;
 	}
 
 	static boolean isDesktopRedirect(String url) {
@@ -361,19 +373,10 @@ public final class MicrosoftAuth {
 				continue;
 			}
 			Map<String, Object> m = (Map<String, Object>) o;
-			String url = Json.str(m, "url");
-			if (!isDesktopRedirect(url)) {
+			Hit h = hitFromUrl(Json.str(m, "url"));
+			if (h == null) {
 				continue;
 			}
-			String code = queryParam(url, "code");
-			String err = queryParam(url, "error");
-			if ((code == null || code.isEmpty()) && (err == null || err.isEmpty())) {
-				continue;
-			}
-			Hit h = new Hit();
-			h.code = code;
-			h.error = err;
-			h.description = queryParam(url, "error_description");
 			h.id = Json.str(m, "id");
 			return h;
 		}
@@ -551,6 +554,196 @@ public final class MicrosoftAuth {
 		return requested;
 	}
 
+	private static final String TAB_SCRIPT =
+			"on pageUrl(appName)\n"
+			+ "  try\n"
+			+ "    tell application appName\n"
+			+ "      if (count of windows) is 0 then return \"\"\n"
+			+ "      repeat with w in windows\n"
+			+ "        try\n"
+			+ "          repeat with t in tabs of w\n"
+			+ "            try\n"
+			+ "              set u to URL of t as text\n"
+			+ "              if u contains \"oauth20_desktop.srf\" then return u\n"
+			+ "            end try\n"
+			+ "          end repeat\n"
+			+ "        end try\n"
+			+ "      end repeat\n"
+			+ "    end tell\n"
+			+ "  end try\n"
+			+ "  return \"\"\n"
+			+ "end pageUrl\n"
+			+ "set browsers to {\"Safari\", \"Google Chrome\", \"Microsoft Edge\", \"Brave Browser\", \"Chromium\", \"Opera\", \"Vivaldi\"}\n"
+			+ "repeat with b in browsers\n"
+			+ "  set u to pageUrl(b as text)\n"
+			+ "  if u is not \"\" then return u\n"
+			+ "end repeat\n"
+			+ "return \"\"\n";
+
+	private static final String ADDRESS_PS1 =
+			"$ErrorActionPreference = 'SilentlyContinue'\r\n"
+			+ "Add-Type -AssemblyName UIAutomationClient\r\n"
+			+ "$root = [System.Windows.Automation.AutomationElement]::RootElement\r\n"
+			+ "$cond = New-Object System.Windows.Automation.PropertyCondition ([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Edit)\r\n"
+			+ "$all = $root.FindAll([System.Windows.Automation.TreeScope]::Descendants, $cond)\r\n"
+			+ "foreach ($e in $all) {\r\n"
+			+ "  $id = [string]$e.Current.AutomationId\r\n"
+			+ "  $name = [string]$e.Current.Name\r\n"
+			+ "  $ok = $id -eq 'addressEditBox' -or $id -eq 'urlbar-input' -or $id -eq 'omnibox' -or $name -like '*address*' -or $name -like '*Address*' -or $name -like '*indirizz*'\r\n"
+			+ "  if (-not $ok) { continue }\r\n"
+			+ "  try {\r\n"
+			+ "    $vp = $e.GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern)\r\n"
+			+ "    $v = [string]$vp.Current.Value\r\n"
+			+ "    if ($v -like '*oauth20_desktop.srf*') { Write-Output $v }\r\n"
+			+ "  } catch {}\r\n"
+			+ "}\r\n";
+
+	private static Session exchange(String clientId, Hit hit, Progress p, AtomicBoolean cancel) throws IOException {
+		if (hit.error != null && (hit.code == null || hit.code.isEmpty())) {
+			throw new IOException(explainRedirect(hit.error, hit.description));
+		}
+		if (cancel.get()) {
+			throw new IOException("Sign-in cancelled.");
+		}
+		MsToken ms;
+		try {
+			ms = token(codeTokenBody(clientId, hit.code));
+		} catch (Http.StatusException e) {
+			throw new IOException(explainOauth(errorCode(e.body), e.body));
+		}
+		if (cancel.get()) {
+			throw new IOException("Sign-in cancelled.");
+		}
+		return finish(ms, p);
+	}
+
+	/** Same authorize URL and client id. The page opens in whatever browser the OS uses. */
+	private static Session signInWithDefaultBrowser(String clientId, String url, Progress p, AtomicBoolean cancel) throws IOException {
+		String os = System.getProperty("os.name", "").toLowerCase();
+		if (os.contains("mac")) {
+			return signInMacBrowser(clientId, url, p, cancel);
+		}
+		if (os.contains("win")) {
+			return signInWindowsBrowser(clientId, url, p, cancel);
+		}
+		File firefox = onPath("firefox");
+		if (firefox == null) {
+			firefox = onPath("firefox-esr");
+		}
+		if (firefox != null) {
+			p.log("Microsoft sign-in window (" + firefox.getName() + ")");
+			return signInFirefox(clientId, url, firefox, p, cancel);
+		}
+		throw new IOException("Could not open the Microsoft sign-in page. No Edge, Chrome, Chromium, or Firefox was found, and the default browser cannot be read. Press Sign in to try again.");
+	}
+
+	private static Session signInMacBrowser(String clientId, String url, Progress p, AtomicBoolean cancel) throws IOException {
+		Process open = new ProcessBuilder("open", url).redirectErrorStream(true).start();
+		drain(open);
+		waitFor(open, 15);
+		if (open.exitValue() != 0) {
+			throw new IOException("Could not open the Microsoft sign-in page in the default browser. Press Sign in to try again.");
+		}
+		long deadline = System.currentTimeMillis() + 5L * 60L * 1000L;
+		while (!cancel.get() && System.currentTimeMillis() < deadline) {
+			String tab = osascript(TAB_SCRIPT);
+			Hit hit = hitFromUrl(tab == null ? null : tab.trim());
+			if (hit != null) {
+				return exchange(clientId, hit, p, cancel);
+			}
+			sleep(400);
+		}
+		if (cancel.get()) {
+			throw new IOException("Sign-in cancelled.");
+		}
+		throw new IOException("Microsoft sign-in timed out. If macOS asked to control the browser, allow Confu Client and press Sign in again.");
+	}
+
+	private static Session signInWindowsBrowser(String clientId, String url, Progress p, AtomicBoolean cancel) throws IOException {
+		Process open = new ProcessBuilder("cmd.exe", "/c", "start \"\" \"" + url + "\"").redirectErrorStream(true).start();
+		drain(open);
+		File ps1 = new File(System.getProperty("java.io.tmpdir"), "c3h-ms-" + Long.toHexString(System.nanoTime()) + ".ps1");
+		FileOutputStream fos = new FileOutputStream(ps1);
+		try {
+			fos.write(ADDRESS_PS1.getBytes("UTF-8"));
+		} finally {
+			fos.close();
+		}
+		try {
+			long deadline = System.currentTimeMillis() + 5L * 60L * 1000L;
+			while (!cancel.get() && System.currentTimeMillis() < deadline) {
+				String listed = powershell(ps1);
+				Hit hit = hitFromUrl(firstDesktopUrl(listed));
+				if (hit != null) {
+					return exchange(clientId, hit, p, cancel);
+				}
+				sleep(1000);
+			}
+		} finally {
+			ps1.delete();
+		}
+		if (cancel.get()) {
+			throw new IOException("Sign-in cancelled.");
+		}
+		throw new IOException("Microsoft sign-in timed out. Press Sign in to try again.");
+	}
+
+	private static Session signInFirefox(String clientId, String url, File firefox, Progress p, AtomicBoolean cancel) throws IOException {
+		int port = freePort();
+		File profile = new File(System.getProperty("java.io.tmpdir"), "c3h-ms-" + Long.toHexString(System.nanoTime()));
+		if (!profile.mkdirs() && !profile.isDirectory()) {
+			throw new IOException("Could not create a temporary folder for the sign-in window.");
+		}
+		List<String> cmd = new ArrayList<String>();
+		cmd.add(firefox.getAbsolutePath());
+		cmd.add("--new-instance");
+		cmd.add("--profile");
+		cmd.add(profile.getAbsolutePath());
+		cmd.add("--remote-debugging-port=" + port);
+		cmd.add("--no-first-run");
+		cmd.add("--no-default-browser-check");
+		cmd.add(url);
+		Process proc = startRaw(cmd);
+		try {
+			long deadline = System.currentTimeMillis() + 5L * 60L * 1000L;
+			long debugDeadline = System.currentTimeMillis() + 25L * 1000L;
+			boolean debugUp = false;
+			while (!cancel.get() && System.currentTimeMillis() < deadline) {
+				String body = null;
+				try {
+					body = Http.getText("http://127.0.0.1:" + port + "/json/list");
+					debugUp = true;
+				} catch (IOException e) {
+					try {
+						body = Http.getText("http://127.0.0.1:" + port + "/json");
+						debugUp = true;
+					} catch (IOException e2) {
+						if (!debugUp && System.currentTimeMillis() > debugDeadline && !proc.isAlive()) {
+							throw new IOException("The sign-in window closed before it finished opening. Press Sign in to try again.");
+						}
+						sleep(300);
+						continue;
+					}
+				}
+				Hit hit = scan(body);
+				if (hit != null) {
+					return exchange(clientId, hit, p, cancel);
+				}
+				if (!proc.isAlive() && debugUp) {
+					throw new IOException("The sign-in window closed before Microsoft returned a login. Try again.");
+				}
+				sleep(300);
+			}
+			if (cancel.get()) {
+				throw new IOException("Sign-in cancelled.");
+			}
+			throw new IOException("Microsoft sign-in timed out. Press Sign in to try again.");
+		} finally {
+			kill(proc);
+			deleteTree(profile);
+		}
+	}
+
 	private static File findBrowser() {
 		String os = System.getProperty("os.name", "").toLowerCase();
 		List<File> cands = new ArrayList<File>();
@@ -558,15 +751,35 @@ public final class MicrosoftAuth {
 			String pf = env("ProgramFiles");
 			String pf86 = env("ProgramFiles(x86)");
 			String local = env("LOCALAPPDATA");
-			add(cands, pf86, "Microsoft\\Edge\\Application\\msedge.exe");
-			add(cands, pf, "Microsoft\\Edge\\Application\\msedge.exe");
-			add(cands, local, "Microsoft\\Edge\\Application\\msedge.exe");
-			add(cands, pf, "Google\\Chrome\\Application\\chrome.exe");
-			add(cands, pf86, "Google\\Chrome\\Application\\chrome.exe");
-			add(cands, local, "Google\\Chrome\\Application\\chrome.exe");
+			String[] rels = new String[] {
+				"Microsoft\\Edge\\Application\\msedge.exe",
+				"Google\\Chrome\\Application\\chrome.exe",
+				"BraveSoftware\\Brave-Browser\\Application\\brave.exe",
+				"Chromium\\Application\\chrome.exe",
+				"Vivaldi\\Application\\vivaldi.exe",
+				"Opera Software\\Opera Stable\\opera.exe"
+			};
+			for (int i = 0; i < rels.length; i++) {
+				add(cands, pf, rels[i]);
+				add(cands, pf86, rels[i]);
+				add(cands, local, rels[i]);
+			}
 		} else if (os.contains("mac")) {
-			cands.add(new File("/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"));
-			cands.add(new File("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"));
+			String home = System.getProperty("user.home", "");
+			String[] apps = new String[] {
+				"Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+				"Google Chrome.app/Contents/MacOS/Google Chrome",
+				"Brave Browser.app/Contents/MacOS/Brave Browser",
+				"Chromium.app/Contents/MacOS/Chromium",
+				"Vivaldi.app/Contents/MacOS/Vivaldi",
+				"Opera.app/Contents/MacOS/Opera"
+			};
+			for (int i = 0; i < apps.length; i++) {
+				cands.add(new File("/Applications", apps[i]));
+				if (!home.isEmpty()) {
+					cands.add(new File(new File(home, "Applications"), apps[i]));
+				}
+			}
 		}
 		for (int i = 0; i < cands.size(); i++) {
 			if (executable(cands.get(i))) {
@@ -574,13 +787,19 @@ public final class MicrosoftAuth {
 			}
 		}
 		String[] names = os.contains("win")
-				? new String[] { "msedge.exe", "chrome.exe" }
-				: new String[] { "microsoft-edge", "microsoft-edge-stable", "google-chrome", "google-chrome-stable", "chromium", "chromium-browser" };
+				? new String[] { "msedge.exe", "chrome.exe", "brave.exe", "vivaldi.exe", "opera.exe" }
+				: new String[] {
+					"microsoft-edge", "microsoft-edge-stable", "google-chrome", "google-chrome-stable",
+					"chromium", "chromium-browser", "brave-browser", "brave", "vivaldi", "vivaldi-stable", "opera"
+				};
 		for (int i = 0; i < names.length; i++) {
 			File f = onPath(names[i]);
 			if (f != null) {
 				return f;
 			}
+		}
+		if (!os.contains("win") && !os.contains("mac")) {
+			return linuxDefaultChromium();
 		}
 		return null;
 	}
@@ -633,9 +852,18 @@ public final class MicrosoftAuth {
 		cmd.add("--disable-translate");
 		cmd.add("--remote-allow-origins=*");
 		cmd.add("--window-size=480,640");
+		return startRaw(cmd);
+	}
+
+	private static Process startRaw(List<String> cmd) throws IOException {
 		ProcessBuilder pb = new ProcessBuilder(cmd);
 		pb.redirectErrorStream(true);
 		final Process proc = pb.start();
+		drain(proc);
+		return proc;
+	}
+
+	private static void drain(final Process proc) {
 		Thread drain = new Thread(new Runnable() {
 			public void run() {
 				InputStream in = proc.getInputStream();
@@ -650,7 +878,169 @@ public final class MicrosoftAuth {
 		}, "ms-login-browser");
 		drain.setDaemon(true);
 		drain.start();
-		return proc;
+	}
+
+	private static void waitFor(Process proc, int seconds) throws IOException {
+		try {
+			if (!proc.waitFor(seconds, TimeUnit.SECONDS)) {
+				proc.destroy();
+				throw new IOException("Could not open the Microsoft sign-in page in the default browser. Press Sign in to try again.");
+			}
+		} catch (InterruptedException e) {
+			proc.destroy();
+			Thread.currentThread().interrupt();
+			throw new IOException("Sign-in cancelled.");
+		}
+	}
+
+	private static String osascript(String script) throws IOException {
+		ProcessBuilder pb = new ProcessBuilder("osascript", "-");
+		Process proc = pb.start();
+		OutputStream out = proc.getOutputStream();
+		out.write(script.getBytes("UTF-8"));
+		out.close();
+		String stdout = readAll(proc.getInputStream());
+		String stderr = readAll(proc.getErrorStream());
+		try {
+			if (!proc.waitFor(45, TimeUnit.SECONDS)) {
+				proc.destroyForcibly();
+				return "";
+			}
+		} catch (InterruptedException e) {
+			proc.destroyForcibly();
+			Thread.currentThread().interrupt();
+			throw new IOException("Sign-in cancelled.");
+		}
+		boolean blocked = stderr != null && (stderr.indexOf("not allowed") >= 0 || stderr.indexOf("Not authorized") >= 0 || stderr.indexOf("-1743") >= 0);
+		if (blocked && (stdout == null || stdout.trim().isEmpty())) {
+			throw new IOException("macOS blocked Confu Client from reading the sign-in page. Allow Confu Client to control the browser in System Settings, Privacy and Security, Automation, then press Sign in again.");
+		}
+		return stdout;
+	}
+
+	private static String powershell(File ps1) throws IOException {
+		ProcessBuilder pb = new ProcessBuilder(
+				"powershell.exe", "-NoProfile", "-NonInteractive", "-STA",
+				"-ExecutionPolicy", "Bypass", "-File", ps1.getAbsolutePath());
+		pb.redirectErrorStream(true);
+		Process proc = pb.start();
+		String out = readAll(proc.getInputStream());
+		try {
+			if (!proc.waitFor(20, TimeUnit.SECONDS)) {
+				proc.destroyForcibly();
+			}
+		} catch (InterruptedException e) {
+			proc.destroyForcibly();
+			Thread.currentThread().interrupt();
+			throw new IOException("Sign-in cancelled.");
+		}
+		return out;
+	}
+
+	private static String firstDesktopUrl(String text) {
+		if (text == null) {
+			return null;
+		}
+		int at = text.indexOf("https://login.live.com/oauth20_desktop.srf");
+		if (at < 0) {
+			at = text.indexOf("http://login.live.com/oauth20_desktop.srf");
+		}
+		if (at < 0) {
+			return null;
+		}
+		int end = at;
+		while (end < text.length()) {
+			char c = text.charAt(end);
+			if (c == '\n' || c == '\r' || c == ' ' || c == '"' || c == '\'') {
+				break;
+			}
+			end++;
+		}
+		return text.substring(at, end);
+	}
+
+	private static String readAll(InputStream in) throws IOException {
+		byte[] buf = new byte[4096];
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		int n;
+		try {
+			while ((n = in.read(buf)) >= 0) {
+				out.write(buf, 0, n);
+			}
+		} finally {
+			in.close();
+		}
+		return new String(out.toByteArray(), "UTF-8");
+	}
+
+	/** Chromium named by the desktop file xdg-settings points at, or null. */
+	private static File linuxDefaultChromium() {
+		String desktop;
+		try {
+			Process proc = new ProcessBuilder("xdg-settings", "get", "default-web-browser").redirectErrorStream(true).start();
+			String out = readAll(proc.getInputStream());
+			if (!proc.waitFor(3, TimeUnit.SECONDS)) {
+				proc.destroy();
+				return null;
+			}
+			desktop = out.trim();
+		} catch (Exception e) {
+			return null;
+		}
+		if (desktop.length() < 9 || !desktop.endsWith(".desktop") || desktop.indexOf('/') >= 0) {
+			return null;
+		}
+		String home = System.getProperty("user.home", "");
+		String[] roots = new String[] {
+			"/usr/share/applications/",
+			"/usr/local/share/applications/",
+			home + "/.local/share/applications/",
+			"/var/lib/flatpak/exports/share/applications/",
+			home + "/.local/share/flatpak/exports/share/applications/"
+		};
+		for (int i = 0; i < roots.length; i++) {
+			File f = new File(roots[i] + desktop);
+			if (!f.isFile()) {
+				continue;
+			}
+			String exec = desktopExec(f);
+			if (exec == null) {
+				continue;
+			}
+			String bin = exec.trim().split("\\s+")[0];
+			if (bin.length() == 0 || bin.charAt(0) == '%') {
+				continue;
+			}
+			File file = bin.charAt(0) == '/' ? new File(bin) : onPath(bin);
+			if (file != null && chromiumFile(file)) {
+				return file;
+			}
+		}
+		return null;
+	}
+
+	private static String desktopExec(File desktop) {
+		try {
+			BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(desktop), "UTF-8"));
+			try {
+				String line;
+				while ((line = r.readLine()) != null) {
+					if (line.startsWith("Exec=")) {
+						return line.substring(5).replace("%u", "").replace("%U", "").replace("%f", "").replace("%F", "").trim();
+					}
+				}
+			} finally {
+				r.close();
+			}
+		} catch (IOException ignored) {
+		}
+		return null;
+	}
+
+	private static boolean chromiumFile(File f) {
+		String n = f.getName().toLowerCase();
+		return n.indexOf("chrome") >= 0 || n.indexOf("chromium") >= 0 || n.indexOf("msedge") >= 0
+				|| n.indexOf("edge") >= 0 || n.indexOf("brave") >= 0 || n.indexOf("vivaldi") >= 0;
 	}
 
 	private static void closeTarget(int port, String id) {
@@ -736,7 +1126,12 @@ public final class MicrosoftAuth {
 		String desktop = REDIRECT + "?code=M.C507-test&lc=1033";
 		if (!isDesktopRedirect(desktop)) fail("desktop redirect");
 		if (!"M.C507-test".equals(queryParam(desktop, "code"))) fail("code parse");
+		Hit direct = hitFromUrl(desktop);
+		if (direct == null || !"M.C507-test".equals(direct.code)) fail("hitFromUrl code");
+		if (hitFromUrl(auth) != null) fail("hitFromUrl must ignore the authorize url");
 		String denied = REDIRECT + "?error=access_denied&error_description=The%20user%20cancelled";
+		Hit directDenied = hitFromUrl(denied);
+		if (directDenied == null || !"access_denied".equals(directDenied.error)) fail("hitFromUrl error");
 		if (!"access_denied".equals(queryParam(denied, "error"))) fail("error parse");
 		if (!"The user cancelled".equals(queryParam(denied, "error_description"))) fail("error description");
 

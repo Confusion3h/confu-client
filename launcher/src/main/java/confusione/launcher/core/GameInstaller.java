@@ -248,6 +248,11 @@ public final class GameInstaller {
 	private void overlayArmNatives(File dir) throws IOException {
 		File bundle = LaunchCompat.armNatives();
 		if (bundle == null) {
+			if (OS.ARM) {
+				File expected = new File(LaunchCompat.installDir(), "natives" + File.separator + OS.NAME + "-arm64");
+				p.log("ARM natives were not found at " + expected.getAbsolutePath()
+						+ ". Mojang's x86_64 libraries cannot open a window on this machine.");
+			}
 			return;
 		}
 		File[] files = bundle.listFiles();

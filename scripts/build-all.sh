@@ -165,12 +165,15 @@ pack_mac() {
   if [[ "$arm" == arm ]]; then
     overlay_natives "$CACHE/lwjgl2-natives-osx-arm64.jar" "$app/Contents/Resources/natives/osx-arm64" osx
   fi
-  cat > "$app/Contents/MacOS/confu" << 'EOF'
-#!/bin/sh
-DIR="$(cd "$(dirname "$0")/../Resources" && pwd)"
-exec "$DIR/jre/bin/java" -XstartOnFirstThread -Dsun.java2d.dpiaware=true -jar "$DIR/CONFUSION3H-launcher.jar" "$@"
-EOF
-  chmod +x "$app/Contents/MacOS/confu"
+  # Paths come from this binary's own location, so the bundle works in
+  # ~/Downloads or any other folder. Nothing points at /Applications.
+  # The executable is a Mach-O in Contents/MacOS, so Launch Services marks the
+  # process NSHighResolutionCapable (a shell script stays blurry on Retina).
+  # It does not pass -XstartOnFirstThread: that flag deadlocks the Swing
+  # launcher. GameLauncher adds the flag only on the game JVM.
+  local stubarch=x64
+  [[ "$arm" == arm ]] && stubarch=arm64
+  scripts/macos/build-stub.sh "$stubarch" "$app/Contents/MacOS/confu"
   local min=10.13
   [[ "$arm" == arm ]] && min=11.0
   cat > "$app/Contents/Info.plist" << EOF
@@ -186,6 +189,7 @@ EOF
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>LSMinimumSystemVersion</key><string>$min</string>
 <key>NSHighResolutionCapable</key><true/>
+<key>NSSupportsAutomaticGraphicsSwitching</key><true/>
 </dict></plist>
 EOF
   local zip=$OUT/Confu-Client-$VERSION-$name.zip

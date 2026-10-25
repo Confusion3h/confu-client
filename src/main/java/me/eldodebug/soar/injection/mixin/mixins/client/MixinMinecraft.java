@@ -270,6 +270,11 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 	public void overrideTitle(String title) {
 		Display.setTitle("Confu Client");
 	}
+
+	@Inject(method = "createDisplay", at = @At("TAIL"))
+	private void confuOrderWindowFront(CallbackInfo ci) {
+		MacOSUtils.orderGameWindowFront();
+	}
 	
     @Inject(method = "updateFramebufferSize", at = @At("HEAD"))
     private void onUpdateFramebufferSize(CallbackInfo ci) {

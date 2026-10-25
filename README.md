@@ -26,6 +26,8 @@ export JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64
 
 `scripts/build-all.sh` builds every archive into `releases/`. It also needs NSIS (`makensis`), ImageMagick (`convert`), ffmpeg, curl and unzip. The Windows x64 installer alone is `scripts/build-windows-installer.sh`.
 
+On macOS, unzip the archive anywhere (including `~/Downloads`) and open `Confu Client.app`. The app is not notarised, so the first launch needs a right-click and **Open**.
+
 The download page is static HTML in `website/`. Serve the repository root so the Download links can see `releases/`:
 
 ```bash

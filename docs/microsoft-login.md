@@ -18,9 +18,9 @@ The launcher uses the public Minecraft Live client id `00000000402b5328` (the sa
 | Minecraft | `POST https://api.minecraftservices.com/authentication/login_with_xbox` with `XBL3.0 x=<uhs>;<xsts>` |
 | Profile | `GET https://api.minecraftservices.com/minecraft/profile` |
 
-The sign-in window is Edge or Chrome in app mode, with its own temporary profile and a localhost debugging port. The launcher watches that window until the address is `https://login.live.com/oauth20_desktop.srf?code=…`, then closes it. Nothing is pasted, and nothing is typed into Settings.
+The sign-in window is Edge or Chrome in app mode (Brave, Chromium and Vivaldi count too), with its own temporary profile and a localhost debugging port. The launcher watches that window until the address is `https://login.live.com/oauth20_desktop.srf?code=…`, then closes it. Nothing is pasted, and nothing is typed into Settings.
 
-If Edge and Chrome are both missing, Sign in reports that and stays on the home page. A declined login, a closed window, a timeout, a missing Xbox profile, a child account, or an account with no Minecraft Java profile is shown as a sentence under the Play button. Those failures do not open Settings.
+If none of those browsers is installed, Sign in opens the same page in the default browser and still reads the code itself. On macOS that is Safari via `open`, then the tab address. On Windows it is the default browser, then the address bar. On Linux, Firefox is started with its debugging port when it is the browser that remains; a Chromium desktop file from `xdg-settings` is used the same way as Chrome. The client id and the redirect stay the ones in the table. A declined login, a closed window, a timeout, a missing Xbox profile, a child account, or an account with no Minecraft Java profile is shown as a sentence under the Play button. Those failures do not open Settings.
 
 Press **Play**. The launcher refreshes the Microsoft token, repeats the Xbox → Minecraft exchange, and starts the game with:
 

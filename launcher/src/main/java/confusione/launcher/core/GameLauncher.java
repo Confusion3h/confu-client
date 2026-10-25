@@ -35,6 +35,16 @@ public final class GameLauncher {
 		File gameDir = new File(s.gameDir);
 		List<String> cmd = new ArrayList<String>();
 		cmd.add(javaExecutable(s));
+		// The launcher JVM must not get this flag: it deadlocks Swing and the dock
+		// icon bounces with no window. The game JVM on macOS does need it. 1.8.9
+		// loads LWJGL 2.9.2 there (the 2.9.4 jars are disallowed on osx), and that
+		// Display only maps a visible window when the process is started on the
+		// AppKit thread.
+		if (OS.NAME.equals("osx")) {
+			cmd.add("-XstartOnFirstThread");
+			cmd.add("-Dapple.awt.application.name=Confu Client");
+			cmd.add("-Xdock:name=Confu Client");
+		}
 		cmd.add("-Xmx" + s.ramMb + "M");
 		cmd.add("-Xms" + Math.min(1024, s.ramMb) + "M");
 		// G1 tuned for a game loop: short pauses, a roomy young gen for the many
@@ -55,13 +65,14 @@ public final class GameLauncher {
 		if (javaMajor() >= 9) {
 			addModernJvm(cmd);
 		}
-		cmd.add("-Djava.library.path=" + r.nativesDir.getAbsolutePath());
+		String natives = r.nativesDir.getAbsolutePath();
+		cmd.add("-Djava.library.path=" + natives);
+		// LWJGL 2 prefers this over java.library.path when both are set. On Apple
+		// Silicon the directory is the ARM overlay (liblwjgl.dylib, openal.dylib).
+		cmd.add("-Dorg.lwjgl.librarypath=" + natives);
 		cmd.add("-Dminecraft.launcher.brand=Confu Client");
 		if (fpsBenchSeconds != null && !fpsBenchSeconds.isEmpty()) {
 			cmd.add("-Dconfu.fpsbench=" + fpsBenchSeconds);
-		}
-		if (OS.NAME.equals("osx")) {
-			cmd.add("-XstartOnFirstThread");
 		}
 		cmd.add("-cp");
 		StringBuilder cp = new StringBuilder();
