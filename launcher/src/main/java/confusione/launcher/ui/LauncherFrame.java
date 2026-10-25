@@ -27,6 +27,7 @@ import confusione.launcher.core.AccountStore;
 import confusione.launcher.core.ClientLocator;
 import confusione.launcher.core.GameInstaller;
 import confusione.launcher.core.GameLauncher;
+import confusione.launcher.core.MacFocus;
 import confusione.launcher.core.MicrosoftAuth;
 import confusione.launcher.core.Progress;
 import confusione.launcher.core.Settings;
@@ -395,6 +396,9 @@ public final class LauncherFrame extends JFrame {
 					p.log("$ " + GameLauncher.toShell(cmd));
 					p.stage("Starting Minecraft");
 					final Process proc = GameLauncher.start(cmd, new File(settings.gameDir), p);
+					if (MacFocus.isMac()) {
+						MacFocus.bringToFront(proc, p);
+					}
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							working = true;
@@ -405,7 +409,7 @@ public final class LauncherFrame extends JFrame {
 							home.play.setSub("");
 							home.setStatus("Minecraft is running as " + playing + ".", Theme.OK);
 							if (!settings.keepOpen) {
-								setState(ICONIFIED);
+								hideForGame();
 							}
 						}
 					});
@@ -415,9 +419,7 @@ public final class LauncherFrame extends JFrame {
 						public void run() {
 							setWorking(false, "PLAY");
 							home.setStatus(code == 0 ? "Game closed." : "Game exited with code " + code + " \u2014 see Console.", code == 0 ? Theme.MUTED : Theme.ERROR);
-							if (getState() == ICONIFIED) {
-								setState(NORMAL);
-							}
+							restoreWindow();
 						}
 					});
 				} catch (final Exception e) {
@@ -431,6 +433,38 @@ public final class LauncherFrame extends JFrame {
 				}
 			}
 		}, "launch").start();
+	}
+
+	/** On macOS the launcher is hidden, not minimized, so it can never cover the game window. */
+	private void hideForGame() {
+		if (MacFocus.isMac()) {
+			setVisible(false);
+		} else {
+			setState(ICONIFIED);
+		}
+	}
+
+	private void restoreWindow() {
+		if (!MacFocus.isMac()) {
+			if (getState() == ICONIFIED) {
+				setState(NORMAL);
+			}
+			return;
+		}
+		if (!isVisible()) {
+			setVisible(true);
+		}
+		if (getState() == ICONIFIED) {
+			setState(NORMAL);
+		}
+		toFront();
+		requestFocus();
+		MacFocus.raise(MacFocus.ownPid(), uiProgress());
+	}
+
+	/** Dock icon click while the launcher is hidden or behind other windows. */
+	public void restoreFromDock() {
+		restoreWindow();
 	}
 
 	/** Demo state for screenshots. */
@@ -470,8 +504,7 @@ public final class LauncherFrame extends JFrame {
 			g.fillRect(0, 0, SIDEBAR, getHeight());
 			g.setColor(Theme.STROKE);
 			g.drawLine(SIDEBAR, 0, SIDEBAR, getHeight());
-			// mini mark
-			g.drawImage(Icons.mark(40), 18, 24, null);
+			Mark.paint(g, 18, 24, 40, 360, 0, 1, 0);
 			// sliding selection bar
 			float iy = 112 + indicator.get() * 56 + 14;
 			g.setColor(Theme.ACCENT_HI);

@@ -7,6 +7,7 @@ import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import confusione.launcher.core.MacFocus;
 import confusione.launcher.core.Settings;
 
 /** Paths, memory and launcher behavior; every change is saved immediately. */
@@ -35,7 +36,7 @@ public final class SettingsPage extends JComponent implements PageHost.Entrance 
 		reduceMotion.setListener(new Toggle.Listener() {
 			public void changed(boolean on) { s.reduceMotion = on; Ambient.setReduceMotion(on); SettingsPage.this.changed(); }
 		});
-		keepOpen = new Toggle("Keep launcher open", "Otherwise it minimizes while the game runs", s.keepOpen);
+		keepOpen = new Toggle("Keep launcher open", MacFocus.isMac() ? "Otherwise it hides while the game runs" : "Otherwise it minimizes while the game runs", s.keepOpen);
 		keepOpen.setListener(new Toggle.Listener() {
 			public void changed(boolean on) { s.keepOpen = on; SettingsPage.this.changed(); }
 		});

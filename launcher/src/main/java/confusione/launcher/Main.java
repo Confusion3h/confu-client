@@ -15,6 +15,7 @@ import confusione.launcher.core.MicrosoftAuth;
 import confusione.launcher.core.Progress;
 import confusione.launcher.core.Settings;
 import confusione.launcher.ui.LauncherFrame;
+import confusione.launcher.ui.MacApp;
 
 /**
  * CONFUSION3H launcher.
@@ -74,6 +75,7 @@ public final class Main {
 			public void run() {
 				final LauncherFrame f = new LauncherFrame(s);
 				f.setVisible(true);
+				MacApp.install(f);
 				if (fShot == null) {
 					return;
 				}

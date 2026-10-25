@@ -1,53 +1,49 @@
 package confusione.launcher.ui;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-/** App icons rendered from branding/CONFUSION3H-app-icon*.svg, plus vector mark images. */
+/** App icons rendered from branding/CONFUSION3H-app-icon-mono.svg (the Windows icon artwork). */
 final class Icons {
 
 	private static final int[] SIZES = { 16, 32, 64, 128, 256 };
-	private static final Map<Integer, BufferedImage> marks = new HashMap<Integer, BufferedImage>();
 
 	private Icons() {}
 
 	static List<Image> windowIcons() {
 		List<Image> list = new ArrayList<Image>();
 		for (int s : SIZES) {
-			InputStream in = Icons.class.getResourceAsStream("/confusione/icons/icon_" + s + "x" + s + ".png");
-			if (in == null) {
-				continue;
-			}
-			try {
-				try {
-					list.add(ImageIO.read(in));
-				} finally {
-					in.close();
-				}
-			} catch (java.io.IOException ignored) {
+			Image img = load("/confusione/icons/icon_" + s + "x" + s + ".png");
+			if (img != null) {
+				list.add(img);
 			}
 		}
 		return list;
 	}
 
-	/** Static gradient mark (no background), cached per size. */
-	static BufferedImage mark(int s) {
-		BufferedImage img = marks.get(s);
-		if (img == null) {
-			img = new BufferedImage(s, s, BufferedImage.TYPE_INT_ARGB);
-			java.awt.Graphics2D g = img.createGraphics();
-			Theme.hq(g);
-			Mark.paint(g, 0, 0, s, 360, 0, 1, 0);
-			g.dispose();
-			marks.put(s, img);
+	/** 512 px artwork for the macOS Dock tile. */
+	static Image dockImage() {
+		return load("/confusione/icons/icon_512x512.png");
+	}
+
+	private static Image load(String resource) {
+		InputStream in = Icons.class.getResourceAsStream(resource);
+		if (in == null) {
+			return null;
 		}
-		return img;
+		try {
+			return ImageIO.read(in);
+		} catch (java.io.IOException ignored) {
+			return null;
+		} finally {
+			try {
+				in.close();
+			} catch (java.io.IOException ignored) {
+			}
+		}
 	}
 }
