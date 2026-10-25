@@ -19,8 +19,8 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 	private static final String[][] NEWS = {
 		{ "FPS mode", "On by default. Blur, glow, particles and click effects off; one toggle in Settings > General." },
 		{ "Leaner core", "Allocation-free event bus and NanoVG draw calls, cheaper HUD blur." },
-		{ "CONFUSION3H launcher", "Sets up 1.8.9 from Mojang's servers and starts the client for you." },
-		{ "Credits", "CONFUSION3H. Based on Glide Client and Soar Client by EldoDebug · GPL-3.0." },
+		{ "Confu Client launcher", "Sets up 1.8.9 from Mojang's servers and starts the client for you." },
+		{ "Credits", "Confu Client. Based on Glide Client and Soar Client by EldoDebug · GPL-3.0." },
 	};
 
 	final LogoMark logo = new LogoMark();
@@ -165,7 +165,7 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		// wordmark
 		g.setFont(Theme.semibold(46));
 		g.setPaint(Theme.accent(150, 0, 420, 0));
-		g.drawString("CONFUSION3H", 146, 116);
+		g.drawString("Confu Client", 146, 116);
 		g.setFont(Theme.regular(14));
 		g.setColor(Theme.MUTED);
 		g.drawString("Minecraft 1.8.9  \u00b7  FPS-first client", 150, 140);

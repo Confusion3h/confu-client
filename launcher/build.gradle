@@ -9,6 +9,6 @@ archivesBaseName = 'CONFUSION3H-launcher'
 
 jar {
     manifest.attributes('Main-Class': 'confusione.launcher.Main',
-                        'Implementation-Title': 'CONFUSION3H launcher',
+                        'Implementation-Title': 'Confu Client launcher',
                         'Implementation-Version': version)
 }

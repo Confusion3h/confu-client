@@ -121,7 +121,7 @@ public final class SpotifyClient {
 					try {
 						exchangeCode(q.get("code"));
 						ok = true;
-						msg = "CONFUSION3H Client is connected to Spotify. You can close this tab.";
+						msg = "Confu Client is connected to Spotify. You can close this tab.";
 					} catch (IOException e) {
 						msg = "Token exchange failed: " + e.getMessage();
 					}
@@ -422,7 +422,7 @@ public final class SpotifyClient {
 			}
 			OutputStream out = new FileOutputStream(tokenFile);
 			try {
-				p.store(out, "CONFUSION3H Spotify token (keep private; delete to disconnect)");
+				p.store(out, "Confu Client Spotify token (keep private; delete to disconnect)");
 			} finally {
 				out.close();
 			}

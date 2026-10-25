@@ -45,7 +45,7 @@ public final class GameLauncher {
 		cmd.add("-XX:+DisableExplicitGC");
 		cmd.add("-XX:-UseBiasedLocking"); // fewer safepoint pauses from revocation
 		cmd.add("-Djava.library.path=" + r.nativesDir.getAbsolutePath());
-		cmd.add("-Dminecraft.launcher.brand=CONFUSION3H");
+		cmd.add("-Dminecraft.launcher.brand=Confu Client");
 		if (OS.NAME.equals("osx")) {
 			cmd.add("-XstartOnFirstThread");
 		}

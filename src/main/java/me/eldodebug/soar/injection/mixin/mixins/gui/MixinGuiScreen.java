@@ -3,6 +3,7 @@ package me.eldodebug.soar.injection.mixin.mixins.gui;
 import java.io.IOException;
 
 import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.gui.EscapeLatch;
 import me.eldodebug.soar.management.mods.impl.InternalSettingsMod;
 import me.eldodebug.soar.utils.Sound;
 import org.lwjgl.input.Keyboard;
@@ -43,11 +44,17 @@ public abstract class MixinGuiScreen {
 	@Overwrite
     public void handleKeyboardInput() throws IOException {
         char c = Keyboard.getEventCharacter();
-        
-        if ((Keyboard.getEventKey() == 0 && c >= ' ') || Keyboard.getEventKeyState()) {
-            this.keyTyped(c, Keyboard.getEventKey());
+        int key = Keyboard.getEventKey();
+        boolean down = Keyboard.getEventKeyState();
+
+        // The ESC that opened this screen can still be queued. keyTyped(ESC)
+        // calls displayGuiScreen(null); ignore it until the tick ends.
+        if (!(EscapeLatch.swallow && down && key == Keyboard.KEY_ESCAPE)) {
+            if ((key == 0 && c >= ' ') || down) {
+                this.keyTyped(c, key);
+            }
         }
-        
+
         mc.dispatchKeypresses();
     }
 }

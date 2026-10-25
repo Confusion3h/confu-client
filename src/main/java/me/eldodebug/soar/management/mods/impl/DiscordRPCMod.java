@@ -10,7 +10,7 @@ import me.eldodebug.soar.management.notification.NotificationType;
 
 /**
  * Discord Rich Presence under your own Discord application (create one at
- * discord.com/developers, name it CONFUSION3H, upload an asset called "icon").
+ * discord.com/developers, name it Confu Client, upload an asset called "icon").
  * The upstream hardcoded application belonged to Glide and showed its name.
  */
 public class DiscordRPCMod extends Mod {

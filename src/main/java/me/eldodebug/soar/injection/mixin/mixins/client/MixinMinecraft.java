@@ -21,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.gui.EscapeLatch;
 import me.eldodebug.soar.gui.GuiSplashScreen;
 import me.eldodebug.soar.injection.interfaces.IMixinEntityLivingBase;
 import me.eldodebug.soar.injection.interfaces.IMixinMinecraft;
@@ -38,8 +39,10 @@ import me.eldodebug.soar.management.mods.impl.FPSSpooferMod;
 import me.eldodebug.soar.management.mods.impl.HitDelayFixMod;
 import me.eldodebug.soar.management.mods.impl.AnimationsMod;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiOptions;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiScreenWorking;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
@@ -51,6 +54,7 @@ import net.minecraft.client.resources.DefaultResourcePack;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.stream.IStream;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Session;
@@ -94,6 +98,15 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     
     @Shadow
     public GuiScreen currentScreen;
+
+    @Shadow
+    public SoundHandler mcSoundHandler;
+
+    @Shadow
+    public IntegratedServer theIntegratedServer;
+
+    @Shadow
+    public abstract boolean isSingleplayer();
     
     @Shadow
     private boolean fullscreen;
@@ -218,6 +231,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 	
     @Inject(method = "runTick", at = @At("TAIL"))
     private void onTick(final CallbackInfo ci) {
+    	EscapeLatch.swallow = false;
     	new EventTick().call();
     }
     
@@ -254,7 +268,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     
 	@Redirect(method = "createDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V"))
 	public void overrideTitle(String title) {
-		Display.setTitle("CONFUSION3H Client");
+		Display.setTitle("Confu Client");
 	}
 	
     @Inject(method = "updateFramebufferSize", at = @At("HEAD"))
@@ -326,9 +340,33 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     	ci.cancel();
     }
     
+    @Inject(method = "displayInGameMenu", at = @At("HEAD"), cancellable = true)
+    private void openOptionsFromEsc(CallbackInfo ci) {
+    	if (this.currentScreen != null) {
+    		ci.cancel();
+    		return;
+    	}
+    	// One transition. Opening GuiOptions from GuiIngameMenu.initGui swapped
+    	// the screen while this tick's Keyboard.next() loop was still running,
+    	// so a second ESC in the same queue reached keyTyped on the new screen.
+    	this.displayGuiScreen(new GuiOptions(null, this.gameSettings));
+    	EscapeLatch.swallow = true;
+    	if (this.isSingleplayer() && this.theIntegratedServer != null && !this.theIntegratedServer.getPublic()) {
+    		this.mcSoundHandler.pauseSounds();
+    	}
+    	ci.cancel();
+    }
+
     @Inject(method = "displayGuiScreen", at = @At("RETURN"), cancellable = true)
     public void displayGuiScreenInject(GuiScreen guiScreenIn, CallbackInfo ci) {
-    	if(guiScreenIn instanceof GuiMainMenu) {
+    	if (guiScreenIn instanceof GuiMainMenu) {
+    		if (this.theWorld != null) {
+    			// A title screen with the world still loaded only pauses the
+    			// integrated server ("Saving and pausing game..."). Disconnect
+    			// calls loadWorld(null) first, so theWorld is null on that path.
+    			this.displayGuiScreen(null);
+    			return;
+    		}
 			displayGuiScreen(Glide.getInstance().getMainMenu());
     	}
     }

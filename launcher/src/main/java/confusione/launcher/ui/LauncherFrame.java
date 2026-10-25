@@ -57,7 +57,7 @@ public final class LauncherFrame extends JFrame {
 	private Point dragWindow;
 
 	public LauncherFrame(Settings s) {
-		super("CONFUSION3H");
+		super("Confu Client");
 		this.settings = s;
 		setUndecorated(true);
 		setSize(W, H);

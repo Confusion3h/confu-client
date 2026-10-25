@@ -1,6 +1,6 @@
-# CONFUSION3H launcher
+# Confu Client launcher
 
-Standalone Java 8 launcher for the CONFUSION3H client (Minecraft 1.8.9). No dependencies:
+Standalone Java 8 launcher for Confu Client (Minecraft 1.8.9). No dependencies:
 Swing/Java2D UI, JDK HTTPS, a tiny JSON reader.
 
     ./gradlew :launcher:build            # -> launcher/build/libs/CONFUSION3H-launcher-0.1.0.jar
@@ -12,8 +12,8 @@ Swing/Java2D UI, JDK HTTPS, a tiny JSON reader.
    If the repo is found but not built, the home screen offers to run `gradlew build`.
 2. Reads the tweak class from the client jar manifest (`TweakClass`, falls back to
    `me.eldodebug.soar.injection.mixin.GlideTweaker`).
-3. Installs vanilla 1.8.9 into the game dir (default `~/.CONFUSION3H/minecraft`,
-   `%APPDATA%\.CONFUSION3H\minecraft` on Windows) from Mojang's HTTPS metadata: version
+3. Installs vanilla 1.8.9 into the game dir (default `~/.confu/minecraft`,
+   `%APPDATA%\.confu\minecraft` on Windows) from Mojang's HTTPS metadata: version
    JSON, client jar, libraries (OS rules applied), natives (extracted to
    `versions/1.8.9/natives`), asset index + objects. Each file is written to a unique
    temp file, SHA-1 checked, then moved into place. Names that share a hash are fetched
@@ -34,5 +34,7 @@ Swing/Java2D UI, JDK HTTPS, a tiny JSON reader.
     --screenshot F.png [--page home|settings|console] [--progress 0.4]
     --gamedir DIR  --username NAME  --client JAR      (one-off overrides)
 
-Settings live in `~/.CONFUSION3H/launcher.properties` (`%APPDATA%\.CONFUSION3H` on Windows).
+Settings live in `~/.confu/launcher.properties` (`%APPDATA%\.confu` on Windows).
+If `.CONFUSION3H` is already there and `.confu` is not, the launcher renames it on startup.
+The older `~/.confusione` folder is still picked up the same way when it sits next to the new one.
 Microsoft sign-in works without a client ID. The refresh token is stored separately.

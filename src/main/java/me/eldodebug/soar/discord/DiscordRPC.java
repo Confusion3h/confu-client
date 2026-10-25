@@ -22,7 +22,7 @@ public class DiscordRPC {
 				
 				RichPresence.Builder builder = new RichPresence.Builder();
 				
-				builder.setState("Playing CONFUSION3H Client v" + Glide.getInstance().getVersion())
+				builder.setState("Playing Confu Client v" + Glide.getInstance().getVersion())
 						.setStartTimestamp(OffsetDateTime.now())
 						.setLargeImage("icon");
 				

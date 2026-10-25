@@ -1,4 +1,4 @@
-CONFUSION3H music folder
+Confu Client music folder
 ========================
 
 Drop your own MP3, OGG (Vorbis) or WAV files here.
@@ -9,5 +9,5 @@ In game:
   2. Type in chat:  .soarcmd music play
      Other commands: pause, toggle, next, prev, vol N, reload, folder
 
-The three "CONFUSION3H Sample" files are short test tones; delete them any time.
-Files you add here are kept when you uninstall or reinstall CONFUSION3H.
+The three "Confu Client Sample" files are short test tones; delete them any time.
+Files you add here are kept when you uninstall or reinstall Confu Client.

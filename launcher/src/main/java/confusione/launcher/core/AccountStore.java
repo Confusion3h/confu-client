@@ -13,7 +13,7 @@ import java.util.Properties;
 
 /**
  * Microsoft refresh token, profile name and UUID. Lives in the user data dir
- * ({@code ~/.CONFUSION3H/msa.properties} or {@code %APPDATA%\.CONFUSION3H}), never in the repo.
+ * ({@code ~/.confu/msa.properties} or {@code %APPDATA%\.confu}), never in the repo.
  * The Minecraft access token is not stored; it is minted again on launch.
  */
 public final class AccountStore {
@@ -56,7 +56,7 @@ public final class AccountStore {
 		Settings.HOME.mkdirs();
 		OutputStream out = new FileOutputStream(FILE);
 		try {
-			p.store(out, "CONFUSION3H Microsoft session (private; delete to sign out)");
+			p.store(out, "Confu Client Microsoft session (private; delete to sign out)");
 		} finally {
 			out.close();
 		}

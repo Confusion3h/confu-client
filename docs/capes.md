@@ -1,7 +1,7 @@
-# Custom capes in CONFUSION3H
+# Custom capes in Confu Client
 
 ## Use
-1. Open the CONFUSION3H menu (game menu → *Open CONFUSION3H menu*) → **Cosmetics** → **Custom**.
+1. Open the Confu Client menu (Options → *Open Confu Client menu*, or Right Shift) → **Cosmetics** → **Custom**.
 2. Click **+** and pick a PNG, **or** drop PNGs into the folder (folder button, which opens
    `.minecraft/glide/cache/custom-cape/`) and click **reload** (circular arrow).
 3. Click a cape card to equip it. A card's **trash** button (shown on hover) deletes that cape.

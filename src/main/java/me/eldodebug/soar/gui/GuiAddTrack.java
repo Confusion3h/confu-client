@@ -52,7 +52,7 @@ public class GuiAddTrack extends GuiScreen {
 		this.drawDefaultBackground();
 		String title = "Add a track";
 		this.drawCenteredString(this.fontRendererObj, title, this.width / 2, this.height / 2 - 58, 0xFFFFFF);
-		drawWrapped("Paste a YouTube or SoundCloud link. CONFUSION3H saves an MP3 in your music folder. Spotify stays optional.", this.width / 2, this.height / 2 - 42, this.width - 80);
+		drawWrapped("Paste a YouTube or SoundCloud link. Confu Client saves an MP3 in your music folder. Spotify stays optional.", this.width / 2, this.height / 2 - 42, this.width - 80);
 		url.drawTextBox();
 		if (LinkGrabber.active()) {
 			String msg = LinkGrabber.message();

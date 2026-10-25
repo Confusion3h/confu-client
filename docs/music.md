@@ -1,11 +1,11 @@
-# Music in CONFUSION3H
+# Music in Confu Client
 
 The **Music Player** HUD mod (mod menu, off by default) has two sources:
 
 | Source | What plays the audio | Needs |
 |---|---|---|
-| Local files | CONFUSION3H itself | nothing to install |
-| Spotify | your Spotify app (desktop, phone, web player); CONFUSION3H is a remote control | a Spotify **Premium** account and your own Spotify app Client ID |
+| Local files | Confu Client itself | nothing to install |
+| Spotify | your Spotify app (desktop, phone, web player); Confu Client is a remote control | a Spotify **Premium** account and your own Spotify app Client ID |
 
 ## Install: nothing
 
@@ -48,7 +48,7 @@ are mod settings; playback stops when the mod is turned off.
 
 ## Spotify
 
-No client secret is used anywhere. CONFUSION3H uses the Authorization Code flow
+No client secret is used anywhere. Confu Client uses the Authorization Code flow
 with **PKCE**, so only a public Client ID is needed, and you supply your own.
 
 1. Go to <https://developer.spotify.com/dashboard>, log in, **Create app**.
@@ -99,5 +99,5 @@ currently playing or paused.
 Glide's `origin/spotify-player` branch was a Spotify-only remote control built on
 `spotify-web-api-java` 6.5.4 (httpclient5) and Gson 2.8.6. It used a client secret
 kept in a properties file, and it did not bundle Gson, which clashes with
-Minecraft's Gson 2.2.4. CONFUSION3H keeps the idea (Web API, loopback redirect) but
+Minecraft's Gson 2.2.4. Confu Client keeps the idea (Web API, loopback redirect) but
 uses JDK HTTP plus Minecraft's Gson, PKCE instead of a secret, and adds local playback.

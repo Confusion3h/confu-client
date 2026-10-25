@@ -12,13 +12,13 @@ import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
 
-/** Settings > Credits: CONFUSION3H and its GPL-3.0 upstreams. */
+/** Settings > Credits: Confu Client and its GPL-3.0 upstreams. */
 public class CreditsScene extends SettingScene {
 
 	private static final String[][] CREDITS = {
-		{ "CONFUSION3H Client", "This client: rebrand, FPS mode, launcher, logo" },
+		{ "Confu Client", "This client: rebrand, FPS mode, launcher, logo" },
 		{ "Glide Client", "Upstream fork \u00b7 github.com/GlideClient/client" },
-		{ "Soar Client by EldoDebug", "The original client Glide and CONFUSION3H Client build on" },
+		{ "Soar Client by EldoDebug", "The original client Glide and Confu Client build on" },
 	};
 
 	public CreditsScene(SettingCategory parent) {
@@ -33,7 +33,7 @@ public class CreditsScene extends SettingScene {
 
 		nvg.drawRoundedRect(x, y, w, 58, 6, palette.getBackgroundColor(ColorType.DARK));
 		nvg.drawLogo(x + 10, y + 10, 38, palette.getFontColor(ColorType.DARK));
-		nvg.drawText("CONFUSION3H Client", x + 56, y + 16, palette.getFontColor(ColorType.DARK), 13, Fonts.SEMIBOLD);
+		nvg.drawText("Confu Client", x + 56, y + 16, palette.getFontColor(ColorType.DARK), 13, Fonts.SEMIBOLD);
 		nvg.drawText("v" + Glide.getInstance().getVersion() + " \u00b7 GPL-3.0 \u00b7 Minecraft 1.8.9", x + 56, y + 34, palette.getFontColor(ColorType.NORMAL), 8, Fonts.REGULAR);
 
 		float oy = y + 68;

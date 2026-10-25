@@ -84,7 +84,7 @@ public class HomeCategory extends Category {
 		// left: identity + quick toggles
 		nvg.drawRoundedRect(x + PAD, y + PAD, LEFT_W, 250, 8, card);
 		nvg.drawLogo(x + PAD + 10, y + PAD + 12, 34, accent.getInterpolateColor());
-		nvg.drawText("CONFUSION3H Client", x + PAD + 52, y + PAD + 16, text, 11, Fonts.SEMIBOLD);
+		nvg.drawText("Confu Client", x + PAD + 52, y + PAD + 16, text, 11, Fonts.SEMIBOLD);
 		nvg.drawText("v" + instance.getVersion() + " \u00b7 Minecraft 1.8.9", x + PAD + 52, y + PAD + 33, muted, 8, Fonts.REGULAR);
 		nvg.drawText("Quick toggles", x + PAD + 10, y + PAD + 66, text, 10, Fonts.SEMIBOLD);
 		for (int i = 0; i < toggles.length; i++) {

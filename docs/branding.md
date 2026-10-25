@@ -1,6 +1,6 @@
-# CONFUSION3H branding
+# Confu Client branding
 
-Original mark for **CONFUSION3H** (also written CONFUSION3H). It sits in the same
+Original mark for **Confu Client**. It sits in the same
 family as the Soar/Glide marks (outer ring + round-capped monoline letter, flat
 white in-game) but the letterform is new: a C, not a G, with a curled terminal and
 a centre dot instead of a crossbar.
@@ -66,10 +66,10 @@ Files: `branding/CONFUSION3H-{mark,app-icon,app-icon-small}-mono.svg`,
 `icon_*.png`. In code: `launcher/.../ui/Theme.java`.
 
 ## Type
-Inter (SIL OFL 1.1), Regular and SemiBold. The launcher wordmark stays **CONFUSION3H**.
-Inside the game the product name is exactly **CONFUSION3H Client** (window title, splash,
+Inter (SIL OFL 1.1), Regular and SemiBold. The launcher wordmark is **Confu Client**.
+Inside the game the product name is exactly **Confu Client** (window title, splash,
 main-menu footer, menus, welcome, credits, Discord status).
 
 ## Attribution
-CONFUSION3H is a GPL-3.0 fork of Glide Client, itself based on Soar Client by
+Confu Client is a GPL-3.0 fork of Glide Client, itself based on Soar Client by
 EldoDebug. The mark is new artwork; upstream names stay in the credits and README.

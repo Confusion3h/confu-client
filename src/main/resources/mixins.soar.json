@@ -37,7 +37,6 @@
     "gui.MixinGuiDownloadTerrain",
     "gui.MixinGuiGameOver",
     "gui.MixinGuiIngame",
-    "gui.MixinGuiIngameMenu",
     "gui.MixinGuiLanguage",
     "gui.MixinGuiMultiplayer",
     "gui.MixinGuiNewChat",

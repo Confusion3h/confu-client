@@ -1,11 +1,11 @@
-; CONFUSION3H Windows x64 installer (per-user, no admin rights needed)
+; Confu Client Windows x64 installer (per-user, no admin rights needed)
 ; Built by scripts/build-windows-installer.sh; STAGE and OUTFILE are passed with -D.
 Target amd64-unicode   ; native x64 installer (x64 only, no ARM)
 SetCompressor /SOLID lzma
 !include "MUI2.nsh"
 !include "x64.nsh"
 
-!define APPNAME "CONFUSION3H"
+!define APPNAME "Confu Client"
 !ifndef VERSION
   !define VERSION "0.1.0"
 !endif
@@ -48,6 +48,19 @@ Function StartLauncher
 FunctionEnd
 
 Section "Install"
+  ; Rename the previous data folder before any file is written into .confu,
+  ; so worlds and settings move with the name. If the rename fails (folder in
+  ; use), do not create a second .confu: that would hide the old worlds.
+  StrCpy $R9 "1"
+  IfFileExists "$APPDATA\.confu\*" data_ready
+  IfFileExists "$APPDATA\.CONFUSION3H\*" do_rename data_ready
+  do_rename:
+    ClearErrors
+    Rename "$APPDATA\.CONFUSION3H" "$APPDATA\.confu"
+    IfErrors 0 data_ready
+      StrCpy $R9 "0"
+  data_ready:
+
   SetOutPath "$INSTDIR"
   File "${STAGE}\CONFUSION3H-launcher.jar"
   File "${STAGE}\confusion3h.ico"
@@ -57,17 +70,19 @@ Section "Install"
   SetOutPath "$INSTDIR\jre"
   File /r "${STAGE}\jre\*"
 
-  ; music folder in the game dir the launcher uses (%APPDATA%\.CONFUSION3H\minecraft)
+  ; music folder in the game dir the launcher uses (%APPDATA%\.confu\minecraft)
   ; never overwrite the user's own files on reinstall
+  StrCmp $R9 "0" music_skip
   SetOverwrite off
-  SetOutPath "$APPDATA\.CONFUSION3H\minecraft\glide\music"
+  SetOutPath "$APPDATA\.confu\minecraft\glide\music"
   File "${STAGE}\music\*"
   SetOverwrite on
+  music_skip:
 
   SetOutPath "$INSTDIR"
   CreateDirectory "$SMPROGRAMS\${APPNAME}"
   CreateShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\jre\bin\javaw.exe" '-Dsun.java2d.dpiaware=true -jar "$INSTDIR\CONFUSION3H-launcher.jar"' "$INSTDIR\confusion3h.ico" 0
-  CreateShortCut "$SMPROGRAMS\${APPNAME}\Music folder.lnk" "$APPDATA\.CONFUSION3H\minecraft\glide\music"
+  CreateShortCut "$SMPROGRAMS\${APPNAME}\Music folder.lnk" "$APPDATA\.confu\minecraft\glide\music"
   CreateShortCut "$SMPROGRAMS\${APPNAME}\Uninstall ${APPNAME}.lnk" "$INSTDIR\Uninstall.exe"
   CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\jre\bin\javaw.exe" '-Dsun.java2d.dpiaware=true -jar "$INSTDIR\CONFUSION3H-launcher.jar"' "$INSTDIR\confusion3h.ico" 0
 
@@ -85,7 +100,7 @@ Section "Install"
 SectionEnd
 
 ; Removes the program only. Worlds, settings, music and capes in
-; %APPDATA%\.CONFUSION3H stay, like the vanilla launcher keeps .minecraft.
+; %APPDATA%\.confu stay, like the vanilla launcher keeps .minecraft.
 Section "Uninstall"
   Delete "$DESKTOP\${APPNAME}.lnk"
   RMDir /r "$SMPROGRAMS\${APPNAME}"

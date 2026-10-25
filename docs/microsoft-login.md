@@ -2,7 +2,7 @@
 
 The launcher starts Minecraft with a Microsoft account (`--userType msa`) or with the offline name. Offline is the default. Sign-in needs no Azure application, no client secret and no setting. Press **Microsoft**, then **Sign in with Microsoft**.
 
-A small window (Microsoft Edge, or Chrome if Edge is not installed) opens on Microsoft's own page. Type the email and password there. The launcher reads the result, closes the window, and exchanges the login for Xbox Live, XSTS, a Minecraft token and the profile name. The refresh token is stored only on this computer, in `%APPDATA%\.CONFUSION3H\msa.properties` on Windows and `~/.CONFUSION3H/msa.properties` elsewhere. It is not part of the git repo. Delete that file, or press **Sign out**, to disconnect. The short-lived Minecraft access token is not written to disk.
+A small window (Microsoft Edge, or Chrome if Edge is not installed) opens on Microsoft's own page. Type the email and password there. The launcher reads the result, closes the window, and exchanges the login for Xbox Live, XSTS, a Minecraft token and the profile name. The refresh token is stored only on this computer, in `%APPDATA%\.confu\msa.properties` on Windows and `~/.confu/msa.properties` elsewhere. An existing `%APPDATA%\.CONFUSION3H` (or `~/.CONFUSION3H`) is renamed to `.confu` on startup when `.confu` is not already there. It is not part of the git repo. Delete that file, or press **Sign out**, to disconnect. The short-lived Minecraft access token is not written to disk.
 
 ## What is built in
 

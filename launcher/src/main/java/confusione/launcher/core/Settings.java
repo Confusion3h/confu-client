@@ -8,11 +8,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-/** ~/.CONFUSION3H/launcher.properties (moved from the phase 2 ~/.confusione on first run) */
+/** Data dir is {@code %APPDATA%\.confu} on Windows and {@code ~/.confu} elsewhere. */
 public final class Settings {
 
 	private static final File LEGACY_HOME = new File(System.getProperty("user.home"), ".confusione");
-	public static final File HOME = migrate(new File(baseDir(), ".CONFUSION3H"));
+	public static final File HOME = resolveHome();
 
 	/** Windows: %APPDATA% (like vanilla .minecraft); elsewhere the home directory. */
 	static File baseDir() {
@@ -23,17 +23,46 @@ public final class Settings {
 		return new File(System.getProperty("user.home"));
 	}
 
-	private static File migrate(File home) {
-		if (!home.exists() && LEGACY_HOME.isDirectory()) {
-			LEGACY_HOME.renameTo(home); // same parent dir: an atomic rename, keeps the installed game
+	/**
+	 * Prefer {@code .confu}. If it is missing, rename a sibling {@code .CONFUSION3H}
+	 * (same folder: an atomic move, worlds included). Then the older {@code ~/.confusione}
+	 * when it shares that parent. An existing {@code .confu} is left alone.
+	 */
+	private static File resolveHome() {
+		File home = new File(baseDir(), ".confu");
+		File previous = new File(baseDir(), ".CONFUSION3H");
+		if (!home.exists() && previous.isDirectory()) {
+			if (!previous.renameTo(home)) {
+				return previous;
+			}
+		}
+		if (!home.exists() && LEGACY_HOME.isDirectory() && sameParent(LEGACY_HOME, home)) {
+			if (!LEGACY_HOME.renameTo(home)) {
+				return LEGACY_HOME;
+			}
 		}
 		return home;
 	}
 
-	/** Paths saved before the rename still point into ~/.confusione. */
+	private static boolean sameParent(File a, File b) {
+		File pa = a.getParentFile();
+		File pb = b.getParentFile();
+		return pa != null && pb != null && pa.getPath().equals(pb.getPath());
+	}
+
+	/** Paths saved before a rename still point at the folder that was moved. */
 	private static String rebase(String path) {
-		String old = LEGACY_HOME.getPath();
-		if (path != null && !LEGACY_HOME.exists() && (path.equals(old) || path.startsWith(old + File.separator))) {
+		if (path == null) {
+			return null;
+		}
+		path = rebaseOne(path, new File(baseDir(), ".CONFUSION3H"));
+		path = rebaseOne(path, LEGACY_HOME);
+		return path;
+	}
+
+	private static String rebaseOne(String path, File oldDir) {
+		String old = oldDir.getPath();
+		if (!oldDir.exists() && (path.equals(old) || path.startsWith(old + File.separator))) {
 			return HOME.getPath() + path.substring(old.length());
 		}
 		return path;
@@ -99,7 +128,7 @@ public final class Settings {
 			HOME.mkdirs();
 			OutputStream out = new FileOutputStream(FILE);
 			try {
-				p.store(out, "CONFUSION3H launcher");
+				p.store(out, "Confu Client launcher");
 			} finally {
 				out.close();
 			}
