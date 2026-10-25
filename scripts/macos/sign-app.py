@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
-"""Ad-hoc sign a macOS .app with rcodesign and check the result.
+"""Ad-hoc sign the Mach-O files of a macOS .app with rcodesign, then check it.
 
-Signs every regular-file Mach-O (deepest first), then the bundle last.
-Hardened runtime stays off: Java's JIT would need entitlements for it, and
-these builds are not notarised. Passing --code-signature-flags linker-signed
-replaces any flags already on the binary (including the JRE's RUNTIME bit).
-rcodesign then drops linker-signed, because it is not a linker, and the
-signature that remains is ad-hoc.
+Signs every regular-file Mach-O (deepest first). Hardened runtime stays off:
+Java's JIT would need entitlements for it, and these builds are not notarised.
+Passing --code-signature-flags linker-signed replaces any flags already on the
+binary (including the JRE's RUNTIME bit). rcodesign then drops linker-signed,
+because it is not a linker, and the signature that remains is ad-hoc.
+
+The bundle itself is not sealed. Contents/MacOS/confu is a /bin/sh script, and
+rcodesign 0.29.0 only signs bundles whose main executable is a Mach-O. So the
+bundle has no _CodeSignature, and the checks below cover the plain files
+(Info.plist, PkgInfo, launcher) directly.
 
 rcodesign 0.29.0 verify only accepts a Mach-O file, and on an ad-hoc signature
 it reports one known error: the CMS blob is empty. Page hashes are still
@@ -19,8 +23,12 @@ import stat
 import struct
 import subprocess
 import sys
+import tempfile
 
 CPU = {"arm64": 0x0100000C, "x86_64": 0x01000007}
+# Lowest macOS each architecture may need: the x64 JRE is built for 11, and the
+# arm64 LWJGL openal.dylib native is built for 12.
+MIN_MACOS = {"arm64": "12.0", "x86_64": "11.0"}
 VERIFY_OK = {
     "(the verify command is known to be buggy and gives misleading results; we highly recommend using Apple's tooling until this message is removed)",
     "CMS error: missing further values (at position 0)",
@@ -28,6 +36,23 @@ VERIFY_OK = {
     "no problems detected!",
     "(we do not verify everything so please do not assume that the signature meets Apple standards)",
 }
+SYSTEM_PREFIXES = ("/usr/lib/", "/System/Library/")
+# Replaces the entitlements the Zulu and Temurin binaries came with. Without the
+# hardened runtime they do nothing, but the bundle should not carry them.
+EMPTY_ENTITLEMENTS = (
+    b'<?xml version="1.0" encoding="UTF-8"?>\n'
+    b'<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n'
+    b'<plist version="1.0"><dict/></plist>\n'
+)
+LC_LOAD_DYLIB = 0x0C
+LC_RPATH = 0x8000001C
+LC_LOAD_WEAK_DYLIB = 0x80000018
+LC_REEXPORT_DYLIB = 0x8000001F
+LC_LOAD_UPWARD_DYLIB = 0x80000023
+LC_VERSION_MIN_MACOSX = 0x24
+LC_ID_DYLIB = 0x0D
+LC_BUILD_VERSION = 0x32
+DEP_CMDS = (LC_LOAD_DYLIB, LC_LOAD_WEAK_DYLIB, LC_REEXPORT_DYLIB, LC_LOAD_UPWARD_DYLIB)
 
 
 def rcodesign():
@@ -117,13 +142,14 @@ def check_arch(app, arch):
 
 def sign(app, arch):
     rows = check_arch(app, arch)
-    print("signing %d Mach-O files as %s, then the bundle" % (len(rows), arch))
-    for rel, _types in rows:
-        path = os.path.join(app, rel)
-        # linker-signed clears preserved flags (the JRE's RUNTIME bit). rcodesign
-        # removes that bit and leaves an ad-hoc signature, with no hardened runtime.
-        run(["sign", "--code-signature-flags", "linker-signed", path])
-    run(["sign", "--code-signature-flags", "main:linker-signed", app])
+    print("signing %d Mach-O files as %s; the bundle stays unsealed" % (len(rows), arch))
+    with tempfile.TemporaryDirectory() as tmp:
+        ent = os.path.join(tmp, "empty.plist")
+        with open(ent, "wb") as fh:
+            fh.write(EMPTY_ENTITLEMENTS)
+        for rel, _types in rows:
+            path = os.path.join(app, rel)
+            run(["sign", "--code-signature-flags", "linker-signed", "--entitlements-xml-file", ent, path])
     verify(app, arch)
 
 
@@ -138,66 +164,132 @@ def verify_macho(path):
         raise SystemExit("rcodesign verify failed: %s" % path)
 
 
-def signature_flags(app):
-    _rc, out = run(["print-signature-info", app])
-    current = None
-    flags = {}
+def macho_flags(path):
+    _rc, out = run(["print-signature-info", path])
     for line in out.splitlines():
-        if line.startswith("- path: "):
-            current = line.split(": ", 1)[1].strip()
-        elif current and current not in flags and "flags: CodeSignatureFlags(" in line:
-            flags[current] = line.split("flags: ", 1)[1].strip()
-    return flags
+        if "flags: CodeSignatureFlags(" in line:
+            return line.split("flags: ", 1)[1].strip()
+    return None
 
 
-def check_seal(app):
-    seal_path = os.path.join(app, "Contents", "_CodeSignature", "CodeResources")
-    if not os.path.isfile(seal_path):
-        raise SystemExit("bundle has no CodeResources seal")
-    with open(seal_path, "rb") as fh:
-        seal = plistlib.load(fh)
-    files2 = seal.get("files2") or {}
-    if not files2:
-        raise SystemExit("CodeResources has no files2 entries")
-    for rel, info in files2.items():
-        path = os.path.join(app, "Contents", rel)
-        if not isinstance(info, dict):
-            raise SystemExit("unexpected CodeResources entry for %s" % rel)
-        if "symlink" in info:
-            if not os.path.islink(path) or os.readlink(path) != info["symlink"]:
-                raise SystemExit("CodeResources symlink mismatch: %s" % rel)
-            continue
-        digest = info.get("hash2")
-        if not isinstance(digest, (bytes, bytearray)) or len(digest) != 32:
-            raise SystemExit("unexpected CodeResources hash for %s" % rel)
-        if not os.path.isfile(path) or os.path.islink(path):
-            raise SystemExit("sealed file missing: %s" % rel)
-        actual = hashlib.sha256(open(path, "rb").read()).digest()
-        if actual != digest:
-            raise SystemExit("CodeResources hash mismatch: %s" % rel)
+def check_no_seal(app):
+    for dirpath, dirnames, _files in os.walk(app):
+        if "_CodeSignature" in dirnames:
+            raise SystemExit("unexpected bundle seal in %s" % os.path.relpath(dirpath, app))
+
+
+def check_launcher(app):
+    path = os.path.join(app, "Contents", "MacOS", "confu")
+    if os.path.islink(path) or not os.path.isfile(path):
+        raise SystemExit("Contents/MacOS/confu is missing or not a regular file")
+    if not os.access(path, os.X_OK):
+        raise SystemExit("Contents/MacOS/confu is not executable")
+    with open(path, "rb") as fh:
+        if fh.read(10) != b"#!/bin/sh\n":
+            raise SystemExit("Contents/MacOS/confu does not start with #!/bin/sh")
+
+
+def check_bundle_files(app, arch):
+    with open(os.path.join(app, "Contents", "Info.plist"), "rb") as fh:
+        info = plistlib.load(fh)
+    want = {
+        "CFBundleExecutable": "confu",
+        "CFBundlePackageType": "APPL",
+        "CFBundleIdentifier": "com.confu.client",
+        "LSMinimumSystemVersion": MIN_MACOS[arch],
+    }
+    for key, value in want.items():
+        if info.get(key) != value:
+            raise SystemExit("Info.plist %s is %r, want %r" % (key, info.get(key), value))
+    with open(os.path.join(app, "Contents", "PkgInfo"), "rb") as fh:
+        if fh.read() != b"APPL????":
+            raise SystemExit("Contents/PkgInfo is not APPL????")
+
+
+def macho_load(path):
+    with open(path, "rb") as fh:
+        data = fh.read()
+    if data[:4] != b"\xcf\xfa\xed\xfe":
+        raise SystemExit("not a thin 64-bit little-endian Mach-O: %s" % path)
+    ncmds = struct.unpack_from("<I", data, 16)[0]
+    off = 32
+    minos = None
+    deps = []
+    for _ in range(ncmds):
+        cmd, size = struct.unpack_from("<II", data, off)
+        if cmd == LC_BUILD_VERSION:
+            minos = struct.unpack_from("<I", data, off + 12)[0]
+        elif cmd == LC_VERSION_MIN_MACOSX:
+            minos = struct.unpack_from("<I", data, off + 8)[0]
+        elif cmd in DEP_CMDS or cmd in (LC_RPATH, LC_ID_DYLIB):
+            name_off = struct.unpack_from("<I", data, off + 8)[0]
+            end = data.index(b"\0", off + name_off)
+            name = data[off + name_off:end].decode()
+            prefix = {LC_RPATH: "rpath:", LC_ID_DYLIB: "id:"}.get(cmd, "")
+            deps.append(prefix + name)
+        off += size
+    return minos, deps
+
+
+def check_macho_deps(app, min_version):
+    minimum = tuple(int(part) for part in min_version.split(".")[:2])
+    exec_dir = os.path.join(app, "Contents", "MacOS")
+    loaded = {}
+    for rel, _types in machos(app):
+        minos, deps = macho_load(os.path.join(app, rel))
+        for dep in deps:
+            if dep.startswith("id:"):
+                loaded.setdefault(os.path.basename(dep[len("id:"):]), rel)
+    for rel, _types in machos(app):
+        path = os.path.join(app, rel)
+        minos, deps = macho_load(path)
+        if minos is None:
+            raise SystemExit("%s has no LC_BUILD_VERSION or LC_VERSION_MIN_MACOSX" % rel)
+        found = ((minos >> 16) & 0xFFFF, (minos >> 8) & 0xFF)
+        if found > minimum:
+            raise SystemExit("%s needs macOS %d.%d, bundle says %s" % (rel, found[0], found[1], min_version))
+        rpaths = [d[len("rpath:"):] for d in deps if d.startswith("rpath:")]
+        for dep in deps:
+            if dep.startswith(("rpath:", "id:")) or dep.startswith(SYSTEM_PREFIXES):
+                continue
+            if dep.startswith("/"):
+                raise SystemExit("%s links an absolute path outside the system: %s" % (rel, dep))
+            if dep.startswith("@loader_path/"):
+                candidates = [os.path.join(os.path.dirname(path), dep[len("@loader_path/"):])]
+            elif dep.startswith("@executable_path/"):
+                candidates = [os.path.join(exec_dir, dep[len("@executable_path/"):])]
+            elif dep.startswith("@rpath/"):
+                if os.path.basename(dep) in loaded:
+                    continue
+                candidates = []
+                for rp in rpaths:
+                    if rp.startswith("@loader_path"):
+                        rp = os.path.dirname(path) + rp[len("@loader_path"):]
+                    elif rp.startswith("@executable_path"):
+                        rp = exec_dir + rp[len("@executable_path"):]
+                    candidates.append(os.path.join(rp, dep[len("@rpath/"):]))
+            else:
+                continue
+            if not any(os.path.isfile(os.path.normpath(c)) for c in candidates):
+                raise SystemExit("%s: dependency not found in bundle: %s" % (rel, dep))
 
 
 def verify(app, arch):
     rows = check_arch(app, arch)
-    rc, out = run(["verify", app], check=False)
-    if rc == 0:
-        pass
-    elif "only works on Mach-O binaries" not in out:
-        sys.stderr.write(out)
-        raise SystemExit("rcodesign verify on the bundle failed unexpectedly")
-    else:
-        print("rcodesign 0.29.0 verify does not accept a bundle; checking every Mach-O and the CodeResources seal")
-    flags = signature_flags(app)
     for rel, _types in rows:
-        got = flags.get(rel)
+        path = os.path.join(app, rel)
+        got = macho_flags(path)
         if got != "CodeSignatureFlags(ADHOC)":
             raise SystemExit("%s signature flags are %s, want ADHOC only" % (rel, got))
-        verify_macho(os.path.join(app, rel))
-    ident = flags.get("Contents/MacOS/confu")
-    if ident is None:
-        raise SystemExit("main executable has no signature")
-    check_seal(app)
-    print("verified %d Mach-O files, ad-hoc, no hardened runtime" % len(rows))
+        _rc, info = run(["print-signature-info", path])
+        if "com.apple.security." in info:
+            raise SystemExit("%s still carries entitlements" % rel)
+        verify_macho(path)
+    check_no_seal(app)
+    check_launcher(app)
+    check_bundle_files(app, arch)
+    check_macho_deps(app, MIN_MACOS[arch])
+    print("verified %d Mach-O files, ad-hoc, no hardened runtime; bundle unsealed" % len(rows))
 
 
 def manifest(app):

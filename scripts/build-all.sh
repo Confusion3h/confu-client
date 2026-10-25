@@ -182,19 +182,27 @@ pack_mac() {
   if [[ "$arm" == arm ]]; then
     overlay_natives "$CACHE/lwjgl2-natives-osx-arm64.jar" "$app/Contents/Resources/natives/osx-arm64" osx
   fi
-  # Paths come from this binary's own location, so the bundle works in
+  # Some JRE files ship read-only (0444). Owner write is needed so that
+  # xattr -dr com.apple.quarantine can clear them on the Mac.
+  chmod -R u+w "$app"
+  # Vendor seals (Zulu, the bundled framework) do not match the re-signed Mach-O files.
+  find "$app/Contents" -name _CodeSignature -type d -prune -exec rm -rf {} +
+  # Temurin's jre/bundle holds a second copy of libjvm for Apple's app stub. The
+  # launcher loads lib/server/libjvm.dylib, so the copy is dropped.
+  rm -rf "$app/Contents/Resources/jre/bundle"
+  # Paths come from the launcher's own location, so the bundle works in
   # ~/Downloads or any other folder. Nothing points at /Applications.
-  # The executable is a Mach-O in Contents/MacOS, so Launch Services marks the
-  # process NSHighResolutionCapable (a shell script stays blurry on Retina).
-  # It does not pass -XstartOnFirstThread: that flag deadlocks the Swing
-  # launcher. GameLauncher adds the flag only on the game JVM.
-  local stubarch=x64
-  [[ "$arm" == arm ]] && stubarch=arm64
-  scripts/macos/build-stub.sh "$stubarch" "$app/Contents/MacOS/confu"
+  # No -XstartOnFirstThread here: that flag deadlocks the Swing launcher.
+  # GameLauncher adds it only to the game JVM.
+  cp scripts/macos/confu-launcher.sh "$app/Contents/MacOS/confu"
+  chmod 755 "$app/Contents/MacOS/confu"
   local machoarch=x86_64
   [[ "$arm" == arm ]] && machoarch=arm64
-  local min=10.13
-  [[ "$arm" == arm ]] && min=11.0
+  # Lowest macOS the bundled Mach-O files load on: 11.0 for the Temurin 8 x64 JRE,
+  # 12.0 for the arm64 LWJGL openal.dylib native.
+  local min=11.0
+  [[ "$arm" == arm ]] && min=12.0
+  printf 'APPL????' > "$app/Contents/PkgInfo"
   cat > "$app/Contents/Info.plist" << EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -204,14 +212,16 @@ pack_mac() {
 <key>CFBundleIdentifier</key><string>com.confu.client</string>
 <key>CFBundleVersion</key><string>$VERSION</string>
 <key>CFBundleShortVersionString</key><string>$VERSION</string>
+<key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
 <key>CFBundleExecutable</key><string>confu</string>
 <key>CFBundlePackageType</key><string>APPL</string>
+<key>CFBundleSignature</key><string>????</string>
 <key>LSMinimumSystemVersion</key><string>$min</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>NSSupportsAutomaticGraphicsSwitching</key><true/>
 </dict></plist>
 EOF
-  # Sign only after Info.plist, the JRE, natives and jars are in place.
+  # Sign only after Info.plist, PkgInfo, the JRE, natives and jars are in place.
   # Nothing in the bundle is written again after this returns.
   python3 scripts/macos/sign-app.py sign "$app" "$machoarch"
   local zip=$OUT/Confu-Client-$VERSION-$name.zip
