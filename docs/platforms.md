@@ -32,6 +32,29 @@ The ARM installer therefore bundles Microsoft Build of OpenJDK 17.0.20.1 Windows
 
 Those JREs are Java 8, so they do not need `java8-rt.jar`. After Mojang's natives are extracted, the launcher copies the matching HMCL directory (`natives/osx-arm64` or `natives/linux-arm64`) over them. On Linux the HMCL jar also contains LWJGL 3 leftovers (`libglfw.so`, `liblwjgl_opengl.so`, `liblwjgl_stb.so`, `libjemalloc.so`); the package keeps `liblwjgl.so` (also as `liblwjgl64.so`), `libopenal.so` (also as `libopenal64.so`) and `libjinput.so` (as `libjinput-linux.so` and `libjinput-linux64.so`).
 
+## macOS
+
+Two archives: Intel (`mac-x64`) and Apple Silicon (`mac-aarch64`). Each is a `Confu Client.app` bundle.
+
+**First open (Gatekeeper).** The app is ad-hoc signed with rcodesign, not with an Apple Developer ID, and it is not notarised. A downloaded app carries the quarantine flag, so Gatekeeper says it cannot verify the app is free of malware. Once per Mac:
+
+1. Open the app once and dismiss the message.
+2. macOS 15 (Sequoia) and later: open **System Settings > Privacy & Security**, scroll to **Security**, click **Open Anyway** next to Confu Client and confirm. Control-click > **Open** no longer offers this on macOS 15 and later.
+3. Earlier macOS: right-click (Control-click) **Confu Client.app** and choose **Open**.
+4. Or, in Terminal: `xattr -dr com.apple.quarantine "/path/Confu Client.app"`, then open the app.
+
+Removing the warning for everyone needs an Apple Developer ID Application certificate (Apple Developer Program, $99 a year) and notarisation with `notarytool`. Nothing in this build can clear the quarantine flag on a user's Mac, and an ad-hoc signature does not satisfy Gatekeeper.
+
+**Signing.** Every Mach-O file is ad-hoc signed with rcodesign, with no hardened runtime and no entitlements. The bundle is not sealed: rcodesign 0.29 seals only a bundle whose main executable is a Mach-O, and `Contents/MacOS/confu` is a `/bin/sh` script. `scripts/macos/sign-app.py verify` checks the Mach-O files, the bundle keys, the symlinks and the icon.
+
+**Launch path.** `Contents/MacOS/confu` (a `/bin/sh` script) runs `Contents/MacOS/confu-java`, a symlink to `Resources/jre/bin/java`. Because the JRE runs from inside `Contents/MacOS`, macOS applies the bundle's `Info.plist`: `NSHighResolutionCapable` for a sharp launcher on Retina, and `CFBundleIconFile` (`confusion3h.icns`, 16 to 1024 px, the same monochrome mark as the Windows icon). `Contents/lib` is a symlink to `Resources/jre/lib` so the java launcher finds `libjli` from that path. The Dock icon is set twice: by `-Xdock:icon` and by `setDockIconImage` once the launcher window opens.
+
+**Sign-in.** Microsoft sign-in uses the device code flow in the default browser (see [Microsoft account login](microsoft-login.md)). The launcher reads no browser and asks for no Automation permission to a browser.
+
+**Game window.** The game JVM starts with `-XstartOnFirstThread` and does not initialise AWT, as vanilla 1.8.9 does on macOS. An app started by another app is not active, and since macOS 14 a window it creates can open behind the active app. So the launcher hides itself while the game runs, then asks System Events to bring the game process to the front, retrying for a few seconds. macOS asks once whether Confu Client may control System Events; that prompt uses the `NSAppleEventsUsageDescription` text in the bundle. If you deny it, the game window may stay behind other windows: use Cmd-Tab or click it. Clicking the Confu Client Dock icon brings the launcher back.
+
+**Not verified in this build.** The build ran on Linux without a Mac. Still to check on hardware: that the game window appears and takes focus on launch, that the launcher is sharp on Retina, that the Dock icon shows the Confu mark, the System Events prompt, and the device-code page in Safari.
+
 ## JVM flags
 
 Every launch uses G1 (`MaxGCPauseMillis=50`, a larger young generation, no explicit GC, biased locking off) plus `AlwaysPreTouch`, `UseStringDeduplication`, `PerfDisableSharedMem` and a 256 MB code cache. Those last four do not change what is drawn. On a software GL renderer the steady-state average barely moves; they cut allocation and pause jitter. The FPS preset (fast graphics, 8 chunks, minimum smooth lighting, VBOs, fewer particles, no entity shadows, vsync off) is unchanged. Chunk-update delay, "remove bots", and entity culling stay off: the first adds pop-in, the other two can hide real players.
@@ -40,6 +63,6 @@ Every launch uses G1 (`MaxGCPauseMillis=50`, a larger young generation, no expli
 
 - Windows: the installer. Start menu **Confu Client**.
 - Linux: unpack and `./confu`.
-- macOS: unzip anywhere, including `~/Downloads`, and open `Confu Client.app`. The bundle resolves its own files from the executable path. Every Mach-O is ad-hoc signed with rcodesign, with no hardened runtime and no entitlements. The bundle itself is not sealed: rcodesign 0.29 only seals a bundle whose executable is a Mach-O, and `Contents/MacOS/confu` is a script. It is not notarised. If macOS says the app is damaged, right-click it and choose **Open**, or run `xattr -dr com.apple.quarantine "/path/Confu Client.app"`. `Contents/MacOS/confu` is a `/bin/sh` script that replaces itself with `Resources/jre/bin/java`. Whether the Swing launcher is sharp on a Retina display is not verified by the build; check it on hardware. That process is started without `-XstartOnFirstThread`: the flag deadlocks AWT and the dock icon bounces with no window. The game JVM does get the flag. Vanilla 1.8.9 on macOS disallows LWJGL 2.9.4 and loads 2.9.2-nightly-20140822; that Display only shows a window when the process starts on the AppKit thread. Apple Silicon packages then copy `natives/osx-arm64` (`liblwjgl.dylib` and `openal.dylib`, HMCL 2.9.3-rc1, same JNI names as 2.9.2) over Mojang's x86_64 extract, and the game command sets both `java.library.path` and `org.lwjgl.librarypath` to that directory. After `Display.create`, the client orders the AWT frame on-screen and to the front.
+- macOS: unzip anywhere, including `~/Downloads`, and open `Confu Client.app`. The first open needs one approval from macOS; see **macOS** below.
 
 The repeated `[Client thread/ERROR] The jar file …/lwjgl/2.9.2-nightly-…` lines are LaunchWrapper's seal check. The 2.9.2 nightly and `lwjgl_util` both mark `org.lwjgl` sealed, and the jars are unsigned, so every class logs the mismatch and is still defined. The game reaches the texture atlas with those lines present. The `[main/ERROR] Classloader restrictions [PACKAGE_CLASSLOADER_EXCLUSION]` lines are Mixin 0.7 noting that mixin classes are excluded from the launch class loader, which is how Mixin keeps from transforming itself. Mixins still apply. Neither line is the missing window.

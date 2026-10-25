@@ -207,8 +207,8 @@
             <p data-i18n="faq.smart.a" data-i18n-html>SmartScreen shows “Windows protected your PC” because this build is unsigned. There is no Authenticode certificate on the file, so Windows cannot name a publisher it already trusts. The installer still carries a version resource (product and company name Confu Client), a DPI-aware manifest, and LZMA compression. It is not packed with UPX. On the warning, choose <strong>More info</strong>, then <strong>Run anyway</strong>.</p>
           </details>
           <details>
-            <summary data-i18n="faq.mac.q">macOS says Confu Client is damaged</summary>
-            <p data-i18n="faq.mac.a" data-i18n-html>macOS marks a downloaded app with a quarantine flag. This build is ad-hoc signed, not notarised, so the first open can say the app is damaged. Right-click <strong>Confu Client.app</strong> and choose <strong>Open</strong>. Or, in Terminal, run <code>xattr -dr com.apple.quarantine "/path/Confu Client.app"</code>.</p>
+            <summary data-i18n="faq.mac.q">macOS says it cannot verify Confu Client is free of malware</summary>
+            <p data-i18n="faq.mac.a" data-i18n-html>macOS marks a downloaded app with a quarantine flag. This build is ad-hoc signed with rcodesign and not notarised, because there is no Apple Developer ID. Gatekeeper therefore cannot verify the app, and may also call it damaged. The first open needs one approval: on macOS 15 (Sequoia) and later, open <strong>System Settings &gt; Privacy &amp; Security</strong> and click <strong>Open Anyway</strong> next to Confu Client. On earlier macOS, right-click <strong>Confu Client.app</strong> and choose <strong>Open</strong>. Or, in Terminal, run <code>xattr -dr com.apple.quarantine "/path/Confu Client.app"</code>. A Developer ID certificate (Apple Developer Program, 99 USD a year) and notarisation would remove this prompt. This build does not have them.</p>
           </details>
           <details>
             <summary data-i18n="faq.which.q">Which file is mine?</summary>

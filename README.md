@@ -26,7 +26,7 @@ export JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64
 
 `scripts/build-all.sh` builds every archive into `releases/`. It also needs NSIS (`makensis`), ImageMagick (`convert`), ffmpeg, curl, unzip and zip. The macOS bundles are ad-hoc signed with rcodesign (apple-codesign), which the script downloads. The Windows x64 installer alone is `scripts/build-windows-installer.sh`.
 
-On macOS, unzip the archive anywhere (including `~/Downloads`) and open `Confu Client.app`. The app is ad-hoc signed, not notarised. If macOS says it is damaged, right-click the app and choose **Open**, or run `xattr -dr com.apple.quarantine "/path/Confu Client.app"`.
+On macOS, unzip the archive anywhere (including `~/Downloads`) and open `Confu Client.app`. The app is ad-hoc signed and not notarised, so Gatekeeper asks once: on macOS 15 and later open **System Settings > Privacy & Security** and click **Open Anyway**; on earlier versions right-click the app and choose **Open**. Or run `xattr -dr com.apple.quarantine "/path/Confu Client.app"`. Removing that prompt for everyone needs an Apple Developer ID ($99 a year) and notarisation. Details are in `docs/platforms.md`.
 
 The download page is static HTML in `website/`. Serve the repository root so the Download links can see `releases/`:
 
