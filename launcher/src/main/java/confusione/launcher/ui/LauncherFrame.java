@@ -52,12 +52,9 @@ public final class LauncherFrame extends JFrame {
 	private final Anim energy = new Anim(root, 0, 2);
 	private volatile boolean working;
 	private final AtomicBoolean signInCancel = new AtomicBoolean();
-	private final AtomicBoolean useDeviceCode = new AtomicBoolean();
 	private volatile Thread signInThread;
 	private Point dragAt;
 	private Point dragWindow;
-	private String deviceUrl = "";
-	private String deviceCode = "";
 
 	public LauncherFrame(Settings s) {
 		super("CONFUSION3H");
@@ -230,7 +227,7 @@ public final class LauncherFrame extends JFrame {
 	private void refreshAccount() {
 		AccountStore store = AccountStore.load();
 		boolean polling = signInThread != null;
-		home.setAccount(settings.microsoft, store.signedIn() ? store.name : "", polling, deviceUrl, deviceCode);
+		home.setAccount(settings.microsoft, store.signedIn() ? store.name : "", polling);
 	}
 
 	private void installDrag() {
@@ -285,11 +282,6 @@ public final class LauncherFrame extends JFrame {
 
 	private void accountAction() {
 		if (signInThread != null) {
-			if (deviceCode.isEmpty()) {
-				useDeviceCode.set(true);
-				home.setStatus("Switching to a sign-in code\u2026", Theme.MUTED);
-				return;
-			}
 			cancelSignIn();
 			home.setStatus("Sign-in cancelled.", Theme.MUTED);
 			return;
@@ -306,10 +298,7 @@ public final class LauncherFrame extends JFrame {
 
 	private void cancelSignIn() {
 		signInCancel.set(true);
-		useDeviceCode.set(false);
 		signInThread = null;
-		deviceUrl = "";
-		deviceCode = "";
 		refreshAccount();
 	}
 
@@ -317,8 +306,6 @@ public final class LauncherFrame extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				signInThread = null;
-				deviceUrl = "";
-				deviceCode = "";
 				refreshAccount();
 				home.setStatus("Signed in as " + session.name + ".", Theme.OK);
 			}
@@ -326,63 +313,19 @@ public final class LauncherFrame extends JFrame {
 	}
 
 	private void startSignIn() {
-		if (!MicrosoftAuth.validClientId(settings.msClientId)) {
-			home.setStatus("Set a Microsoft client ID in Settings.", Theme.ERROR);
-			return;
-		}
 		signInCancel.set(false);
-		useDeviceCode.set(false);
-		deviceCode = "";
 		final Progress p = uiProgress();
 		signInThread = new Thread(new Runnable() {
 			public void run() {
 				try {
-					try {
-						SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								home.setStatus("Finish sign-in in the browser window.", Theme.MUTED);
-								refreshAccount();
-							}
-						});
-						MicrosoftAuth.Session session = MicrosoftAuth.signInWithBrowser(settings.msClientId, p, signInCancel, useDeviceCode);
-						finishSignIn(session);
-						return;
-					} catch (MicrosoftAuth.UseDeviceCode ignored) {
-						p.log("Microsoft sign-in: falling back to a device code");
-					}
-					if (signInCancel.get()) {
-						return;
-					}
-					final MicrosoftAuth.Device d = MicrosoftAuth.start(settings.msClientId);
-					SwingUtilities.invokeAndWait(new Runnable() {
+					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							deviceUrl = d.verificationUri;
-							deviceCode = d.userCode;
-							home.setStatus("Enter " + d.userCode + " at " + d.verificationUri, Theme.MUTED);
+							home.setStatus("Sign in with your Microsoft account in the window.", Theme.MUTED);
 							refreshAccount();
 						}
 					});
-					p.log("Microsoft sign-in code: open " + d.verificationUri + " and enter " + d.userCode);
-					browse(d.verificationUri);
-					while (!signInCancel.get() && System.currentTimeMillis() < d.expiresAt) {
-						final MicrosoftAuth.Session session = MicrosoftAuth.poll(settings.msClientId, d, p);
-						if (session != null) {
-							finishSignIn(session);
-							return;
-						}
-						Thread.sleep(Math.max(1, d.interval) * 1000L);
-					}
-					if (!signInCancel.get()) {
-						SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								signInThread = null;
-								deviceUrl = "";
-								deviceCode = "";
-								refreshAccount();
-								home.setStatus("Sign-in code expired. Try again.", Theme.ERROR);
-							}
-						});
-					}
+					MicrosoftAuth.Session session = MicrosoftAuth.signInWithBrowser(settings.msClientId, p, signInCancel);
+					finishSignIn(session);
 				} catch (final Exception e) {
 					final String msg = e.getMessage() == null ? e.toString() : e.getMessage();
 					if ("Sign-in cancelled.".equals(msg)) {
@@ -392,8 +335,6 @@ public final class LauncherFrame extends JFrame {
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							signInThread = null;
-							deviceUrl = "";
-							deviceCode = "";
 							refreshAccount();
 							if (!signInCancel.get()) {
 								home.setStatus(msg, Theme.ERROR);
@@ -406,16 +347,7 @@ public final class LauncherFrame extends JFrame {
 		signInThread.setDaemon(true);
 		signInThread.start();
 		refreshAccount();
-		home.setStatus("Opening Microsoft sign-in\u2026", Theme.MUTED);
-	}
-
-	private static void browse(String url) {
-		try {
-			if (java.awt.Desktop.isDesktopSupported()) {
-				java.awt.Desktop.getDesktop().browse(new java.net.URI(url));
-			}
-		} catch (Exception ignored) {
-		}
+		home.setStatus("Opening the Microsoft sign-in window\u2026", Theme.MUTED);
 	}
 
 	private void launch() {

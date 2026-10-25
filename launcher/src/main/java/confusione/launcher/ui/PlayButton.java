@@ -95,8 +95,10 @@ public final class PlayButton extends JComponent {
 		float bm = busyMix.get();
 		float t = Ambient.time();
 
-		// Stay inside the component, including the glow, so Windows DPI clipping cannot cut the pill.
-		float m = Math.max(8f, 12f - hv * 2f + pr);
+		// White/grey pill from the earlier design. The glow used to be drawn past the
+		// component edge and Windows clipped the capsule (100/125/150% DPI). Keep the
+		// same look, but every pixel of the pill and the halo stays inside the bounds.
+		float m = Math.max(8f, 10f - hv * 2f + pr * 2f);
 		float x = m, y = m, bw = w - m * 2f, bh = h - m * 2f;
 		if (bw < 24f || bh < 18f) {
 			g.dispose();
@@ -105,13 +107,16 @@ public final class PlayButton extends JComponent {
 		float arc = bh;
 		Shape pill = new RoundRectangle2D.Float(x, y, bw, bh, arc, arc);
 
-		// glow
 		if (state != State.RUNNING) {
-			float room = m - 2f;
-			for (int i = 2; i >= 1; i--) {
-				float gpad = Math.min(room, i * 2.5f);
-				g.setColor(Theme.alpha(Theme.ACCENT, (0.06f + 0.05f * hv) * (1 - bm * 0.5f)));
-				g.fill(new RoundRectangle2D.Float(x - gpad, y - gpad, bw + gpad * 2, bh + gpad * 2, arc + gpad, arc + gpad));
+			float room = Math.max(0f, m - 2f);
+			for (int i = 3; i >= 1; i--) {
+				float gpad = Math.min(room, i * room / 3f);
+				if (gpad < 0.5f) {
+					continue;
+				}
+				float drop = Math.min(2f, Math.max(0f, m - gpad - 1f));
+				g.setColor(Theme.alpha(Theme.A2, (0.05f + 0.06f * hv) * (1 - bm * 0.5f)));
+				g.fill(new RoundRectangle2D.Float(x - gpad, y - gpad + drop, bw + gpad * 2, bh + gpad * 2, arc + gpad, arc + gpad));
 			}
 		}
 
@@ -129,7 +134,7 @@ public final class PlayButton extends JComponent {
 			if (fw > 1) {
 				Graphics2D gc = (Graphics2D) g.create();
 				gc.clip(pill);
-				gc.setPaint(new GradientPaint(x, y, Theme.ACCENT_HI, x, y + bh, Theme.ACCENT));
+				gc.setPaint(Theme.accent(x, y, x + bw, y + bh));
 				float base = Theme.compositeAlpha(gc);
 				if (indeterminate && bm > 0.5f) {
 					gc.setComposite(AlphaComposite.SrcOver.derive(base * (0.35f + 0.25f * (float) Math.sin(t * 4))));

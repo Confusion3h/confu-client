@@ -44,7 +44,7 @@ Function .onInit
 FunctionEnd
 
 Function StartLauncher
-  Exec '"$INSTDIR\jre\bin\javaw.exe" -jar "$INSTDIR\CONFUSION3H-launcher.jar"'
+  Exec '"$INSTDIR\jre\bin\javaw.exe" -Dsun.java2d.dpiaware=true -jar "$INSTDIR\CONFUSION3H-launcher.jar"'
 FunctionEnd
 
 Section "Install"
@@ -66,10 +66,10 @@ Section "Install"
 
   SetOutPath "$INSTDIR"
   CreateDirectory "$SMPROGRAMS\${APPNAME}"
-  CreateShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\jre\bin\javaw.exe" '-jar "$INSTDIR\CONFUSION3H-launcher.jar"' "$INSTDIR\confusion3h.ico" 0
+  CreateShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\jre\bin\javaw.exe" '-Dsun.java2d.dpiaware=true -jar "$INSTDIR\CONFUSION3H-launcher.jar"' "$INSTDIR\confusion3h.ico" 0
   CreateShortCut "$SMPROGRAMS\${APPNAME}\Music folder.lnk" "$APPDATA\.CONFUSION3H\minecraft\glide\music"
   CreateShortCut "$SMPROGRAMS\${APPNAME}\Uninstall ${APPNAME}.lnk" "$INSTDIR\Uninstall.exe"
-  CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\jre\bin\javaw.exe" '-jar "$INSTDIR\CONFUSION3H-launcher.jar"' "$INSTDIR\confusion3h.ico" 0
+  CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\jre\bin\javaw.exe" '-Dsun.java2d.dpiaware=true -jar "$INSTDIR\CONFUSION3H-launcher.jar"' "$INSTDIR\confusion3h.ico" 0
 
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   WriteRegStr HKCU "Software\${APPNAME}" "InstallDir" "$INSTDIR"

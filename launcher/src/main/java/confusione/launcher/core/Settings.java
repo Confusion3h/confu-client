@@ -49,7 +49,10 @@ public final class Settings {
 	public boolean keepOpen = false;
 	/** Microsoft account instead of the offline name. Refresh token is not stored here. */
 	public boolean microsoft = false;
-	/** Azure app registration (public client). Not a secret. */
+	/**
+	 * Optional Live client id (16 hex digits). Empty uses the built-in Minecraft client.
+	 * Not shown in Settings. An Azure UUID stored by an older build is ignored.
+	 */
 	public String msClientId = "";
 
 	public static Settings load() {

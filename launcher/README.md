@@ -22,8 +22,9 @@ Swing/Java2D UI, JDK HTTPS, a tiny JSON reader.
    which vanilla 1.8.9 lacks.
 4. Runs `net.minecraft.launchwrapper.Launch --tweakClass <tweaker>` with the client jar
    first on the classpath. Offline (default): `--userType legacy` and an offline UUID.
-   Microsoft: device-code login, refresh on launch, `--userType msa` with the real
-   profile. See `docs/microsoft-login.md`. The refresh token stays in `msa.properties`
+   Microsoft: one click opens a sign-in window (no Azure app to register), then
+   refresh on launch, `--userType msa` with the real profile. See
+   `docs/microsoft-login.md`. The refresh token stays in `msa.properties`
    next to the settings file and is never committed.
 
 ## CLI
@@ -34,4 +35,4 @@ Swing/Java2D UI, JDK HTTPS, a tiny JSON reader.
     --gamedir DIR  --username NAME  --client JAR      (one-off overrides)
 
 Settings live in `~/.CONFUSION3H/launcher.properties` (`%APPDATA%\.CONFUSION3H` on Windows).
-The Microsoft client ID is a setting there; the refresh token is not.
+Microsoft sign-in works without a client ID. The refresh token is stored separately.

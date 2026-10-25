@@ -35,9 +35,8 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 	private final Anim linkHover = new Anim(this, 0, 14);
 	private boolean microsoft;
 	private String accountName = "";
-	private String deviceUrl = "";
-	private String deviceCode = "";
 	private boolean polling;
+	private boolean actionHover;
 	private final Rectangle offlineChip = new Rectangle();
 	private final Rectangle msChip = new Rectangle();
 	private final Rectangle actionChip = new Rectangle();
@@ -53,8 +52,21 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		MouseAdapter link = new MouseAdapter() {
 			public void mouseMoved(MouseEvent e) {
 				boolean in = hit(e);
+				boolean hover = microsoft && actionChip.width > 0 && actionChip.contains(e.getPoint());
+				if (hover != actionHover) {
+					actionHover = hover;
+					repaint();
+				}
 				linkHover.set(!clientOk && buildAction != null && linkBounds().contains(e.getPoint()) ? 1 : 0);
 				setCursor(Cursor.getPredefinedCursor(in ? Cursor.HAND_CURSOR : Cursor.DEFAULT_CURSOR));
+			}
+			public void mouseExited(MouseEvent e) {
+				if (actionHover) {
+					actionHover = false;
+					repaint();
+				}
+				linkHover.set(0);
+				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}
 			public void mouseReleased(MouseEvent e) {
 				if (offlineChip.contains(e.getPoint()) && onOffline != null) {
@@ -105,12 +117,10 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 	}
 
 	/** @param name profile name, empty when signed out */
-	public void setAccount(boolean microsoft, String name, boolean polling, String url, String code) {
+	public void setAccount(boolean microsoft, String name, boolean polling) {
 		this.microsoft = microsoft;
 		this.accountName = name == null ? "" : name;
 		this.polling = polling;
-		this.deviceUrl = url == null ? "" : url;
-		this.deviceCode = code == null ? "" : code;
 		username.setVisible(!microsoft);
 		revalidate();
 		repaint();
@@ -135,9 +145,11 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		play.setBounds(42, 328, Math.min(360, Math.max(280, getWidth() - 420)), 100);
 		offlineChip.setBounds(48, 224, 84, 26);
 		msChip.setBounds(140, 224, 108, 26);
-		if (microsoft) {
+		if (microsoft && accountName.isEmpty() && !polling) {
+			actionChip.setBounds(48, 262, microsoftButtonWidth(), 41);
+		} else if (microsoft) {
 			String label = accountActionLabel();
-			actionChip.setBounds(48, 276, Math.max(96, label.length() * 8 + 28), 30);
+			actionChip.setBounds(48, 268, Math.max(96, label.length() * 8 + 28), 30);
 		} else {
 			actionChip.setBounds(0, 0, 0, 0);
 		}
@@ -164,23 +176,14 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		chip(g, offlineChip, "Offline", !microsoft);
 		chip(g, msChip, "Microsoft", microsoft);
 		if (microsoft) {
-			String action = accountActionLabel();
-			chip(g, actionChip, action, true, accountName.isEmpty());
-			g.setFont(Theme.regular(13));
-			g.setColor(Theme.TEXT);
-			String detail;
-			if (polling) {
-				detail = deviceCode.isEmpty() ? "Waiting for the browser" : deviceCode;
-			} else if (accountName.isEmpty()) {
-				detail = "Not signed in";
+			if (accountName.isEmpty() && !polling) {
+				microsoftButton(g, actionChip, actionHover);
 			} else {
-				detail = accountName;
-			}
-			g.drawString(ellipsize(g.getFontMetrics(), detail, 220), actionChip.x + actionChip.width + 12, actionChip.y + 20);
-			if (polling && !deviceUrl.isEmpty()) {
-				g.setFont(Theme.regular(11));
-				g.setColor(Theme.MUTED);
-				g.drawString(ellipsize(g.getFontMetrics(), deviceUrl, 300), 48, 322);
+				chip(g, actionChip, accountActionLabel(), true, false);
+				g.setFont(Theme.regular(13));
+				g.setColor(Theme.TEXT);
+				String detail = polling ? "Finish sign-in in the window" : accountName;
+				g.drawString(ellipsize(g.getFontMetrics(), detail, 240), actionChip.x + actionChip.width + 12, actionChip.y + 20);
 			}
 		}
 
@@ -188,7 +191,7 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		if (!status.isEmpty()) {
 			g.setFont(Theme.regular(12));
 			g.setColor(statusColor);
-			g.drawString(ellipsize(g.getFontMetrics(), status, Math.max(200, getWidth() - 420)), 48, 452);
+			wrapLimit(g, status, 48, 448, Math.max(240, getWidth() - 420), 16, 2);
 		}
 
 		// client chip
@@ -245,10 +248,51 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 	}
 
 	private String accountActionLabel() {
-		if (!polling) {
-			return accountName.isEmpty() ? "Sign in" : "Sign out";
+		if (polling) {
+			return "Cancel";
 		}
-		return deviceCode.isEmpty() ? "Use a code" : "Cancel";
+		return accountName.isEmpty() ? "Sign in" : "Sign out";
+	}
+
+	private int microsoftButtonWidth() {
+		java.awt.image.BufferedImage img = new java.awt.image.BufferedImage(1, 1, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = img.createGraphics();
+		FontMetrics fm = g.getFontMetrics(Theme.semibold(13f));
+		int w = 12 + 21 + 12 + fm.stringWidth("Sign in with Microsoft") + 16;
+		g.dispose();
+		return w;
+	}
+
+	/** Microsoft's sign-in button: white surface, four-square logo, grey label. */
+	private static void microsoftButton(Graphics2D g, Rectangle r, boolean hover) {
+		if (r.width <= 0) {
+			return;
+		}
+		RoundRectangle2D.Float rr = new RoundRectangle2D.Float(r.x, r.y, r.width, r.height, 4, 4);
+		g.setColor(hover ? new Color(0xF2F2F2) : Color.WHITE);
+		g.fill(rr);
+		g.setColor(new Color(0x8C8C8C));
+		g.draw(rr);
+		int s = 9;
+		int gap = 2;
+		int logo = s * 2 + gap;
+		int lx = r.x + 12;
+		int ly = r.y + (r.height - logo) / 2;
+		g.setColor(new Color(0xF25022));
+		g.fillRect(lx, ly, s, s);
+		g.setColor(new Color(0x7FBA00));
+		g.fillRect(lx + s + gap, ly, s, s);
+		g.setColor(new Color(0x00A4EF));
+		g.fillRect(lx, ly + s + gap, s, s);
+		g.setColor(new Color(0xFFB900));
+		g.fillRect(lx + s + gap, ly + s + gap, s, s);
+		g.setFont(Theme.semibold(13f));
+		g.setColor(new Color(0x5E5E5E));
+		FontMetrics fm = g.getFontMetrics();
+		String text = "Sign in with Microsoft";
+		int tx = lx + logo + 12;
+		int ty = r.y + (r.height + fm.getAscent() - fm.getDescent()) / 2 - 1;
+		g.drawString(text, tx, ty);
 	}
 
 	private static void chip(Graphics2D g, Rectangle r, String text, boolean on) {
@@ -288,6 +332,38 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 			s = s.substring(0, s.length() - 1);
 		}
 		return s + "\u2026";
+	}
+
+	private static void wrapLimit(Graphics2D g, String text, float x, float y, int max, int lh, int lines) {
+		FontMetrics fm = g.getFontMetrics();
+		StringBuilder line = new StringBuilder();
+		int n = 0;
+		String[] words = text.split(" ");
+		for (int i = 0; i < words.length; i++) {
+			String word = words[i];
+			boolean overflow = line.length() > 0 && fm.stringWidth(line + " " + word) > max;
+			if (overflow) {
+				if (n + 1 >= lines) {
+					String rest = line.toString();
+					while (rest.length() > 1 && fm.stringWidth(rest + "\u2026") > max) {
+						rest = rest.substring(0, rest.length() - 1);
+					}
+					g.drawString(rest + "\u2026", x, y);
+					return;
+				}
+				g.drawString(line.toString(), x, y);
+				n++;
+				y += lh;
+				line.setLength(0);
+			}
+			if (line.length() > 0) {
+				line.append(' ');
+			}
+			line.append(word);
+		}
+		if (n < lines && line.length() > 0) {
+			g.drawString(line.toString(), x, y);
+		}
 	}
 
 	static void wrap(Graphics2D g, String text, float x, float y, int max, int lh) {

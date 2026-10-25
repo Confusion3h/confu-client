@@ -1,27 +1,26 @@
 # Microsoft account login
 
-The launcher can start Minecraft with a Microsoft account (`--userType msa`) or with the offline name. Offline is the default. The refresh token is stored only on this computer, in `%APPDATA%\.CONFUSION3H\msa.properties` on Windows and `~/.CONFUSION3H/msa.properties` elsewhere. It is not part of the git repo. Delete that file (or press **Sign out**) to disconnect. The short-lived Minecraft access token is not written to disk.
+The launcher starts Minecraft with a Microsoft account (`--userType msa`) or with the offline name. Offline is the default. Sign-in needs no Azure application, no client secret and no setting. Press **Microsoft**, then **Sign in with Microsoft**.
 
-No client secret is used or accepted. Sign-in opens Microsoft's page in the system browser. A device code is the fallback.
+A small window (Microsoft Edge, or Chrome if Edge is not installed) opens on Microsoft's own page. Type the email and password there. The launcher reads the result, closes the window, and exchanges the login for Xbox Live, XSTS, a Minecraft token and the profile name. The refresh token is stored only on this computer, in `%APPDATA%\.CONFUSION3H\msa.properties` on Windows and `~/.CONFUSION3H/msa.properties` elsewhere. It is not part of the git repo. Delete that file, or press **Sign out**, to disconnect. The short-lived Minecraft access token is not written to disk.
 
-## 1. Register an Azure application
+## What is built in
 
-1. Open [Microsoft Entra admin center](https://entra.microsoft.com/) → **App registrations** → **New registration**.
-2. Name it whatever you like (for example `CONFUSION3H`).
-3. Supported account types: **Personal Microsoft accounts only** (or personal + work, if you prefer).
-4. Redirect URI: leave empty. If the portal insists, choose **Public client / native** and `https://login.microsoftonline.com/common/oauth2/nativeclient`. Device code does not use it.
-5. Register, then copy the **Application (client) ID** (a UUID).
-6. **Authentication** → **Advanced settings** → **Allow public client flows** = **Yes**. Save.
-7. Do not create a client secret. If you create one, do not put it in the launcher or the repo.
-8. **Authentication** → **Redirect URIs** → add exactly `http://127.0.0.1:63212/callback` (public client / mobile and desktop). Save.
+The launcher uses the public Minecraft Live client id `00000000402b5328` (the same id other third-party launchers use). It is not a secret.
 
-Paste the client ID into the launcher: **Settings** → **Microsoft client ID**. That value is saved in `launcher.properties`. It identifies your app; it is not a password.
+| Step | Request |
+| --- | --- |
+| Authorize | `GET https://login.live.com/oauth20_authorize.srf` with `response_type=code`, scope `service::user.auth.xboxlive.com::MBI_SSL`, redirect `https://login.live.com/oauth20_desktop.srf` |
+| Token | `POST https://login.live.com/oauth20_token.srf` (`authorization_code`, same redirect and scope) |
+| Refresh | same token URL, `grant_type=refresh_token`, on later launches |
+| Xbox Live | `POST https://user.auth.xboxlive.com/user/authenticate`. `RpsTicket` is the Live access token with no `d=` prefix (that prefix is only for Azure v2 tokens) |
+| XSTS | `POST https://xsts.auth.xboxlive.com/xsts/authorize`, `SandboxId` `RETAIL`, relying party `rp://api.minecraftservices.com/` |
+| Minecraft | `POST https://api.minecraftservices.com/authentication/login_with_xbox` with `XBL3.0 x=<uhs>;<xsts>` |
+| Profile | `GET https://api.minecraftservices.com/minecraft/profile` |
 
-## 2. Sign in
+The sign-in window is Edge or Chrome in app mode, with its own temporary profile and a localhost debugging port. The launcher watches that window until the address is `https://login.live.com/oauth20_desktop.srf?code=…`, then closes it. Nothing is pasted, and nothing is typed into Settings.
 
-On the home page choose **Microsoft**, then **Sign in**. The launcher opens the system browser on Microsoft's own sign-in page (authorization code + PKCE, no secret). When the page redirects to `http://127.0.0.1:63212/callback`, the launcher finishes and the browser tab says you can close it.
-
-**Use a code** on the home page switches to the device-code fallback (`https://www.microsoft.com/link` plus a short code) if the browser flow is unavailable. Approve it with the Microsoft account that owns Minecraft Java. The launcher then exchanges that login for Xbox Live, XSTS, a Minecraft token and the profile (name + UUID).
+If Edge and Chrome are both missing, Sign in reports that and stays on the home page. A declined login, a closed window, a timeout, a missing Xbox profile, a child account, or an account with no Minecraft Java profile is shown as a sentence under the Play button. Those failures do not open Settings.
 
 Press **Play**. The launcher refreshes the Microsoft token, repeats the Xbox → Minecraft exchange, and starts the game with:
 
@@ -32,16 +31,17 @@ Press **Play**. The launcher refreshes the Microsoft token, repeats the Xbox →
 
 **Offline** still uses the typed name, an offline UUID and `--userType legacy`.
 
+## Advanced override
+
+Settings does not ask for a client id. `msClientId` in `launcher.properties` is optional. Leave it empty. A 16-hex Live client id replaces the built-in one and still uses the desktop flow above. An Azure application UUID (the value an older build asked you to paste) is ignored, so a previous settings file cannot send Sign in back to Settings.
+
 ## What this environment did not verify
 
-There is no Azure application and no Microsoft account in this build environment, so the live chain was not executed against Microsoft, Xbox Live or Minecraft services. The requests follow the documented device-code flow:
+No Microsoft account is available here, so a real password login was not completed. The checks that did run:
 
-1. Browser: `GET .../authorize` with PKCE (`S256`) and redirect `http://127.0.0.1:63212/callback`, then `POST .../token` with `grant_type=authorization_code`
-2. Fallback: `POST .../devicecode` with scope `XboxLive.signin offline_access`, then poll `.../token` with the device-code grant
-3. Refresh with `grant_type=refresh_token` on later launches
-4. `POST https://user.auth.xboxlive.com/user/authenticate` (`RpsTicket` prefixed with `d=`)
-5. `POST https://xsts.auth.xboxlive.com/xsts/authorize` relying party `rp://api.minecraftservices.com/`
-6. `POST https://api.minecraftservices.com/authentication/login_with_xbox`
-7. `GET https://api.minecraftservices.com/minecraft/profile`
-
-Xbox Live often rejects a client ID that Microsoft has not allowed for Minecraft (the XSTS body then carries an `XErr`). A 404 on the profile means that account has no Java Edition profile. Those failures are shown in the launcher; they are not treated as success.
+- The authorize URL, token form, Xbox JSON, XSTS JSON and Minecraft `identityToken` match the table above, including no `d=` on `RpsTicket`.
+- A sample debugging-port page list yields the `code` only from `oauth20_desktop.srf`, not from the authorize URL that merely mentions that redirect.
+- `GET` of the authorize URL returns Microsoft's sign-in page for client `00000000402b5328` (not `invalid_client`).
+- `POST` of a fake code to the token URL is rejected as a bad code, not as a bad client.
+- `POST` of a fake ticket to Xbox Live is rejected by Xbox, and the JSON body is accepted.
+- Opening Chrome on `https://example.com/` and reading the page address back from the debugging port succeeds on this machine. The same window code is what Sign in uses for `login.live.com`.
