@@ -6,11 +6,16 @@ import java.util.Map;
 public final class OS {
 
 	public static final String NAME;
-	public static final String ARCH_BITS = System.getProperty("os.arch").contains("64") ? "64" : "32";
+	public static final String ARCH_BITS;
+	/** aarch64 / arm64. Mojang's 1.8.9 natives are x86_64; ARM builds overlay their own. */
+	public static final boolean ARM;
 
 	static {
 		String n = System.getProperty("os.name").toLowerCase();
 		NAME = n.contains("win") ? "windows" : n.contains("mac") ? "osx" : "linux";
+		String a = System.getProperty("os.arch", "").toLowerCase();
+		ARM = a.equals("aarch64") || a.equals("arm64");
+		ARCH_BITS = a.contains("64") ? "64" : "32";
 	}
 
 	private OS() {}

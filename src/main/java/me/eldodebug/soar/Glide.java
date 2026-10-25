@@ -107,6 +107,7 @@ public class Glide {
 		applyFpsPresetOnce();
 		clickEffects = new ClickEffects();
 		mc.updateDisplay();
+		me.eldodebug.soar.bench.FpsBench.startIfRequested(mc);
 	}
 	
 	public void stop() {

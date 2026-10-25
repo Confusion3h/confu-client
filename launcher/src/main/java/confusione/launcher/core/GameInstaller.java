@@ -33,6 +33,8 @@ public final class GameInstaller {
 	private static final String[][] EXTRA_LIBS = {
 		{ "net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar", "https://libraries.minecraft.net/" },
 		{ "org/ow2/asm/asm-all/5.0.3/asm-all-5.0.3.jar", "https://repo1.maven.org/maven2/" },
+		// Java 11+ removed javax.annotation.Resource. Mixin 0.7 asks for it while applying.
+		{ "javax/annotation/javax.annotation-api/1.3.2/javax.annotation-api-1.3.2.jar", "https://repo1.maven.org/maven2/" },
 	};
 
 	public static final class Result {
@@ -141,6 +143,7 @@ public final class GameInstaller {
 		for (File[] n : natives) {
 			extractNatives(n[0], r.nativesDir);
 		}
+		overlayArmNatives(r.nativesDir);
 
 		// assets
 		Map<String, Object> ai = Json.obj(version.get("assetIndex"));
@@ -239,6 +242,45 @@ public final class GameInstaller {
 			pool.shutdownNow();
 		}
 		return errors.size();
+	}
+
+	/** Mojang ships x86_64 natives only. ARM packages drop LWJGL2 binaries in natives/&lt;os&gt;-arm64. */
+	private void overlayArmNatives(File dir) throws IOException {
+		File bundle = LaunchCompat.armNatives();
+		if (bundle == null) {
+			return;
+		}
+		File[] files = bundle.listFiles();
+		if (files == null) {
+			return;
+		}
+		int n = 0;
+		for (File f : files) {
+			if (!f.isFile()) {
+				continue;
+			}
+			copyFile(f, new File(dir, f.getName()));
+			n++;
+		}
+		p.log("Overlaid " + n + " ARM natives from " + bundle.getAbsolutePath());
+	}
+
+	private static void copyFile(File from, File to) throws IOException {
+		InputStream in = new java.io.FileInputStream(from);
+		try {
+			OutputStream os = new FileOutputStream(to);
+			try {
+				byte[] buf = new byte[16384];
+				int n;
+				while ((n = in.read(buf)) != -1) {
+					os.write(buf, 0, n);
+				}
+			} finally {
+				os.close();
+			}
+		} finally {
+			in.close();
+		}
 	}
 
 	private void extractNatives(File jar, File dir) throws IOException {

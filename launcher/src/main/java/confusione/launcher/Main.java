@@ -30,7 +30,7 @@ public final class Main {
 	public static void main(String[] args) throws Exception {
 		System.setProperty("sun.java2d.dpiaware", "true");
 		final Settings s = Settings.load();
-		String mode = "ui", shot = null, page = "home";
+		String mode = "ui", shot = null, page = "home", fpsBench = null;
 		double demo = -2;
 		for (int i = 0; i < args.length; i++) {
 			String a = args[i];
@@ -49,6 +49,8 @@ public final class Main {
 				s.username = args[++i];
 			} else if (a.equals("--client")) {
 				s.clientJar = args[++i];
+			} else if (a.equals("--fpsbench")) {
+				fpsBench = args[++i];
 			} else {
 				System.err.println("Unknown argument: " + a);
 				System.exit(2);
@@ -56,7 +58,7 @@ public final class Main {
 		}
 
 		if (!mode.equals("ui") && !mode.equals("screenshot")) {
-			System.exit(cli(s, mode));
+			System.exit(cli(s, mode, fpsBench));
 		}
 
 		System.setProperty("awt.useSystemAAFontSettings", "on");
@@ -94,7 +96,7 @@ public final class Main {
 		});
 	}
 
-	private static int cli(Settings s, String mode) throws Exception {
+	private static int cli(Settings s, String mode, String fpsBench) throws Exception {
 		File jar = ClientLocator.find(s.clientJar);
 		if (jar == null && !mode.equals("setup-only")) {
 			System.err.println("Client jar not found (build it with ./gradlew build, or pass --client).");
@@ -108,7 +110,7 @@ public final class Main {
 		if (mode.equals("setup-only")) {
 			return 0;
 		}
-		List<String> cmd = GameLauncher.command(s, r, jar, session);
+		List<String> cmd = GameLauncher.command(s, r, jar, session, fpsBench);
 		if (mode.equals("dry-run")) {
 			System.out.println("Client jar : " + jar);
 			System.out.println("Tweak class: " + ClientLocator.tweakClass(jar));

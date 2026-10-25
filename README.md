@@ -47,6 +47,10 @@ gradlew build
 ```
 
 ## Platform support
+
+Release archives (bundled JRE, see `docs/platforms.md`): Windows x64, Windows ARM64
+(native Java 17), macOS x64, macOS ARM64 (Zulu 8), Linux x64, Linux ARM64.
+
 windows (working well) <br>
 linux (working but some issues noticed that can be fixed by using the fps limit mod) <br>
 mac os (working with some limitations)

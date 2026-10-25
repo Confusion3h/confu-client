@@ -38,3 +38,8 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+releases/cache/
+releases/stage/
+releases/stage-*/
+uploads/

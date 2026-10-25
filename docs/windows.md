@@ -7,6 +7,8 @@ Build on Linux (Debian/Ubuntu):
 
 Output: `Confu-Client-Setup-<version>-win-x64.exe` (native x64 NSIS installer, per-user, no admin).
 
+All six platform archives, including the Windows ARM64 build (Microsoft Build of OpenJDK 17, native LWJGL2), are described in `docs/platforms.md` and produced by `scripts/build-all.sh`.
+
 It installs to `%LOCALAPPDATA%\Programs\Confu Client`:
 
 - `CONFUSION3H-launcher.jar`, `client\CONFUSION3H-Release.jar` (file names inside the install folder)
@@ -25,4 +27,5 @@ and finds the client jar in `client\` next to itself. Uninstalling removes the p
 only; worlds, settings, music and capes in `%APPDATA%\.confu` stay.
 
 Silent install / uninstall: `Setup.exe /S`, `Uninstall.exe /S`.
-x64 only; there is no ARM build.
+
+The x64 installer runs on Windows ARM under x64 emulation and says so at startup. The native ARM64 installer is `Confu-Client-Setup-<version>-win-arm64.exe` (see `docs/platforms.md`). It refuses to install on an x64 machine.

@@ -13,7 +13,9 @@ CACHE=$OUT/cache
 STAGE=$OUT/stage
 mkdir -p "$CACHE" "$OUT"
 
+export JAVA_HOME="${JAVA_HOME:-/usr/lib/jvm/temurin-8-jdk-amd64}"
 ./gradlew build -x getAssets --no-daemon -q
+scripts/build-launch-compat.sh "$ROOT/launcher/build/libs/launch-compat.jar"
 
 if ! echo "$JRE_SHA256  $CACHE/jre.zip" | sha256sum -c --status 2>/dev/null; then
   curl -fsSLo "$CACHE/jre.zip" "$JRE_URL"
@@ -22,6 +24,7 @@ fi
 
 rm -rf "$STAGE" && mkdir -p "$STAGE/client" "$STAGE/music"
 cp launcher/build/libs/CONFUSION3H-launcher-*.jar "$STAGE/CONFUSION3H-launcher.jar"
+cp launcher/build/libs/launch-compat.jar "$STAGE/launch-compat.jar"
 cp build/libs/CONFUSION3H-Release.jar "$STAGE/client/"
 cp LICENSE "$STAGE/LICENSE.txt"
 unzip -q "$CACHE/jre.zip" -d "$STAGE/jre-tmp"

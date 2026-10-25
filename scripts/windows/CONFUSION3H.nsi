@@ -1,6 +1,8 @@
-; Confu Client Windows x64 installer (per-user, no admin rights needed)
-; Built by scripts/build-windows-installer.sh; STAGE and OUTFILE are passed with -D.
-Target amd64-unicode   ; native x64 installer (x64 only, no ARM)
+; Confu Client Windows installer (per-user, no admin rights needed).
+; The stub is x64. Pass -DARM64=1 for the Windows ARM64 package: the stub
+; still runs under x64 emulation, the bundled JRE and LWJGL natives are aarch64.
+; STAGE, OUTFILE and VERSION are passed with -D.
+Target amd64-unicode
 SetCompressor /SOLID lzma
 !include "MUI2.nsh"
 !include "x64.nsh"
@@ -19,7 +21,12 @@ RequestExecutionLevel user
 BrandingText "${APPNAME} ${VERSION}"
 VIProductVersion "${VERSION}.0"
 VIAddVersionKey "ProductName" "${APPNAME}"
-VIAddVersionKey "FileDescription" "${APPNAME} installer"
+!ifdef ARM64
+  VIAddVersionKey "FileDescription" "${APPNAME} installer (Windows ARM64, native Java 17)"
+  VIAddVersionKey "ProductVersion" "${VERSION} ARM64"
+!else
+  VIAddVersionKey "FileDescription" "${APPNAME} installer (Windows x64)"
+!endif
 VIAddVersionKey "FileVersion" "${VERSION}"
 VIAddVersionKey "LegalCopyright" "GPL-3.0, based on Glide and Soar"
 
@@ -38,9 +45,19 @@ VIAddVersionKey "LegalCopyright" "GPL-3.0, based on Glide and Soar"
 
 Function .onInit
   ${IfNot} ${RunningX64}
-    MessageBox MB_ICONSTOP "${APPNAME} needs 64-bit Windows (x64)."
+    MessageBox MB_ICONSTOP "${APPNAME} needs 64-bit Windows."
     Abort
   ${EndIf}
+  !ifdef ARM64
+    ${IfNot} ${IsNativeARM64}
+      MessageBox MB_ICONSTOP "This is the Windows ARM64 build. On x64 Windows, use Confu-Client-Setup-${VERSION}-win-x64.exe."
+      Abort
+    ${EndIf}
+  !else
+    ${If} ${IsNativeARM64}
+      MessageBox MB_OK|MB_ICONINFORMATION "This is the Windows x64 build. It runs here under emulation. For a native ARM64 Java 17 runtime, use Confu-Client-Setup-${VERSION}-win-arm64.exe."
+    ${EndIf}
+  !endif
 FunctionEnd
 
 Function StartLauncher
@@ -63,8 +80,16 @@ Section "Install"
 
   SetOutPath "$INSTDIR"
   File "${STAGE}\CONFUSION3H-launcher.jar"
+  File "${STAGE}\launch-compat.jar"
   File "${STAGE}\confusion3h.ico"
   File "${STAGE}\LICENSE.txt"
+  !ifdef ARM64
+    File "${STAGE}\java8-rt.jar"
+    SetOutPath "$INSTDIR\natives\windows-arm64"
+    File "${STAGE}\natives\windows-arm64\lwjgl64.dll"
+    File "${STAGE}\natives\windows-arm64\OpenAL64.dll"
+    SetOutPath "$INSTDIR"
+  !endif
   SetOutPath "$INSTDIR\client"
   File "${STAGE}\client\CONFUSION3H-Release.jar"
   SetOutPath "$INSTDIR\jre"
@@ -107,6 +132,9 @@ Section "Uninstall"
   RMDir /r "$INSTDIR\jre"
   RMDir /r "$INSTDIR\client"
   Delete "$INSTDIR\CONFUSION3H-launcher.jar"
+  Delete "$INSTDIR\launch-compat.jar"
+  Delete "$INSTDIR\java8-rt.jar"
+  RMDir /r "$INSTDIR\natives"
   Delete "$INSTDIR\confusion3h.ico"
   Delete "$INSTDIR\LICENSE.txt"
   Delete "$INSTDIR\Uninstall.exe"

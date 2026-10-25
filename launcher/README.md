@@ -19,7 +19,12 @@ Swing/Java2D UI, JDK HTTPS, a tiny JSON reader.
    temp file, SHA-1 checked, then moved into place. Names that share a hash are fetched
    once. A library that still mismatches aborts setup; an asset that still mismatches
    after retries is logged and skipped. Adds `launchwrapper-1.12` and `asm-all-5.0.3`,
-   which vanilla 1.8.9 lacks.
+   which vanilla 1.8.9 lacks. Also `javax.annotation-api` 1.3.2, which Java 11+ no longer ships.
+   If `launch-compat.jar` sits next to the launcher, it is placed first on the game
+   classpath (Java 9+ LaunchWrapper and a Mixin 0.7 JDK-class fallback). On Java 17
+   the game also gets `--add-opens`, `--add-modules jdk.httpserver`, and
+   `-Dconfu.java8.rt` when `java8-rt.jar` is beside the launcher. ARM installs overlay
+   `natives/<os>-arm64` onto Mojang's x64 natives. See `docs/platforms.md`.
 4. Runs `net.minecraft.launchwrapper.Launch --tweakClass <tweaker>` with the client jar
    first on the classpath. Offline (default): `--userType legacy` and an offline UUID.
    Microsoft: one click opens a sign-in window (no Azure app to register), then

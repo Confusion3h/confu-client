@@ -28,6 +28,10 @@ public final class GameLauncher {
 	}
 
 	public static List<String> command(Settings s, GameInstaller.Result r, File clientJar, MicrosoftAuth.Session session) {
+		return command(s, r, clientJar, session, null);
+	}
+
+	public static List<String> command(Settings s, GameInstaller.Result r, File clientJar, MicrosoftAuth.Session session, String fpsBenchSeconds) {
 		File gameDir = new File(s.gameDir);
 		List<String> cmd = new ArrayList<String>();
 		cmd.add(javaExecutable(s));
@@ -44,14 +48,29 @@ public final class GameLauncher {
 		cmd.add("-XX:+ParallelRefProcEnabled");
 		cmd.add("-XX:+DisableExplicitGC");
 		cmd.add("-XX:-UseBiasedLocking"); // fewer safepoint pauses from revocation
+		cmd.add("-XX:+AlwaysPreTouch");
+		cmd.add("-XX:+UseStringDeduplication");
+		cmd.add("-XX:+PerfDisableSharedMem");
+		cmd.add("-XX:ReservedCodeCacheSize=256m");
+		if (javaMajor() >= 9) {
+			addModernJvm(cmd);
+		}
 		cmd.add("-Djava.library.path=" + r.nativesDir.getAbsolutePath());
 		cmd.add("-Dminecraft.launcher.brand=Confu Client");
+		if (fpsBenchSeconds != null && !fpsBenchSeconds.isEmpty()) {
+			cmd.add("-Dconfu.fpsbench=" + fpsBenchSeconds);
+		}
 		if (OS.NAME.equals("osx")) {
 			cmd.add("-XstartOnFirstThread");
 		}
 		cmd.add("-cp");
 		StringBuilder cp = new StringBuilder();
-		// client first: its embedded Mixin and LWJGL3/NanoVG classes must win
+		// compat jar first: patched Launch and the Mixin class-byte fallback
+		File compat = LaunchCompat.compatJar();
+		if (compat != null) {
+			cp.append(compat.getAbsolutePath()).append(File.pathSeparatorChar);
+		}
+		// client next: its embedded Mixin and LWJGL3/NanoVG classes must win over vanilla
 		cp.append(clientJar.getAbsolutePath());
 		for (File f : r.classpath) {
 			cp.append(File.pathSeparatorChar).append(f.getAbsolutePath());
@@ -104,6 +123,39 @@ public final class GameLauncher {
 		pump.setDaemon(true);
 		pump.start();
 		return proc;
+	}
+
+	static int javaMajor() {
+		String v = System.getProperty("java.specification.version", "1.8");
+		if (v.startsWith("1.")) {
+			return Integer.parseInt(v.substring(2));
+		}
+		int dot = v.indexOf('.');
+		return Integer.parseInt(dot < 0 ? v : v.substring(0, dot));
+	}
+
+	/** Java 9+ flags that 1.8.9 + Mixin 0.7 need. Ignored on Java 8. */
+	private static void addModernJvm(List<String> cmd) {
+		cmd.add("--add-modules");
+		cmd.add("jdk.httpserver");
+		String[] opens = {
+			"java.base/java.lang",
+			"java.base/java.lang.reflect",
+			"java.base/java.util",
+			"java.base/java.io",
+			"java.base/java.net",
+			"java.base/jdk.internal.loader",
+			"java.base/jdk.internal.misc",
+			"java.base/sun.nio.ch",
+		};
+		for (String pkg : opens) {
+			cmd.add("--add-opens");
+			cmd.add(pkg + "=ALL-UNNAMED");
+		}
+		File rt = LaunchCompat.java8Rt();
+		if (rt != null) {
+			cmd.add("-Dconfu.java8.rt=" + rt.getAbsolutePath());
+		}
 	}
 
 	/** For display: quotes args with spaces. */

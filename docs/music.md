@@ -10,8 +10,9 @@ The **Music Player** HUD mod (mod menu, off by default) has two sources:
 ## Install: nothing
 
 Playback of files already on disk is pure Java and ships inside the client jar.
-Fetching a YouTube or SoundCloud link uses yt-dlp and FFmpeg, which Windows
-downloads once into `glide/tools` (see below). JavaFX, VLC and OpenAL are not used.
+Fetching a YouTube or SoundCloud link uses yt-dlp and FFmpeg. The first time,
+on Windows, Linux and macOS, the client downloads a pinned build into `glide/tools`
+and checks SHA-256 (see below). JavaFX, VLC and OpenAL are not used.
 
 | Format | Decoder | Where it comes from |
 |---|---|---|
@@ -31,7 +32,7 @@ device, the mod shows "No audio output available" and stops.
 1. Enable **Music Player**.
 2. In its settings, turn on **Add a YouTube or SoundCloud link**. A box opens. Paste the URL and press Download.
    The same box is `.soarcmd music add` with no URL, or `.soarcmd music add <url>`.
-3. The first time on Windows, the client downloads pinned copies of `yt-dlp.exe` and `ffmpeg.exe` into `glide/tools` (next to the music folder) and checks their SHA-256. Nothing else has to be installed. Later downloads reuse those files. Spotify is unchanged and still optional.
+3. The first time, the client downloads pinned copies of yt-dlp and FFmpeg into `glide/tools` (next to the music folder) and checks their SHA-256. Nothing else has to be installed. Later downloads reuse those files. The pin is yt-dlp 2026.10.21 and the matching yt-dlp FFmpeg autobuild for Windows and Linux. macOS FFmpeg is the static gzip from `eugeneware/ffmpeg-static` b6.1.1, because that autobuild does not publish a macOS archive. Windows ARM64 uses `yt-dlp_arm64.exe` and the winarm64 FFmpeg zip. Spotify is unchanged and still optional.
 4. The file is saved as MP3 in the music folder and starts playing. Progress is a single snapshot the HUD reads; it does not do work every frame.
 
 Only `youtube.com`, `youtu.be` and `soundcloud.com` links are accepted.
