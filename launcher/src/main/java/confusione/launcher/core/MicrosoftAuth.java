@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -22,11 +21,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Microsoft login for Minecraft Java, with nothing for the user to register.
- * Uses the public Minecraft Live client ({@code 00000000402b5328}) and the
- * desktop redirect {@code https://login.live.com/oauth20_desktop.srf}. A small
- * Edge or Chrome window loads Microsoft's own page. When neither is installed,
- * the default browser opens the same page (Safari included) and the code is
- * read from that tab. The code is exchanged for Xbox Live, XSTS and a Minecraft token.
+ * Uses the public Minecraft Live client ({@code 00000000402b5328}). On macOS the
+ * device code flow shows a short code and opens Microsoft's page in the default
+ * browser, so no particular browser or Automation permission is needed. Elsewhere
+ * a small Edge or Chrome window loads Microsoft's page and the desktop redirect
+ * {@code https://login.live.com/oauth20_desktop.srf} is read back; when no such
+ * browser is installed, the default browser is used instead. The token is
+ * exchanged for Xbox Live, XSTS and a Minecraft token.
  * There is no client secret. A 16-hex {@code msClientId} in launcher.properties
  * is an optional override; an Azure UUID left over from an older build is ignored.
  */
@@ -38,6 +39,9 @@ public final class MicrosoftAuth {
 	static final String REDIRECT = "https://login.live.com/oauth20_desktop.srf";
 	private static final String AUTHORIZE = "https://login.live.com/oauth20_authorize.srf";
 	private static final String TOKEN = "https://login.live.com/oauth20_token.srf";
+	private static final String DEVICE_CODE = "https://login.live.com/oauth20_connect.srf";
+	private static final String DEVICE_GRANT = "urn:ietf:params:oauth:grant-type:device_code";
+	private static final String VERIFY_URI = "https://www.microsoft.com/link";
 	private static final String XBL = "https://user.auth.xboxlive.com/user/authenticate";
 	private static final String XSTS = "https://xsts.auth.xboxlive.com/xsts/authorize";
 	private static final String MC_LOGIN = "https://api.minecraftservices.com/authentication/login_with_xbox";
@@ -78,6 +82,10 @@ public final class MicrosoftAuth {
 	 */
 	public static Session signInWithBrowser(String clientOverride, Progress p, AtomicBoolean cancel) throws IOException {
 		String clientId = resolveClientId(clientOverride);
+		if (MacFocus.isMac()) {
+			p.stage("Waiting for Microsoft sign-in");
+			return signInWithDeviceCode(clientId, p, cancel);
+		}
 		String url = authorizeUrl(clientId);
 		File browser = findBrowser();
 		if (browser != null) {
@@ -88,6 +96,78 @@ public final class MicrosoftAuth {
 		p.log("Microsoft sign-in in the default browser");
 		p.stage("Waiting for Microsoft sign-in");
 		return signInWithDefaultBrowser(clientId, url, p, cancel);
+	}
+
+	/**
+	 * macOS sign-in: the user types a short code on Microsoft's page in the default
+	 * browser. Nothing is read from the browser, so the browser choice does not matter.
+	 */
+	private static Session signInWithDeviceCode(String clientId, Progress p, AtomicBoolean cancel) throws IOException {
+		Map<String, Object> dc;
+		try {
+			dc = Json.obj(Json.parse(Http.post(DEVICE_CODE, "application/x-www-form-urlencoded", deviceCodeBody(clientId), null)));
+		} catch (Http.StatusException e) {
+			throw new IOException(explainOauth(errorCode(e.body), e.body));
+		}
+		String userCode = Json.str(dc, "user_code");
+		String deviceCode = Json.str(dc, "device_code");
+		if (userCode == null || userCode.isEmpty() || deviceCode == null || deviceCode.isEmpty()) {
+			throw new IOException("Microsoft did not return a sign-in code. Press Sign in and try again.");
+		}
+		String uri = Json.str(dc, "verification_uri");
+		if (uri == null || !uri.startsWith("https://")) {
+			uri = VERIFY_URI;
+		}
+		long expiresIn = Json.num(dc, "expires_in");
+		long wait = Json.num(dc, "interval");
+		if (expiresIn <= 0) {
+			expiresIn = 900L;
+		}
+		if (wait <= 0) {
+			wait = 5L;
+		}
+		p.log("Enter the code " + userCode + " at " + uri + " in the browser that opens.");
+		p.stage("Enter code " + userCode + " at " + uri.replaceFirst("^https://", ""));
+		openUrl(uri, p);
+		long deadline = System.currentTimeMillis() + expiresIn * 1000L;
+		MsToken ms = null;
+		while (ms == null) {
+			if (cancel.get()) {
+				throw new IOException("Sign-in cancelled.");
+			}
+			if (System.currentTimeMillis() >= deadline) {
+				throw new IOException("The Microsoft sign-in code expired. Press Sign in to get a new code.");
+			}
+			sleep(wait * 1000L);
+			if (cancel.get()) {
+				throw new IOException("Sign-in cancelled.");
+			}
+			try {
+				ms = token(deviceTokenBody(clientId, deviceCode));
+			} catch (Http.StatusException e) {
+				String err = errorCode(e.body);
+				if ("slow_down".equals(err)) {
+					wait += 5L;
+				} else if (!"authorization_pending".equals(err)) {
+					throw new IOException(explainOauth(err, e.body));
+				}
+			}
+		}
+		return finish(ms, p);
+	}
+
+	/** Opens the page in the system default browser. If that fails the code is still on screen. */
+	private static void openUrl(String url, Progress p) {
+		try {
+			Process open = new ProcessBuilder("open", url).redirectErrorStream(true).start();
+			drain(open);
+			waitFor(open, 15);
+			if (open.exitValue() == 0) {
+				return;
+			}
+		} catch (IOException ignored) {
+		}
+		p.log("Could not open the browser. Open " + url + " yourself.");
 	}
 
 	private static Session signInWithDevtools(String clientId, String url, File browser, Progress p, AtomicBoolean cancel) throws IOException {
@@ -179,6 +259,14 @@ public final class MicrosoftAuth {
 				"refresh_token", refresh,
 				"redirect_uri", REDIRECT,
 				"scope", SCOPE);
+	}
+
+	static String deviceCodeBody(String clientId) {
+		return form("client_id", clientId, "scope", SCOPE, "response_type", "device_code");
+	}
+
+	static String deviceTokenBody(String clientId, String deviceCode) {
+		return form("client_id", clientId, "grant_type", DEVICE_GRANT, "device_code", deviceCode);
 	}
 
 	/** MBI_SSL tickets are sent as-is. The Azure {@code d=} prefix is not used. */
@@ -554,32 +642,6 @@ public final class MicrosoftAuth {
 		return requested;
 	}
 
-	private static final String TAB_SCRIPT =
-			"on pageUrl(appName)\n"
-			+ "  try\n"
-			+ "    tell application appName\n"
-			+ "      if (count of windows) is 0 then return \"\"\n"
-			+ "      repeat with w in windows\n"
-			+ "        try\n"
-			+ "          repeat with t in tabs of w\n"
-			+ "            try\n"
-			+ "              set u to URL of t as text\n"
-			+ "              if u contains \"oauth20_desktop.srf\" then return u\n"
-			+ "            end try\n"
-			+ "          end repeat\n"
-			+ "        end try\n"
-			+ "      end repeat\n"
-			+ "    end tell\n"
-			+ "  end try\n"
-			+ "  return \"\"\n"
-			+ "end pageUrl\n"
-			+ "set browsers to {\"Safari\", \"Google Chrome\", \"Microsoft Edge\", \"Brave Browser\", \"Chromium\", \"Opera\", \"Vivaldi\"}\n"
-			+ "repeat with b in browsers\n"
-			+ "  set u to pageUrl(b as text)\n"
-			+ "  if u is not \"\" then return u\n"
-			+ "end repeat\n"
-			+ "return \"\"\n";
-
 	private static final String ADDRESS_PS1 =
 			"$ErrorActionPreference = 'SilentlyContinue'\r\n"
 			+ "Add-Type -AssemblyName UIAutomationClient\r\n"
@@ -620,9 +682,6 @@ public final class MicrosoftAuth {
 	/** Same authorize URL and client id. The page opens in whatever browser the OS uses. */
 	private static Session signInWithDefaultBrowser(String clientId, String url, Progress p, AtomicBoolean cancel) throws IOException {
 		String os = System.getProperty("os.name", "").toLowerCase();
-		if (os.contains("mac")) {
-			return signInMacBrowser(clientId, url, p, cancel);
-		}
 		if (os.contains("win")) {
 			return signInWindowsBrowser(clientId, url, p, cancel);
 		}
@@ -635,28 +694,6 @@ public final class MicrosoftAuth {
 			return signInFirefox(clientId, url, firefox, p, cancel);
 		}
 		throw new IOException("Could not open the Microsoft sign-in page. No Edge, Chrome, Chromium, or Firefox was found, and the default browser cannot be read. Press Sign in to try again.");
-	}
-
-	private static Session signInMacBrowser(String clientId, String url, Progress p, AtomicBoolean cancel) throws IOException {
-		Process open = new ProcessBuilder("open", url).redirectErrorStream(true).start();
-		drain(open);
-		waitFor(open, 15);
-		if (open.exitValue() != 0) {
-			throw new IOException("Could not open the Microsoft sign-in page in the default browser. Press Sign in to try again.");
-		}
-		long deadline = System.currentTimeMillis() + 5L * 60L * 1000L;
-		while (!cancel.get() && System.currentTimeMillis() < deadline) {
-			String tab = osascript(TAB_SCRIPT);
-			Hit hit = hitFromUrl(tab == null ? null : tab.trim());
-			if (hit != null) {
-				return exchange(clientId, hit, p, cancel);
-			}
-			sleep(400);
-		}
-		if (cancel.get()) {
-			throw new IOException("Sign-in cancelled.");
-		}
-		throw new IOException("Microsoft sign-in timed out. If macOS asked to control the browser, allow Confu Client and press Sign in again.");
 	}
 
 	private static Session signInWindowsBrowser(String clientId, String url, Progress p, AtomicBoolean cancel) throws IOException {
@@ -745,6 +782,9 @@ public final class MicrosoftAuth {
 	}
 
 	private static File findBrowser() {
+		if (MacFocus.isMac()) {
+			return null;
+		}
 		String os = System.getProperty("os.name", "").toLowerCase();
 		List<File> cands = new ArrayList<File>();
 		if (os.contains("win")) {
@@ -763,22 +803,6 @@ public final class MicrosoftAuth {
 				add(cands, pf, rels[i]);
 				add(cands, pf86, rels[i]);
 				add(cands, local, rels[i]);
-			}
-		} else if (os.contains("mac")) {
-			String home = System.getProperty("user.home", "");
-			String[] apps = new String[] {
-				"Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
-				"Google Chrome.app/Contents/MacOS/Google Chrome",
-				"Brave Browser.app/Contents/MacOS/Brave Browser",
-				"Chromium.app/Contents/MacOS/Chromium",
-				"Vivaldi.app/Contents/MacOS/Vivaldi",
-				"Opera.app/Contents/MacOS/Opera"
-			};
-			for (int i = 0; i < apps.length; i++) {
-				cands.add(new File("/Applications", apps[i]));
-				if (!home.isEmpty()) {
-					cands.add(new File(new File(home, "Applications"), apps[i]));
-				}
 			}
 		}
 		for (int i = 0; i < cands.size(); i++) {
@@ -891,31 +915,6 @@ public final class MicrosoftAuth {
 			Thread.currentThread().interrupt();
 			throw new IOException("Sign-in cancelled.");
 		}
-	}
-
-	private static String osascript(String script) throws IOException {
-		ProcessBuilder pb = new ProcessBuilder("osascript", "-");
-		Process proc = pb.start();
-		OutputStream out = proc.getOutputStream();
-		out.write(script.getBytes("UTF-8"));
-		out.close();
-		String stdout = readAll(proc.getInputStream());
-		String stderr = readAll(proc.getErrorStream());
-		try {
-			if (!proc.waitFor(45, TimeUnit.SECONDS)) {
-				proc.destroyForcibly();
-				return "";
-			}
-		} catch (InterruptedException e) {
-			proc.destroyForcibly();
-			Thread.currentThread().interrupt();
-			throw new IOException("Sign-in cancelled.");
-		}
-		boolean blocked = stderr != null && (stderr.indexOf("not allowed") >= 0 || stderr.indexOf("Not authorized") >= 0 || stderr.indexOf("-1743") >= 0);
-		if (blocked && (stdout == null || stdout.trim().isEmpty())) {
-			throw new IOException("macOS blocked Confu Client from reading the sign-in page. Allow Confu Client to control the browser in System Settings, Privacy and Security, Automation, then press Sign in again.");
-		}
-		return stdout;
 	}
 
 	private static String powershell(File ps1) throws IOException {
@@ -1161,6 +1160,16 @@ public final class MicrosoftAuth {
 		if (!xbl.contains("\"TokenType\":\"JWT\"")) fail("xbl jwt");
 		Json.obj(Json.parse(xbl));
 
+		String devCode = deviceCodeBody(BUILTIN_CLIENT_ID);
+		if (!devCode.contains("response_type=device_code")) fail("device code type");
+		if (!devCode.contains("client_id=" + BUILTIN_CLIENT_ID)) fail("device code client");
+		if (!devCode.contains("scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL")) fail("device code scope");
+		if (!DEVICE_CODE.startsWith("https://login.live.com/")) fail("device code host");
+		String devPoll = deviceTokenBody(BUILTIN_CLIENT_ID, "D-code");
+		if (!devPoll.contains("grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Adevice_code")) fail("device grant");
+		if (!devPoll.contains("device_code=D-code")) fail("device code value");
+		if (!"authorization_pending".equals(errorCode("{\"error\":\"authorization_pending\"}"))) fail("pending parse");
+
 		String xsts = xstsBody("xbl-token");
 		if (!xsts.contains("\"SandboxId\":\"RETAIL\"")) fail("sandbox");
 		if (!xsts.contains("\"RelyingParty\":\"rp://api.minecraftservices.com/\"")) fail("xsts rp");
@@ -1188,6 +1197,19 @@ public final class MicrosoftAuth {
 		String lower = page.toLowerCase();
 		if (lower.contains("invalid_client") || lower.contains("client_id is invalid")) fail("live rejected the built-in client");
 		System.out.println("authorize page: " + page.length() + " bytes");
+
+		String devBody = Http.post(DEVICE_CODE, "application/x-www-form-urlencoded", deviceCodeBody(BUILTIN_CLIENT_ID), null);
+		Map<String, Object> dc = Json.obj(Json.parse(devBody));
+		String devCode = Json.str(dc, "device_code");
+		if (Json.str(dc, "user_code") == null || devCode == null) fail("device code response has no codes");
+		System.out.println("device code: verification " + Json.str(dc, "verification_uri") + ", interval " + Json.num(dc, "interval") + "s");
+		try {
+			Http.post(TOKEN, "application/x-www-form-urlencoded", deviceTokenBody(BUILTIN_CLIENT_ID, devCode), null);
+			fail("token endpoint issued a token before the user entered the code");
+		} catch (Http.StatusException e) {
+			if (!"authorization_pending".equals(errorCode(e.body))) fail("device poll: " + e.body);
+			System.out.println("device poll: authorization_pending");
+		}
 
 		try {
 			Http.post(TOKEN, "application/x-www-form-urlencoded", codeTokenBody(BUILTIN_CLIENT_ID, "not-a-real-code"), null);
