@@ -196,14 +196,53 @@ def check_bundle_files(app, arch):
         "CFBundleExecutable": "confu",
         "CFBundlePackageType": "APPL",
         "CFBundleIdentifier": "com.confu.client",
+        "CFBundleIconFile": "confusion3h",
         "LSMinimumSystemVersion": MIN_MACOS[arch],
+        "NSHighResolutionCapable": True,
     }
     for key, value in want.items():
         if info.get(key) != value:
             raise SystemExit("Info.plist %s is %r, want %r" % (key, info.get(key), value))
+    if not isinstance(info.get("NSAppleEventsUsageDescription"), str) or not info["NSAppleEventsUsageDescription"]:
+        raise SystemExit("Info.plist has no NSAppleEventsUsageDescription")
     with open(os.path.join(app, "Contents", "PkgInfo"), "rb") as fh:
         if fh.read() != b"APPL????":
             raise SystemExit("Contents/PkgInfo is not APPL????")
+
+
+def check_bundle_links(app):
+    java_link = os.path.join(app, "Contents", "MacOS", "confu-java")
+    if not os.path.islink(java_link) or os.readlink(java_link) != "../Resources/jre/bin/java":
+        raise SystemExit("Contents/MacOS/confu-java must link to ../Resources/jre/bin/java")
+    if not os.path.isfile(java_link):
+        raise SystemExit("Contents/MacOS/confu-java does not resolve to a file")
+    lib_link = os.path.join(app, "Contents", "lib")
+    if not os.path.islink(lib_link) or os.readlink(lib_link) != "Resources/jre/lib":
+        raise SystemExit("Contents/lib must link to Resources/jre/lib")
+    if not os.path.isfile(os.path.join(lib_link, "jli", "libjli.dylib")):
+        raise SystemExit("Contents/lib/jli/libjli.dylib does not resolve")
+
+
+def check_icns(app):
+    path = os.path.join(app, "Contents", "Resources", "confusion3h.icns")
+    if os.path.islink(path) or not os.path.isfile(path):
+        raise SystemExit("Contents/Resources/confusion3h.icns is missing")
+    with open(path, "rb") as fh:
+        data = fh.read()
+    if data[:4] != b"icns" or struct.unpack(">I", data[4:8])[0] != len(data):
+        raise SystemExit("confusion3h.icns has a bad header")
+    seen = set()
+    off = 8
+    while off < len(data):
+        kind = data[off:off + 4]
+        size = struct.unpack(">I", data[off + 4:off + 8])[0]
+        if size < 8 or off + size > len(data):
+            raise SystemExit("confusion3h.icns has a bad chunk at %d" % off)
+        seen.add(kind)
+        off += size
+    for need in (b"icp4", b"ic07", b"ic08", b"ic09", b"ic10"):
+        if need not in seen:
+            raise SystemExit("confusion3h.icns is missing %s" % need.decode())
 
 
 def macho_load(path):
@@ -288,6 +327,8 @@ def verify(app, arch):
     check_no_seal(app)
     check_launcher(app)
     check_bundle_files(app, arch)
+    check_bundle_links(app)
+    check_icns(app)
     check_macho_deps(app, MIN_MACOS[arch])
     print("verified %d Mach-O files, ad-hoc, no hardened runtime; bundle unsealed" % len(rows))
 
@@ -301,7 +342,8 @@ def manifest(app):
             rel_dir = ""
         mode = stat.S_IMODE(os.lstat(dirpath).st_mode)
         rows.append("dir %04o %s" % (mode, rel_dir))
-        for name in sorted(filenames):
+        linked_dirs = [d for d in dirnames if os.path.islink(os.path.join(dirpath, d))]
+        for name in sorted(filenames + linked_dirs):
             path = os.path.join(dirpath, name)
             rel = os.path.relpath(path, app)
             st = os.lstat(path)

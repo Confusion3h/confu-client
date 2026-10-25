@@ -196,6 +196,13 @@ pack_mac() {
   # GameLauncher adds it only to the game JVM.
   cp scripts/macos/confu-launcher.sh "$app/Contents/MacOS/confu"
   chmod 755 "$app/Contents/MacOS/confu"
+  # The JRE's java runs from inside Contents/MacOS, so macOS treats the bundle as
+  # the process's app: Info.plist (NSHighResolutionCapable, CFBundleIconFile) and
+  # the Dock icon come from it. Contents/lib lets the java launcher find libjli
+  # next to that path, as it does from Resources/jre/bin.
+  ln -s ../Resources/jre/bin/java "$app/Contents/MacOS/confu-java"
+  ln -s Resources/jre/lib "$app/Contents/lib"
+  python3 scripts/macos/make-icns.py branding/png/mac "$app/Contents/Resources/confusion3h.icns"
   local machoarch=x86_64
   [[ "$arm" == arm ]] && machoarch=arm64
   # Lowest macOS the bundled Mach-O files load on: 11.0 for the Temurin 8 x64 JRE,
@@ -216,9 +223,11 @@ pack_mac() {
 <key>CFBundleExecutable</key><string>confu</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>CFBundleSignature</key><string>????</string>
+<key>CFBundleIconFile</key><string>confusion3h</string>
 <key>LSMinimumSystemVersion</key><string>$min</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>NSSupportsAutomaticGraphicsSwitching</key><true/>
+<key>NSAppleEventsUsageDescription</key><string>Confu Client uses System Events to bring the Minecraft window to the front when the game starts.</string>
 </dict></plist>
 EOF
   # Sign only after Info.plist, PkgInfo, the JRE, natives and jars are in place.
