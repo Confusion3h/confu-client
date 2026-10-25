@@ -16,6 +16,7 @@ import me.eldodebug.soar.management.notification.NotificationType;
 public final class LinkGrabber {
 
 	private static volatile boolean running;
+	private static volatile boolean succeeded;
 	private static volatile float progress = -1f;
 	private static volatile String message = "";
 
@@ -53,17 +54,20 @@ public final class LinkGrabber {
 		}
 	}
 
-	public static synchronized void start(final String url) {
+	/** True when this call started a download. */
+	public static synchronized boolean start(final String url) {
 		if (running) {
-			return;
+			return false;
 		}
 		final String link = url == null ? "" : url.trim();
 		if (!supported(link) || !hostOk(link)) {
+			succeeded = false;
 			message = "Paste a YouTube or SoundCloud link";
 			Glide.getInstance().getMusicManager().toastPublic(message, NotificationType.WARNING);
-			return;
+			return false;
 		}
 		running = true;
+		succeeded = false;
 		progress = -1f;
 		message = "Starting download";
 		Thread t = new Thread(new Runnable() {
@@ -80,6 +84,24 @@ public final class LinkGrabber {
 		}, "CONFUSION3H-music-link");
 		t.setDaemon(true);
 		t.start();
+		return true;
+	}
+
+	/** One-shot. True after a download this dialog started has saved the file. */
+	public static boolean takeSuccess() {
+		if (running || !succeeded) {
+			return false;
+		}
+		succeeded = false;
+		return true;
+	}
+
+	public static void clearIdle() {
+		if (!running) {
+			message = "";
+			succeeded = false;
+			progress = -1f;
+		}
 	}
 
 	/** Percent from a yt-dlp stderr line, or null. */
@@ -148,11 +170,12 @@ public final class LinkGrabber {
 		}
 		File newest = newestAudio(music, started - 2000);
 		progress = 1f;
-		message = newest == null ? "Saved" : "Saved " + newest.getName();
+		message = "Added";
+		succeeded = true;
 		if (newest != null) {
 			Glide.getInstance().getMusicManager().playDownloaded(newest);
 		}
-		Glide.getInstance().getMusicManager().toastPublic(message, NotificationType.SUCCESS);
+		Glide.getInstance().getMusicManager().toastPublic(newest == null ? "Added" : "Saved " + newest.getName(), NotificationType.SUCCESS);
 	}
 
 	private static File newestAudio(File dir, long since) {

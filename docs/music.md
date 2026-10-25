@@ -30,7 +30,7 @@ device, the mod shows "No audio output available" and stops.
 ## Paste a YouTube or SoundCloud link
 
 1. Enable **Music Player**.
-2. In its settings, turn on **Add a YouTube or SoundCloud link**. A box opens. Paste the URL and press Download.
+2. In its settings, turn on **Add a YouTube or SoundCloud link**. A box opens. Paste the URL and press Download. When the file is saved the box shows **Added** and closes.
    The same box is `.soarcmd music add` with no URL, or `.soarcmd music add <url>`.
 3. The first time, the client downloads pinned copies of yt-dlp and FFmpeg into `glide/tools` (next to the music folder) and checks their SHA-256. Nothing else has to be installed. Later downloads reuse those files. The pin is yt-dlp 2026.10.21 and the matching yt-dlp FFmpeg autobuild for Windows and Linux. macOS FFmpeg is the static gzip from `eugeneware/ffmpeg-static` b6.1.1, because that autobuild does not publish a macOS archive. Windows ARM64 uses `yt-dlp_arm64.exe` and the winarm64 FFmpeg zip. Spotify is unchanged and still optional.
 4. The file is saved as MP3 in the music folder and starts playing. Progress is a single snapshot the HUD reads; it does not do work every frame.

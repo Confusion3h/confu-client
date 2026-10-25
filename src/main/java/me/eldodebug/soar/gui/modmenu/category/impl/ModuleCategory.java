@@ -26,6 +26,7 @@ import me.eldodebug.soar.management.mods.settings.impl.NumberSetting;
 import me.eldodebug.soar.management.mods.settings.impl.SoundSetting;
 import me.eldodebug.soar.management.mods.settings.impl.TextSetting;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
+import me.eldodebug.soar.management.nanovg.font.Font;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
 import me.eldodebug.soar.ui.comp.Comp;
@@ -142,14 +143,24 @@ public class ModuleCategory extends Category {
 				
 				nvg.drawRoundedRect(this.getX() + 15, this.getY() + offsetY, this.getWidth() - 30, 40, 8, palette.getBackgroundColor(ColorType.DARK));
 				nvg.drawRoundedRect(this.getX() + 21, this.getY() + offsetY + 6, 28, 28, 6, palette.getBackgroundColor(ColorType.NORMAL));
+				float nameX = this.getX() + 56;
+				boolean hasGear = modManager.getSettingsByMod(m) != null;
+				float textStop = this.getX() + this.getWidth() - (hasGear ? 50F : 24F);
+				String desc = m.getDescription();
+				float nameW = nvg.getTextWidth(m.getName(), 13, Fonts.MEDIUM);
+				float besideX = nameX + nameW + 5;
+				boolean beside = besideX + nvg.getTextWidth(desc, 9, Fonts.REGULAR) <= textStop;
 				if(m.isRestricted()){
-					nvg.drawText(m.getName(), this.getX() + 56, this.getY() + offsetY + 9F, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
-					nvg.drawText(m.getDescription(), this.getX() + 56 + (nvg.getTextWidth(m.getName(), 13, Fonts.MEDIUM)) + 5, this.getY() + offsetY + 12, palette.getFontColor(ColorType.NORMAL), 9, Fonts.REGULAR);
+					nvg.drawText(m.getName(), nameX, this.getY() + offsetY + 9F, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
+					nvg.drawText(clipText(nvg, desc, 9, Fonts.REGULAR, textStop - besideX), besideX, this.getY() + offsetY + 12, palette.getFontColor(ColorType.NORMAL), 9, Fonts.REGULAR);
 					nvg.drawText(LegacyIcon.INFO, this.getX() + 56, this.getY() + offsetY + 23, new Color(255, 145, 0), 9, Fonts.LEGACYICON);
 					nvg.drawText("This mod may be restricted on some servers", this.getX() + 57 + (nvg.getTextWidth(LegacyIcon.INFO, 9, Fonts.LEGACYICON)) , this.getY() + offsetY + 24, new Color(255, 145, 0), 9, Fonts.REGULAR);
+				} else if(beside) {
+					nvg.drawText(m.getName(), nameX, this.getY() + offsetY + 15F, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
+					nvg.drawText(desc, besideX, this.getY() + offsetY + 17, palette.getFontColor(ColorType.NORMAL), 9, Fonts.REGULAR);
 				} else {
-					nvg.drawText(m.getName(), this.getX() + 56, this.getY() + offsetY + 15F, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
-					nvg.drawText(m.getDescription(), this.getX() + 56 + (nvg.getTextWidth(m.getName(), 13, Fonts.MEDIUM)) + 5, this.getY() + offsetY + 17, palette.getFontColor(ColorType.NORMAL), 9, Fonts.REGULAR);
+					nvg.drawText(m.getName(), nameX, this.getY() + offsetY + 8F, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
+					nvg.drawText(clipText(nvg, desc, 9, Fonts.REGULAR, textStop - nameX), nameX, this.getY() + offsetY + 23, palette.getFontColor(ColorType.NORMAL), 9, Fonts.REGULAR);
 				}
 
 				m.getAnimation().setAnimation(m.isToggled() ? 1.0F : 0.0F, 16);
@@ -210,7 +221,15 @@ public class ModuleCategory extends Category {
 				
 				s.openAnimation.setAnimation(s.openY, 16);
 				
-				nvg.drawText(s.setting.getName(), this.getX() + offsetX + 26, this.getY() + offsetY + 15F + s.openAnimation.getValue(), palette.getFontColor(ColorType.DARK), 10, Fonts.MEDIUM);
+				float controlLocal = 122F;
+				if(s.comp instanceof CompToggleButton) {
+					controlLocal = 168F;
+				} else if(s.comp instanceof CompImageSelect || s.comp instanceof CompSoundSelect) {
+					controlLocal = 181F;
+				} else if(s.comp instanceof CompColorPicker) {
+					controlLocal = 98F;
+				}
+				drawSettingLabel(nvg, s.setting.getName(), this.getX() + offsetX + 26, this.getY() + offsetY + 15F + s.openAnimation.getValue(), controlLocal - 32F, palette.getFontColor(ColorType.DARK));
 				
 				if(s.comp instanceof CompToggleButton) {
 					
@@ -587,6 +606,66 @@ public class ModuleCategory extends Category {
 		return false;
 	}
 	
+	/** Keeps a setting name in the gap before its control. Two lines when one does not fit. */
+	private void drawSettingLabel(NanoVGManager nvg, String text, float x, float y, float maxWidth, Color color) {
+		float size = 10F;
+		if(text == null || text.isEmpty()) {
+			return;
+		}
+		if(nvg.getTextWidth(text, size, Fonts.MEDIUM) <= maxWidth) {
+			nvg.drawText(text, x, y, color, size, Fonts.MEDIUM);
+			return;
+		}
+		String[] words = text.split(" ");
+		StringBuilder first = new StringBuilder();
+		int used = 0;
+		for(int i = 0; i < words.length; i++) {
+			String trial = first.length() == 0 ? words[i] : first + " " + words[i];
+			if(nvg.getTextWidth(trial, size, Fonts.MEDIUM) <= maxWidth) {
+				if(first.length() > 0) {
+					first.append(' ');
+				}
+				first.append(words[i]);
+				used = i + 1;
+			} else {
+				break;
+			}
+		}
+		if(used == 0 || used >= words.length) {
+			nvg.drawText(clipText(nvg, text, size, Fonts.MEDIUM, maxWidth), x, y, color, size, Fonts.MEDIUM);
+			return;
+		}
+		StringBuilder second = new StringBuilder();
+		for(int i = used; i < words.length; i++) {
+			if(second.length() > 0) {
+				second.append(' ');
+			}
+			second.append(words[i]);
+		}
+		nvg.drawText(first.toString(), x, y - 7.5F, color, size, Fonts.MEDIUM);
+		nvg.drawText(clipText(nvg, second.toString(), size, Fonts.MEDIUM, maxWidth), x, y + 3.5F, color, size, Fonts.MEDIUM);
+	}
+
+	private String clipText(NanoVGManager nvg, String text, float size, Font font, float maxWidth) {
+		if(text == null || maxWidth <= 8) {
+			return "";
+		}
+		if(nvg.getTextWidth(text, size, font) <= maxWidth) {
+			return text;
+		}
+		int lo = 0;
+		int hi = text.length();
+		while(lo < hi) {
+			int mid = (lo + hi + 1) / 2;
+			if(nvg.getTextWidth(text.substring(0, mid) + "…", size, font) <= maxWidth) {
+				lo = mid;
+			} else {
+				hi = mid - 1;
+			}
+		}
+		return text.substring(0, lo) + "…";
+	}
+
 	private int getModuleSettingHeight() {
 		
 	    int oddOutput = 0;
