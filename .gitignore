@@ -43,7 +43,3 @@ releases/cache/
 releases/stage/
 releases/stage-*/
 uploads/
-
-site/node_modules/
-site/.next/
-site/out/

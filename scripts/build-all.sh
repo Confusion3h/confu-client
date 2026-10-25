@@ -119,7 +119,10 @@ convert $I/icon_16x16.png $I/icon_32x32.png $I/icon_64x64.png $I/icon_128x128.pn
   \( $I/icon_64x64.png -resize 48x48 \) -define png:exclude-chunks=all "$ARMSTAGE/confusion3h.ico"
 # java8-rt.jar is only required on the Java 17 ARM package; common_stage copied it.
 ARMEXE=$OUT/Confu-Client-Setup-$VERSION-win-arm64.exe
-makensis -V2 -DARM64=1 -DSTAGE="$ARMSTAGE" -DOUTFILE="$ARMEXE" -DVERSION="$VERSION" scripts/windows/CONFUSION3H.nsi
+makensis -V2 -DARM64=1 -DSTAGE="$ARMSTAGE" -DOUTFILE="$ARMEXE" -DVERSION="$VERSION" \
+  -DORIGINAL="Confu-Client-Setup-$VERSION-win-arm64.exe" \
+  scripts/windows/CONFUSION3H.nsi
+scripts/sign-windows.sh "$ARMEXE"
 
 # Drop java8-rt from packages that run on Java 8 (saves ~63 MB and it is unused).
 pack_linux() {

@@ -44,5 +44,9 @@ ffmpeg -loglevel error -y -f lavfi -i "sine=frequency=880:duration=5" -ac 2 -c:a
 sed 's/$/\r/' scripts/windows/music-README.txt > "$M/README.txt"
 
 EXE="$OUT/Confu-Client-Setup-$VERSION-win-x64.exe"
-makensis -V2 -DSTAGE="$STAGE" -DOUTFILE="$EXE" -DVERSION="$VERSION" scripts/windows/CONFUSION3H.nsi
+makensis -V2 -DSTAGE="$STAGE" -DOUTFILE="$EXE" -DVERSION="$VERSION" \
+  -DORIGINAL="Confu-Client-Setup-$VERSION-win-x64.exe" \
+  scripts/windows/CONFUSION3H.nsi
+# Signs only when CONFU_SIGN_PFX or CONFU_AZURE_DLIB is set. See scripts/sign-windows.sh.
+scripts/sign-windows.sh "$EXE"
 ls -l "$EXE"

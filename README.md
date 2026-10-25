@@ -5,7 +5,7 @@
 Confu Client is a Minecraft 1.8.9 client. It is a GPL-3.0 fork of
 [Glide Client](https://github.com/GlideClient/client), which is based on
 [Soar Client](https://github.com/Soar-Client/Legacy-SoarClient) by EldoDebug.
-The download page lives in `site/`.
+The download page lives in `website/`. It is static: no build step, no server of its own.
 
 ## Features
 
@@ -26,15 +26,15 @@ export JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64
 
 `scripts/build-all.sh` builds every archive into `releases/`. It also needs NSIS (`makensis`), ImageMagick (`convert`), ffmpeg, curl and unzip. The Windows x64 installer alone is `scripts/build-windows-installer.sh`.
 
-The download page:
+The download page is static HTML in `website/`. Serve the repository root so the Download links can see `releases/`:
 
 ```bash
-cd site
-npm install
-npm run dev -- -p 43123
+python3 -m http.server 4173
 ```
 
-Open http://127.0.0.1:43123.
+Open http://127.0.0.1:4173/website/ .
+
+Windows installers are signed only when a certificate is configured. `scripts/sign-windows.sh` runs after `makensis` and does nothing when `CONFU_SIGN_PFX` and `CONFU_AZURE_DLIB` are unset. See `docs/windows.md`.
 
 ## Credits
 

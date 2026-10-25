@@ -1,15 +1,23 @@
 ; Confu Client Windows installer (per-user, no admin rights needed).
 ; The stub is x64. Pass -DARM64=1 for the Windows ARM64 package: the stub
 ; still runs under x64 emulation, the bundled JRE and LWJGL natives are aarch64.
-; STAGE, OUTFILE and VERSION are passed with -D.
+; STAGE, OUTFILE, VERSION and ORIGINAL are passed with -D.
+; Compressor is LZMA solid. Do not run UPX on this stub: SmartScreen
+; treats UPX-packed unsigned installers as suspicious, and there is no
+; certificate unless scripts/sign-windows.sh is given one.
 Target amd64-unicode
 SetCompressor /SOLID lzma
+ManifestDPIAware true
+ManifestSupportedOS all
 !include "MUI2.nsh"
 !include "x64.nsh"
 
 !define APPNAME "Confu Client"
 !ifndef VERSION
   !define VERSION "0.1.0"
+!endif
+!ifndef ORIGINAL
+  !define ORIGINAL "Confu-Client-Setup-${VERSION}.exe"
 !endif
 !define UNINSTKEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
 
@@ -26,9 +34,13 @@ VIAddVersionKey "ProductName" "${APPNAME}"
   VIAddVersionKey "ProductVersion" "${VERSION} ARM64"
 !else
   VIAddVersionKey "FileDescription" "${APPNAME} installer (Windows x64)"
+  VIAddVersionKey "ProductVersion" "${VERSION}"
 !endif
 VIAddVersionKey "FileVersion" "${VERSION}"
+VIAddVersionKey "CompanyName" "Confu Client"
 VIAddVersionKey "LegalCopyright" "GPL-3.0, based on Glide and Soar"
+VIAddVersionKey "InternalName" "ConfuClientSetup"
+VIAddVersionKey "OriginalFilename" "${ORIGINAL}"
 
 !define MUI_ICON "${STAGE}\confusion3h.ico"
 !define MUI_UNICON "${STAGE}\confusion3h.ico"

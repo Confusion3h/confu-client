@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confu Client</title>
+  <meta name="description" content="Confu Client is a Minecraft 1.8.9 client. FPS mode, Microsoft sign-in, a music player, and a bundled Java runtime.">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+  <header class="nav">
+    <a class="brand" href="#top">
+      <img src="mark.svg" alt="">
+      Confu Client
+    </a>
+    <nav class="nav-links" aria-label="Page">
+      <a href="#features">Features</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#downloads">Downloads</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </header>
+
+  <main id="content">
+    <div class="wrap hero" id="top">
+      <div>
+        <p class="kicker">Minecraft 1.8.9</p>
+        <h1>Ready when you are.</h1>
+        <p class="lede">Confu Client is an FPS-first 1.8.9 client. The launcher picks a bundled Java, signs you into Microsoft or an offline name, and starts the game.</p>
+        <div class="actions">
+          <a class="play" data-download href="../releases/Confu-Client-Setup-0.1.0-win-x64.exe">Download</a>
+          <a class="ghost" href="#downloads">All platforms</a>
+        </div>
+        <p class="note" data-download-note>Windows x64 · Confu-Client-Setup-0.1.0-win-x64.exe</p>
+      </div>
+      <aside class="hero-card">
+        <img class="mark" src="mark.svg" alt="Confu Client mark">
+        <h2>Confu Client</h2>
+        <p>v0.1.0 · Minecraft 1.8.9 · GPL-3.0</p>
+        <div class="stats">
+          <div class="stat"><b>81</b><span>avg FPS after</span></div>
+          <div class="stat"><b>79–85</b><span>same scene</span></div>
+          <div class="stat"><b>6</b><span>builds</span></div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="wrap">
+      <section id="features">
+        <h2 class="section">Features</h2>
+        <p class="sub">The same client the launcher starts. FPS mode is already on. Worlds, capes and music stay in your own folder.</p>
+        <div class="grid">
+          <article class="card">
+            <h3>FPS boost preset</h3>
+            <p>On the first launch, with FPS mode already on: fast graphics, short render distance, VBOs, fewer particles, no entity shadows, vsync off. Four extra JVM flags sit on top of the existing G1 set. On the same superflat, 12 samples, llvmpipe software GL: <span class="num">78 fps average before (71–85)</span>, <span class="num">81 after (79–85)</span>. That is the safe ceiling. Chunk delay, bot removal and entity culling stay off, so real players stay on screen. A GPU will sit higher than this software-GL pass.</p>
+          </article>
+          <article class="card">
+            <h3>Microsoft login</h3>
+            <p>Sign in with Microsoft from the launcher. It uses the built-in Live desktop client. There is no Azure app to register and no extra token file to paste.</p>
+          </article>
+          <article class="card">
+            <h3>Music player</h3>
+            <p>Play a folder of WAV, MP3 or OGG, or paste a YouTube or SoundCloud link. yt-dlp and FFmpeg download themselves and are checked against a pinned SHA-256 before they run.</p>
+          </article>
+          <article class="card">
+            <h3>Custom capes</h3>
+            <p>Cosmetics, then Custom. Add a PNG and press F5 to see it. Capes stay on this machine.</p>
+          </article>
+          <article class="card">
+            <h3>ESC menu</h3>
+            <p>Escape in a world opens the vanilla Options screen, including Open Confu Client menu. Right Shift opens that menu from anywhere, including the title screen.</p>
+          </article>
+          <article class="card">
+            <h3>Singleplayer</h3>
+            <p>The 1.8.9 singleplayer list, worlds and all. The main menu is Singleplayer, Multiplayer and Settings. Disconnect returns you there without dropping the process.</p>
+          </article>
+          <article class="card">
+            <h3>Java 8, Minecraft 1.8.9</h3>
+            <p>Every archive ships a JRE. Windows x64, Linux and macOS Intel use Temurin 8. macOS Apple Silicon uses Azul Zulu 8. Windows ARM64 uses a native Microsoft Build of OpenJDK 17, with a small compatibility jar so 1.8.9 still starts. You do not install Java yourself.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="gallery">
+        <h2 class="section">Gallery</h2>
+        <p class="sub">Captured from the launcher and the game running on this build. Clips are muted and loop.</p>
+        <div class="gallery">
+          <figure class="span2">
+            <video autoplay muted loop playsinline poster="media/launcher-home.png">
+              <source src="media/launcher.webm" type="video/webm">
+              <source src="media/launcher.mp4" type="video/mp4">
+            </video>
+            <figcaption>Launcher home. The light wash is the live window, not a mock.</figcaption>
+          </figure>
+          <figure>
+            <img src="media/launcher-microsoft.png" alt="Confu Client launcher with Sign in with Microsoft" width="1000" height="620">
+            <figcaption>Microsoft tab. Sign in with Microsoft, no app setup.</figcaption>
+          </figure>
+          <figure>
+            <video autoplay muted loop playsinline poster="media/menu.png">
+              <source src="media/menu.webm" type="video/webm">
+              <source src="media/menu.mp4" type="video/mp4">
+            </video>
+            <figcaption>Main menu. The background follows the pointer.</figcaption>
+          </figure>
+          <figure>
+            <img src="media/menu.png" alt="Confu Client main menu with Singleplayer, Multiplayer and Settings" width="1100" height="630">
+            <figcaption>Singleplayer, Multiplayer, Settings.</figcaption>
+          </figure>
+          <figure>
+            <video autoplay muted loop playsinline poster="media/world.png">
+              <source src="media/world.webm" type="video/webm">
+              <source src="media/world.mp4" type="video/mp4">
+            </video>
+            <figcaption>In a world, FPS display on.</figcaption>
+          </figure>
+          <figure>
+            <img src="media/options.png" alt="Vanilla Options with Open Confu Client menu" width="1100" height="630">
+            <figcaption>Escape opens Options, with Open Confu Client menu.</figcaption>
+          </figure>
+          <figure>
+            <img src="media/client-menu.png" alt="Confu Client menu with FPS mode and Music player toggles" width="1100" height="630">
+            <figcaption>Right Shift. FPS mode, FPS display, music.</figcaption>
+          </figure>
+          <figure class="span2">
+            <img src="media/music.png" alt="Music Player module row with the description on its own line" width="1100" height="630">
+            <figcaption>Music Player. The description sits on its own line, clear of the settings gear.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="downloads">
+        <h2 class="section">Downloads</h2>
+        <p class="sub">Version 0.1.0. Sizes are the file on disk. SHA-256 is the whole archive. The links point at <code>releases/</code> beside this page, so the site is served from the repository root.</p>
+        <div class="split">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Platform</th>
+                  <th>File</th>
+                  <th>Size</th>
+                  <th>SHA-256</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-os="win-x64" data-label="Windows x64" data-file="Confu-Client-Setup-0.1.0-win-x64.exe">
+                  <td>Windows x64</td>
+                  <td><a href="../releases/Confu-Client-Setup-0.1.0-win-x64.exe">Confu-Client-Setup-0.1.0-win-x64.exe</a></td>
+                  <td data-size="win-x64">64,145,868 bytes<br>64.1 MB</td>
+                  <td class="hash" data-sha="win-x64">ffd8590137792e1df7927609d36cd42a0c1d14817a12d09fad0dde4bdadc3082</td>
+                </tr>
+                <tr data-os="win-arm64" data-label="Windows ARM64" data-file="Confu-Client-Setup-0.1.0-win-arm64.exe">
+                  <td>Windows ARM64</td>
+                  <td><a href="../releases/Confu-Client-Setup-0.1.0-win-arm64.exe">Confu-Client-Setup-0.1.0-win-arm64.exe</a></td>
+                  <td data-size="win-arm64">87,166,146 bytes<br>87.2 MB</td>
+                  <td class="hash" data-sha="win-arm64">80bcdb185bb4b00fd2511e6bf027af09388ce58194651f4af3a1adabf598d258</td>
+                </tr>
+                <tr data-os="linux-x64" data-label="Linux x64" data-file="Confu-Client-0.1.0-linux-x64.tar.gz">
+                  <td>Linux x64</td>
+                  <td><a href="../releases/Confu-Client-0.1.0-linux-x64.tar.gz">Confu-Client-0.1.0-linux-x64.tar.gz</a></td>
+                  <td>78,050,580 bytes<br>78.1 MB</td>
+                  <td class="hash">34cd7912b07474a1044996a5adafe0c861aceb574df188434399935587531c0e</td>
+                </tr>
+                <tr data-os="linux-arm64" data-label="Linux ARM64" data-file="Confu-Client-0.1.0-linux-aarch64.tar.gz">
+                  <td>Linux ARM64</td>
+                  <td><a href="../releases/Confu-Client-0.1.0-linux-aarch64.tar.gz">Confu-Client-0.1.0-linux-aarch64.tar.gz</a></td>
+                  <td>90,776,318 bytes<br>90.8 MB</td>
+                  <td class="hash">9a29b0096c6f0e2c53135439462f1366f59043b585e28a2ee1476fe6b0739430</td>
+                </tr>
+                <tr data-os="mac-x64" data-label="macOS Intel" data-file="Confu-Client-0.1.0-mac-x64.zip">
+                  <td>macOS Intel</td>
+                  <td><a href="../releases/Confu-Client-0.1.0-mac-x64.zip">Confu-Client-0.1.0-mac-x64.zip</a></td>
+                  <td>80,368,510 bytes<br>80.4 MB</td>
+                  <td class="hash">f88b31284c135b994956b88b3dabf6af2959a9f992d36ee276e48a8229c07ccc</td>
+                </tr>
+                <tr data-os="mac-arm64" data-label="macOS Apple Silicon" data-file="Confu-Client-0.1.0-mac-aarch64.zip">
+                  <td>macOS Apple Silicon</td>
+                  <td><a href="../releases/Confu-Client-0.1.0-mac-aarch64.zip">Confu-Client-0.1.0-mac-aarch64.zip</a></td>
+                  <td>76,691,383 bytes<br>76.7 MB</td>
+                  <td class="hash">f7446d16b8af315d82f1c4c64de3a06c96fc5c2f387f344482b62c69d8ee3be4</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <aside class="source" id="source">
+            <h3>Source code</h3>
+            <p>Confu Client is open source under GPL-3.0. It is a fork of Glide Client, which is based on Soar Client by EldoDebug.</p>
+            <p><a href="https://github.com/GlideClient/client">Glide Client</a><br><a href="https://github.com/Soar-Client/Legacy-SoarClient">Soar Client</a></p>
+            <a class="play" href="https://cursor.com/codebase/tonelli-gioele/CONFUSION3H">Open source</a>
+          </aside>
+        </div>
+      </section>
+
+      <section id="faq">
+        <h2 class="section">FAQ</h2>
+        <div class="faq">
+          <details open>
+            <summary>Windows says the installer is an unrecognized app</summary>
+            <p>SmartScreen shows “Windows protected your PC” because this build is unsigned. There is no Authenticode certificate on the file, so Windows cannot name a publisher it already trusts. The installer still carries a version resource (product and company name Confu Client), a DPI-aware manifest, and LZMA compression. It is not packed with UPX. On the warning, choose <strong>More info</strong>, then <strong>Run anyway</strong>.</p>
+          </details>
+          <details>
+            <summary>Which file is mine?</summary>
+            <p>The Download button matches Windows, macOS or Linux, and x64 or ARM64, from the browser. Windows ARM64 is the native Java 17 build. The Windows x64 installer also runs on ARM Windows, under emulation, and says so when it starts. Linux and macOS archives unpack and run <code>confu</code> or the app bundle. They are not .exe installers.</p>
+          </details>
+          <details>
+            <summary>Do I install Java first?</summary>
+            <p>No. Each archive includes a JRE. The game is Minecraft 1.8.9. First launch downloads the game assets into the Confu folder (<code>%APPDATA%\.confu</code> on Windows, <code>~/.confu</code> on Linux and macOS).</p>
+          </details>
+          <details>
+            <summary>Where is the FPS number from?</summary>
+            <p>One superflat world, 12 samples, before and after the four JVM flags, on llvmpipe (Mesa software OpenGL), not a discrete GPU. Average 78 before, 81 after. The preset was already at the safe graphics ceiling, so the gain is small and honest.</p>
+          </details>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Confu Client 0.1.0 · GPL-3.0 · based on Glide Client and Soar Client by EldoDebug</span>
+      <span><a href="https://cursor.com/codebase/tonelli-gioele/CONFUSION3H">Source code</a></span>
+    </div>
+  </footer>
+  <script src="site.js"></script>
+</body>
+</html>

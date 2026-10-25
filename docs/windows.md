@@ -28,4 +28,13 @@ only; worlds, settings, music and capes in `%APPDATA%\.confu` stay.
 
 Silent install / uninstall: `Setup.exe /S`, `Uninstall.exe /S`.
 
+The installer carries a VERSIONINFO block (product Confu Client, company Confu Client, original filename, file description) and a manifest that is DPI-aware and declares the supported Windows versions. The stub is compressed with NSIS LZMA solid. It is not packed with UPX. That is the useful metadata an unsigned installer can carry. Windows SmartScreen still shows "Windows protected your PC" / unrecognized app, because there is no Authenticode signature. On that dialog choose **More info**, then **Run anyway**.
+
+Signing is optional and skipped when no certificate is configured. `scripts/sign-windows.sh` runs after `makensis` for both Windows archives:
+
+- PKCS#12: `CONFU_SIGN_PFX` and `CONFU_SIGN_PASSWORD` (optional `CONFU_SIGN_TIMESTAMP`). Uses `osslsigncode` or `signtool`.
+- Azure Trusted Signing: `CONFU_AZURE_DLIB` and `CONFU_AZURE_METADATA`, plus `AZURE_TENANT_ID`, `AZURE_CLIENT_ID` and `AZURE_CLIENT_SECRET` for the dlib. Uses `signtool`.
+
+If one of those variables is set and the tool is missing, the build stops instead of publishing an unsigned file by mistake.
+
 The x64 installer runs on Windows ARM under x64 emulation and says so at startup. The native ARM64 installer is `Confu-Client-Setup-<version>-win-arm64.exe` (see `docs/platforms.md`). It refuses to install on an x64 machine.
