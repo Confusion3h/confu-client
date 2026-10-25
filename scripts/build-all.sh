@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Builds every Confu Client archive into releases/.
-# Needs: JDK 8, makensis, ImageMagick, ffmpeg, curl, unzip, tar, python3.
+# Needs: JDK 8, makensis, ImageMagick, ffmpeg, curl, unzip, tar, python3, zip.
+# macOS bundles are ad-hoc signed with rcodesign, which this script downloads.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 ROOT=$PWD
@@ -45,6 +46,22 @@ fetch "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1-os
   "$CACHE/lwjgl2-natives-osx-arm64.jar" "17c9e680c0f2bc403b32cea340b4c32ff08e4e2d192e58ba1be6ca8aff705ba2"
 fetch "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-linux-arm64/lwjgl2-natives-2.9.3-linux-arm64.jar" \
   "$CACHE/lwjgl2-natives-linux-arm64.jar" "c9fc25a6c5e40cc01d169dc8cea46d5f199a32c1d8e563661fb6c7355238fb78"
+
+# apple-codesign 0.29.0. Ad-hoc signatures only; no hardened runtime.
+ensure_rcodesign() {
+  local dest=$CACHE/rcodesign
+  if [[ ! -x "$dest" ]]; then
+    local tar=$CACHE/apple-codesign-0.29.0-x86_64-unknown-linux-musl.tar.gz
+    fetch "https://github.com/indygreg/apple-platform-rs/releases/download/apple-codesign/0.29.0/apple-codesign-0.29.0-x86_64-unknown-linux-musl.tar.gz" \
+      "$tar" "dbe85cedd8ee4217b64e9a0e4c2aef92ab8bcaaa41f20bde99781ff02e600002"
+    rm -rf "$CACHE/apple-codesign-0.29.0-x86_64-unknown-linux-musl"
+    tar -xzf "$tar" -C "$CACHE"
+    mv "$CACHE/apple-codesign-0.29.0-x86_64-unknown-linux-musl/rcodesign" "$dest"
+    chmod 755 "$dest"
+    rm -rf "$CACHE/apple-codesign-0.29.0-x86_64-unknown-linux-musl"
+  fi
+  export RCODESIGN=$dest
+}
 
 # --- unpack a JRE/JDK archive into dest/ with bin/java* at the top ---
 unpack_jre() {
@@ -174,6 +191,8 @@ pack_mac() {
   local stubarch=x64
   [[ "$arm" == arm ]] && stubarch=arm64
   scripts/macos/build-stub.sh "$stubarch" "$app/Contents/MacOS/confu"
+  local machoarch=x86_64
+  [[ "$arm" == arm ]] && machoarch=arm64
   local min=10.13
   [[ "$arm" == arm ]] && min=11.0
   cat > "$app/Contents/Info.plist" << EOF
@@ -192,11 +211,23 @@ pack_mac() {
 <key>NSSupportsAutomaticGraphicsSwitching</key><true/>
 </dict></plist>
 EOF
+  # Sign only after Info.plist, the JRE, natives and jars are in place.
+  # Nothing in the bundle is written again after this returns.
+  python3 scripts/macos/sign-app.py sign "$app" "$machoarch"
   local zip=$OUT/Confu-Client-$VERSION-$name.zip
   rm -f "$zip"
-  (cd "$stage" && zip -qr "$zip" "Confu Client.app")
-  rm -rf "$stage"
+  # -y stores symlinks as links. Info-ZIP also records the Unix mode, so the
+  # executable bit survives unzip. Do not pass -X (that drops the mode).
+  (cd "$stage" && zip -r -y -q "$zip" "Confu Client.app")
+  local check
+  check=$(mktemp -d)
+  unzip -q "$zip" -d "$check"
+  python3 scripts/macos/sign-app.py compare "$app" "$check/Confu Client.app"
+  python3 scripts/macos/sign-app.py verify "$check/Confu Client.app" "$machoarch"
+  rm -rf "$check" "$stage"
 }
+
+ensure_rcodesign
 
 pack_linux "linux-x64" "$CACHE/temurin8-linux-x64.tar.gz" ""
 pack_linux "linux-aarch64" "$CACHE/temurin8-linux-aarch64.tar.gz" linux

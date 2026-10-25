@@ -24,9 +24,9 @@ export JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64
 ./gradlew build -x getAssets
 ```
 
-`scripts/build-all.sh` builds every archive into `releases/`. It also needs NSIS (`makensis`), ImageMagick (`convert`), ffmpeg, curl and unzip. The Windows x64 installer alone is `scripts/build-windows-installer.sh`.
+`scripts/build-all.sh` builds every archive into `releases/`. It also needs NSIS (`makensis`), ImageMagick (`convert`), ffmpeg, curl, unzip and zip. The macOS bundles are ad-hoc signed with rcodesign (apple-codesign), which the script downloads. The Windows x64 installer alone is `scripts/build-windows-installer.sh`.
 
-On macOS, unzip the archive anywhere (including `~/Downloads`) and open `Confu Client.app`. The app is not notarised, so the first launch needs a right-click and **Open**.
+On macOS, unzip the archive anywhere (including `~/Downloads`) and open `Confu Client.app`. The app is ad-hoc signed, not notarised. If macOS says it is damaged, right-click the app and choose **Open**, or run `xattr -dr com.apple.quarantine "/path/Confu Client.app"`.
 
 The download page is static HTML in `website/`. Serve the repository root so the Download links can see `releases/`:
 
