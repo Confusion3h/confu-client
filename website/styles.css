@@ -118,6 +118,34 @@ img, video { max-width: 100%; display: block; }
 
 .nav-links a:hover { color: var(--text); }
 
+.lang {
+  display: inline-flex;
+  flex: none;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.lang button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: 600 12px/1 Inter, sans-serif;
+  letter-spacing: 0.12em;
+  padding: 7px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.lang button[aria-pressed="true"] {
+  background: linear-gradient(180deg, #ffffff 0%, #c8c8c8 58%, #8c8c8c 100%);
+  color: var(--ink);
+}
+
+.lang button:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 2px; }
+
 .wrap { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
 
 .hero {
@@ -380,8 +408,9 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
   .span2 { grid-column: auto; }
   .hero { padding-top: 40px; }
   .hero-card { justify-self: start; }
-  .nav { padding: 12px 16px; }
-  .nav-links { gap: 14px; }
+  .nav { flex-wrap: wrap; padding: 12px 16px; }
+  .nav-links { order: 3; flex: 1 0 100%; gap: 14px; padding-top: 8px; }
+  .lang { margin-left: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
