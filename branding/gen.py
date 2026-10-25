@@ -75,10 +75,19 @@ def main():
     render('CONFUSION3H-mark-white', 512, os.path.join(out, 'mark-white-512.png'))
     render('CONFUSION3H-app-icon', 1024, os.path.join(out, 'osx-1024.png'))
     render('CONFUSION3H-mark-mono', 512, os.path.join(out, 'mark-mono-512.png'))
+    # macOS .icns source: the same monochrome artwork as the Windows icon,
+    # one PNG per pixel size (scripts/macos/make-icns.py packs them).
+    mac = os.path.join(out, 'mac')
+    os.makedirs(mac, exist_ok=True)
+    for s in (16, 32, 64, 128, 256, 512, 1024):
+        render('CONFUSION3H-app-icon-small-mono' if s <= 32 else 'CONFUSION3H-app-icon-mono', s,
+               os.path.join(mac, f'icon_{s}.png'))
     launcher = os.path.join(HERE, '..', 'launcher', 'src', 'main', 'resources', 'confusione', 'icons')
     for s in (16, 32, 64, 128, 256):
         render('CONFUSION3H-app-icon-small-mono' if s <= 32 else 'CONFUSION3H-app-icon-mono', s,
                os.path.join(launcher, f'icon_{s}x{s}.png'))
+    # Dock image for the launcher JVM (AWT setDockIconImage), same artwork as the .icns
+    render('CONFUSION3H-app-icon-mono', 512, os.path.join(launcher, 'icon_512x512.png'))
 
 if __name__ == '__main__':
     main()
