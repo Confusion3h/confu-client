@@ -1,4 +1,17 @@
 (function () {
+  var source = document.querySelector("[data-source]");
+  var toast = document.querySelector("[data-toast]");
+  var toastTimer = 0;
+  if (source && toast) {
+    source.addEventListener("click", function () {
+      toast.hidden = false;
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(function () {
+        toast.hidden = true;
+      }, 4200);
+    });
+  }
+
   var button = document.querySelector("[data-download]");
   var note = document.querySelector("[data-download-note]");
   var cards = Array.prototype.slice.call(document.querySelectorAll("[data-os]"));

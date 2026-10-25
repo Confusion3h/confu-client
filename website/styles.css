@@ -320,7 +320,37 @@ td a:hover { color: var(--accent-hi); }
 .source { padding: 22px; }
 .source h3 { margin: 0 0 8px; font-size: 20px; letter-spacing: -0.03em; }
 .source p { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
-.source .play { min-width: 0; height: 46px; margin-top: 8px; letter-spacing: 0.08em; font-size: 13px; }
+.github {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  margin-top: 8px;
+  padding: 0 22px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #111;
+  color: var(--text);
+  font: 600 13px/1 Inter, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.github:hover { border-color: var(--accent); color: var(--accent-hi); }
+.github:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 3px; }
+
+.toast {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(124, 147, 168, 0.65);
+  background: #161616;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.toast[hidden] { display: none; }
 
 .faq { display: grid; gap: 10px; }
 
