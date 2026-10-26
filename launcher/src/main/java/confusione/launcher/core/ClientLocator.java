@@ -142,13 +142,45 @@ public final class ClientLocator {
 			if (jars == null) {
 				continue;
 			}
+			File best = null;
 			for (File j : jars) {
 				String n = j.getName();
 				if (n.startsWith("confu-modern") && n.endsWith(".jar") && !n.contains("-sources")) {
-					return j;
+					if (best == null || compareVersions(versionOf(n), versionOf(best.getName())) > 0) {
+						best = j;
+					}
 				}
+			}
+			if (best != null) {
+				return best;
 			}
 		}
 		return null;
+	}
+
+	/** "confu-modern-0.2.2.jar" to "0.2.2". */
+	static String versionOf(String jarName) {
+		String v = jarName.substring("confu-modern".length(), jarName.length() - ".jar".length());
+		return v.startsWith("-") ? v.substring(1) : v;
+	}
+
+	/** Numeric dotted compare; non-numeric parts count as 0. */
+	static int compareVersions(String a, String b) {
+		String[] x = a.split("[.\\-]"), y = b.split("[.\\-]");
+		for (int i = 0; i < Math.max(x.length, y.length); i++) {
+			int p = i < x.length ? num(x[i]) : 0, q = i < y.length ? num(y[i]) : 0;
+			if (p != q) {
+				return p < q ? -1 : 1;
+			}
+		}
+		return 0;
+	}
+
+	private static int num(String s) {
+		try {
+			return Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			return 0;
+		}
 	}
 }

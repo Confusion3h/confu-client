@@ -102,6 +102,9 @@ Section "Install"
     File "${STAGE}\natives\windows-arm64\OpenAL64.dll"
     SetOutPath "$INSTDIR"
   !endif
+  ; drop jars from earlier versions so the launcher cannot pick a stale one
+  Delete "$INSTDIR\client\confu-modern-*.jar"
+  Delete "$INSTDIR\client\CONFUSION3H-Release*.jar"
   SetOutPath "$INSTDIR\client"
   File "${STAGE}\client\CONFUSION3H-Release.jar"
   File "${STAGE}\client\confu-modern-${VERSION}.jar"
