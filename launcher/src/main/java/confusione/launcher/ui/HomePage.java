@@ -258,7 +258,7 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		java.awt.image.BufferedImage img = new java.awt.image.BufferedImage(1, 1, java.awt.image.BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = img.createGraphics();
 		FontMetrics fm = g.getFontMetrics(Theme.semibold(13f));
-		int w = 12 + 21 + 12 + fm.stringWidth("Sign in with Microsoft") + 16;
+		int w = 16 + 20 + 12 + fm.stringWidth("Sign in with Microsoft") + 22;
 		g.dispose();
 		return w;
 	}
@@ -268,30 +268,33 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		if (r.width <= 0) {
 			return;
 		}
-		RoundRectangle2D.Float rr = new RoundRectangle2D.Float(r.x, r.y, r.width, r.height, 4, 4);
+		// Pill shape, same radius rule as the Offline/Microsoft toggle chips.
+		// Inset by half a pixel so the 1px outline lands on whole device pixels.
+		RoundRectangle2D.Float rr = new RoundRectangle2D.Float(r.x + 0.5f, r.y + 0.5f, r.width - 1, r.height - 1, r.height - 1, r.height - 1);
 		g.setColor(hover ? new Color(0xF2F2F2) : Color.WHITE);
 		g.fill(rr);
 		g.setColor(new Color(0x8C8C8C));
 		g.draw(rr);
-		int s = 9;
-		int gap = 2;
-		int logo = s * 2 + gap;
-		int lx = r.x + 12;
-		int ly = r.y + (r.height - logo) / 2;
+		// Microsoft logo as vector squares (no bitmap), so it stays sharp at any scale.
+		float s = 9f;
+		float gap = 2f;
+		float logo = s * 2 + gap;
+		float lx = r.x + 16;
+		float ly = r.y + (r.height - logo) / 2f;
 		g.setColor(new Color(0xF25022));
-		g.fillRect(lx, ly, s, s);
+		g.fill(new java.awt.geom.Rectangle2D.Float(lx, ly, s, s));
 		g.setColor(new Color(0x7FBA00));
-		g.fillRect(lx + s + gap, ly, s, s);
+		g.fill(new java.awt.geom.Rectangle2D.Float(lx + s + gap, ly, s, s));
 		g.setColor(new Color(0x00A4EF));
-		g.fillRect(lx, ly + s + gap, s, s);
+		g.fill(new java.awt.geom.Rectangle2D.Float(lx, ly + s + gap, s, s));
 		g.setColor(new Color(0xFFB900));
-		g.fillRect(lx + s + gap, ly + s + gap, s, s);
+		g.fill(new java.awt.geom.Rectangle2D.Float(lx + s + gap, ly + s + gap, s, s));
 		g.setFont(Theme.semibold(13f));
 		g.setColor(new Color(0x5E5E5E));
 		FontMetrics fm = g.getFontMetrics();
 		String text = "Sign in with Microsoft";
-		int tx = lx + logo + 12;
-		int ty = r.y + (r.height + fm.getAscent() - fm.getDescent()) / 2 - 1;
+		float tx = lx + logo + 12;
+		float ty = r.y + (r.height + fm.getAscent() - fm.getDescent()) / 2f - 1;
 		g.drawString(text, tx, ty);
 	}
 
