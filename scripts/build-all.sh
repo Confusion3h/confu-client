@@ -29,7 +29,7 @@ fetch() {
 
 # aka.ms tracks the current Microsoft Build of OpenJDK 17 Windows aarch64.
 # Resolved 2026-10-25 to microsoft-jdk-17.0.20.1-windows-aarch64.zip.
-fetch "https://aka.ms/download-jdk/microsoft-jdk-17-windows-aarch64.zip" \
+fetch "https://aka.ms/download-jdk/microsoft-jdk-17.0.20.1-windows-aarch64.zip" \
   "$CACHE/msft-jdk17-win-aarch64.zip" "6872e702181fe88773a80bc3684281c111091e29e7f190ac5af06b0315f8b849"
 fetch "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u504-b01/OpenJDK8U-jre_x64_linux_hotspot_8u504b01.tar.gz" \
   "$CACHE/temurin8-linux-x64.tar.gz" "52dcd578baca1d3e449ea86768a9129c0ee04d7b22565695498353cc66940c61"
