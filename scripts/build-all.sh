@@ -15,7 +15,7 @@ mkdir -p "$CACHE" "$OUT"
 scripts/build-windows-installer.sh "$OUT"
 
 RT_SHA=26e39d266b76e579919f5c2a55b9652823109da5417bee184bac9dbc2b667f72
-RT_SRC=/usr/lib/jvm/temurin-8-jdk-amd64/jre/lib/rt.jar
+RT_SRC=${RT_SRC:-/usr/lib/jvm/temurin-8-jdk-amd64/jre/lib/rt.jar}  # override when the local JDK is a newer update
 echo "$RT_SHA  $RT_SRC" | sha256sum -c
 cp "$RT_SRC" "$CACHE/java8-rt.jar"
 
