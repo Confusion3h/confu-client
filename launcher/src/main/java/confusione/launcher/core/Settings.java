@@ -76,8 +76,8 @@ public final class Settings {
 	public String clientJar = "";     // empty: auto-detect
 	public boolean reduceMotion = false;
 	public boolean keepOpen = false;
-	/** Fetch OptiFine from optifine.net on first launch and load it. Off by default. */
-	public boolean optifine = false;
+	/** Fetch OptiFine from optifine.net on first launch and load it. On by default. */
+	public boolean optifine = true;
 	/** Microsoft account instead of the offline name. Refresh token is not stored here. */
 	public boolean microsoft = false;
 	/** "1.8.9" or "1.20.1" (Modern, Fabric). */
@@ -108,7 +108,7 @@ public final class Settings {
 		s.clientJar = p.getProperty("clientJar", s.clientJar);
 		s.reduceMotion = Boolean.parseBoolean(p.getProperty("reduceMotion", "false"));
 		s.keepOpen = Boolean.parseBoolean(p.getProperty("keepOpen", "false"));
-		s.optifine = Boolean.parseBoolean(p.getProperty("optifine", "false"));
+		s.optifine = Boolean.parseBoolean(p.getProperty("optifine", "true"));
 		s.microsoft = Boolean.parseBoolean(p.getProperty("microsoft", "false"));
 		s.msClientId = p.getProperty("msClientId", "").trim();
 		s.gameVersion = "1.20.1".equals(p.getProperty("gameVersion")) ? "1.20.1" : "1.8.9";

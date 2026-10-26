@@ -7,8 +7,10 @@
     "AbstractClientPlayerEntityMixin",
     "CameraMixin",
     "EntityMixin",
+    "GameMenuScreenAccessor",
     "GameRendererMixin",
     "InGameHudMixin",
+    "MinecraftClientMixin",
     "MouseMixin"
   ],
   "injectors": {

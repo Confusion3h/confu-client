@@ -67,7 +67,23 @@ public final class CrosshairModule extends Module {
 		matrices.pop();
 	}
 
-	private int rgb() {
+	public boolean customEnabled() {
+		return custom.enabled();
+	}
+
+	public int styleIndex() {
+		return style.getInt();
+	}
+
+	public float scaleValue() {
+		return scale.getFloat();
+	}
+
+	public float opacityValue() {
+		return opacity.getFloat();
+	}
+
+	public int rgb() {
 		return switch (color.get()) {
 			case "green" -> 0x6EE7A3;
 			case "red" -> 0xFF4D4D;

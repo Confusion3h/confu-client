@@ -155,7 +155,7 @@ public final class GameLauncher {
 					BufferedReader r = new BufferedReader(new InputStreamReader(proc.getInputStream(), StandardCharsets.UTF_8));
 					String line;
 					while ((line = r.readLine()) != null) {
-						p.log(line);
+						p.log(redactSession(line));
 					}
 				} catch (IOException ignored) {
 				}
@@ -197,6 +197,20 @@ public final class GameLauncher {
 		if (rt != null) {
 			cmd.add("-Dconfu.java8.rt=" + rt.getAbsolutePath());
 		}
+	}
+
+	/**
+	 * Vanilla 1.8.9 prints "(Session ID is token:<access token>:<uuid>)" at startup; the
+	 * launcher console and its log file must never carry the access token.
+	 */
+	public static String redactSession(String line) {
+		int i = line.indexOf("Session ID is token:");
+		if (i < 0) {
+			return line;
+		}
+		int end = line.indexOf(')', i);
+		String tail = end < 0 ? "" : line.substring(end);
+		return line.substring(0, i) + "Session ID is token:<redacted>" + tail;
 	}
 
 	/** For display: quotes args with spaces. */

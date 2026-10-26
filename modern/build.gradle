@@ -22,6 +22,14 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // NanoVG: same renderer the 1.8.9 client uses for its GUI (Minecraft 1.20.1 ships LWJGL 3.3.1 without it)
+    implementation "org.lwjgl:lwjgl-nanovg:3.3.1"
+    include "org.lwjgl:lwjgl-nanovg:3.3.1"
+    ["natives-linux", "natives-windows", "natives-macos", "natives-macos-arm64", "natives-windows-arm64", "natives-linux-arm64"].each { c ->
+        runtimeOnly "org.lwjgl:lwjgl-nanovg:3.3.1:${c}"
+        include "org.lwjgl:lwjgl-nanovg:3.3.1:${c}"
+    }
 }
 
 processResources {

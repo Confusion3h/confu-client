@@ -32,6 +32,10 @@ public final class MusicPlayerModule extends HudModule {
 		super("music_player", Category.HUD, "module.music.name", "module.music.desc", 0.5F, 0F);
 	}
 
+	public MusicPlayer player() {
+		return player;
+	}
+
 	@Override
 	protected void onEnable() {
 		player.scan(shuffle.enabled());

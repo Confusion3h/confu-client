@@ -1,0 +1,50 @@
+{
+    "blacklist": [
+        {
+            "serverip": "hypixel.net",
+            "mods": [
+                "text.freelook.name",
+                "text.hitdelayfix.name",
+                "text.rearview.name",
+                "text.targetinfo.name",
+                "text.autotext.name"
+            ]
+        },
+        {
+            "serverip": "ayormc.net",
+            "mods": [
+                "text.hitdelayfix.name",
+                "text.rearview.name",
+                "text.clientspoofer.name",
+                "text.godbridgeassist.name",
+                "text.playerpredicator.name"
+            ]
+        },
+        {
+            "serverip": "arbw.net",
+            "mods": [
+                "text.hitdelayfix.name",
+                "text.rearview.name",
+                "text.clientspoofer.name",
+                "text.godbridgeassist.name",
+                "text.playerpredicator.name"
+            ]
+        },
+        {
+            "serverip": "asrbw.club",
+            "mods": [
+                "text.hitdelayfix.name",
+                "text.rearview.name",
+                "text.clientspoofer.name",
+                "text.godbridgeassist.name",
+                "text.playerpredicator.name"
+            ]
+        },
+        {
+            "serverip": "blocksmc.com",
+            "mods": [
+                "text.hitdelayfix.name"
+            ]
+        }
+    ]
+}

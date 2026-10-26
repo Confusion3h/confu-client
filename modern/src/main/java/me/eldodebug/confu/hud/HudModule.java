@@ -35,6 +35,19 @@ public abstract class HudModule extends Module {
 		return 1F;
 	}
 
+	public float hudScale() {
+		return scale();
+	}
+
+	/** Mouse-wheel scaling in the HUD editor writes the module's "scale" setting when it has one. */
+	public void setHudScale(float value) {
+		for (me.eldodebug.confu.module.setting.Setting<?> s : settings()) {
+			if (s instanceof me.eldodebug.confu.module.setting.NumberSetting && "scale".equals(s.key())) {
+				((me.eldodebug.confu.module.setting.NumberSetting) s).set((double) value);
+			}
+		}
+	}
+
 	public float x() {
 		return x;
 	}

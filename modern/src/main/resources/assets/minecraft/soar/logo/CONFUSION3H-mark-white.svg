@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- CONFUSION3H mark (ring + swirl C). Original artwork, see docs/branding.md -->
+  <defs>
+    <linearGradient id="cg" x1="28" y1="28" x2="228" y2="228" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7C5CFF"/>
+      <stop offset="0.55" stop-color="#FF4FA3"/>
+      <stop offset="1" stop-color="#FFB547"/>
+    </linearGradient>
+  </defs>
+  <circle cx="128" cy="128" r="110" fill="none" stroke="#FFFFFF" stroke-width="16"/>
+  <path d="M 175.49 167.85 A 62 62 0 1 1 175.49 88.15 A 30 30 0 0 0 141.83 96.94" fill="none" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="128" cy="128" r="11" fill="#FFFFFF"/>
+</svg>

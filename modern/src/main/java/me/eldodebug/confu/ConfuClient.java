@@ -1,7 +1,6 @@
 package me.eldodebug.confu;
 
 import me.eldodebug.confu.config.ConfuConfig;
-import me.eldodebug.confu.gui.MenuScreen;
 import me.eldodebug.confu.lang.Lang;
 import me.eldodebug.confu.module.ModuleManager;
 import me.eldodebug.confu.module.impl.*;
@@ -78,6 +77,9 @@ public class ConfuClient implements ClientModInitializer {
 		menuKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"key.confu.menu", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, "key.categories.confu"));
 
+		// 1.8.9 GUI texts (TranslateText) follow the saved language from the first frame on
+		me.eldodebug.soar.Glide.getInstance().getLanguageManager();
+
 		ClientTickEvents.END_CLIENT_TICK.register(this::onClientTick);
 		HudRenderCallback.EVENT.register((context, tickDelta) -> modules.renderHud(context, tickDelta));
 	}
@@ -85,7 +87,7 @@ public class ConfuClient implements ClientModInitializer {
 	private void onClientTick(MinecraftClient client) {
 		while (menuKey.wasPressed()) {
 			if (client.currentScreen == null) {
-				client.setScreen(new MenuScreen());
+				client.setScreen(me.eldodebug.soar.Glide.getInstance().getModMenu());
 			}
 		}
 		modules.tick();
