@@ -80,6 +80,10 @@ mixin {
 }
 
 processResources {
+    inputs.file rootProject.file("VERSION")
+    from(rootProject.file("VERSION")) {
+        rename { "confu-version.txt" }
+    }
     inputs.files "src/main/resources"
     outputs.dir "build/classes/main"
     copy {

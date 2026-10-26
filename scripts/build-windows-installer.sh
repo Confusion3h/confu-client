@@ -6,7 +6,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 ROOT=$PWD
 OUT=${1:-/workspace/release}
-VERSION=0.1.0
+VERSION=$(cat "$ROOT/VERSION")
 JRE_URL=https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u504-b01/OpenJDK8U-jre_x64_windows_hotspot_8u504b01.zip
 JRE_SHA256=82e2cdc6693737c5998445b31f69668fa0da77c7705121053f6508ac84961123
 CACHE=$OUT/cache

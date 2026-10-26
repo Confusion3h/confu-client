@@ -7,7 +7,7 @@ cd "$(dirname "$0")/.."
 ROOT=$PWD
 export JAVA_HOME="${JAVA_HOME:-/usr/lib/jvm/temurin-8-jdk-amd64}"
 OUT=$ROOT/releases
-VERSION=0.1.0
+VERSION=$(cat "$ROOT/VERSION")
 CACHE=$OUT/cache
 mkdir -p "$CACHE" "$OUT"
 

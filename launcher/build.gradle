@@ -4,7 +4,7 @@ apply plugin: 'java'
 sourceCompatibility = targetCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 
-version = '0.1.0'
+version = rootProject.file('VERSION').text.trim()
 archivesBaseName = 'CONFUSION3H-launcher'
 
 jar {

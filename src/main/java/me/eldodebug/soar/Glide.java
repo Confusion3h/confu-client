@@ -64,7 +64,7 @@ public class Glide {
 	
 	public Glide() {
 		name = "Confu Client";
-		version = "7.2";
+		version = readVersion();
 		verIdentifier = 7201;
 	}
 	
@@ -180,6 +180,20 @@ public class Glide {
 
 	public String getName() {
 		return name;
+	}
+
+	/** The version lives in the repository's VERSION file; the build copies it to confu-version.txt. */
+	private static String readVersion() {
+		try (java.io.InputStream in = Glide.class.getResourceAsStream("/confu-version.txt")) {
+			if (in != null) {
+				String v = org.apache.commons.io.IOUtils.toString(in, "UTF-8").trim();
+				if (!v.isEmpty()) {
+					return v;
+				}
+			}
+		} catch (Exception ignored) {
+		}
+		return "dev";
 	}
 
 	public String getVersion() {return version;}
