@@ -90,15 +90,22 @@ public final class PageHost extends JComponent {
 	private void blit(Graphics g0, JComponent page, float alpha, float dy) {
 		int w = Math.max(1, getWidth());
 		int h = Math.max(1, getHeight());
-		BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		// Render the page at the device scale (2x on Retina, 1.25-2x on Java 9+ Windows),
+		// not at 1x, so text and icons stay sharp while the transition runs.
+		java.awt.geom.AffineTransform dev = ((Graphics2D) g0).getTransform();
+		double sx = Math.max(1.0, Math.abs(dev.getScaleX()));
+		double sy = Math.max(1.0, Math.abs(dev.getScaleY()));
+		BufferedImage img = new BufferedImage((int) Math.ceil(w * sx), (int) Math.ceil(h * sy), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D pg = img.createGraphics();
 		pg.setComposite(AlphaComposite.SrcOver);
+		pg.scale(sx, sy);
 		page.paint(pg);
 		pg.dispose();
 		Graphics2D g = (Graphics2D) g0.create();
 		g.setComposite(AlphaComposite.SrcOver.derive(Math.max(0f, Math.min(1f, alpha))));
 		g.translate(0, dy);
-		g.drawImage(img, 0, 0, null);
+		g.setRenderingHint(java.awt.RenderingHints.KEY_INTERPOLATION, java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.drawImage(img, 0, 0, w, h, null);
 		g.dispose();
 	}
 }
