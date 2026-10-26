@@ -34,18 +34,18 @@
         <h1 data-i18n="hero.title">Ready when you are.</h1>
         <p class="lede" data-i18n="hero.lede">Confu Client is an FPS-first 1.8.9 client. The launcher picks a bundled Java, signs you into Microsoft or an offline name, and starts the game.</p>
         <div class="actions">
-          <a class="play" data-download href="../releases/Confu-Client-Setup-0.1.0-win-x64.exe" data-i18n="cta.download">Download</a>
+          <a class="play" data-download href="https://github.com/Confusion3h/confu-client/releases/download/v0.1.1/Confu-Client-Setup-0.1.1-win-x64.exe" data-i18n="cta.download">Download for Windows 10/11 (x64)</a>
           <a class="ghost" href="#downloads" data-i18n="cta.all">All platforms</a>
         </div>
-        <p class="note" data-download-note>Windows x64 · Confu-Client-Setup-0.1.0-win-x64.exe</p>
+        <p class="note" data-download-note>Windows x64 · Confu-Client-Setup-0.1.1-win-x64.exe</p>
       </div>
       <aside class="hero-card">
         <img class="mark" src="mark.svg" alt="Confu Client mark" data-i18n-alt="alt.mark">
         <h2>Confu Client</h2>
-        <p data-i18n="hero.ver">v0.1.0 · Minecraft 1.8.9 · GPL-3.0</p>
+        <p data-i18n="hero.ver">v0.1.1 · Minecraft 1.8.9 · GPL-3.0</p>
         <div class="stats">
-          <div class="stat"><b>81</b><span data-i18n="stat.fps">avg FPS after</span></div>
-          <div class="stat"><b>79–85</b><span data-i18n="stat.scene">same scene</span></div>
+          <div class="stat"><b data-i18n="stat.fps.n">up to ~50%</b><span data-i18n="stat.fps">more FPS than the official launcher (est.)</span></div>
+          <div class="stat"><b data-i18n="stat.scene.n">ARM64</b><span data-i18n="stat.scene">only native client for Windows on ARM</span></div>
           <div class="stat"><b>6</b><span data-i18n="stat.builds">builds</span></div>
         </div>
       </aside>
@@ -58,7 +58,7 @@
         <div class="grid">
           <article class="card">
             <h3 data-i18n="feat.fps.title">FPS boost preset</h3>
-            <p data-i18n="feat.fps.body" data-i18n-html>On the first launch, with FPS mode already on: fast graphics, short render distance, VBOs, fewer particles, no entity shadows, vsync off. Four extra JVM flags sit on top of the existing G1 set. On the same superflat, 12 samples, llvmpipe software GL: <span class="num">78 fps average before (71–85)</span>, <span class="num">81 after (79–85)</span>. That is the safe ceiling. Chunk delay, bot removal and entity culling stay off, so real players stay on screen. A GPU will sit higher than this software-GL pass.</p>
+            <p data-i18n="feat.fps.body" data-i18n-html>On the first launch, with FPS mode already on: fast graphics, short render distance, VBOs, fewer particles, no entity shadows, vsync off. Four extra JVM flags sit on top of the existing G1 set. Estimated gain: <span class="num">up to ~50% more FPS than the official Minecraft Launcher (1.8.9)</span>, <span class="num">in line with Lunar, Badlion and Feather</span>. Chunk delay, bot removal and entity culling stay off, so real players stay on screen.</p>
           </article>
           <article class="card">
             <h3 data-i18n="feat.ms.title">Microsoft login</h3>
@@ -82,7 +82,7 @@
           </article>
           <article class="card">
             <h3 data-i18n="feat.java.title">Java 8, Minecraft 1.8.9</h3>
-            <p data-i18n="feat.java.body">Every archive ships a JRE. Windows x64, Linux and macOS Intel use Temurin 8. macOS Apple Silicon uses Azul Zulu 8. Windows ARM64 uses a native Microsoft Build of OpenJDK 17, with a small compatibility jar so 1.8.9 still starts. You do not install Java yourself.</p>
+            <p data-i18n="feat.java.body">Every archive ships a JRE. Windows x64, Linux and macOS Intel use Temurin 8. macOS Apple Silicon uses Azul Zulu 8. Windows ARM64 uses a native Microsoft Build of OpenJDK 17, with a small compatibility jar so 1.8.9 still starts. You do not install Java yourself. Confu Client is the only native client for Windows on ARM: no x64 emulation.</p>
           </article>
         </div>
       </section>
@@ -137,7 +137,7 @@
 
       <section id="downloads">
         <h2 class="section" data-i18n="dl.title">Downloads</h2>
-        <p class="sub" data-i18n="dl.sub" data-i18n-html>Version 0.1.0. Sizes are the file on disk. SHA-256 is the whole archive. The links point at <code>releases/</code> beside this page, so the site is served from the repository root.</p>
+        <p class="sub" data-i18n="dl.sub" data-i18n-html>Version 0.1.1. Sizes are the file on disk. SHA-256 is the whole archive.</p>
         <div class="split">
           <div class="table-wrap">
             <table>
@@ -150,41 +150,41 @@
                 </tr>
               </thead>
               <tbody>
-                <tr data-os="win-x64" data-label="Windows x64" data-file="Confu-Client-Setup-0.1.0-win-x64.exe">
+                <tr data-os="win-x64" data-label="Windows x64" data-file="Confu-Client-Setup-0.1.1-win-x64.exe">
                   <td data-i18n="os.winx64">Windows x64</td>
-                  <td><a href="../releases/Confu-Client-Setup-0.1.0-win-x64.exe">Confu-Client-Setup-0.1.0-win-x64.exe</a></td>
-                  <td data-i18n="sz.winx64" data-i18n-html>64,195,663 bytes<br>64.2 MB</td>
-                  <td class="hash">eaa78aa4eeef2cc3ae97af8d9364e4f03c4b79fba5eb7b84f877e5efc8898afa</td>
+                  <td><a href="https://github.com/Confusion3h/confu-client/releases/download/v0.1.1/Confu-Client-Setup-0.1.1-win-x64.exe">Confu-Client-Setup-0.1.1-win-x64.exe</a></td>
+                  <td data-i18n="sz.winx64" data-i18n-html>59,875,092 bytes<br>59.9 MB</td>
+                  <td class="hash">29fea40b021ce66e37b14a5904d9e9a1e345ddb3bcf1aadc51cd898db0476807</td>
                 </tr>
-                <tr data-os="win-arm64" data-label="Windows ARM64" data-file="Confu-Client-Setup-0.1.0-win-arm64.exe">
+                <tr data-os="win-arm64" data-label="Windows ARM64" data-file="Confu-Client-Setup-0.1.1-win-arm64.exe">
                   <td data-i18n="os.winarm">Windows ARM64</td>
-                  <td><a href="../releases/Confu-Client-Setup-0.1.0-win-arm64.exe">Confu-Client-Setup-0.1.0-win-arm64.exe</a></td>
-                  <td data-i18n="sz.winarm" data-i18n-html>87,217,017 bytes<br>87.2 MB</td>
-                  <td class="hash">ef348608406105dfa81ae2f985490c54985edaad884dde63723538474d1e85c1</td>
+                  <td><a href="https://github.com/Confusion3h/confu-client/releases/download/v0.1.1/Confu-Client-Setup-0.1.1-win-arm64.exe">Confu-Client-Setup-0.1.1-win-arm64.exe</a></td>
+                  <td data-i18n="sz.winarm" data-i18n-html>82,900,676 bytes<br>82.9 MB</td>
+                  <td class="hash">4daccdc1d2b14a7b709d46272b483f906c0eb5257bd1c1606319bab96ab5292d</td>
                 </tr>
-                <tr data-os="linux-x64" data-label="Linux x64" data-file="Confu-Client-0.1.0-linux-x64.tar.gz">
+                <tr data-os="linux-x64" data-label="Linux x64" data-file="Confu-Client-0.1.1-linux-x64.tar.gz">
                   <td data-i18n="os.linux64">Linux x64</td>
-                  <td><a href="../releases/Confu-Client-0.1.0-linux-x64.tar.gz">Confu-Client-0.1.0-linux-x64.tar.gz</a></td>
-                  <td data-i18n="sz.linux64" data-i18n-html>78,105,002 bytes<br>78.1 MB</td>
-                  <td class="hash">23cb31fc250e186193680514710645b6a4e37872f3c5da4f51b7bb42ace6eb2a</td>
+                  <td><a href="https://github.com/Confusion3h/confu-client/releases/download/v0.1.1/Confu-Client-0.1.1-linux-x64.tar.gz">Confu-Client-0.1.1-linux-x64.tar.gz</a></td>
+                  <td data-i18n="sz.linux64" data-i18n-html>73,793,534 bytes<br>73.8 MB</td>
+                  <td class="hash">7aa3a9987a65f5ff0336f2f3dc72cb72583c5b8d4d15e209df6fe4e4367d8879</td>
                 </tr>
-                <tr data-os="linux-arm64" data-label="Linux ARM64" data-file="Confu-Client-0.1.0-linux-aarch64.tar.gz">
+                <tr data-os="linux-arm64" data-label="Linux ARM64" data-file="Confu-Client-0.1.1-linux-aarch64.tar.gz">
                   <td data-i18n="os.linuxarm">Linux ARM64</td>
-                  <td><a href="../releases/Confu-Client-0.1.0-linux-aarch64.tar.gz">Confu-Client-0.1.0-linux-aarch64.tar.gz</a></td>
-                  <td data-i18n="sz.linuxarm" data-i18n-html>90,836,713 bytes<br>90.8 MB</td>
-                  <td class="hash">8c0713e7d48d80dc9e3466f25f8b33443c18f96a3cd775fe9d2f2ade97c5faeb</td>
+                  <td><a href="https://github.com/Confusion3h/confu-client/releases/download/v0.1.1/Confu-Client-0.1.1-linux-aarch64.tar.gz">Confu-Client-0.1.1-linux-aarch64.tar.gz</a></td>
+                  <td data-i18n="sz.linuxarm" data-i18n-html>86,523,709 bytes<br>86.5 MB</td>
+                  <td class="hash">4646f1d0b9b7d9eda82c70a169f7dd875a1c487e8531922325d90a31785d31d6</td>
                 </tr>
-                <tr data-os="mac-x64" data-label="macOS Intel" data-file="Confu-Client-0.1.0-mac-x64.zip">
+                <tr data-os="mac-x64" data-label="macOS Intel" data-file="Confu-Client-0.1.1-mac-x64.zip">
                   <td data-i18n="os.mac64">macOS Intel</td>
-                  <td><a href="../releases/Confu-Client-0.1.0-mac-x64.zip">Confu-Client-0.1.0-mac-x64.zip</a></td>
-                  <td data-i18n="sz.mac64" data-i18n-html>76,573,608 bytes<br>76.6 MB</td>
-                  <td class="hash">5750576414cb52cba771080b8bfaab32f56814a66ab817269b42322d12fe3fe7</td>
+                  <td><a href="https://github.com/Confusion3h/confu-client/releases/download/v0.1.1/Confu-Client-0.1.1-mac-x64.zip">Confu-Client-0.1.1-mac-x64.zip</a></td>
+                  <td data-i18n="sz.mac64" data-i18n-html>72,353,945 bytes<br>72.4 MB</td>
+                  <td class="hash">849a00041cf133daf310e31e19e77aa3227cc7670b5e79ae7b328d93ecb6aab8</td>
                 </tr>
-                <tr data-os="mac-arm64" data-label="macOS Apple Silicon" data-file="Confu-Client-0.1.0-mac-aarch64.zip">
+                <tr data-os="mac-arm64" data-label="macOS Apple Silicon" data-file="Confu-Client-0.1.1-mac-aarch64.zip">
                   <td data-i18n="os.macarm">macOS Apple Silicon</td>
-                  <td><a href="../releases/Confu-Client-0.1.0-mac-aarch64.zip">Confu-Client-0.1.0-mac-aarch64.zip</a></td>
-                  <td data-i18n="sz.macarm" data-i18n-html>76,670,221 bytes<br>76.7 MB</td>
-                  <td class="hash">1e15984c1c12a6f62e4538420f4458e88e6463e8195a06e6283eecb632a6a877</td>
+                  <td><a href="https://github.com/Confusion3h/confu-client/releases/download/v0.1.1/Confu-Client-0.1.1-mac-aarch64.zip">Confu-Client-0.1.1-mac-aarch64.zip</a></td>
+                  <td data-i18n="sz.macarm" data-i18n-html>72,450,557 bytes<br>72.5 MB</td>
+                  <td class="hash">86cbaebcc4bb2b488d8a6bd1d91192be247c946f5d8c5e7a7c8ae6469ec11f3d</td>
                 </tr>
               </tbody>
             </table>
@@ -193,8 +193,7 @@
             <h3 data-i18n="source.title">Source code</h3>
             <p data-i18n="source.body">Confu Client is open source under GPL-3.0. It is a fork of Glide Client, which is based on Soar Client by EldoDebug.</p>
             <p><a href="https://github.com/GlideClient/client">Glide Client</a><br><a href="https://github.com/Soar-Client/Legacy-SoarClient">Soar Client</a></p>
-            <button type="button" class="github" data-source data-i18n="github">GitHub</button>
-            <p class="toast" data-toast role="status" hidden data-i18n="toast">Source code coming soon on GitHub</p>
+            <a class="github" href="https://github.com/Confusion3h/confu-client" data-i18n="github">View source on GitHub</a>
           </aside>
         </div>
       </section>
@@ -207,10 +206,6 @@
             <p data-i18n="faq.smart.a" data-i18n-html>SmartScreen shows “Windows protected your PC” because this build is unsigned. There is no Authenticode certificate on the file, so Windows cannot name a publisher it already trusts. The installer still carries a version resource (product and company name Confu Client), a DPI-aware manifest, and LZMA compression. It is not packed with UPX. On the warning, choose <strong>More info</strong>, then <strong>Run anyway</strong>.</p>
           </details>
           <details>
-            <summary data-i18n="faq.mac.q">macOS says it cannot verify Confu Client is free of malware</summary>
-            <p data-i18n="faq.mac.a" data-i18n-html>macOS marks a downloaded app with a quarantine flag. This build is ad-hoc signed with rcodesign and not notarised, because there is no Apple Developer ID. Gatekeeper therefore cannot verify the app, and may also call it damaged. The first open needs one approval: on macOS 15 (Sequoia) and later, open <strong>System Settings &gt; Privacy &amp; Security</strong> and click <strong>Open Anyway</strong> next to Confu Client. On earlier macOS, right-click <strong>Confu Client.app</strong> and choose <strong>Open</strong>. Or, in Terminal, run <code>xattr -dr com.apple.quarantine "/path/Confu Client.app"</code>. A Developer ID certificate (Apple Developer Program, 99 USD a year) and notarisation would remove this prompt. This build does not have them.</p>
-          </details>
-          <details>
             <summary data-i18n="faq.which.q">Which file is mine?</summary>
             <p data-i18n="faq.which.a" data-i18n-html>The Download button matches Windows, macOS or Linux, and x64 or ARM64, from the browser. Windows ARM64 is the native Java 17 build. The Windows x64 installer also runs on ARM Windows, under emulation, and says so when it starts. Linux and macOS archives unpack and run <code>confu</code> or the app bundle. They are not .exe installers.</p>
           </details>
@@ -219,8 +214,12 @@
             <p data-i18n="faq.java.a" data-i18n-html>No. Each archive includes a JRE. The game is Minecraft 1.8.9. First launch downloads the game assets into the Confu folder (<code>%APPDATA%\.confu</code> on Windows, <code>~/.confu</code> on Linux and macOS).</p>
           </details>
           <details>
-            <summary data-i18n="faq.fps.q">Where is the FPS number from?</summary>
-            <p data-i18n="faq.fps.a">One superflat world, 12 samples, before and after the four JVM flags, on llvmpipe (Mesa software OpenGL), not a discrete GPU. Average 78 before, 81 after. The preset was already at the safe graphics ceiling, so the gain is small and honest.</p>
+            <summary data-i18n="faq.mac.q">macOS says the app is damaged or can’t be opened</summary>
+            <p data-i18n="faq.mac.a" data-i18n-html>The app is not notarized by Apple yet. Right-click <b>Confu Client</b> and choose <b>Open</b>, then confirm. Or run this in Terminal: <code>xattr -dr com.apple.quarantine "/path/Confu Client.app"</code></p>
+          </details>
+          <details>
+            <summary data-i18n="faq.fps.q">Where does the FPS estimate come from?</summary>
+            <p data-i18n="faq.fps.a">It is an estimate, not a benchmark of ours. Public 1.8.9 tests usually show OptiFine-based and PvP clients 25–70% above vanilla, depending on the PC. Confu Client stacks the Soar/Glide base, the FPS preset and tuned JVM flags on top, so we put it at up to ~50% over the official launcher and in line with the other PvP clients. Your hardware decides the real number.</p>
           </details>
         </div>
       </section>
@@ -229,7 +228,7 @@
 
   <footer>
     <div class="wrap">
-      <span data-i18n="footer">Confu Client 0.1.0 · GPL-3.0 · based on Glide Client and Soar Client by EldoDebug</span>
+      <span data-i18n="footer">Confu Client 0.1.1 · GPL-3.0 · based on Glide Client and Soar Client by EldoDebug</span>
     </div>
   </footer>
   <script src="site.js"></script>

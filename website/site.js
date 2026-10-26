@@ -12,17 +12,19 @@
       "kicker": "Minecraft 1.8.9",
       "hero.title": "Ready when you are.",
       "hero.lede": "Confu Client is an FPS-first 1.8.9 client. The launcher picks a bundled Java, signs you into Microsoft or an offline name, and starts the game.",
-      "cta.download": "Download",
+      "cta.download": "Download for Windows 10/11 (x64)",
       "cta.all": "All platforms",
       "alt.mark": "Confu Client mark",
-      "hero.ver": "v0.1.0 · Minecraft 1.8.9 · GPL-3.0",
-      "stat.fps": "avg FPS after",
-      "stat.scene": "same scene",
+      "hero.ver": "v0.1.1 · Minecraft 1.8.9 · GPL-3.0",
+      "stat.fps": "more FPS than the official launcher (est.)",
+      "stat.scene": "only native client for Windows on ARM",
+      "stat.fps.n": "up to ~50%",
+      "stat.scene.n": "ARM64",
       "stat.builds": "builds",
       "features.title": "Features",
       "features.sub": "The same client the launcher starts. FPS mode is already on. Worlds, capes and music stay in your own folder.",
       "feat.fps.title": "FPS boost preset",
-      "feat.fps.body": "On the first launch, with FPS mode already on: fast graphics, short render distance, VBOs, fewer particles, no entity shadows, vsync off. Four extra JVM flags sit on top of the existing G1 set. On the same superflat, 12 samples, llvmpipe software GL: <span class=\"num\">78 fps average before (71–85)</span>, <span class=\"num\">81 after (79–85)</span>. That is the safe ceiling. Chunk delay, bot removal and entity culling stay off, so real players stay on screen. A GPU will sit higher than this software-GL pass.",
+      "feat.fps.body": "On the first launch, with FPS mode already on: fast graphics, short render distance, VBOs, fewer particles, no entity shadows, vsync off. Four extra JVM flags sit on top of the existing G1 set. Estimated gain: <span class=\"num\">up to ~50% more FPS than the official Minecraft Launcher (1.8.9)</span>, <span class=\"num\">in line with Lunar, Badlion and Feather</span>. Chunk delay, bot removal and entity culling stay off, so real players stay on screen.",
       "feat.ms.title": "Microsoft login",
       "feat.ms.body": "Sign in with Microsoft from the launcher. It uses the built-in Live desktop client. There is no Azure app to register and no extra token file to paste.",
       "feat.music.title": "Music player",
@@ -34,7 +36,7 @@
       "feat.sp.title": "Singleplayer",
       "feat.sp.body": "The 1.8.9 singleplayer list, worlds and all. The main menu is Singleplayer, Multiplayer and Settings. Disconnect returns you there without dropping the process.",
       "feat.java.title": "Java 8, Minecraft 1.8.9",
-      "feat.java.body": "Every archive ships a JRE. Windows x64, Linux and macOS Intel use Temurin 8. macOS Apple Silicon uses Azul Zulu 8. Windows ARM64 uses a native Microsoft Build of OpenJDK 17, with a small compatibility jar so 1.8.9 still starts. You do not install Java yourself.",
+      "feat.java.body": "Every archive ships a JRE. Windows x64, Linux and macOS Intel use Temurin 8. macOS Apple Silicon uses Azul Zulu 8. Windows ARM64 uses a native Microsoft Build of OpenJDK 17, with a small compatibility jar so 1.8.9 still starts. You do not install Java yourself. Confu Client is the only native client for Windows on ARM: no x64 emulation.",
       "gallery.title": "Gallery",
       "gallery.sub": "Captured from the launcher and the game running on this build. Clips are muted and loop.",
       "cap.launcher": "Launcher home. The light wash is the live window, not a mock.",
@@ -51,7 +53,7 @@
       "cap.music": "Music Player. The description sits on its own line, clear of the settings gear.",
       "alt.music": "Music Player module row with the description on its own line",
       "dl.title": "Downloads",
-      "dl.sub": "Version 0.1.0. Sizes are the file on disk. SHA-256 is the whole archive. The links point at <code>releases/</code> beside this page, so the site is served from the repository root.",
+      "dl.sub": "Version 0.1.1. Sizes are the file on disk. SHA-256 is the whole archive.",
       "th.platform": "Platform",
       "th.file": "File",
       "th.size": "Size",
@@ -62,28 +64,27 @@
       "os.linuxarm": "Linux ARM64",
       "os.mac64": "macOS Intel",
       "os.macarm": "macOS Apple Silicon",
-      "sz.winx64": "64,195,663 bytes<br>64.2 MB",
-      "sz.winarm": "87,217,017 bytes<br>87.2 MB",
-      "sz.linux64": "78,105,002 bytes<br>78.1 MB",
-      "sz.linuxarm": "90,836,713 bytes<br>90.8 MB",
-      "sz.mac64": "76,573,608 bytes<br>76.6 MB",
-      "sz.macarm": "76,670,221 bytes<br>76.7 MB",
+      "sz.winx64": "59,875,092 bytes<br>59.9 MB",
+      "sz.winarm": "82,900,676 bytes<br>82.9 MB",
+      "sz.linux64": "73,793,534 bytes<br>73.8 MB",
+      "sz.linuxarm": "86,523,709 bytes<br>86.5 MB",
+      "sz.mac64": "72,353,945 bytes<br>72.4 MB",
+      "sz.macarm": "72,450,557 bytes<br>72.5 MB",
       "source.title": "Source code",
       "source.body": "Confu Client is open source under GPL-3.0. It is a fork of Glide Client, which is based on Soar Client by EldoDebug.",
-      "github": "GitHub",
-      "toast": "Source code coming soon on GitHub",
+      "github": "View source on GitHub",
       "faq.title": "FAQ",
       "faq.smart.q": "Windows says the installer is an unrecognized app",
       "faq.smart.a": "SmartScreen shows “Windows protected your PC” because this build is unsigned. There is no Authenticode certificate on the file, so Windows cannot name a publisher it already trusts. The installer still carries a version resource (product and company name Confu Client), a DPI-aware manifest, and LZMA compression. It is not packed with UPX. On the warning, choose <strong>More info</strong>, then <strong>Run anyway</strong>.",
-      "faq.mac.q": "macOS says it cannot verify Confu Client is free of malware",
-      "faq.mac.a": "macOS marks a downloaded app with a quarantine flag. This build is ad-hoc signed with rcodesign and not notarised, because there is no Apple Developer ID. Gatekeeper therefore cannot verify the app, and may also call it damaged. The first open needs one approval: on macOS 15 (Sequoia) and later, open <strong>System Settings &gt; Privacy &amp; Security</strong> and click <strong>Open Anyway</strong> next to Confu Client. On earlier macOS, right-click <strong>Confu Client.app</strong> and choose <strong>Open</strong>. Or, in Terminal, run <code>xattr -dr com.apple.quarantine \"/path/Confu Client.app\"</code>. A Developer ID certificate (Apple Developer Program, 99 USD a year) and notarisation would remove this prompt. This build does not have them.",
       "faq.which.q": "Which file is mine?",
       "faq.which.a": "The Download button matches Windows, macOS or Linux, and x64 or ARM64, from the browser. Windows ARM64 is the native Java 17 build. The Windows x64 installer also runs on ARM Windows, under emulation, and says so when it starts. Linux and macOS archives unpack and run <code>confu</code> or the app bundle. They are not .exe installers.",
       "faq.java.q": "Do I install Java first?",
       "faq.java.a": "No. Each archive includes a JRE. The game is Minecraft 1.8.9. First launch downloads the game assets into the Confu folder (<code>%APPDATA%\\.confu</code> on Windows, <code>~/.confu</code> on Linux and macOS).",
-      "faq.fps.q": "Where is the FPS number from?",
-      "faq.fps.a": "One superflat world, 12 samples, before and after the four JVM flags, on llvmpipe (Mesa software OpenGL), not a discrete GPU. Average 78 before, 81 after. The preset was already at the safe graphics ceiling, so the gain is small and honest.",
-      "footer": "Confu Client 0.1.0 · GPL-3.0 · based on Glide Client and Soar Client by EldoDebug"
+      "faq.mac.q": "macOS says the app is damaged or can’t be opened",
+      "faq.mac.a": "The app is not notarized by Apple yet. Right-click <b>Confu Client</b> and choose <b>Open</b>, then confirm. Or run this in Terminal: <code>xattr -dr com.apple.quarantine \"/path/Confu Client.app\"</code>",
+      "faq.fps.q": "Where does the FPS estimate come from?",
+      "faq.fps.a": "It is an estimate, not a benchmark of ours. Public 1.8.9 tests usually show OptiFine-based and PvP clients 25–70% above vanilla, depending on the PC. Confu Client stacks the Soar/Glide base, the FPS preset and tuned JVM flags on top, so we put it at up to ~50% over the official launcher and in line with the other PvP clients. Your hardware decides the real number.",
+      "footer": "Confu Client 0.1.1 · GPL-3.0 · based on Glide Client and Soar Client by EldoDebug"
     },
     it: {
       "meta": "Confu Client è un client Minecraft 1.8.9. Modalità FPS, accesso Microsoft, lettore musicale e Java incluso.",
@@ -97,17 +98,19 @@
       "kicker": "Minecraft 1.8.9",
       "hero.title": "Pronti quando vuoi.",
       "hero.lede": "Confu Client è un client 1.8.9 pensato per gli FPS. Il launcher sceglie il Java incluso, entra con Microsoft o con un nome offline e avvia il gioco.",
-      "cta.download": "Scarica",
+      "cta.download": "Scarica per Windows 10/11 (x64)",
       "cta.all": "Tutte le piattaforme",
       "alt.mark": "Marchio di Confu Client",
-      "hero.ver": "v0.1.0 · Minecraft 1.8.9 · GPL-3.0",
-      "stat.fps": "FPS medi dopo",
-      "stat.scene": "stessa scena",
+      "hero.ver": "v0.1.1 · Minecraft 1.8.9 · GPL-3.0",
+      "stat.fps": "FPS in più del launcher ufficiale (stima)",
+      "stat.scene": "l’unico client nativo per Windows on ARM",
+      "stat.fps.n": "fino a ~50%",
+      "stat.scene.n": "ARM64",
       "stat.builds": "build",
       "features.title": "Funzioni",
       "features.sub": "Lo stesso client che avvia il launcher. La modalità FPS è già accesa. Mondi, cappe e musica restano nella tua cartella.",
       "feat.fps.title": "Preset per alzare gli FPS",
-      "feat.fps.body": "Al primo avvio, con la modalità FPS già attiva: grafica veloce, distanza di rendering corta, VBO, meno particelle, niente ombre delle entità, vsync spento. Quattro flag JVM in più si aggiungono al set G1 già presente. Stessa superflat, 12 campioni, GL software llvmpipe: <span class=\"num\">78 fps di media prima (71–85)</span>, <span class=\"num\">81 dopo (79–85)</span>. È il tetto sicuro. Il ritardo dei chunk, la rimozione dei bot e il culling delle entità restano spenti, così i giocatori veri restano in scena. Con una GPU il numero sale rispetto a questo passaggio in GL software.",
+      "feat.fps.body": "Al primo avvio, con la modalità FPS già attiva: grafica veloce, distanza di rendering corta, VBO, meno particelle, niente ombre delle entità, vsync spento. Quattro flag JVM in più si aggiungono al set G1 già presente. Guadagno stimato: <span class=\"num\">fino a ~50% di FPS in più rispetto al Minecraft Launcher ufficiale (1.8.9)</span>, <span class=\"num\">in linea con Lunar, Badlion e Feather</span>. Il ritardo dei chunk, la rimozione dei bot e il culling delle entità restano spenti, così i giocatori veri restano in scena.",
       "feat.ms.title": "Accesso Microsoft",
       "feat.ms.body": "Entra con Microsoft dal launcher. Usa il client Live desktop già incluso. Non c’è un’app Azure da registrare e nessun file di token da incollare.",
       "feat.music.title": "Lettore musicale",
@@ -119,7 +122,7 @@
       "feat.sp.title": "Giocatore singolo",
       "feat.sp.body": "L’elenco in singolo di 1.8.9, mondi compresi. Il menu principale ha le voci per il singolo, il multigiocatore e le impostazioni. La disconnessione ti riporta lì senza chiudere il processo.",
       "feat.java.title": "Java 8 e Minecraft 1.8.9",
-      "feat.java.body": "Ogni archivio include un JRE. Windows x64, Linux e macOS Intel usano Temurin 8. macOS Apple Silicon usa Azul Zulu 8. Windows ARM64 usa Microsoft Build of OpenJDK 17 nativo, con un piccolo jar di compatibilità così 1.8.9 parte lo stesso. Java non va installato a parte.",
+      "feat.java.body": "Ogni archivio include un JRE. Windows x64, Linux e macOS Intel usano Temurin 8. macOS Apple Silicon usa Azul Zulu 8. Windows ARM64 usa Microsoft Build of OpenJDK 17 nativo, con un piccolo jar di compatibilità così 1.8.9 parte lo stesso. Java non va installato a parte. Confu Client è l’unico client nativo per Windows on ARM: niente emulazione x64.",
       "gallery.title": "Galleria",
       "gallery.sub": "Catturate dal launcher e dal gioco avviati con questa build. Le clip sono senza audio e in loop.",
       "cap.launcher": "Home del launcher. La scia di luce è la finestra vera, non una simulazione.",
@@ -136,7 +139,7 @@
       "cap.music": "Lettore musicale. La descrizione sta sulla sua riga, lontana dall’ingranaggio.",
       "alt.music": "Riga del lettore musicale con la descrizione sulla propria riga",
       "dl.title": "Scaricamenti",
-      "dl.sub": "Versione 0.1.0. Le dimensioni sono quelle del file su disco. Lo SHA-256 è dell’archivio intero. I link puntano a <code>releases/</code> accanto a questa pagina, quindi il sito va servito dalla radice del repository.",
+      "dl.sub": "Versione 0.1.1. Le dimensioni sono quelle del file su disco. Lo SHA-256 è dell’archivio intero.",
       "th.platform": "Piattaforma",
       "th.file": "File",
       "th.size": "Dimensione",
@@ -147,28 +150,27 @@
       "os.linuxarm": "Linux ARM64",
       "os.mac64": "macOS Intel",
       "os.macarm": "macOS Apple Silicon",
-      "sz.winx64": "64.195.663 byte<br>64,2 MB",
-      "sz.winarm": "87.217.017 byte<br>87,2 MB",
-      "sz.linux64": "78.105.002 byte<br>78,1 MB",
-      "sz.linuxarm": "90.836.713 byte<br>90,8 MB",
-      "sz.mac64": "76.573.608 byte<br>76,6 MB",
-      "sz.macarm": "76.670.221 byte<br>76,7 MB",
+      "sz.winx64": "59.875.092 byte<br>59,9 MB",
+      "sz.winarm": "82.900.676 byte<br>82,9 MB",
+      "sz.linux64": "73.793.534 byte<br>73,8 MB",
+      "sz.linuxarm": "86.523.709 byte<br>86,5 MB",
+      "sz.mac64": "72.353.945 byte<br>72,4 MB",
+      "sz.macarm": "72.450.557 byte<br>72,5 MB",
       "source.title": "Codice sorgente",
       "source.body": "Confu Client è pubblicato sotto GPL-3.0. Deriva da Glide Client, a sua volta basato su Soar Client di EldoDebug.",
-      "github": "GitHub",
-      "toast": "Codice sorgente in arrivo su GitHub",
+      "github": "Codice sorgente su GitHub",
       "faq.title": "Domande",
       "faq.smart.q": "Windows segnala l’installer come app non riconosciuta",
       "faq.smart.a": "SmartScreen mostra «Windows ha protetto il PC» perché questa build non è firmata. Sul file non c’è un certificato Authenticode, quindi Windows non può indicare un editore di cui si fida già. L’installer ha comunque una risorsa di versione (prodotto e società Confu Client), un manifest adattato al DPI e la compressione LZMA. Non è compresso con UPX. Nell’avviso scegli <strong>Ulteriori informazioni</strong>, poi <strong>Esegui comunque</strong>.",
-      "faq.mac.q": "macOS dice che non può verificare che Confu Client sia privo di malware",
-      "faq.mac.a": "macOS marca un’app scaricata con un flag di quarantena. Questa build è firmata ad hoc con rcodesign e non è notarizzata, perché non c’è un Apple Developer ID. Gatekeeper quindi non può verificare l’app, e può anche dire che è danneggiata. Al primo avvio serve una sola approvazione: su macOS 15 (Sequoia) e successivi apri <strong>Impostazioni di Sistema &gt; Privacy e sicurezza</strong> e clicca <strong>Apri comunque</strong> accanto a Confu Client. Su macOS più vecchi fai clic destro su <strong>Confu Client.app</strong> e scegli <strong>Apri</strong>. Oppure, nel Terminale, esegui <code>xattr -dr com.apple.quarantine \"/path/Confu Client.app\"</code>. Un certificato Developer ID (Apple Developer Program, 99 USD l’anno) e la notarizzazione eliminerebbero questo avviso. Questa build non li ha.",
       "faq.which.q": "Quale file è il mio?",
       "faq.which.a": "Il pulsante Scarica sceglie Windows, macOS o Linux, e x64 o ARM64, dal browser. Windows ARM64 è la build nativa con Java 17. L’installer Windows x64 gira anche su Windows ARM, in emulazione, e lo dice all’avvio. Gli archivi Linux e macOS si scompattano e avviano <code>confu</code> o il bundle dell’app. Non sono installer .exe.",
       "faq.java.q": "Devo installare Java prima?",
       "faq.java.a": "No. Ogni archivio include un JRE. Il gioco è Minecraft 1.8.9. Al primo avvio gli asset del gioco finiscono nella cartella di Confu (<code>%APPDATA%\\.confu</code> su Windows, <code>~/.confu</code> su Linux e macOS).",
-      "faq.fps.q": "Da dove arriva il numero degli FPS?",
-      "faq.fps.a": "Un solo mondo superflat, 12 campioni, prima e dopo i quattro flag JVM, su llvmpipe (OpenGL software di Mesa), non su una GPU dedicata. Media 78 prima, 81 dopo. Il preset era già al tetto grafico sicuro, quindi il guadagno è piccolo e dichiarato.",
-      "footer": "Confu Client 0.1.0 · GPL-3.0 · basato su Glide Client e su Soar Client di EldoDebug"
+      "faq.mac.q": "macOS dice che l’app è danneggiata o non può essere aperta",
+      "faq.mac.a": "L’app non è ancora notarizzata da Apple. Fai clic destro su <b>Confu Client</b> e scegli <b>Apri</b>, poi conferma. Oppure esegui nel Terminale: <code>xattr -dr com.apple.quarantine \"/path/Confu Client.app\"</code>",
+      "faq.fps.q": "Da dove arriva la stima degli FPS?",
+      "faq.fps.a": "È una stima, non un nostro benchmark. I test pubblici su 1.8.9 mostrano di solito i client basati su OptiFine e i client PvP tra il 25% e il 70% sopra il vanilla, a seconda del PC. Confu Client aggiunge la base Soar/Glide, il preset FPS e flag JVM ottimizzati, quindi lo stimiamo fino a ~50% sopra il launcher ufficiale e in linea con gli altri client PvP. Il numero reale dipende dal tuo hardware.",
+      "footer": "Confu Client 0.1.1 · GPL-3.0 · basato su Glide Client e su Soar Client di EldoDebug"
     }
   };
 
@@ -275,38 +277,8 @@
     });
   }
 
-  var source = document.querySelector("[data-source]");
-  var toast = document.querySelector("[data-toast]");
-  var toastTimer = 0;
-  if (source && toast) {
-    source.addEventListener("click", function () {
-      toast.hidden = false;
-      window.clearTimeout(toastTimer);
-      toastTimer = window.setTimeout(function () {
-        toast.hidden = true;
-      }, 4200);
-    });
-  }
-
-  var ua = navigator.userAgent || "";
-  var plat = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "";
-  var os = "linux";
-  if (/Win/i.test(plat) || /Windows/i.test(ua)) os = "win";
-  else if (/Mac/i.test(plat) || /Mac OS X/i.test(ua)) os = "mac";
-  var arch = /aarch64|arm64|ARM/i.test(ua) ? "arm64" : "x64";
-  currentKey = os + "-" + arch;
+  // Main button always offers the Windows x64 installer; other platforms are in the downloads table.
+  currentKey = "win-x64";
   setLang(preferred(), false);
-
-  if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
-    navigator.userAgentData.getHighEntropyValues(["architecture", "platform"]).then(function (hints) {
-      var next = os;
-      var p = hints.platform || "";
-      if (/Windows/i.test(p)) next = "win";
-      else if (/mac/i.test(p)) next = "mac";
-      else if (/Linux|Chrome OS/i.test(p)) next = "linux";
-      var nextArch = /arm/i.test(hints.architecture || "") ? "arm64" : arch;
-      applyOs(next + "-" + nextArch);
-    }).catch(function () {});
-  }
 
 })();

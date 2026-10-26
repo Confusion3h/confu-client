@@ -359,6 +359,7 @@ td a:hover { color: var(--accent-hi); }
   border-radius: 999px;
   background: #111;
   color: var(--text);
+  text-decoration: none;
   font: 600 13px/1 Inter, sans-serif;
   letter-spacing: 0.08em;
   text-transform: uppercase;
