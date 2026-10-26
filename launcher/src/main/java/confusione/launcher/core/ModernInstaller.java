@@ -29,6 +29,7 @@ public final class ModernInstaller {
 		public String mainClass;
 		public final List<String> jvmArgs = new ArrayList<String>();
 		public File instanceDir;
+		public String java;
 	}
 
 	private final File gameDir;
@@ -48,6 +49,7 @@ public final class ModernInstaller {
 		Result r = new Result();
 		r.vanilla = new GameInstaller(gameDir, p, MC).install();
 		r.instanceDir = instanceDir(gameDir);
+		r.java = JavaRuntime.ensure17(gameDir, p);
 
 		p.stage("Fabric Loader " + LOADER);
 		p.progress(-1);
@@ -148,7 +150,7 @@ public final class ModernInstaller {
 
 	public static List<String> command(Settings s, Result r, MicrosoftAuth.Session session) {
 		List<String> cmd = new ArrayList<String>();
-		cmd.add(GameLauncher.javaExecutable(s));
+		cmd.add(r.java);
 		if (OS.NAME.equals("osx")) {
 			cmd.add("-XstartOnFirstThread");
 			cmd.add("-Dapple.awt.application.name=Confu Client");
