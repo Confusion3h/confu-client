@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Builds release/Confu-Client-Setup-<ver>-win-x64.exe on Linux.
-# Needs: JDK 8 (JAVA_HOME), makensis (apt: nsis), ImageMagick (convert), ffmpeg, curl, unzip.
+# Needs: JDK 8 (JAVA_HOME), makensis (apt: nsis), ImageMagick (convert), curl, unzip.
 # Usage: scripts/build-windows-installer.sh [outdir]   (default /workspace/release)
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -36,11 +36,7 @@ I=launcher/src/main/resources/confusione/icons
 convert $I/icon_16x16.png $I/icon_32x32.png $I/icon_64x64.png $I/icon_128x128.png $I/icon_256x256.png \
   \( $I/icon_64x64.png -resize 48x48 \) -define png:exclude-chunks=all "$STAGE/confusion3h.ico"
 
-# three short sample tones, one per supported format (5 s each)
 M=$STAGE/music
-ffmpeg -loglevel error -y -f lavfi -i "sine=frequency=440:duration=5" -ac 2 "$M/Confu Client Sample - A440 (WAV).wav"
-ffmpeg -loglevel error -y -f lavfi -i "sine=frequency=660:duration=5" -ac 2 -b:a 128k "$M/Confu Client Sample - E660 (MP3).mp3"
-ffmpeg -loglevel error -y -f lavfi -i "sine=frequency=880:duration=5" -ac 2 -c:a libvorbis -q:a 3 "$M/Confu Client Sample - A880 (OGG).ogg"
 sed 's/$/\r/' scripts/windows/music-README.txt > "$M/README.txt"
 
 EXE="$OUT/Confu-Client-Setup-$VERSION-win-x64.exe"

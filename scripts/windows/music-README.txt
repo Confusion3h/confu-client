@@ -9,5 +9,5 @@ In game:
   2. Type in chat:  .soarcmd music play
      Other commands: pause, toggle, next, prev, vol N, reload, folder
 
-The three "Confu Client Sample" files are short test tones; delete them any time.
+No tracks are bundled; this folder starts empty except for this file.
 Files you add here are kept when you uninstall or reinstall Confu Client.

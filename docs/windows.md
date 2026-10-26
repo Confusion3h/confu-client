@@ -16,8 +16,8 @@ It installs to `%LOCALAPPDATA%\Programs\Confu Client`:
 - Start menu folder **Confu Client** (launcher, Music folder, Uninstall) and a Desktop shortcut with the C icon
 - Uninstaller + "Apps & features" entry (HKCU), display name **Confu Client**
 
-and creates `%APPDATA%\.confu\minecraft\glide\music` with a README and three 5 s
-sample tones (WAV/OGG/MP3); existing files there are never overwritten.
+and creates `%APPDATA%\.confu\minecraft\glide\music` with a README only (no tracks are
+bundled); existing files there are never overwritten.
 If `%APPDATA%\.CONFUSION3H` is present and `.confu` is not, the installer renames
 the old folder first, so worlds and settings move with it. The launcher does the
 same rename on startup (Windows, Linux and macOS).

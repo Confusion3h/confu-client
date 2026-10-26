@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Builds every Confu Client archive into releases/.
-# Needs: JDK 8, makensis, ImageMagick, ffmpeg, curl, unzip, tar, python3, zip.
+# Needs: JDK 8, makensis, ImageMagick, curl, unzip, tar, python3, zip.
 # macOS bundles are ad-hoc signed with rcodesign, which this script downloads.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -120,9 +120,6 @@ common_stage() {
   cp LICENSE "$dest/LICENSE.txt"
   cp "$CACHE/java8-rt.jar" "$dest/java8-rt.jar"
   local M=$dest/music
-  ffmpeg -loglevel error -y -f lavfi -i "sine=frequency=440:duration=5" -ac 2 "$M/Confu Client Sample - A440 (WAV).wav"
-  ffmpeg -loglevel error -y -f lavfi -i "sine=frequency=660:duration=5" -ac 2 -b:a 128k "$M/Confu Client Sample - E660 (MP3).mp3"
-  ffmpeg -loglevel error -y -f lavfi -i "sine=frequency=880:duration=5" -ac 2 -c:a libvorbis -q:a 3 "$M/Confu Client Sample - A880 (OGG).ogg"
   sed 's/$/\r/' scripts/windows/music-README.txt > "$M/README.txt"
 }
 
