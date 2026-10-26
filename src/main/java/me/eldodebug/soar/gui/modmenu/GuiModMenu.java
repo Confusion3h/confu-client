@@ -63,7 +63,7 @@ public class GuiModMenu extends GuiScreen {
 		categories.add(new HomeCategory(this));
 		categories.add(new ModuleCategory(this));
 		categories.add(new CosmeticsCategory(this));
-		categories.add(new GamesCategory(this));
+		categories.add(new MusicCategory(this)); // only listed while Music Player is on
 		categories.add(new ProfileCategory(this));
 		categories.add(new ScreenshotCategory(this));
 		categories.add(new SettingCategory(this));
@@ -146,13 +146,17 @@ public class GuiModMenu extends GuiScreen {
 		
 		int offsetY = 0;
 		
-		moveAnimation.setAnimation(categories.indexOf(currentCategory) * 30, 18);
+		if(!isListed(currentCategory)) {
+			currentCategory = getCategoryByClass(HomeCategory.class);
+		}
+		ArrayList<Category> listed = getListedCategories();
+		moveAnimation.setAnimation(listed.indexOf(currentCategory) * 30, 18);
 		
 		nvg.save();
 
 		nvg.drawGradientRoundedRect(x + 5.5F, y + 38.5F + moveAnimation.getValue(), 21, 21, 5, currentColor.getColor1(), currentColor.getColor2());
 		
-		for(Category c : categories) {
+		for(Category c : listed) {
 			
 			Color textColor = c.getTextColorAnimation().getColor(MathUtils.isInRange(moveAnimation.getValue(), offsetY - 8, offsetY + 8) ? Color.WHITE : palette.getFontColor(ColorType.NORMAL), 18);
 			
@@ -233,7 +237,7 @@ public class GuiModMenu extends GuiScreen {
 			introAnimation.setDirection(Direction.BACKWARDS);
 		}
 
-		for(Category c : categories) {
+		for(Category c : getListedCategories()) {
 			
 			if(MouseUtils.isInside(mouseX, mouseY, x + 5.5F, y + 38.5F + offsetY, 21, 21) && mouseButton == 0) {
 				currentCategory = c;
@@ -332,6 +336,21 @@ public class GuiModMenu extends GuiScreen {
 
 	public int getHeight() {
 		return height;
+	}
+
+	private static boolean isListed(Category c) {
+		return !(c instanceof MusicCategory) || MusicCategory.available();
+	}
+
+	/** Categories shown in the sidebar, in order. */
+	public ArrayList<Category> getListedCategories() {
+		ArrayList<Category> out = new ArrayList<Category>();
+		for(Category c : categories) {
+			if(isListed(c)) {
+				out.add(c);
+			}
+		}
+		return out;
 	}
 
 	public ArrayList<Category> getCategories() {
