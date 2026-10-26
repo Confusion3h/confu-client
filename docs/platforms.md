@@ -1,6 +1,6 @@
 # Platforms
 
-Confu Client 0.1.0 ships six archives under `releases/`. Each one bundles a JRE.
+Confu Client 0.1.0 ships six archives, published on https://github.com/Confusion3h/confu-client/releases. Each one bundles a JRE.
 The game itself is still Minecraft 1.8.9 (LWJGL 2.9.4, Mixin 0.7.11, LaunchWrapper 1.12).
 
 | Archive | JRE | LWJGL natives | How it was checked |

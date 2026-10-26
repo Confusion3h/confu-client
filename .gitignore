@@ -39,7 +39,6 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-releases/cache/
-releases/stage/
-releases/stage-*/
+# build output: installers are published as GitHub release assets, never committed
+releases/
 uploads/
