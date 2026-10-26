@@ -58,35 +58,8 @@ public class CapeManager {
 		add("United Kingdom", "flag/united-kingdom-sample.png", "flag/united-kingdom.png", CapeCategory.FLAG);
 		add("United States", "flag/united-states-sample.png", "flag/united-states.png", CapeCategory.FLAG);
 
-		add("Blue", "soar/blue-sample.png", "soar/blue.png", CapeCategory.SOAR);
-		add("Orange", "soar/orange-sample.png", "soar/orange.png", CapeCategory.SOAR);
-		add("Terminal", "soar/terminal-sample.png", "soar/terminal.png", CapeCategory.SOAR);
-		add("Candy", "soar/candy-sample.png", "soar/candy.png", CapeCategory.SOAR);
-		add("Candy Floss", "soar/candyfloss-sample.png", "soar/candyfloss.png", CapeCategory.SOAR);
-		add("Northern Lights", "soar/northenlights-sample.png", "soar/northenlights.png", CapeCategory.SOAR);
-		add("Ocean", "soar/ocean-sample.png", "soar/ocean.png", CapeCategory.SOAR);
-		add("Parrot", "soar/parrot-sample.png", "soar/parrot.png", CapeCategory.SOAR);
-		add("Skylight", "soar/skylight-sample.png", "soar/skylight.png", CapeCategory.SOAR);
-		add("Sour Apple", "soar/sourapple-sample.png", "soar/sourapple.png", CapeCategory.SOAR);
-		add("Glide", "soar/glide-sample.png", "soar/glide.png", CapeCategory.SOAR);
 
-		add("Aurora", "cartoon/aurora-sample.png", "cartoon/aurora.png", CapeCategory.CARTOON);
-		add("Beach Girl", "cartoon/beachgirl-sample.png", "cartoon/beachgirl.png", CapeCategory.CARTOON);
-		add("Beach Hut", "cartoon/beachhut-sample.png", "cartoon/beachhut.png", CapeCategory.CARTOON);
-		add("Bridgeend", "cartoon/bridgeend-sample.png", "cartoon/bridgeend.png", CapeCategory.CARTOON);
-		add("Cat", "cartoon/cat-sample.png", "cartoon/cat.png", CapeCategory.CARTOON);
-		add("Cyber Cat", "cartoon/cybercat-sample.png", "cartoon/cybercat.png", CapeCategory.CARTOON);
-		add("Decayed", "cartoon/decayed-sample.png", "cartoon/decayed.png", CapeCategory.CARTOON);
-		add("Kitty", "cartoon/kitty-sample.png", "cartoon/kitty.png", CapeCategory.CARTOON);
-		add("Lost World", "cartoon/lostworld-sample.png", "cartoon/lostworld.png", CapeCategory.CARTOON);
-		add("Mountain", "cartoon/mountain-sample.png", "cartoon/mountain.png", CapeCategory.CARTOON);
-		add("Stargazing Girl", "cartoon/stargazinggirl-sample.png", "cartoon/stargazinggirl.png", CapeCategory.CARTOON);
-		add("Stellagate", "cartoon/stellagate-sample.png", "cartoon/stellagate.png", CapeCategory.CARTOON);
-		add("Stray", "cartoon/stray-sample.png", "cartoon/stray.png", CapeCategory.CARTOON);
 
-		add("BreadCat", "misc/breadcat-sample.png", "misc/breadcat.png", CapeCategory.MISC);
-		add("Horse", "misc/horse-sample.png", "misc/horse.png", CapeCategory.MISC);
-		add("Trans Arch", "misc/transarch-sample.png", "misc/transarch.png", CapeCategory.MISC);
 
 		store = new CapeStore(customCapeDir, cacheDir);
 		loadCustomCapes(false);
