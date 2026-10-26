@@ -4,7 +4,7 @@ import me.eldodebug.confu.config.ConfuConfig;
 import me.eldodebug.confu.gui.MenuScreen;
 import me.eldodebug.confu.lang.Lang;
 import me.eldodebug.confu.module.ModuleManager;
-import me.eldodebug.confu.module.impl.CrosshairModule;
+import me.eldodebug.confu.module.impl.*;
 import me.eldodebug.confu.module.impl.FreelookModule;
 import me.eldodebug.confu.module.impl.KeystrokesModule;
 import me.eldodebug.confu.module.impl.ZoomModule;
@@ -65,6 +65,14 @@ public class ConfuClient implements ClientModInitializer {
 		modules.register(new FreelookModule());
 		modules.register(new CrosshairModule());
 		modules.register(new KeystrokesModule());
+		modules.register(new CpsModule());
+		modules.register(new FpsModule());
+		modules.register(new PingModule());
+		modules.register(new CoordsModule());
+		modules.register(new ClockModule());
+		modules.register(new ArmorStatusModule());
+		modules.register(new MusicPlayerModule());
+		modules.register(new CapeModule());
 		modules.load(config);
 
 		menuKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(

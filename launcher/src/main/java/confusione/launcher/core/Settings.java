@@ -80,6 +80,8 @@ public final class Settings {
 	public boolean optifine = false;
 	/** Microsoft account instead of the offline name. Refresh token is not stored here. */
 	public boolean microsoft = false;
+	/** "1.8.9" or "1.20.1" (Modern, Fabric). */
+	public String gameVersion = "1.8.9";
 	/**
 	 * Optional Live client id (16 hex digits). Empty uses the built-in Minecraft client.
 	 * Not shown in Settings. An Azure UUID stored by an older build is ignored.
@@ -109,6 +111,7 @@ public final class Settings {
 		s.optifine = Boolean.parseBoolean(p.getProperty("optifine", "false"));
 		s.microsoft = Boolean.parseBoolean(p.getProperty("microsoft", "false"));
 		s.msClientId = p.getProperty("msClientId", "").trim();
+		s.gameVersion = "1.20.1".equals(p.getProperty("gameVersion")) ? "1.20.1" : "1.8.9";
 		try {
 			s.ramMb = Integer.parseInt(p.getProperty("ramMb", "2048"));
 		} catch (NumberFormatException ignored) {
@@ -127,6 +130,7 @@ public final class Settings {
 		p.setProperty("keepOpen", Boolean.toString(keepOpen));
 		p.setProperty("optifine", Boolean.toString(optifine));
 		p.setProperty("microsoft", Boolean.toString(microsoft));
+		p.setProperty("gameVersion", gameVersion);
 		p.setProperty("msClientId", msClientId == null ? "" : msClientId.trim());
 		try {
 			HOME.mkdirs();

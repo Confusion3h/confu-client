@@ -8,8 +8,7 @@ The 1.8.9 tree is not touched by this branch.
 
 | Status | Meaning |
 |---|---|
-| Phase 2 | Implemented in the Fabric skeleton phase (core set). |
-| Phase 4 | Planned for the remaining-mods phase. |
+| Ported | Implemented and verified in game on 1.20.1 (v0.2.0). |
 | Later | Feasible on Fabric 1.20.1, not in the current scope. |
 | Not planned | Dropped on purpose: 1.8.9-only mechanic, anti-feature, automation, or conflicts with the Sodium-friendly rendering rule. |
 
@@ -25,7 +24,7 @@ Type: `Mod` is a plain module, `HUD` is `HUDMod` (draggable element), `SimpleHUD
 |---|---|---|---|---|---|
 | 1 | AnimationsMod | RENDER | Mod | Later | 1.8 block-hit and swing animation; needs a first-person arm render hook. |
 | 2 | AppleSkinMod | PLAYER | Mod | Later | Hunger and saturation overlay on the food bar (InGameHud mixin). |
-| 3 | ArmorStatusMod | HUD | HUD | Phase 4 | Durability bars for worn armour, horizontal or vertical. |
+| 3 | ArmorStatusMod | HUD | HUD | Ported | Durability bars for worn armour, horizontal or vertical. |
 | 4 | ArrayListMod | HUD | HUD | Later | Enabled-module list; trivial once the module registry exists. |
 | 5 | AsyncScreenshotMod | OTHER | Mod | Later | Off-thread PNG write. Vanilla screenshots are synchronous. |
 | 6 | AutoTextMod | PLAYER | Mod | Later | Keybind sends a preset chat line. |
@@ -44,13 +43,13 @@ Type: `Mod` is a plain module, `HUD` is `HUDMod` (draggable element), `SimpleHUD
 | 19 | ClearGlassMod | RENDER | Mod | Later | Glass transparency; texture override. |
 | 20 | ClearWaterMod | RENDER | Mod | Later | Water fog and texture (fog mixin). |
 | 21 | ClientSpooferMod | OTHER | Mod | Not planned | Client brand spoofing; an anti-feature. |
-| 22 | ClockMod | SimpleHUD | SimpleHUD | Phase 4 | Plain text. |
+| 22 | ClockMod | SimpleHUD | SimpleHUD | Ported | Plain text. |
 | 23 | ColorSaturationMod | RENDER | Mod | Later | Post-process shader; needs a post-effect that Sodium leaves alone. |
 | 24 | ComboCounterMod | SimpleHUD | SimpleHUD | Later | Hit combo counter (attack event). |
 | 25 | CompassMod | SimpleHUD | SimpleHUD | Later | Compass strip. |
-| 26 | CoordsMod | SimpleHUD | SimpleHUD | Phase 4 | Player position text. |
-| 27 | CPSDisplayMod | SimpleHUD | SimpleHUD | Phase 4 | Left and right clicks per second from a GLFW mouse-button hook. |
-| 28 | CrosshairMod | RENDER | Mod | Phase 2 | Custom 9-style sprite sheet, scale, hide in third person, live preview in the menu. |
+| 26 | CoordsMod | SimpleHUD | SimpleHUD | Ported | Player position text. |
+| 27 | CPSDisplayMod | SimpleHUD | SimpleHUD | Ported | Left and right clicks per second from a GLFW mouse-button hook. |
+| 28 | CrosshairMod | RENDER | Mod | Ported | Custom 9-style sprite sheet, scale, hide in third person, live preview in the menu. |
 | 29 | CustomHeldItemsMod | RENDER | Mod | Later | Held item model override. |
 | 30 | DamageParticlesMod | RENDER | Mod | Later | Damage particles. |
 | 31 | DamageTiltMod | PLAYER | Mod | Later | Hurt camera tilt (tiltViewWhenHurt hook). |
@@ -63,13 +62,13 @@ Type: `Mod` is a plain module, `HUD` is `HUDMod` (draggable element), `SimpleHUD
 | 38 | FemaleGenderMod | PLAYER | Mod | Later | Slim model; needs an alternate player model. |
 | 39 | FovModifierMod | PLAYER | Mod | Later | FOV slider; reuses the Zoom FOV hook. |
 | 40 | FPSBoostMod | OTHER | Mod | Not planned | Chunk delay, bot removal, entity culling. The 1.8.9 build keeps all three off, so the mod adds nothing; Sodium covers performance. |
-| 41 | FPSDisplayMod | SimpleHUD | SimpleHUD | Phase 4 | `getCurrentFps()`. |
+| 41 | FPSDisplayMod | SimpleHUD | SimpleHUD | Ported | `getCurrentFps()`. |
 | 42 | FPSLimiterMod | OTHER | Mod | Later | Vanilla already has a framerate cap option. |
 | 43 | FPSSpooferMod | OTHER | Mod | Not planned | FPS spoofing; an anti-feature. |
-| 44 | FreelookMod | PLAYER | Mod | Phase 2 | Freelook with a smooth transition in and out. |
+| 44 | FreelookMod | PLAYER | Mod | Ported | Freelook with a smooth transition in and out. |
 | 45 | FullbrightMod | PLAYER | Mod | Later | Gamma override (lightmap hook). |
 | 46 | GlintColorMod | RENDER | Mod | Later | Enchantment glint colour. |
-| 47 | InternalSettingsMod | OTHER | Mod | Phase 2 | Theme, language and menu key live in the Settings page. |
+| 47 | InternalSettingsMod | OTHER | Mod | Ported | Theme, language and menu key live in the Settings page. |
 | 48 | GodbridgeAssistMod | HUD | HUD | Not planned | PvP automation assist. |
 | 49 | HealthDisplayMod | SimpleHUD | SimpleHUD | Later | Health text. |
 | 50 | HitBoxMod | RENDER | Mod | Later | Hitbox render. |
@@ -85,7 +84,7 @@ Type: `Mod` is a plain module, `HUD` is `HUDMod` (draggable element), `SimpleHUD
 | 60 | ItemPhysicsMod | RENDER | Mod | Later | Dropped item physics (item entity renderer). |
 | 61 | Items2DMod | RENDER | Mod | Later | Flat item rendering. |
 | 62 | JumpCircleMod | RENDER | Mod | Later | Jump ring effect. |
-| 63 | KeystrokesMod | HUD | HUD | Phase 2 | WASD, Space, mouse buttons; press animation; unmarked style. |
+| 63 | KeystrokesMod | HUD | HUD | Ported | WASD, Space, mouse buttons; press animation; unmarked style. |
 | 64 | KillEffectsMod | RENDER | Mod | Later | Kill effect particles. |
 | 65 | KillSoundsMod | OTHER | Mod | Later | Sound on kill (event). |
 | 66 | MechvibesMod | OTHER | Mod | Later | Keyboard sound packs (WAV assets exist). |
@@ -98,14 +97,14 @@ Type: `Mod` is a plain module, `HUD` is `HUDMod` (draggable element), `SimpleHUD
 | 73 | ModernHotbarMod | HUD | HUD | Later | Hotbar restyle. |
 | 74 | MotionBlurMod | RENDER | Mod | Later | Post-process shader. |
 | 75 | MouseStrokesMod | HUD | HUD | Later | Mouse-stroke overlay, same family as Keystrokes. |
-| 76 | MusicPlayerMod | HUD | HUD | Phase 4 | Local WAV, OGG and MP3 files; link playback (yt-dlp) is later. |
+| 76 | MusicPlayerMod | HUD | HUD | Ported | Local WAV and OGG files from `.minecraft/confu/music` (no bundled tracks). MP3 and link playback are later. |
 | 77 | NameDisplayMod | SimpleHUD | SimpleHUD | Later | Player name text. |
 | 78 | NameProtectMod | PLAYER | Mod | Later | Hide own name in HUD and chat. |
 | 79 | NametagMod | PLAYER | Mod | Later | Nametag restyle. |
 | 80 | OverlayEditorMod | RENDER | Mod | Later | Hide individual HUD overlays. |
 | 81 | PackDisplayMod | HUD | HUD | Later | Resource pack list. |
 | 82 | ParticleCustomizerMod | RENDER | Mod | Later | Particle settings. |
-| 83 | PingDisplayMod | SimpleHUD | SimpleHUD | Phase 4 | Latency from the player list entry. |
+| 83 | PingDisplayMod | SimpleHUD | SimpleHUD | Ported | Latency from the player list entry. |
 | 84 | PlayerCounterMod | SimpleHUD | SimpleHUD | Later | Online player count. |
 | 85 | PlayerDisplayMod | HUD | HUD | Later | 3D player preview. |
 | 86 | PlayerListMod | HUD | HUD | Later | Tab list changes. |
@@ -143,16 +142,16 @@ Type: `Mod` is a plain module, `HUD` is `HUDMod` (draggable element), `SimpleHUD
 | 118 | WaypointMod | WORLD | Mod | Later | Waypoints (the 1.8.9 waypoint GUI is also later). |
 | 119 | WeatherChangerMod | WORLD | Mod | Later | Client-side weather override. |
 | 120 | WeatherDisplayMod | SimpleHUD | SimpleHUD | Later | Weather text. |
-| 121 | ZoomMod | PLAYER | Mod | Phase 2 | Smooth zoom, scroll zoom, zoom speed and factor. |
+| 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom, scroll zoom, zoom speed and factor. |
 
-Counts: Phase 2 = 5 (Crosshair, Freelook, InternalSettings, Keystrokes, Zoom), Phase 4 = 7 (ArmorStatus, Clock, Coords, CPS, FPS, MusicPlayer, Ping), Not planned = 13, Later = 96. Total 121.
+Counts: Ported = 12 (ArmorStatus, Clock, Coords, CPS, Crosshair with colour, FPS, Freelook, InternalSettings, Keystrokes, MusicPlayer, Ping, Zoom) plus capes, Not planned = 13, Later = 96. Total 121.
 
 ## Features that are not modules
 
 | 1.8.9 feature | Source | 1.20.1 status |
 |---|---|---|
 | Mod menu, RSHIFT, categories Home, Modules, Cosmetics, Games, Profile, Screenshot, Settings | `gui/modmenu/` | Phase 2: Home, Modules, Cosmetics (capes), Settings. Games, Profile and Screenshot are Later. |
-| Capes: MINECON (5), FLAG (19), SOAR (11), CARTOON (13), MISC (3), CUSTOM (import from folder) | `management/cape/CapeManager.java` | Phase 4: MINECON, FLAG and CUSTOM only. SOAR, CARTOON and MISC are excluded by request. |
+| Capes: MINECON (5), FLAG (19), SOAR (11), CARTOON (13), MISC (3), CUSTOM (import from folder) | `management/cape/CapeManager.java` | Ported: MINECON (5) and FLAG (19) as the Cape module (Player category). SOAR, CARTOON and MISC are excluded by request; CUSTOM import is Later. |
 | Language: EN, IT | `management/language/` | Phase 2: `en_us` and `it_it` JSON in `assets/confu/lang/`. 1.8.9 has no Italian, so Italian is new. |
 | Main menu background and branding | `assets/minecraft/soar/mainmenu/`, `branding/` | Phase 2: Confu mark on the title screen. Full redesign is Later. |
 | Notifications, commands (`.soarcmd`), waypoints GUI, profiles, quick play, games | `management/notification`, `management/command`, `quickplay`, `profile` | Later (notifications are cheap and may land in Phase 2). |

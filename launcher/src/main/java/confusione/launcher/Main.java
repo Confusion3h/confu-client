@@ -12,6 +12,7 @@ import confusione.launcher.core.ClientLocator;
 import confusione.launcher.core.GameInstaller;
 import confusione.launcher.core.GameLauncher;
 import confusione.launcher.core.MicrosoftAuth;
+import confusione.launcher.core.ModernInstaller;
 import confusione.launcher.core.Progress;
 import confusione.launcher.core.Settings;
 import confusione.launcher.ui.LauncherFrame;
@@ -53,6 +54,8 @@ public final class Main {
 				s.username = args[++i];
 			} else if (a.equals("--client")) {
 				s.clientJar = args[++i];
+			} else if (a.equals("--version")) {
+				s.gameVersion = "1.20.1".equals(args[++i]) ? "1.20.1" : "1.8.9";
 			} else if (a.equals("--fpsbench")) {
 				fpsBench = args[++i];
 			} else {
@@ -102,6 +105,27 @@ public final class Main {
 	}
 
 	private static int cli(Settings s, String mode, String fpsBench) throws Exception {
+		if ("1.20.1".equals(s.gameVersion)) {
+			File mod = ClientLocator.findModern();
+			if (mod == null) {
+				System.err.println("Confu 1.20.1 mod jar not found (build modern/ or pass -Dconfusione.modern=...).");
+				return 1;
+			}
+			MicrosoftAuth.Session ms = null;
+			if (!mode.equals("setup-only") && s.microsoft) {
+				ms = MicrosoftAuth.ensure(s.msClientId, Progress.CONSOLE);
+			}
+			ModernInstaller.Result mr = new ModernInstaller(new File(s.gameDir), Progress.CONSOLE).install(mod);
+			if (mode.equals("setup-only")) {
+				return 0;
+			}
+			List<String> mcmd = ModernInstaller.command(s, mr, ms);
+			System.out.println(GameLauncher.toShell(mcmd));
+			if (mode.equals("dry-run")) {
+				return 0;
+			}
+			return GameLauncher.start(mcmd, mr.instanceDir, Progress.CONSOLE).waitFor();
+		}
 		File jar = ClientLocator.find(s.clientJar);
 		if (jar == null && !mode.equals("setup-only")) {
 			System.err.println("Client jar not found (build it with ./gradlew build, or pass --client).");

@@ -113,6 +113,10 @@ public abstract class Module {
 		return keybind;
 	}
 
+	protected final KeybindSetting extraKey(String key, String nameKey, int defaultCode) {
+		return add(new KeybindSetting(key, nameKey, defaultCode));
+	}
+
 	private <S extends Setting<?>> S add(S setting) {
 		settings.add(setting);
 		return setting;

@@ -1,6 +1,7 @@
 package me.eldodebug.confu.mixin;
 
 import me.eldodebug.confu.ConfuClient;
+import me.eldodebug.confu.module.impl.CpsModule;
 import me.eldodebug.confu.module.impl.ZoomModule;
 import net.minecraft.client.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,6 +16,13 @@ public abstract class MouseMixin {
 	private void confu$zoomScroll(long window, double horizontal, double vertical, CallbackInfo ci) {
 		if (ConfuClient.get().modules().get(ZoomModule.class).onScroll(vertical)) {
 			ci.cancel();
+		}
+	}
+
+	@Inject(method = "onMouseButton", at = @At("HEAD"))
+	private void confu$countClick(long window, int button, int action, int mods, CallbackInfo ci) {
+		if (action == 1) {
+			CpsModule.click(button);
 		}
 	}
 }

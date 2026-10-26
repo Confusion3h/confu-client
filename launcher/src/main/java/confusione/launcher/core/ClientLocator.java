@@ -120,4 +120,35 @@ public final class ClientLocator {
 		}
 		return proc.waitFor();
 	}
+
+	/** The Confu 1.20.1 Fabric mod: -Dconfusione.modern, then client/ beside the launcher, then modern/build/libs. */
+	public static File findModern() {
+		String prop = System.getProperty("confusione.modern");
+		if (prop != null && new File(prop).isFile()) {
+			return new File(prop);
+		}
+		List<File> dirs = new ArrayList<File>();
+		try {
+			File self = new File(ClientLocator.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+			dirs.add(new File(self.getParentFile(), "client"));
+		} catch (Exception ignored) {
+		}
+		File repo = findRepo();
+		if (repo != null) {
+			dirs.add(new File(repo, "modern/build/libs"));
+		}
+		for (File d : dirs) {
+			File[] jars = d.listFiles();
+			if (jars == null) {
+				continue;
+			}
+			for (File j : jars) {
+				String n = j.getName();
+				if (n.startsWith("confu-modern") && n.endsWith(".jar") && !n.contains("-sources")) {
+					return j;
+				}
+			}
+		}
+		return null;
+	}
 }

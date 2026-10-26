@@ -142,7 +142,7 @@ public final class MenuScreen extends Screen {
 	private void drawHome(DrawContext context, int x, int y, int w, int h) {
 		context.drawTexture(MARK, x, y, 40, 40, 0F, 0F, MARK_SOURCE, MARK_SOURCE, MARK_SOURCE, MARK_SOURCE);
 		title(context, Lang.get("menu.title"), x + 52, y + 4, 1.4F);
-		text(context, Lang.format("menu.subtitle", client.getGameVersion(), ConfuClient.get().version()), x + 52, y + 24, Theme.MUTED);
+		text(context, Lang.format("menu.subtitle", net.minecraft.SharedConstants.getGameVersion().getName(), ConfuClient.get().version()), x + 52, y + 24, Theme.MUTED);
 
 		int top = y + 56;
 		int leftW = w * 55 / 100;
@@ -185,7 +185,7 @@ public final class MenuScreen extends Screen {
 			text(context, line, rightX + 16, aboutY, Theme.MUTED);
 			aboutY += 11;
 		}
-		text(context, Lang.format("menu.settings.build", ConfuClient.get().version(), client.getGameVersion(), loaderVersion()),
+		text(context, Lang.format("menu.settings.build", ConfuClient.get().version(), net.minecraft.SharedConstants.getGameVersion().getName(), loaderVersion()),
 				rightX + 16, aboutY + 6, Theme.MUTED);
 	}
 
@@ -281,7 +281,7 @@ public final class MenuScreen extends Screen {
 		int aboutY = keyY + 70;
 		card(context, x, aboutY, w, h - (aboutY - y));
 		text(context, Lang.get("menu.settings.about"), x + 16, aboutY + 12, Theme.TEXT);
-		text(context, Lang.format("menu.settings.build", ConfuClient.get().version(), client.getGameVersion(), loaderVersion()),
+		text(context, Lang.format("menu.settings.build", ConfuClient.get().version(), net.minecraft.SharedConstants.getGameVersion().getName(), loaderVersion()),
 				x + 16, aboutY + 32, Theme.MUTED);
 		int creditY = aboutY + 46;
 		for (String line : Draw.wrap(textRenderer, Lang.get("menu.settings.credits"), w - 32)) {
@@ -300,7 +300,7 @@ public final class MenuScreen extends Screen {
 		int dialogW = Math.min(w, 420);
 		int dialogX = x + (w - dialogW) / 2;
 		int rows = settings.size() + 1;
-		int dialogH = Math.min(h, 110 + rows * ROW + (detail instanceof CrosshairModule ? 110 : 0));
+		int dialogH = Math.min(h, 110 + rows * ROW);
 		int dialogY = y + Math.max(0, (h - dialogH) / 2);
 
 		Draw.roundRect(context, dialogX, dialogY, dialogW, dialogH, CARD_RADIUS, Theme.CARD);
@@ -324,8 +324,12 @@ public final class MenuScreen extends Screen {
 		}
 
 		if (detail instanceof CrosshairModule crosshair) {
-			crosshair.drawPreview(context, dialogX + 14, rowY + 6, dialogW - 28, 88);
-			hit(dialogX + 14, rowY + 6, dialogW - 28, 88, () -> { });
+			// Live preview in the header's top-right corner, so it stays on screen at any GUI scale.
+			int previewW = 96;
+			int previewH = 56;
+			int previewX = dialogX + dialogW - 14 - previewW;
+			crosshair.drawPreview(context, previewX, dialogY + 10, previewW, previewH);
+			hit(previewX, dialogY + 10, previewW, previewH, () -> { });
 		}
 	}
 

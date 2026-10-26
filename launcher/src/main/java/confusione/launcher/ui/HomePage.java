@@ -17,8 +17,8 @@ import javax.swing.JComponent;
 public final class HomePage extends JComponent implements PageHost.Entrance {
 
 	private static final String[][] NEWS = {
+		{ "1.20.1 (Modern)", "New: pick 1.20.1 above. Fabric and Fabric API install on first run, with zoom, freelook, HUD mods and capes." },
 		{ "FPS mode", "On by default. Blur, glow, particles and click effects off; one toggle in Settings > General." },
-		{ "Leaner core", "Allocation-free event bus and NanoVG draw calls, cheaper HUD blur." },
 		{ "Confu Client launcher", "Sets up 1.8.9 from Mojang's servers and starts the client for you." },
 		{ "Credits", "Confu Client. Based on Glide Client and Soar Client by EldoDebug · GPL-3.0." },
 	};
@@ -41,6 +41,20 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 	private final Rectangle msChip = new Rectangle();
 	private final Rectangle actionChip = new Rectangle();
 	private Runnable onOffline, onMicrosoft, onAccountAction;
+	private final Rectangle legacyChip = new Rectangle();
+	private final Rectangle modernChip = new Rectangle();
+	private boolean modern;
+	private Runnable onLegacy, onModern;
+
+	public void onVersion(Runnable legacy, Runnable modernAction) {
+		onLegacy = legacy;
+		onModern = modernAction;
+	}
+
+	public void setModern(boolean on) {
+		modern = on;
+		repaint();
+	}
 
 	public HomePage(String user) {
 		setOpaque(false);
@@ -69,6 +83,14 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}
 			public void mouseReleased(MouseEvent e) {
+				if (legacyChip.contains(e.getPoint()) && onLegacy != null) {
+					onLegacy.run();
+					return;
+				}
+				if (modernChip.contains(e.getPoint()) && onModern != null) {
+					onModern.run();
+					return;
+				}
 				if (offlineChip.contains(e.getPoint()) && onOffline != null) {
 					onOffline.run();
 					return;
@@ -86,7 +108,8 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 				}
 			}
 			private boolean hit(MouseEvent e) {
-				if (offlineChip.contains(e.getPoint()) || msChip.contains(e.getPoint())) {
+				if (offlineChip.contains(e.getPoint()) || msChip.contains(e.getPoint())
+						|| legacyChip.contains(e.getPoint()) || modernChip.contains(e.getPoint())) {
 					return true;
 				}
 				if (microsoft && actionChip.width > 0 && actionChip.contains(e.getPoint())) {
@@ -145,6 +168,8 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		play.setBounds(42, 328, Math.min(360, Math.max(280, getWidth() - 420)), 100);
 		offlineChip.setBounds(48, 224, 84, 26);
 		msChip.setBounds(140, 224, 108, 26);
+		legacyChip.setBounds(150, 152, 64, 24);
+		modernChip.setBounds(222, 152, 132, 24);
 		if (microsoft && accountName.isEmpty() && !polling) {
 			actionChip.setBounds(48, 262, microsoftButtonWidth(), 41);
 		} else if (microsoft) {
@@ -168,7 +193,9 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		g.drawString("Confu Client", 146, 116);
 		g.setFont(Theme.regular(14));
 		g.setColor(Theme.MUTED);
-		g.drawString("Minecraft 1.8.9  \u00b7  FPS-first client", 150, 140);
+		g.drawString(modern ? "Minecraft 1.20.1  \u00b7  Fabric" : "Minecraft 1.8.9  \u00b7  FPS-first client", 150, 140);
+		chip(g, legacyChip, "1.8.9", !modern);
+		chip(g, modernChip, "1.20.1 (Modern)", modern);
 
 		g.setFont(Theme.semibold(26));
 		g.setColor(Theme.TEXT);
@@ -238,7 +265,7 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 
 	/** True when a press on the page itself hits a control rather than empty background. */
 	public boolean hitsControl(java.awt.Point p) {
-		if (offlineChip.contains(p) || msChip.contains(p)) {
+		if (offlineChip.contains(p) || msChip.contains(p) || legacyChip.contains(p) || modernChip.contains(p)) {
 			return true;
 		}
 		if (microsoft && actionChip.width > 0 && actionChip.contains(p)) {

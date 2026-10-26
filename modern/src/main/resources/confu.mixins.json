@@ -4,6 +4,7 @@
   "package": "me.eldodebug.confu.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "AbstractClientPlayerEntityMixin",
     "CameraMixin",
     "EntityMixin",
     "GameRendererMixin",

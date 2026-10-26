@@ -49,15 +49,23 @@ public final class GameInstaller {
 	private final File gameDir;
 	private final Progress p;
 
+	private final String version;
+
 	public GameInstaller(File gameDir, Progress progress) {
+		this(gameDir, progress, VERSION);
+	}
+
+	/** @param version a Mojang version id; LaunchWrapper extras are added only for 1.8.9 */
+	public GameInstaller(File gameDir, Progress progress, String version) {
 		this.gameDir = gameDir;
 		this.p = progress;
+		this.version = version;
 	}
 
 	public Result install() throws IOException {
 		Result r = new Result();
-		File versionDir = new File(gameDir, "versions/" + VERSION);
-		File versionJson = new File(versionDir, VERSION + ".json");
+		File versionDir = new File(gameDir, "versions/" + version);
+		File versionJson = new File(versionDir, version + ".json");
 
 		p.stage("Reading version manifest");
 		p.progress(-1);
@@ -67,26 +75,26 @@ public final class GameInstaller {
 			String sha1 = null;
 			for (Object o : Json.arr(manifest.get("versions"))) {
 				Map<String, Object> v = Json.obj(o);
-				if (VERSION.equals(Json.str(v, "id"))) {
+				if (version.equals(Json.str(v, "id"))) {
 					url = Json.str(v, "url");
 					sha1 = Json.str(v, "sha1");
 				}
 			}
 			if (url == null) {
-				throw new IOException(VERSION + " not in Mojang manifest");
+				throw new IOException(version + " not in Mojang manifest");
 			}
 			Http.download(url, versionJson, sha1, null);
 			p.log("Saved " + versionJson);
 		}
-		Map<String, Object> version = Json.obj(Json.parse(new String(Files.readAllBytes(versionJson.toPath()), StandardCharsets.UTF_8)));
-		r.mainClassVanilla = Json.str(version, "mainClass");
+		Map<String, Object> vjson = Json.obj(Json.parse(new String(Files.readAllBytes(versionJson.toPath()), StandardCharsets.UTF_8)));
+		r.mainClassVanilla = Json.str(vjson, "mainClass");
 
 		// work list: libraries + client jar
 		List<String[]> jobs = new ArrayList<String[]>(); // url, file, sha1
 		List<File[]> natives = new ArrayList<File[]>();   // jar, (unused)
 		File libDir = new File(gameDir, "libraries");
 
-		for (Object o : Json.arr(version.get("libraries"))) {
+		for (Object o : Json.arr(vjson.get("libraries"))) {
 			Map<String, Object> lib = Json.obj(o);
 			if (!OS.allowed(lib.get("rules"))) {
 				continue;
@@ -115,7 +123,7 @@ public final class GameInstaller {
 			}
 		}
 
-		for (String[] extra : EXTRA_LIBS) {
+		for (String[] extra : VERSION.equals(version) ? EXTRA_LIBS : new String[0][]) {
 			File f = new File(libDir, extra[0]);
 			String url = extra[1] + extra[0];
 			String sha1 = null;
@@ -130,8 +138,8 @@ public final class GameInstaller {
 			r.classpath.add(f);
 		}
 
-		Map<String, Object> clientDl = Json.obj(Json.obj(version.get("downloads")).get("client"));
-		r.gameJar = new File(versionDir, VERSION + ".jar");
+		Map<String, Object> clientDl = Json.obj(Json.obj(vjson.get("downloads")).get("client"));
+		r.gameJar = new File(versionDir, version + ".jar");
 		jobs.add(new String[] { Json.str(clientDl, "url"), r.gameJar.getPath(), Json.str(clientDl, "sha1") });
 
 		p.stage("Libraries (" + jobs.size() + " files)");
@@ -146,7 +154,7 @@ public final class GameInstaller {
 		overlayArmNatives(r.nativesDir);
 
 		// assets
-		Map<String, Object> ai = Json.obj(version.get("assetIndex"));
+		Map<String, Object> ai = Json.obj(vjson.get("assetIndex"));
 		r.assetIndex = Json.str(ai, "id");
 		r.assetsDir = new File(gameDir, "assets");
 		File indexFile = new File(r.assetsDir, "indexes/" + r.assetIndex + ".json");

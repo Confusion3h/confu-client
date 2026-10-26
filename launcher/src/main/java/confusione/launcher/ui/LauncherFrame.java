@@ -27,6 +27,7 @@ import confusione.launcher.core.AccountStore;
 import confusione.launcher.core.ClientLocator;
 import confusione.launcher.core.GameInstaller;
 import confusione.launcher.core.GameLauncher;
+import confusione.launcher.core.ModernInstaller;
 import confusione.launcher.core.MacFocus;
 import confusione.launcher.core.MicrosoftAuth;
 import confusione.launcher.core.Progress;
@@ -100,6 +101,12 @@ public final class LauncherFrame extends JFrame {
 		min.onClick(new Runnable() { public void run() { setState(ICONIFIED); } });
 		close.onClick(new Runnable() { public void run() { settings.save(); System.exit(0); } });
 		home.play.onClick(new Runnable() { public void run() { launch(); } });
+		home.setModern("1.20.1".equals(settings.gameVersion));
+		home.onVersion(new Runnable() {
+			public void run() { setVersion("1.8.9"); }
+		}, new Runnable() {
+			public void run() { setVersion("1.20.1"); }
+		});
 		home.onAccount(new Runnable() {
 			public void run() { setMicrosoft(false); }
 		}, new Runnable() {
@@ -144,6 +151,12 @@ public final class LauncherFrame extends JFrame {
 	}
 
 	private void refreshClient() {
+		if ("1.20.1".equals(settings.gameVersion)) {
+			File mod = ClientLocator.findModern();
+			home.setClient(mod != null ? "Client: " + mod.getName() + "  \u00b7  Fabric " + ModernInstaller.LOADER + " + Fabric API"
+					: "Confu 1.20.1 mod jar not found", mod != null, null);
+			return;
+		}
 		File jar = ClientLocator.find(settings.clientJar);
 		final File repo = ClientLocator.findRepo();
 		if (jar != null) {
@@ -358,6 +371,16 @@ public final class LauncherFrame extends JFrame {
 		home.setStatus("Opening the Microsoft sign-in window\u2026", Theme.MUTED);
 	}
 
+	private void setVersion(String v) {
+		if (working) {
+			return;
+		}
+		settings.gameVersion = v;
+		settings.save();
+		home.setModern("1.20.1".equals(v));
+		refreshClient();
+	}
+
 	private void launch() {
 		if (working) {
 			return;
@@ -379,9 +402,10 @@ public final class LauncherFrame extends JFrame {
 			home.setStatus("Sign in with Microsoft, or switch to Offline.", Theme.ERROR);
 			return;
 		}
-		final File jar = ClientLocator.find(settings.clientJar);
+		final boolean modern = "1.20.1".equals(settings.gameVersion);
+		final File jar = modern ? ClientLocator.findModern() : ClientLocator.find(settings.clientJar);
 		if (jar == null) {
-			home.setStatus("No client jar. Build it or set the path in Settings.", Theme.ERROR);
+			home.setStatus(modern ? "No Confu 1.20.1 mod jar (confu-modern) found." : "No client jar. Build it or set the path in Settings.", Theme.ERROR);
 			return;
 		}
 		setWorking(true, "PREPARING");
@@ -398,12 +422,21 @@ public final class LauncherFrame extends JFrame {
 						});
 					}
 					final String playing = session != null ? session.name : settings.username;
-					GameInstaller.Result r = new GameInstaller(new File(settings.gameDir), p).install();
-					GameLauncher.fetchOptiFine(settings, p);
-					List<String> cmd = GameLauncher.command(settings, r, jar, session);
+					List<String> cmd;
+					File runDir;
+					if (modern) {
+						ModernInstaller.Result mr = new ModernInstaller(new File(settings.gameDir), p).install(jar);
+						cmd = ModernInstaller.command(settings, mr, session);
+						runDir = mr.instanceDir;
+					} else {
+						GameInstaller.Result r = new GameInstaller(new File(settings.gameDir), p).install();
+						GameLauncher.fetchOptiFine(settings, p);
+						cmd = GameLauncher.command(settings, r, jar, session);
+						runDir = new File(settings.gameDir);
+					}
 					p.log("$ " + GameLauncher.toShell(cmd));
 					p.stage("Starting Minecraft");
-					final Process proc = GameLauncher.start(cmd, new File(settings.gameDir), p);
+					final Process proc = GameLauncher.start(cmd, runDir, p);
 					if (MacFocus.isMac()) {
 						MacFocus.bringToFront(proc, p);
 					}

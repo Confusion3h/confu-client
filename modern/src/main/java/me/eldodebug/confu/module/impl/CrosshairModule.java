@@ -3,7 +3,9 @@ package me.eldodebug.confu.module.impl;
 import me.eldodebug.confu.ConfuClient;
 import me.eldodebug.confu.module.Category;
 import me.eldodebug.confu.module.Module;
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.eldodebug.confu.module.setting.BooleanSetting;
+import me.eldodebug.confu.module.setting.ComboSetting;
 import me.eldodebug.confu.module.setting.NumberSetting;
 import me.eldodebug.confu.render.Draw;
 import me.eldodebug.confu.render.Theme;
@@ -20,6 +22,8 @@ public final class CrosshairModule extends Module {
 	private final BooleanSetting custom = bool("custom", "setting.crosshair.custom", false);
 	private final NumberSetting style = number("style", "setting.crosshair.style", 1, 0, 8, 1);
 	private final NumberSetting scale = number("scale", "setting.crosshair.scale", 1, 0.3, 2, 0.05);
+	private final ComboSetting color = combo("color", "setting.crosshair.color", "white", "white", "green", "red", "cyan", "yellow", "pink", "purple");
+	private final NumberSetting opacity = number("opacity", "setting.crosshair.opacity", 1, 0.2, 1, 0.05);
 	private final BooleanSetting hideThirdPerson = bool("hide_third", "setting.crosshair.hide_third", false);
 
 	public CrosshairModule() {
@@ -55,7 +59,23 @@ public final class CrosshairModule extends Module {
 		matrices.push();
 		matrices.translate(centerX, centerY, 0);
 		matrices.scale(size, size, 1F);
+		int rgb = rgb();
+		RenderSystem.enableBlend();
+		RenderSystem.setShaderColor(((rgb >> 16) & 0xFF) / 255F, ((rgb >> 8) & 0xFF) / 255F, (rgb & 0xFF) / 255F, opacity.getFloat());
 		context.drawTexture(SHEET, -CELL / 2, -CELL / 2, index * CELL, 0, CELL, CELL, SHEET_SIZE, SHEET_SIZE);
+		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 		matrices.pop();
+	}
+
+	private int rgb() {
+		return switch (color.get()) {
+			case "green" -> 0x6EE7A3;
+			case "red" -> 0xFF4D4D;
+			case "cyan" -> 0x4DE1FF;
+			case "yellow" -> 0xFFE14D;
+			case "pink" -> 0xFF7AD9;
+			case "purple" -> 0xA77BFF;
+			default -> 0xFFFFFF;
+		};
 	}
 }
