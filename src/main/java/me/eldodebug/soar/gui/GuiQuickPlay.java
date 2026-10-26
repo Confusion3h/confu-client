@@ -89,7 +89,7 @@ public class GuiQuickPlay extends GuiScreen {
 		}
 		
 		nvg.drawRoundedRect(x, y, width, height, 12, palette.getBackgroundColor(ColorType.NORMAL));
-		nvg.drawCenteredText("Choose a " + (currentQuickPlay != null ? "Mode" : "Game"), x + (width / 2), y + 10, palette.getFontColor(ColorType.DARK), 15, Fonts.MEDIUM);
+		nvg.drawCenteredText((currentQuickPlay != null ? me.eldodebug.soar.management.language.TranslateText.UI_CHOOSEMODE : me.eldodebug.soar.management.language.TranslateText.UI_CHOOSEGAME).getText(), x + (width / 2), y + 10, palette.getFontColor(ColorType.DARK), 15, Fonts.MEDIUM);
 		//nvg.drawRect(x, y + 28, width, 1, palette.getBackgroundColor(ColorType.DARK));
 		
 		nvg.save();

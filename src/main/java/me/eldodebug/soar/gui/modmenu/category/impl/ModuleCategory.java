@@ -154,7 +154,7 @@ public class ModuleCategory extends Category {
 					nvg.drawText(m.getName(), nameX, this.getY() + offsetY + 9F, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
 					nvg.drawText(clipText(nvg, desc, 9, Fonts.REGULAR, textStop - besideX), besideX, this.getY() + offsetY + 12, palette.getFontColor(ColorType.NORMAL), 9, Fonts.REGULAR);
 					nvg.drawText(LegacyIcon.INFO, this.getX() + 56, this.getY() + offsetY + 23, new Color(255, 145, 0), 9, Fonts.LEGACYICON);
-					nvg.drawText("This mod may be restricted on some servers", this.getX() + 57 + (nvg.getTextWidth(LegacyIcon.INFO, 9, Fonts.LEGACYICON)) , this.getY() + offsetY + 24, new Color(255, 145, 0), 9, Fonts.REGULAR);
+					nvg.drawText(me.eldodebug.soar.management.language.TranslateText.UI_RESTRICTED.getText(), this.getX() + 57 + (nvg.getTextWidth(LegacyIcon.INFO, 9, Fonts.LEGACYICON)) , this.getY() + offsetY + 24, new Color(255, 145, 0), 9, Fonts.REGULAR);
 				} else if(beside) {
 					nvg.drawText(m.getName(), nameX, this.getY() + offsetY + 15F, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
 					nvg.drawText(desc, besideX, this.getY() + offsetY + 17, palette.getFontColor(ColorType.NORMAL), 9, Fonts.REGULAR);

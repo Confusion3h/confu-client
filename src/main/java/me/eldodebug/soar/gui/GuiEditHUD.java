@@ -90,7 +90,7 @@ public class GuiEditHUD extends GuiScreen {
 			nvg.drawRect(0, halfScreenHeight, sr.getScaledWidth(), 0.5F, palette.getBackgroundColor(ColorType.DARK));
 			nvg.drawRect(halfScreenWidth, 0, 0.5F, sr.getScaledHeight(), palette.getBackgroundColor(ColorType.DARK));
 			// todo add more splashers
-			nvg.drawCenteredText("You can resize elements by scrolling over them. Use shift for more control.", sr.getScaledWidth() / 2F, sr.getScaledHeight() - 15, new Color(255,255,255, 200), 8F, Fonts.REGULAR);
+			nvg.drawCenteredText(me.eldodebug.soar.management.language.TranslateText.UI_EDITHUD_HINT.getText(), sr.getScaledWidth() / 2F, sr.getScaledHeight() - 15, new Color(255,255,255, 200), 8F, Fonts.REGULAR);
 
 			for(HUDMod m : mods) {
 				

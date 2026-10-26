@@ -135,9 +135,9 @@ public class CosmeticsCategory extends Category {
 		nvg.restore();
 		if(currentCategory.equals(CapeCategory.CUSTOM)){
 			if (capeCount == 0){
-				nvg.drawCenteredText("You have no custom capes.", getX()+(getWidth()/2), getY() + (getHeight()/2) - 14, palette.getFontColor(ColorType.DARK), 12, Fonts.SEMIBOLD);
-				nvg.drawCenteredText("Click + at the top to add a PNG, or drop files in the folder and press reload.", getX()+(getWidth()/2), getY() + (getHeight()/2), palette.getFontColor(ColorType.DARK), 9, Fonts.MEDIUM);
-				nvg.drawCenteredText("PNG, 64x32 cape texture (or 128x64, 256x128...) or 22x17 cape art (or 44x34...).", getX()+(getWidth()/2), getY() + (getHeight()/2) + 12, palette.getFontColor(ColorType.NORMAL), 7, Fonts.REGULAR);
+				nvg.drawCenteredText(me.eldodebug.soar.management.language.TranslateText.UI_NOCAPES.getText(), getX()+(getWidth()/2), getY() + (getHeight()/2) - 14, palette.getFontColor(ColorType.DARK), 12, Fonts.SEMIBOLD);
+				nvg.drawCenteredText(me.eldodebug.soar.management.language.TranslateText.UI_NOCAPES_HINT.getText(), getX()+(getWidth()/2), getY() + (getHeight()/2), palette.getFontColor(ColorType.DARK), 9, Fonts.MEDIUM);
+				nvg.drawCenteredText(me.eldodebug.soar.management.language.TranslateText.UI_NOCAPES_FORMAT.getText(), getX()+(getWidth()/2), getY() + (getHeight()/2) + 12, palette.getFontColor(ColorType.NORMAL), 7, Fonts.REGULAR);
 			}
 			// you may need to reload the game
 		}

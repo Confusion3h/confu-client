@@ -26,12 +26,9 @@ import me.eldodebug.soar.utils.mouse.MouseUtils;
 public class HomeCategory extends Category {
 
 	private static final int PAD = 15, LEFT_W = 200, RIGHT_X = 230, RIGHT_W = 174;
-	private static final String[] TIPS = {
-			"Right Shift opens this menu anywhere.",
-			"FPS mode (Settings > General) turns off blur, glow and particles.",
-			"Music: paste a YouTube or SoundCloud link in Music Player, or drop files in glide/music.",
-			"Capes: Cosmetics > Custom > + to add a PNG; F5 to see it.",
-			"Profiles can switch automatically per server IP.",
+	private static final TranslateText[] TIPS = {
+			TranslateText.HOME_TIP1, TranslateText.HOME_TIP2, TranslateText.HOME_TIP3,
+			TranslateText.HOME_TIP4, TranslateText.HOME_TIP5,
 	};
 
 	public HomeCategory(GuiModMenu parent) {
@@ -46,15 +43,15 @@ public class HomeCategory extends Category {
 
 	private final Toggle[] toggles = {
 			new Toggle() {
-				public String label() { return "FPS mode"; }
+				public String label() { return TranslateText.HOME_FPSMODE.getText(); }
 				public boolean on() { return InternalSettingsMod.isFpsMode(); }
 				public void flip() { InternalSettingsMod.getInstance().getFpsModeSetting().setToggled(!on()); }
 			},
-			modToggle("FPS display", FPSDisplayMod.class),
-			modToggle("Music player", MusicPlayerMod.class),
+			modToggle(TranslateText.HOME_FPSDISPLAY, FPSDisplayMod.class),
+			modToggle(TranslateText.HOME_MUSICPLAYER, MusicPlayerMod.class),
 	};
 
-	private static Toggle modToggle(final String label, final Class<? extends Mod> type) {
+	private static Toggle modToggle(final TranslateText label, final Class<? extends Mod> type) {
 		return new Toggle() {
 			Mod find() {
 				for (Mod m : Glide.getInstance().getModManager().getMods()) {
@@ -64,7 +61,7 @@ public class HomeCategory extends Category {
 				}
 				return null;
 			}
-			public String label() { return label; }
+			public String label() { return label.getText(); }
 			public boolean on() { Mod m = find(); return m != null && m.isToggled(); }
 			public void flip() { Mod m = find(); if (m != null) m.toggle(); }
 		};
@@ -86,7 +83,7 @@ public class HomeCategory extends Category {
 		nvg.drawLogo(x + PAD + 10, y + PAD + 12, 34, accent.getInterpolateColor());
 		nvg.drawText("Confu Client", x + PAD + 52, y + PAD + 16, text, 11, Fonts.SEMIBOLD);
 		nvg.drawText("v" + instance.getVersion() + " \u00b7 Minecraft 1.8.9", x + PAD + 52, y + PAD + 33, muted, 8, Fonts.REGULAR);
-		nvg.drawText("Quick toggles", x + PAD + 10, y + PAD + 66, text, 10, Fonts.SEMIBOLD);
+		nvg.drawText(TranslateText.HOME_QUICKTOGGLES.getText(), x + PAD + 10, y + PAD + 66, text, 10, Fonts.SEMIBOLD);
 		for (int i = 0; i < toggles.length; i++) {
 			float ry = y + PAD + 84 + i * 30;
 			nvg.drawText(toggles[i].label(), x + PAD + 10, ry + 5, text, 9, Fonts.MEDIUM);
@@ -95,14 +92,15 @@ public class HomeCategory extends Category {
 			nvg.drawRoundedRect(sx, ry, 32, 17, 8.5F, on ? accent.getInterpolateColor() : palette.getBackgroundColor(ColorType.NORMAL));
 			nvg.drawRoundedRect(on ? sx + 17 : sx + 2, ry + 2, 13, 13, 6.5F, Color.WHITE);
 		}
-		nvg.drawTextBox("Based on Glide Client and Soar Client by EldoDebug \u00b7 GPL-3.0. Full credits in Settings > Credits.",
+		nvg.drawTextBox(TranslateText.HOME_BASEDON.getText(),
 				x + PAD + 10, y + PAD + 210, LEFT_W - 20, muted, 7.5F, Fonts.REGULAR);
 
 		// right top: tips
 		nvg.drawRoundedRect(x + RIGHT_X, y + PAD, RIGHT_W, 151, 8, card);
-		nvg.drawText("Tips", x + RIGHT_X + 8, y + PAD + 8, text, 11, Fonts.SEMIBOLD);
+		nvg.drawText(TranslateText.HOME_TIPS.getText(), x + RIGHT_X + 8, y + PAD + 8, text, 11, Fonts.SEMIBOLD);
 		float ty = y + PAD + 28;
-		for (String tip : TIPS) {
+		for (TranslateText tipText : TIPS) {
+			String tip = tipText.getText();
 			nvg.drawRoundedRect(x + RIGHT_X + 9, ty + 3, 4, 4, 2, accent.getInterpolateColor());
 			nvg.drawTextBox(tip, x + RIGHT_X + 18, ty, RIGHT_W - 26, text, 7.5F, Fonts.REGULAR);
 			ty += 23;
@@ -111,10 +109,10 @@ public class HomeCategory extends Category {
 		// right bottom: now playing
 		float by = y + PAD + 164;
 		nvg.drawRoundedRect(x + RIGHT_X, by, RIGHT_W, 86, 8, card);
-		nvg.drawText("Now playing", x + RIGHT_X + 8, by + 8, text, 11, Fonts.SEMIBOLD);
+		nvg.drawText(TranslateText.HOME_NOWPLAYING.getText(), x + RIGHT_X + 8, by + 8, text, 11, Fonts.SEMIBOLD);
 		NowPlaying np = instance.getMusicManager().getNowPlaying();
 		if (np.isEmpty()) {
-			nvg.drawTextBox("Nothing yet. Enable Music Player in Mods, then .soarcmd music play.", x + RIGHT_X + 8, by + 30, RIGHT_W - 16, muted, 8, Fonts.REGULAR);
+			nvg.drawTextBox(TranslateText.HOME_NOTHINGYET.getText(), x + RIGHT_X + 8, by + 30, RIGHT_W - 16, muted, 8, Fonts.REGULAR);
 		} else {
 			nvg.drawTextBox(np.title, x + RIGHT_X + 8, by + 28, RIGHT_W - 16, text, 9, Fonts.MEDIUM);
 			if (np.artist != null) {

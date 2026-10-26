@@ -126,7 +126,7 @@ public class GuiGlideMainMenu extends GuiScreen {
 		}
 
 		nvg.drawText(copyright, sr.getScaledWidth() - (nvg.getTextWidth(copyright, 9, Fonts.REGULAR)) - 4, sr.getScaledHeight() - 12, new Color(255, 255, 255), 9, Fonts.REGULAR);
-		nvg.drawText("Confu Client v" + instance.getVersion() + " · based on Glide & Soar (GPL-3.0)", 4, sr.getScaledHeight() - 12, new Color(255, 255, 255), 9, Fonts.REGULAR);
+		nvg.drawText("Confu Client v" + instance.getVersion() + " " + me.eldodebug.soar.management.language.TranslateText.UI_BASEDON.getText(), 4, sr.getScaledHeight() - 12, new Color(255, 255, 255), 9, Fonts.REGULAR);
 	}
 	
 	private void drawButtons(int mouseX, int mouseY, ScaledResolution sr, NanoVGManager nvg) {

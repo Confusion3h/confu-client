@@ -43,7 +43,7 @@ public class CreditsScene extends SettingScene {
 			nvg.drawText(c[1], x + 10, oy + 22, palette.getFontColor(ColorType.NORMAL), 7.5F, Fonts.REGULAR);
 			oy += 44;
 		}
-		nvg.drawText("Licensed under GPL-3.0; upstream copyright notices are kept in the source.", x, oy + 4,
+		nvg.drawText(me.eldodebug.soar.management.language.TranslateText.UI_LICENSE.getText(), x, oy + 4,
 				new Color(palette.getFontColor(ColorType.NORMAL).getRGB() & 0xFFFFFF | 0xB0000000, true), 7, Fonts.REGULAR);
 	}
 }

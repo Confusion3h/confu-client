@@ -70,7 +70,7 @@ public class LanguageSelectScene extends MainMenuScene {
 		int index = 1;
 		
 		nvg.drawRoundedRect(x, y, width, height, 8, this.getBackgroundColor());
-		me.eldodebug.soar.utils.FittedText.drawCentered(nvg, "Choose a Language", x + (width / 2), y + 14, width - 24, 16, Fonts.MEDIUM, Color.WHITE);
+		me.eldodebug.soar.utils.FittedText.drawCentered(nvg, me.eldodebug.soar.management.language.TranslateText.UI_CHOOSELANGUAGE.getText(), x + (width / 2), y + 14, width - 24, 16, Fonts.MEDIUM, Color.WHITE);
 		nvg.drawRect(x, y + 27, width, 1, Color.WHITE);
 		
 		scroll.onScroll();
@@ -95,7 +95,7 @@ public class LanguageSelectScene extends MainMenuScene {
 		nvg.restore();
 		
 		nvg.drawRoundedRect(x + width - 86, y + height - 26, 80, 20, 6, this.getBackgroundColor());
-		nvg.drawCenteredText("Next", x + width - 86 + (80 / 2), y + height - 20, Color.WHITE, 10, Fonts.REGULAR);
+		nvg.drawCenteredText(me.eldodebug.soar.management.language.TranslateText.UI_NEXT.getText(), x + width - 86 + (80 / 2), y + height - 20, Color.WHITE, 10, Fonts.REGULAR);
 	}
 
 	@Override
