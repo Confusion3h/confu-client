@@ -273,14 +273,14 @@ public class ProfileManager {
 									
 									ColorSetting cSetting = (ColorSetting) s;
 									
-									cSetting.setColor(ColorUtils.getColorByInt(JsonUtils.getIntProperty(sJsonObject, s.getNameKey(), Color.RED.getRGB())));
+									cSetting.setColor(ColorUtils.getColorByInt(JsonUtils.getIntProperty(sJsonObject, s.getNameKey(), cSetting.getDefaultColor().getRGB())));
 								}
 								
 								if(s instanceof BooleanSetting) {
 									
 									BooleanSetting bSetting = (BooleanSetting) s;
 									
-									bSetting.setToggled(JsonUtils.getBooleanProperty(sJsonObject, s.getNameKey(), false));
+									bSetting.setToggled(JsonUtils.getBooleanProperty(sJsonObject, s.getNameKey(), bSetting.isDefaultValue()));
 								}
 								
 								if(s instanceof ComboSetting) {
