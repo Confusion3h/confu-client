@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "confu",
+  "version": "${version}",
+  "name": "Confu Client",
+  "description": "Confu Client for Minecraft 1.20.1: HUD modules, freelook, smooth zoom, crosshair and cosmetics on Fabric.",
+  "authors": [
+    "Confu Client contributors"
+  ],
+  "contributors": [
+    "EldoDebug (Soar Client)",
+    "Glide Client contributors"
+  ],
+  "license": "GPL-3.0",
+  "icon": "assets/confu/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "me.eldodebug.confu.ConfuClient"
+    ]
+  },
+  "mixins": [
+    "confu.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
+  }
+}
