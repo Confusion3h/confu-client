@@ -36,6 +36,13 @@ import confusione.launcher.core.Settings;
 public final class LauncherFrame extends JFrame {
 
 	public static final int W = 1000, H = 620;
+	/** From the jar manifest (Implementation-Version, set from the root VERSION file). */
+	private static final String VERSION_LABEL = versionLabel();
+
+	private static String versionLabel() {
+		String v = LauncherFrame.class.getPackage() == null ? null : LauncherFrame.class.getPackage().getImplementationVersion();
+		return v == null ? "dev" : "v" + v;
+	}
 	private static final int SIDEBAR = 76;
 
 	private final Settings settings;
@@ -512,7 +519,7 @@ public final class LauncherFrame extends JFrame {
 			g.fill(new RoundRectangle2D.Float(0, iy, 3.5f, 20, 3, 3));
 			g.setFont(Theme.regular(10));
 			g.setColor(Theme.alpha(Theme.MUTED, 0.7f));
-			g.drawString("v0.1", 26, getHeight() - 18);
+			g.drawString(VERSION_LABEL, 26, getHeight() - 18);
 			g.dispose();
 		}
 	}

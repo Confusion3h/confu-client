@@ -1,16 +1,16 @@
 # Platforms
 
-Confu Client 0.1.0 ships six archives, published on https://github.com/Confusion3h/confu-client/releases. Each one bundles a JRE.
+Confu Client 0.1.1 ships six archives, published on https://github.com/Confusion3h/confu-client/releases. Each one bundles a JRE.
 The game itself is still Minecraft 1.8.9 (LWJGL 2.9.4, Mixin 0.7.11, LaunchWrapper 1.12).
 
 | Archive | JRE | LWJGL natives | How it was checked |
 |---|---|---|---|
-| `Confu-Client-Setup-0.1.0-win-x64.exe` | Temurin 8 x64 | Mojang x64 | NSIS x64 installer, PE32+ |
-| `Confu-Client-Setup-0.1.0-win-arm64.exe` | Microsoft Build of OpenJDK 17 aarch64 | HMCL LWJGL2 2.9.3-rc1 windows-arm64 | installer is an x64 stub (runs under emulation); payload JRE and DLLs are aarch64 |
-| `Confu-Client-0.1.0-mac-x64.zip` | Temurin 8 x64 | Mojang x64 | `.app` zip, Mach-O x86_64, needs macOS 11 or later |
-| `Confu-Client-0.1.0-mac-aarch64.zip` | Azul Zulu 8 aarch64 | HMCL LWJGL2 2.9.3-rc1 osx-arm64 | `.app` zip, Mach-O arm64, needs macOS 12 or later (`openal.dylib`) |
-| `Confu-Client-0.1.0-linux-x64.tar.gz` | Temurin 8 x64 | Mojang x64 | unpacked and launched |
-| `Confu-Client-0.1.0-linux-aarch64.tar.gz` | Temurin 8 aarch64 | HMCL LWJGL2 2.9.3-linux-arm64 | ELF aarch64 structure only (this build machine is x64) |
+| `Confu-Client-Setup-0.1.1-win-x64.exe` | Temurin 8 x64 | Mojang x64 | NSIS x64 installer, PE32+ |
+| `Confu-Client-Setup-0.1.1-win-arm64.exe` | Microsoft Build of OpenJDK 17 aarch64 | HMCL LWJGL2 2.9.3-rc1 windows-arm64 | installer is an x64 stub (runs under emulation); payload JRE and DLLs are aarch64 |
+| `Confu-Client-0.1.1-mac-x64.zip` | Temurin 8 x64 | Mojang x64 | `.app` zip, Mach-O x86_64, needs macOS 11 or later |
+| `Confu-Client-0.1.1-mac-aarch64.zip` | Azul Zulu 8 aarch64 | HMCL LWJGL2 2.9.3-rc1 osx-arm64 | `.app` zip, Mach-O arm64, needs macOS 12 or later (`openal.dylib`) |
+| `Confu-Client-0.1.1-linux-x64.tar.gz` | Temurin 8 x64 | Mojang x64 | unpacked and launched |
+| `Confu-Client-0.1.1-linux-aarch64.tar.gz` | Temurin 8 aarch64 | HMCL LWJGL2 2.9.3-linux-arm64 | ELF aarch64 structure only (this build machine is x64) |
 
 Build them all with `scripts/build-all.sh`. The Windows x64 installer alone is `scripts/build-windows-installer.sh`.
 

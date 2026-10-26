@@ -14,7 +14,7 @@ ManifestSupportedOS all
 
 !define APPNAME "Confu Client"
 !ifndef VERSION
-  !define VERSION "0.1.0"
+  !define VERSION "0.1.1"
 !endif
 !ifndef ORIGINAL
   !define ORIGINAL "Confu-Client-Setup-${VERSION}.exe"
