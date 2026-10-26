@@ -104,6 +104,7 @@ Section "Install"
   !endif
   SetOutPath "$INSTDIR\client"
   File "${STAGE}\client\CONFUSION3H-Release.jar"
+  File "${STAGE}\client\confu-modern-${VERSION}.jar"
   SetOutPath "$INSTDIR\jre"
   File /r "${STAGE}\jre\*"
 

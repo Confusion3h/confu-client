@@ -117,6 +117,7 @@ common_stage() {
   cp launcher/build/libs/CONFUSION3H-launcher-*.jar "$dest/CONFUSION3H-launcher.jar"
   cp launcher/build/libs/launch-compat.jar "$dest/launch-compat.jar"
   cp build/libs/CONFUSION3H-Release.jar "$dest/client/"
+  cp "modern/build/libs/confu-modern-$VERSION.jar" "$dest/client/"
   cp LICENSE "$dest/LICENSE.txt"
   cp "$CACHE/java8-rt.jar" "$dest/java8-rt.jar"
   local M=$dest/music

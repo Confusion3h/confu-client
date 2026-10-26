@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Builds release/Confu-Client-Setup-<ver>-win-x64.exe on Linux.
-# Needs: JDK 8 (JAVA_HOME), makensis (apt: nsis), ImageMagick (convert), curl, unzip.
+# Needs: JDK 8 (JAVA_HOME), JDK 17 (MODERN_JAVA_HOME, default /opt/jdk17), makensis (apt: nsis), ImageMagick (convert), curl, unzip.
 # Usage: scripts/build-windows-installer.sh [outdir]   (default /workspace/release)
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -16,6 +16,8 @@ mkdir -p "$CACHE" "$OUT"
 export JAVA_HOME="${JAVA_HOME:-/usr/lib/jvm/temurin-8-jdk-amd64}"
 ./gradlew build -x getAssets --no-daemon -q
 scripts/build-launch-compat.sh "$ROOT/launcher/build/libs/launch-compat.jar"
+# Confu for Minecraft 1.20.1 (Fabric mod). Needs JDK 17; the launcher fetches Fabric itself.
+(cd modern && JAVA_HOME="${MODERN_JAVA_HOME:-/opt/jdk17}" ./gradlew clean build -Pmod_version="$VERSION" --no-daemon -q)
 
 if ! echo "$JRE_SHA256  $CACHE/jre.zip" | sha256sum -c --status 2>/dev/null; then
   curl -fsSLo "$CACHE/jre.zip" "$JRE_URL"
@@ -26,6 +28,7 @@ rm -rf "$STAGE" && mkdir -p "$STAGE/client" "$STAGE/music"
 cp launcher/build/libs/CONFUSION3H-launcher-*.jar "$STAGE/CONFUSION3H-launcher.jar"
 cp launcher/build/libs/launch-compat.jar "$STAGE/launch-compat.jar"
 cp build/libs/CONFUSION3H-Release.jar "$STAGE/client/"
+cp "modern/build/libs/confu-modern-$VERSION.jar" "$STAGE/client/"
 cp LICENSE "$STAGE/LICENSE.txt"
 unzip -q "$CACHE/jre.zip" -d "$STAGE/jre-tmp"
 mv "$STAGE"/jre-tmp/*/ "$STAGE/jre" && rmdir "$STAGE/jre-tmp"
