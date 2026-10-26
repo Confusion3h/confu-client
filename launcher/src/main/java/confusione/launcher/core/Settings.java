@@ -76,6 +76,8 @@ public final class Settings {
 	public String clientJar = "";     // empty: auto-detect
 	public boolean reduceMotion = false;
 	public boolean keepOpen = false;
+	/** Fetch OptiFine from optifine.net on first launch and load it. Off by default. */
+	public boolean optifine = false;
 	/** Microsoft account instead of the offline name. Refresh token is not stored here. */
 	public boolean microsoft = false;
 	/**
@@ -104,6 +106,7 @@ public final class Settings {
 		s.clientJar = p.getProperty("clientJar", s.clientJar);
 		s.reduceMotion = Boolean.parseBoolean(p.getProperty("reduceMotion", "false"));
 		s.keepOpen = Boolean.parseBoolean(p.getProperty("keepOpen", "false"));
+		s.optifine = Boolean.parseBoolean(p.getProperty("optifine", "false"));
 		s.microsoft = Boolean.parseBoolean(p.getProperty("microsoft", "false"));
 		s.msClientId = p.getProperty("msClientId", "").trim();
 		try {
@@ -122,6 +125,7 @@ public final class Settings {
 		p.setProperty("clientJar", clientJar);
 		p.setProperty("reduceMotion", Boolean.toString(reduceMotion));
 		p.setProperty("keepOpen", Boolean.toString(keepOpen));
+		p.setProperty("optifine", Boolean.toString(optifine));
 		p.setProperty("microsoft", Boolean.toString(microsoft));
 		p.setProperty("msClientId", msClientId == null ? "" : msClientId.trim());
 		try {

@@ -112,6 +112,7 @@ public final class Main {
 			session = MicrosoftAuth.ensure(s.msClientId, Progress.CONSOLE);
 		}
 		GameInstaller.Result r = new GameInstaller(new File(s.gameDir), Progress.CONSOLE).install();
+		GameLauncher.fetchOptiFine(s, Progress.CONSOLE);
 		if (mode.equals("setup-only")) {
 			return 0;
 		}

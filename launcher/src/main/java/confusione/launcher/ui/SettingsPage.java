@@ -16,7 +16,7 @@ public final class SettingsPage extends JComponent implements PageHost.Entrance 
 	private final Settings s;
 	private final TextInput gameDir, javaPath, clientJar;
 	private final Slider ram;
-	private final Toggle reduceMotion, keepOpen;
+	private final Toggle reduceMotion, keepOpen, optifine;
 	private final Anim enter = new Anim(this, 1, 6);
 	private Runnable onChange;
 
@@ -40,9 +40,14 @@ public final class SettingsPage extends JComponent implements PageHost.Entrance 
 		keepOpen.setListener(new Toggle.Listener() {
 			public void changed(boolean on) { s.keepOpen = on; SettingsPage.this.changed(); }
 		});
+		optifine = new Toggle("OptiFine", "Downloads the official 1.8.9 build from optifine.net on first launch; never bundled", s.optifine);
+		optifine.setListener(new Toggle.Listener() {
+			public void changed(boolean on) { s.optifine = on; SettingsPage.this.changed(); }
+		});
 		add(ram);
 		add(reduceMotion);
 		add(keepOpen);
+		add(optifine);
 	}
 
 	public void onChange(Runnable r) {
@@ -83,7 +88,7 @@ public final class SettingsPage extends JComponent implements PageHost.Entrance 
 	public void doLayout() {
 		int x = 48, w = Math.min(560, getWidth() - 96);
 		float e = enter.get();
-		JComponent[] rows = { gameDir, javaPath, clientJar, ram, reduceMotion, keepOpen };
+		JComponent[] rows = { gameDir, javaPath, clientJar, ram, reduceMotion, keepOpen, optifine };
 		int y = 110;
 		for (int i = 0; i < rows.length; i++) {
 			int h = i < 3 ? 52 : 56;

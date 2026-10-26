@@ -25,7 +25,7 @@ public class GlideTweaker implements ITweaker {
     public void acceptOptions(List<String> args, File gameDir, File assetsDir, String profile) {
     	
     	try {
-			Class.forName("optifine.Patcher");
+			Class.forName("optifine.OptiFineClassTransformer", false, GlideTweaker.class.getClassLoader());
 			hasOptifine = true;
 		}
 		catch(ClassNotFoundException e) {
@@ -53,6 +53,17 @@ public class GlideTweaker implements ITweaker {
     public void injectIntoClassLoader(LaunchClassLoader classLoader) {
 
     	classLoader.registerTransformer(LwjglTransformer.class.getName());
+
+    	// OptiFine on the classpath (downloaded by the launcher, never bundled): register its
+    	// class transformer here instead of chaining optifine.OptiFineTweaker, which would
+    	// re-add --version/--gameDir/--assetsDir and make Minecraft's argument parser fail.
+    	// It runs before Mixin, so our mixins apply on top of OptiFine's patched classes.
+    	if (hasOptifine) {
+    		// Same as LaunchWrapper does for a tweaker package: load optifine.* from the parent
+    		// class loader so OptiFine finds its own jar and does not transform itself.
+    		classLoader.addClassLoaderExclusion("optifine.");
+    		classLoader.registerTransformer("optifine.OptiFineClassTransformer");
+    	}
     	
         MixinBootstrap.init();
 

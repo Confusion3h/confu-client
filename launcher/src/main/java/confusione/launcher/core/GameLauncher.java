@@ -109,6 +109,10 @@ public final class GameLauncher {
 		}
 		// client next: its embedded Mixin and LWJGL3/NanoVG classes must win over vanilla
 		cp.append(clientJar.getAbsolutePath());
+		File optifine = s.optifine ? OptiFine.installed(new File(s.gameDir)) : null;
+		if (optifine != null) {
+			cp.append(File.pathSeparatorChar).append(optifine.getAbsolutePath());
+		}
 		for (File f : r.classpath) {
 			cp.append(File.pathSeparatorChar).append(f.getAbsolutePath());
 		}
@@ -211,5 +215,17 @@ public final class GameLauncher {
 			b.append(shown.contains(" ") || shown.contains("{") ? "'" + shown + "'" : shown);
 		}
 		return b.toString();
+	}
+
+	/** OptiFine is optional: a failed download is logged and the game starts without it. */
+	public static void fetchOptiFine(Settings s, Progress p) {
+		if (!s.optifine) {
+			return;
+		}
+		try {
+			OptiFine.ensure(new File(s.gameDir), p);
+		} catch (Exception e) {
+			p.log("OptiFine not loaded: " + e.getMessage());
+		}
 	}
 }

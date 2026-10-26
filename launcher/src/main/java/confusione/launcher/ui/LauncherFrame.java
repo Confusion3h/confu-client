@@ -392,6 +392,7 @@ public final class LauncherFrame extends JFrame {
 					}
 					final String playing = session != null ? session.name : settings.username;
 					GameInstaller.Result r = new GameInstaller(new File(settings.gameDir), p).install();
+					GameLauncher.fetchOptiFine(settings, p);
 					List<String> cmd = GameLauncher.command(settings, r, jar, session);
 					p.log("$ " + GameLauncher.toShell(cmd));
 					p.stage("Starting Minecraft");
