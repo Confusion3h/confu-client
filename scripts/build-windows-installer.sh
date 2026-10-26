@@ -14,6 +14,12 @@ STAGE=$OUT/stage
 mkdir -p "$CACHE" "$OUT"
 
 export JAVA_HOME="${JAVA_HOME:-/usr/lib/jvm/temurin-8-jdk-amd64}"
+# The 1.8.9 client and the launcher must be compiled by JDK 8: a newer javac targeting 8
+# links ByteBuffer.flip() and friends to Java 9+ signatures, which crash on the Java 8 JREs.
+if ! "$JAVA_HOME/bin/java" -version 2>&1 | grep -q '"1\.8\.'; then
+  echo "JAVA_HOME must be a JDK 8 (got $JAVA_HOME)" >&2
+  exit 1
+fi
 ./gradlew build -x getAssets --no-daemon -q
 scripts/build-launch-compat.sh "$ROOT/launcher/build/libs/launch-compat.jar"
 # Confu for Minecraft 1.20.1 (Fabric mod). Needs JDK 17; the launcher fetches Fabric itself.
