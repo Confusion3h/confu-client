@@ -313,6 +313,15 @@ public class ModuleCategory extends Category {
 			
 			nvg.restore();
 			
+			if(currentMod instanceof me.eldodebug.soar.management.mods.impl.CrosshairMod) {
+				// live preview, fixed in the panel's bottom-right corner (outside the scroll)
+				float size = 64;
+				float px = this.getX() + this.getWidth() - 15 - 12 - size;
+				float py = this.getY() + this.getHeight() - 15 - 12 - size;
+				nvg.drawText("Preview", px, py - 11, palette.getFontColor(ColorType.NORMAL), 8, Fonts.MEDIUM);
+				((me.eldodebug.soar.management.mods.impl.CrosshairMod) currentMod).drawPreview(nvg, px, py, size);
+			}
+			
 			settingScroll.setMaxScroll(this.getModuleSettingHeight());
 		}
 		
