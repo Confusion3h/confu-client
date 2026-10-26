@@ -35,7 +35,7 @@ public enum TranslateText {
 	STOPWATCH_DESCRIPTION("text.stopwatch.description"), QUICK_SWITCH("text.quickswitch.name"),
 	QUICK_SWITCH_DESCRIPTION("text.quickswitch.description"), SWORD("text.sword"), BLOCK("text.block"),
 	BOW("text.bow"), AXE("text.axe"), PICKAXE("text.pickaxe"), ZOOM("text.zoom.name"), ZOOM_DESCRIPTION("text.zoom.description"),
-	SCROLL("text.scroll"), SMOOTH_ZOOM("text.smoothzoom"), ZOOM_SPEED("text.zoomspeed"), ZOOM_FACTOR("text.zoomfactor"),
+	SCROLL("text.scroll"), SMOOTH_ZOOM("text.smoothzoom"), SMOOTH_FREELOOK("text.smoothfreelook"), ZOOM_SPEED("text.zoomspeed"), ZOOM_FACTOR("text.zoomfactor"),
 	SMOOTH_CAMERA("text.smoothcamera"), TOGGLE_SPRINT("text.togglesprint.name"), TOGGLE_SPRINT_DESCRIPTION("text.togglesprint.description"),
 	ALWAYS("text.always"), HUD("text.hud"), TOGGLE_SNEAK("text.togglesneak.name"), TOGGLE_SNEAK_DESCRIPTION("text.togglesneak.description"),
 	PREFIX("text.prefix"), NAME("text.name"), IGN("text.ign"), NAME_DISPLAY("text.namedisplay.name"),

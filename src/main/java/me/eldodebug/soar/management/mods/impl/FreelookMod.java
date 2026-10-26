@@ -17,6 +17,7 @@ import me.eldodebug.soar.management.mods.settings.impl.BooleanSetting;
 import me.eldodebug.soar.management.mods.settings.impl.ComboSetting;
 import me.eldodebug.soar.management.mods.settings.impl.KeybindSetting;
 import me.eldodebug.soar.management.mods.settings.impl.combo.Option;
+import me.eldodebug.soar.utils.animation.simple.SimpleAnimation;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
@@ -27,11 +28,15 @@ public class FreelookMod extends Mod {
 	private float pitch;
 	private int previousPerspective;
 	private boolean toggled;
+	/** Still easing back to the player's view after the key was released. */
+	private boolean returning;
+	private SimpleAnimation transition = new SimpleAnimation(0.0F);
 	
 	private BooleanSetting invertYawSetting = new BooleanSetting(TranslateText.INVERT_YAW, this, false);
 	private BooleanSetting invertPitchSetting = new BooleanSetting(TranslateText.INVERT_PITCH, this, false);
 	private ComboSetting modeSetting = new ComboSetting(TranslateText.MODE, this, TranslateText.KEYDOWN, new ArrayList<Option>(Arrays.asList(
 			new Option(TranslateText.TOGGLE), new Option(TranslateText.KEYDOWN))));
+	private BooleanSetting smoothSetting = new BooleanSetting(TranslateText.SMOOTH_FREELOOK, this, true);
 	private KeybindSetting keybindSetting = new KeybindSetting(TranslateText.KEYBIND, this, Keyboard.KEY_V);
 	
 	public FreelookMod() {
@@ -79,9 +84,21 @@ public class FreelookMod extends Mod {
 	
 	@EventTarget
 	public void onCameraRotation(EventCameraRotation event) {
-		if(active) {
-			event.setYaw(yaw);
-			event.setPitch(pitch);
+		if(!active && !returning) {
+			return;
+		}
+		float p = 1F;
+		if(smoothSetting.isToggled()) {
+			transition.setAnimation(active ? 1.0F : 0.0F, 12);
+			p = Math.max(0F, Math.min(1F, transition.getValue()));
+		}
+		float baseYaw = event.getYaw();
+		float basePitch = event.getPitch();
+		event.setYaw(baseYaw + MathHelper.wrapAngleTo180_float(yaw - baseYaw) * p);
+		event.setPitch(basePitch + (pitch - basePitch) * p);
+		event.setThirdPersonDistance(event.getThirdPersonDistance() * p);
+		if(returning && p < 0.02F) {
+			finishReturn();
 		}
 	}
 	
@@ -111,19 +128,33 @@ public class FreelookMod extends Mod {
 	private void start() {
 		if(!active) {
 			active = true;
-			previousPerspective = mc.gameSettings.thirdPersonView;
-			mc.gameSettings.thirdPersonView = 3;
 			Entity renderView = mc.getRenderViewEntity();
-			yaw = renderView.rotationYaw;
-			pitch = renderView.rotationPitch;
+			if(!returning) {
+				// keep the free angle when re-pressed mid-return, so there is no jump
+				yaw = renderView.rotationYaw;
+				pitch = renderView.rotationPitch;
+				previousPerspective = mc.gameSettings.thirdPersonView;
+				transition = new SimpleAnimation(smoothSetting.isToggled() ? 0.0F : 1.0F);
+			}
+			returning = false;
+			mc.gameSettings.thirdPersonView = 3;
 		}
 	}
 	
 	private void stop() {
 		if(active) {
 			active = false;
-			mc.gameSettings.thirdPersonView = previousPerspective;
-			mc.renderGlobal.setDisplayListEntitiesDirty();
+			if(smoothSetting.isToggled()) {
+				returning = true;
+			} else {
+				finishReturn();
+			}
 		}
+	}
+
+	private void finishReturn() {
+		returning = false;
+		mc.gameSettings.thirdPersonView = previousPerspective;
+		mc.renderGlobal.setDisplayListEntitiesDirty();
 	}
 }
