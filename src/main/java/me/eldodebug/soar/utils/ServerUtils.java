@@ -42,7 +42,17 @@ public class ServerUtils {
 		if(mc.isSingleplayer() || !isJoinServer()) {
 			return 0;
 		}else {
-			return (int) mc.getCurrentServerData().pingToServer;
+			// ServerData.pingToServer is only filled by the multiplayer server-list
+			// pinger, so it stays -1 on direct connect / quick join. The live value
+			// is the tab-list latency the server sends for our own player.
+			if(mc.thePlayer != null && mc.getNetHandler() != null) {
+				NetworkPlayerInfo info = mc.getNetHandler().getPlayerInfo(mc.thePlayer.getUniqueID());
+				if(info != null && info.getResponseTime() > 0) {
+					return info.getResponseTime();
+				}
+			}
+			long listPing = mc.getCurrentServerData().pingToServer;
+			return listPing > 0 ? (int) listPing : 0;
 		}
 	}
 	
