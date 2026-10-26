@@ -24,7 +24,8 @@ import me.eldodebug.soar.utils.mouse.MouseUtils;
  */
 public class MusicCategory extends Category {
 
-	private static final String[] BUTTONS = { "Prev", "Play/Pause", "Next", "Add link", "Open folder", "Rescan" };
+	private static final TranslateText[] BUTTONS = { TranslateText.MUSIC_PREV, TranslateText.MUSIC_PLAYPAUSE, TranslateText.MUSIC_NEXT,
+			TranslateText.MUSIC_ADDLINK, TranslateText.MUSIC_OPENFOLDER, TranslateText.MUSIC_RESCAN };
 
 	public MusicCategory(GuiModMenu parent) {
 		super(parent, TranslateText.MUSIC_PLAYER, LegacyIcon.MUSIC, false, true);
@@ -48,8 +49,8 @@ public class MusicCategory extends Category {
 		NowPlaying np = music().getNowPlaying();
 		nvg.drawRoundedRect(x, y, w, 56, 8, palette.getBackgroundColor(ColorType.DARK));
 		nvg.drawText(LegacyIcon.MUSIC, x + 12, y + 18, palette.getFontColor(ColorType.DARK), 20, Fonts.LEGACYICON);
-		String title = np.isEmpty() ? "Nothing playing" : np.title;
-		String sub = np.isEmpty() ? "Add a link, or drop MP3/OGG/WAV files in glide/music" : (np.artist != null ? np.artist : (np.playing ? "Playing" : "Paused"));
+		String title = np.isEmpty() ? TranslateText.MUSIC_NOTHING.getText() : np.title;
+		String sub = np.isEmpty() ? TranslateText.MUSIC_HINT.getText() : (np.artist != null ? np.artist : (np.playing ? TranslateText.MUSIC_PLAYING.getText() : TranslateText.MUSIC_PAUSED.getText()));
 		nvg.drawText(title == null ? "" : title, x + 44, y + 14, palette.getFontColor(ColorType.DARK), 11, Fonts.SEMIBOLD);
 		nvg.drawText(sub, x + 44, y + 30, palette.getFontColor(ColorType.NORMAL), 8, Fonts.REGULAR);
 		if (np.durationMs > 0) {
@@ -63,7 +64,7 @@ public class MusicCategory extends Category {
 			float bx = x + (i % 3) * (bw + 10), by = y + 68 + (i / 3) * 32;
 			boolean hover = MouseUtils.isInside(mouseX, mouseY, bx, by, bw, 24);
 			nvg.drawRoundedRect(bx, by, bw, 24, 6, palette.getBackgroundColor(ColorType.DARK, hover ? 200 : 255));
-			nvg.drawCenteredText(BUTTONS[i], bx + bw / 2, by + 8, hover ? Color.WHITE : palette.getFontColor(ColorType.DARK), 9, Fonts.MEDIUM);
+			nvg.drawCenteredText(BUTTONS[i].getText(), bx + bw / 2, by + 8, hover ? Color.WHITE : palette.getFontColor(ColorType.DARK), 9, Fonts.MEDIUM);
 		}
 	}
 

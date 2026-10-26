@@ -8,6 +8,7 @@ public enum Language {
 	CHINESE("zh-cn", "中文 (中國)", new ResourceLocation("soar/flag/cn.png")),
 	ENGLISHGB("en-gb", "English (United Kingdom)", new ResourceLocation("soar/flag/gb.png")),
 	ENGLISH("en-us", "English (United States)", new ResourceLocation("soar/flag/us.png")),
+	ITALIAN("it-it", "Italiano (Italia)", new ResourceLocation("soar/flag/it.png")),
 	FRENCH("fr-fr", "Français (France)", new ResourceLocation("soar/flag/fr.png")),
 	SPANISH("es-es", "Español (España)", new ResourceLocation("soar/flag/es.png")),
 	VIETNAMESE("vi-vn", "Tiếng Việt (Việt Nam)", new ResourceLocation("soar/flag/vn.png")), 

@@ -35,7 +35,7 @@ public enum TranslateText {
 	STOPWATCH_DESCRIPTION("text.stopwatch.description"), QUICK_SWITCH("text.quickswitch.name"),
 	QUICK_SWITCH_DESCRIPTION("text.quickswitch.description"), SWORD("text.sword"), BLOCK("text.block"),
 	BOW("text.bow"), AXE("text.axe"), PICKAXE("text.pickaxe"), ZOOM("text.zoom.name"), ZOOM_DESCRIPTION("text.zoom.description"),
-	SCROLL("text.scroll"), SMOOTH_ZOOM("text.smoothzoom"), SMOOTH_FREELOOK("text.smoothfreelook"), ZOOM_SPEED("text.zoomspeed"), ZOOM_FACTOR("text.zoomfactor"),
+	SCROLL("text.scroll"), SMOOTH_ZOOM("text.smoothzoom"), SMOOTH_FREELOOK("text.smoothfreelook"), CROSSHAIR_PREVIEW("text.crosshair.preview"), MUSIC_PREV("text.music.prev"), MUSIC_PLAYPAUSE("text.music.playpause"), MUSIC_NEXT("text.music.next"), MUSIC_ADDLINK("text.music.addlink"), MUSIC_OPENFOLDER("text.music.openfolder"), MUSIC_RESCAN("text.music.rescan"), MUSIC_NOTHING("text.music.nothing"), MUSIC_HINT("text.music.hint"), MUSIC_PLAYING("text.music.playing"), MUSIC_PAUSED("text.music.paused"), ZOOM_SPEED("text.zoomspeed"), ZOOM_FACTOR("text.zoomfactor"),
 	SMOOTH_CAMERA("text.smoothcamera"), TOGGLE_SPRINT("text.togglesprint.name"), TOGGLE_SPRINT_DESCRIPTION("text.togglesprint.description"),
 	ALWAYS("text.always"), HUD("text.hud"), TOGGLE_SNEAK("text.togglesneak.name"), TOGGLE_SNEAK_DESCRIPTION("text.togglesneak.description"),
 	PREFIX("text.prefix"), NAME("text.name"), IGN("text.ign"), NAME_DISPLAY("text.namedisplay.name"),
