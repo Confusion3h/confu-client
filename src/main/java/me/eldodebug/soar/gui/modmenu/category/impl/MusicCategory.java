@@ -6,6 +6,7 @@ import me.eldodebug.soar.Glide;
 import me.eldodebug.soar.gui.GuiAddTrack;
 import me.eldodebug.soar.gui.modmenu.GuiModMenu;
 import me.eldodebug.soar.gui.modmenu.category.Category;
+import me.eldodebug.soar.management.color.AccentColor;
 import me.eldodebug.soar.management.color.palette.ColorPalette;
 import me.eldodebug.soar.management.color.palette.ColorType;
 import me.eldodebug.soar.management.language.TranslateText;
@@ -63,7 +64,12 @@ public class MusicCategory extends Category {
 		for (int i = 0; i < BUTTONS.length; i++) {
 			float bx = x + (i % 3) * (bw + 10), by = y + 68 + (i / 3) * 32;
 			boolean hover = MouseUtils.isInside(mouseX, mouseY, bx, by, bw, 24);
-			nvg.drawRoundedRect(bx, by, bw, 24, 6, palette.getBackgroundColor(ColorType.DARK, hover ? 200 : 255));
+			if (hover) {
+				AccentColor accent = Glide.getInstance().getColorManager().getCurrentColor();
+				nvg.drawGradientRoundedRect(bx, by, bw, 24, 6, accent.getColor1(), accent.getColor2());
+			} else {
+				nvg.drawRoundedRect(bx, by, bw, 24, 6, palette.getBackgroundColor(ColorType.DARK));
+			}
 			nvg.drawCenteredText(BUTTONS[i].getText(), bx + bw / 2, by + 8, hover ? Color.WHITE : palette.getFontColor(ColorType.DARK), 9, Fonts.MEDIUM);
 		}
 	}
