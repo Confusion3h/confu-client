@@ -1,105 +1,80 @@
 package me.eldodebug.confu.module.impl;
 
-import me.eldodebug.confu.hud.HudModule;
+import java.awt.Color;
+
+import me.eldodebug.confu.hud.NvgHudModule;
 import me.eldodebug.confu.module.Category;
 import me.eldodebug.confu.module.setting.BooleanSetting;
-import me.eldodebug.confu.module.setting.NumberSetting;
-import me.eldodebug.confu.render.Draw;
-import me.eldodebug.confu.render.Theme;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.option.GameOptions;
+import me.eldodebug.soar.utils.animation.simple.SimpleAnimation;
+import net.minecraft.client.option.KeyBinding;
 
-public final class KeystrokesModule extends HudModule {
+/** 1.8.9 KeystrokesMod, same layout, highlight animation and labels. */
+public final class KeystrokesModule extends NvgHudModule {
 
-	private static final int KEY = 28;
-	private static final int GAP = 4;
-	private static final int WIDTH = KEY * 3 + GAP * 2;
-	private static final int ROW_HEIGHT = 22;
-	private static final int RADIUS = 6;
-	private static final int FORWARD = 0;
-	private static final int LEFT = 1;
-	private static final int BACK = 2;
-	private static final int RIGHT = 3;
-	private static final int JUMP = 4;
-	private static final float RATE = 16F;
-	private static final long MAX_FRAME_NANOS = 100_000_000L;
-
-	private final BooleanSetting space = bool("space", "setting.keystrokes.space", true);
-	private final BooleanSetting unmarked = bool("unmarked", "setting.keystrokes.unmarked", false);
-	private final NumberSetting scale = number("scale", "setting.keystrokes.scale", 1, 0.5, 2, 0.05);
-
-	private final float[] press = new float[5];
-	private long lastNanos;
+	private final BooleanSetting space = bool("space", "tt:SPACE", true);
+	private final BooleanSetting unmarked = bool("unmarked", "tt:UNMARKED", false);
+	private final SimpleAnimation[] animations = new SimpleAnimation[5];
 
 	public KeystrokesModule() {
-		super("keystrokes", Category.HUD, "module.keystrokes.name", "module.keystrokes.desc", 0F, 0.85F);
+		super("keystrokes", Category.HUD, "tt:KEYSTROKES", "tt:KEYSTROKES_DESCRIPTION", 0F, 0.85F);
+		for (int i = 0; i < 5; i++) {
+			animations[i] = new SimpleAnimation();
+		}
+	}
+
+	private boolean down(KeyBinding key) {
+		return mc.currentScreen == null && key.isPressed();
+	}
+
+	private static String label(KeyBinding key) {
+		return key.getBoundKeyLocalizedText().getString().toUpperCase();
 	}
 
 	@Override
-	protected int width() {
-		return WIDTH;
-	}
+	protected void drawNanoVG() {
+		animations[0].setAnimation(down(mc.options.forwardKey) ? 1.0F : 0.0F, 16);
+		animations[1].setAnimation(down(mc.options.leftKey) ? 1.0F : 0.0F, 16);
+		animations[2].setAnimation(down(mc.options.backKey) ? 1.0F : 0.0F, 16);
+		animations[3].setAnimation(down(mc.options.rightKey) ? 1.0F : 0.0F, 16);
+		animations[4].setAnimation(down(mc.options.jumpKey) ? 1.0F : 0.0F, 16);
 
-	@Override
-	protected int height() {
-		return space.enabled() ? KEY + GAP + ROW_HEIGHT : KEY;
-	}
+		this.drawBackground(32, 0, 28, 28);
+		this.drawBackground(0, 32, 28, 28);
+		this.drawBackground(32, 32, 28, 28);
+		this.drawBackground(64, 32, 28, 28);
 
-	@Override
-	protected float scale() {
-		return scale.getFloat();
-	}
+		highlight(32, 0, 28, 28, animations[0].getValue());
+		highlight(0, 32, 28, 28, animations[1].getValue());
+		highlight(32, 32, 28, 28, animations[2].getValue());
+		highlight(64, 32, 28, 28, animations[3].getValue());
 
-	@Override
-	protected void draw(DrawContext context, float tickDelta) {
-		float dt = frameSeconds();
-		boolean screenOpen = mc.currentScreen != null;
-		GameOptions options = mc.options;
-
-		updatePress(FORWARD, dt, !screenOpen && options.forwardKey.isPressed());
-		updatePress(LEFT, dt, !screenOpen && options.leftKey.isPressed());
-		updatePress(BACK, dt, !screenOpen && options.backKey.isPressed());
-		updatePress(RIGHT, dt, !screenOpen && options.rightKey.isPressed());
-		updatePress(JUMP, dt, !screenOpen && options.jumpKey.isPressed());
-
-		int step = KEY + GAP;
-		key(context, step, 0, "W", press[FORWARD]);
-		key(context, 0, step, "A", press[LEFT]);
-		key(context, step, step, "S", press[BACK]);
-		key(context, step * 2, step, "D", press[RIGHT]);
+		if (!unmarked.enabled()) {
+			this.drawCenteredText(label(mc.options.forwardKey), 32 + (28 / 2), (28 / 2) - 4, 12, getHudFont(1));
+			this.drawCenteredText(label(mc.options.leftKey), 0 + (28 / 2), 32 + (28 / 2) - 4, 12, getHudFont(1));
+			this.drawCenteredText(label(mc.options.backKey), 32 + (28 / 2), 32 + (28 / 2) - 4, 12, getHudFont(1));
+			this.drawCenteredText(label(mc.options.rightKey), 64 + (28 / 2), 32 + (28 / 2) - 4, 12, getHudFont(1));
+		}
 
 		if (space.enabled()) {
-			int y = step * 2;
-			highlight(context, 0, y, WIDTH, ROW_HEIGHT, press[JUMP]);
+			this.drawBackground(0, 64, (28 * 3) + 8, 22);
+			highlight(0, 64, (28 * 3) + 8, 22, animations[4].getValue());
 			if (!unmarked.enabled()) {
-				Draw.roundRect(context, WIDTH / 2 - 20, y + ROW_HEIGHT / 2 - 1, 40, 2, 1, Theme.TEXT);
+				this.drawRoundedRect(10, 74F, (26 * 3) - 6, 2, 1);
 			}
 		}
+		this.setWidth(28 * 3 + 8);
+		this.setHeight(space.enabled() ? 64 + 22 : 32 + 28);
 	}
 
-	private float frameSeconds() {
-		long now = System.nanoTime();
-		float dt = Math.min(MAX_FRAME_NANOS, Math.max(0L, now - lastNanos)) / 1_000_000_000F;
-		lastNanos = now;
-		return dt;
-	}
-
-	private void updatePress(int index, float dt, boolean down) {
-		float target = down ? 1F : 0F;
-		press[index] += (target - press[index]) * (1F - (float) Math.exp(-RATE * dt));
-	}
-
-	private void key(DrawContext context, int x, int y, String label, float pressed) {
-		highlight(context, x, y, KEY, KEY, pressed);
-		if (!unmarked.enabled()) {
-			Draw.textCentered(context, mc.textRenderer, label, x + KEY / 2, y + (KEY - 8) / 2, Theme.TEXT);
+	private void highlight(float addX, float addY, float width, float height, float value) {
+		this.save();
+		this.scale(addX, addY, width, height, value);
+		Color color = this.getFontColor((int) (120 * value));
+		if (!theme().equals("rect")) {
+			this.drawRoundedRect(addX, addY, width, height, 6, color);
+		} else {
+			this.drawRect(addX, addY, width, height, color);
 		}
-	}
-
-	private void highlight(DrawContext context, int x, int y, int width, int height, float pressed) {
-		Draw.roundRect(context, x, y, width, height, RADIUS, Theme.KEY);
-		if (pressed > 0.01F) {
-			Draw.roundRect(context, x, y, width, height, RADIUS, Theme.withAlpha(Theme.ACCENT, 0.55F * pressed));
-		}
+		this.restore();
 	}
 }

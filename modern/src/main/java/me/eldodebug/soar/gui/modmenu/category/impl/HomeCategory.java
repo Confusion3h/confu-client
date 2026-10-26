@@ -13,9 +13,8 @@ import me.eldodebug.soar.management.mods.Mod;
 import me.eldodebug.confu.ConfuClient;
 import me.eldodebug.confu.module.Module;
 import me.eldodebug.confu.module.impl.FpsModule;
-import me.eldodebug.confu.module.impl.KeystrokesModule;
 import me.eldodebug.confu.module.impl.MusicPlayerModule;
-import me.eldodebug.confu.music.MusicPlayer;
+import me.eldodebug.confu.module.impl.KeystrokesModule;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
@@ -104,14 +103,19 @@ public class HomeCategory extends Category {
 		float by = y + PAD + 164;
 		nvg.drawRoundedRect(x + RIGHT_X, by, RIGHT_W, 86, 8, card);
 		nvg.drawText(TranslateText.HOME_NOWPLAYING.getText(), x + RIGHT_X + 8, by + 8, text, 11, Fonts.SEMIBOLD);
-		MusicPlayerModule music = ConfuClient.get().modules().get(MusicPlayerModule.class);
-		MusicPlayer player = music == null ? null : music.player();
-		String title = player == null || !music.isEnabled() ? null : player.current();
-		if (title == null) {
+		me.eldodebug.soar.management.music.NowPlaying np = me.eldodebug.soar.Glide.getInstance().getMusicManager().getNowPlaying();
+		if (np.isEmpty()) {
 			nvg.drawTextBox(TranslateText.HOME_NOTHINGYET.getText(), x + RIGHT_X + 8, by + 30, RIGHT_W - 16, muted, 8, Fonts.REGULAR);
 		} else {
-			nvg.drawTextBox(title, x + RIGHT_X + 8, by + 28, RIGHT_W - 16, text, 9, Fonts.MEDIUM);
-			nvg.drawText(player.paused() ? TranslateText.MUSIC_PAUSED.getText() : TranslateText.MUSIC_PLAYING.getText(), x + RIGHT_X + 8, by + 50, muted, 8, Fonts.REGULAR);
+			nvg.drawTextBox(np.title, x + RIGHT_X + 8, by + 28, RIGHT_W - 16, text, 9, Fonts.MEDIUM);
+			if (np.artist != null) {
+				nvg.drawText(np.artist, x + RIGHT_X + 8, by + 50, muted, 8, Fonts.REGULAR);
+			}
+			if (np.durationMs > 0) {
+				float frac = Math.min(1F, np.positionNow() / (float) np.durationMs);
+				nvg.drawRoundedRect(x + RIGHT_X + 8, by + 70, RIGHT_W - 16, 3, 1.5F, palette.getBackgroundColor(ColorType.NORMAL));
+				nvg.drawRoundedRect(x + RIGHT_X + 8, by + 70, (RIGHT_W - 16) * frac, 3, 1.5F, accent.getInterpolateColor());
+			}
 		}
 	}
 

@@ -61,7 +61,7 @@ public class GuiGameMenu extends GuiScreen {
 
         float standardPadding = 29.5f;
         float offset = 29.5F;
-        drawButton(nvg, "Minecraft Options", LegacyIcon.SLIDERS, offset);
+        drawButton(nvg, TranslateText.MC_OPTIONS.getText(), LegacyIcon.SLIDERS, offset);
         offset += standardPadding;
         if(this.mc.isSingleplayer() && !this.mc.getIntegratedServer().getPublic()){
             drawButton(nvg, I18n.format("menu.shareToLan"), LegacyIcon.USERS, offset);

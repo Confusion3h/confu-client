@@ -26,6 +26,11 @@ dependencies {
     // NanoVG: same renderer the 1.8.9 client uses for its GUI (Minecraft 1.20.1 ships LWJGL 3.3.1 without it)
     implementation "org.lwjgl:lwjgl-nanovg:3.3.1"
     include "org.lwjgl:lwjgl-nanovg:3.3.1"
+    // music player (1.8.9 decoders): MP3 and Ogg Vorbis, pure Java
+    implementation "javazoom:jlayer:1.0.1"
+    include "javazoom:jlayer:1.0.1"
+    implementation "org.jcraft:jorbis:0.0.17"
+    include "org.jcraft:jorbis:0.0.17"
     ["natives-linux", "natives-windows", "natives-macos", "natives-macos-arm64", "natives-windows-arm64", "natives-linux-arm64"].each { c ->
         runtimeOnly "org.lwjgl:lwjgl-nanovg:3.3.1:${c}"
         include "org.lwjgl:lwjgl-nanovg:3.3.1:${c}"

@@ -29,6 +29,14 @@ public class ConfuClient implements ClientModInitializer {
 	private ConfuConfig config;
 	private ModuleManager modules;
 	private KeyBinding menuKey;
+	/** 1.8.9 Settings > Appearance > HUD Theme, shared by every HUD mod. */
+	private final me.eldodebug.confu.module.setting.ComboSetting hudTheme = new me.eldodebug.confu.module.setting.ComboSetting(
+			"hud_theme", "tt:HUD_THEME", "normal", java.util.List.of("normal", "glow", "outline", "vanilla", "outline_glow",
+					"vanilla_glow", "shadow", "dark", "light", "rect", "modern", "text", "gradient_simple"));
+
+	public me.eldodebug.confu.module.setting.ComboSetting hudTheme() {
+		return hudTheme;
+	}
 
 	public static ConfuClient get() {
 		return instance;
@@ -70,9 +78,17 @@ public class ConfuClient implements ClientModInitializer {
 		modules.register(new CoordsModule());
 		modules.register(new ClockModule());
 		modules.register(new ArmorStatusModule());
+		modules.register(new ToggleSprintModule());
+		modules.register(new FullbrightModule());
+		modules.register(new TotemCounterModule());
+		modules.register(new ElytraStatusModule());
 		modules.register(new MusicPlayerModule());
 		modules.register(new CapeModule());
 		modules.load(config);
+		com.google.gson.JsonElement ui = config.modules().get("_ui");
+		if (ui != null && ui.isJsonObject()) {
+			hudTheme.read(ui.getAsJsonObject());
+		}
 
 		menuKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"key.confu.menu", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, "key.categories.confu"));
@@ -95,6 +111,9 @@ public class ConfuClient implements ClientModInitializer {
 
 	public void saveConfig() {
 		modules.save(config);
+		com.google.gson.JsonObject ui = new com.google.gson.JsonObject();
+		hudTheme.write(ui);
+		config.modules().add("_ui", ui);
 		config.save();
 	}
 }

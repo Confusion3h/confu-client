@@ -19,15 +19,15 @@ public final class CrosshairModule extends Module {
 	private static final int CELL = 16;
 	private static final int SHEET_SIZE = 256;
 
-	private final BooleanSetting custom = bool("custom", "setting.crosshair.custom", false);
-	private final NumberSetting style = number("style", "setting.crosshair.style", 1, 0, 8, 1);
-	private final NumberSetting scale = number("scale", "setting.crosshair.scale", 1, 0.3, 2, 0.05);
-	private final ComboSetting color = combo("color", "setting.crosshair.color", "white", "white", "green", "red", "cyan", "yellow", "pink", "purple");
+	private final BooleanSetting custom = bool("custom", "tt:CUSTOM_CROSSHAIR", false);
+	private final NumberSetting style = number("style", "tt:TYPE", 1, 0, 8, 1);
+	private final NumberSetting scale = number("scale", "tt:SCALE", 1, 0.3, 2, 0.05);
+	private final ComboSetting color = combo("color", "tt:COLOR", "white", "white", "green", "red", "cyan", "yellow", "pink", "purple");
 	private final NumberSetting opacity = number("opacity", "setting.crosshair.opacity", 1, 0.2, 1, 0.05);
-	private final BooleanSetting hideThirdPerson = bool("hide_third", "setting.crosshair.hide_third", false);
+	private final BooleanSetting hideThirdPerson = bool("hide_third", "tt:HIDE_THIRD_PERSON_VIEW", false);
 
 	public CrosshairModule() {
-		super("crosshair", Category.RENDER, "module.crosshair.name", "module.crosshair.desc");
+		super("crosshair", Category.RENDER, "tt:CROSSHAIR", "tt:CROSSHAIR_DESCRIPTION");
 	}
 
 	public boolean hidesVanillaCrosshair() {
@@ -61,9 +61,19 @@ public final class CrosshairModule extends Module {
 		matrices.scale(size, size, 1F);
 		int rgb = rgb();
 		RenderSystem.enableBlend();
+		boolean invert = rgb == 0xFFFFFF && opacity.getFloat() >= 1F;
+		if (invert) {
+			// plain white keeps vanilla's inverted-colour crosshair, as in 1.8.9
+			RenderSystem.blendFuncSeparate(com.mojang.blaze3d.platform.GlStateManager.SrcFactor.ONE_MINUS_DST_COLOR,
+					com.mojang.blaze3d.platform.GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR,
+					com.mojang.blaze3d.platform.GlStateManager.SrcFactor.ONE, com.mojang.blaze3d.platform.GlStateManager.DstFactor.ZERO);
+		}
 		RenderSystem.setShaderColor(((rgb >> 16) & 0xFF) / 255F, ((rgb >> 8) & 0xFF) / 255F, (rgb & 0xFF) / 255F, opacity.getFloat());
 		context.drawTexture(SHEET, -CELL / 2, -CELL / 2, index * CELL, 0, CELL, CELL, SHEET_SIZE, SHEET_SIZE);
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+		if (invert) {
+			RenderSystem.defaultBlendFunc();
+		}
 		matrices.pop();
 	}
 

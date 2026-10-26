@@ -20,4 +20,9 @@ public abstract class GameRendererMixin {
 			cir.setReturnValue(cir.getReturnValue() * multiplier);
 		}
 	}
+
+	@org.spongepowered.asm.mixin.injection.Inject(method = "render", at = @At("TAIL"))
+	private void confu$notifications(float tickDelta, long startTime, boolean tick, org.spongepowered.asm.mixin.injection.callback.CallbackInfo ci) {
+		me.eldodebug.soar.Glide.getInstance().getNotificationManager().render();
+	}
 }

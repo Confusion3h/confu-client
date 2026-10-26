@@ -32,6 +32,28 @@ public final class Glide {
 	private GuiModMenu modMenu;
 	private boolean uiLoaded;
 
+	private final me.eldodebug.soar.management.notification.NotificationManager notificationManager = new me.eldodebug.soar.management.notification.NotificationManager();
+	private me.eldodebug.soar.management.music.MusicManager musicManager;
+
+	public me.eldodebug.soar.management.notification.NotificationManager getNotificationManager() {
+		return notificationManager;
+	}
+
+	/**
+	 * Same folder as the 1.8.9 client: .confu/minecraft/glide/music (the installer puts the
+	 * bundled tracks there). The 1.20.1 game dir is .confu/minecraft/modern-1.20.1.
+	 */
+	public me.eldodebug.soar.management.music.MusicManager getMusicManager() {
+		if (musicManager == null) {
+			java.io.File game = FabricLoader.getInstance().getGameDir().toFile();
+			java.io.File shared = new java.io.File(game.getAbsoluteFile().getParentFile(), "glide/music");
+			java.io.File dir = shared.isDirectory() ? shared : new java.io.File(game, "glide/music");
+			dir.mkdirs();
+			musicManager = new me.eldodebug.soar.management.music.MusicManager(dir);
+		}
+		return musicManager;
+	}
+
 	public static Glide getInstance() {
 		return INSTANCE;
 	}

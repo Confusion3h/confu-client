@@ -1,19 +1,31 @@
 package me.eldodebug.confu.module.impl;
 
-import me.eldodebug.confu.hud.TextHudModule;
+import me.eldodebug.confu.hud.SimpleNvgHudModule;
+import me.eldodebug.confu.module.setting.BooleanSetting;
+import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
 import net.minecraft.client.network.PlayerListEntry;
 
-public final class PingModule extends TextHudModule {
+/** 1.8.9 PingDisplayMod. */
+public final class PingModule extends SimpleNvgHudModule {
+
+	private final BooleanSetting icon = bool("icon", "tt:ICON", true);
+
 	public PingModule() {
-		super("ping", "module.ping.name", "module.ping.desc", 0F, 0.18F);
+		super("ping", "tt:PING_DISPLAY", "tt:PING_DISPLAY_DESCRIPTION", 0F, 0.18F);
 	}
 
 	@Override
-	protected String text() {
-		if (mc.player == null || mc.getNetworkHandler() == null) {
-			return "0 ms";
+	public String getText() {
+		int ping = 0;
+		if (mc.player != null && mc.getNetworkHandler() != null) {
+			PlayerListEntry entry = mc.getNetworkHandler().getPlayerListEntry(mc.player.getUuid());
+			ping = entry == null ? 0 : entry.getLatency();
 		}
-		PlayerListEntry entry = mc.getNetworkHandler().getPlayerListEntry(mc.player.getUuid());
-		return (entry == null ? 0 : entry.getLatency()) + " ms";
+		return ping + " ms";
+	}
+
+	@Override
+	public String getIcon() {
+		return icon.enabled() ? LegacyIcon.BAR_CHERT : null;
 	}
 }

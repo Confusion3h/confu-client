@@ -55,6 +55,7 @@ public class GuiModMenu extends GuiScreen {
 		
 		categories.add(new HomeCategory(this));
 		categories.add(new ModuleCategory(this));
+		categories.add(new MusicCategory(this)); // only listed while Music Player is on
 		categories.add(new SettingCategory(this));
 		
 		currentCategory = getCategoryByClass(HomeCategory.class);
@@ -290,7 +291,7 @@ public class GuiModMenu extends GuiScreen {
 	}
 
 	private static boolean isListed(Category c) {
-		return true;
+		return !(c instanceof MusicCategory) || MusicCategory.available();
 	}
 
 	/** Categories shown in the sidebar, in order. */

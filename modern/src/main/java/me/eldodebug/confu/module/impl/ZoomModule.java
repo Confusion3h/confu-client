@@ -28,7 +28,7 @@ public final class ZoomModule extends Module {
 	private long lastNanos;
 
 	public ZoomModule() {
-		super("zoom", Category.PLAYER, "module.zoom.name", "module.zoom.desc");
+		super("zoom", Category.PLAYER, "tt:ZOOM", "tt:ZOOM_DESCRIPTION");
 	}
 
 	@Override

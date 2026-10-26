@@ -114,7 +114,7 @@ common_stage() {
   local dest=$1
   rm -rf "$dest"
   mkdir -p "$dest/client" "$dest/music"
-  cp launcher/build/libs/CONFUSION3H-launcher-*.jar "$dest/CONFUSION3H-launcher.jar"
+  cp launcher/build/libs/CONFUSION3H-launcher-$VERSION.jar "$dest/CONFUSION3H-launcher.jar"
   cp launcher/build/libs/launch-compat.jar "$dest/launch-compat.jar"
   cp build/libs/CONFUSION3H-Release.jar "$dest/client/"
   cp "modern/build/libs/confu-modern-$VERSION.jar" "$dest/client/"

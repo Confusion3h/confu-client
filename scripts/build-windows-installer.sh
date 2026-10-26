@@ -31,7 +31,7 @@ if ! echo "$JRE_SHA256  $CACHE/jre.zip" | sha256sum -c --status 2>/dev/null; the
 fi
 
 rm -rf "$STAGE" && mkdir -p "$STAGE/client" "$STAGE/music"
-cp launcher/build/libs/CONFUSION3H-launcher-*.jar "$STAGE/CONFUSION3H-launcher.jar"
+cp launcher/build/libs/CONFUSION3H-launcher-$VERSION.jar "$STAGE/CONFUSION3H-launcher.jar"
 cp launcher/build/libs/launch-compat.jar "$STAGE/launch-compat.jar"
 cp build/libs/CONFUSION3H-Release.jar "$STAGE/client/"
 cp "modern/build/libs/confu-modern-$VERSION.jar" "$STAGE/client/"

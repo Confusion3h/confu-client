@@ -36,7 +36,7 @@ public final class FreelookModule extends Module {
 	private long lastNanos;
 
 	public FreelookModule() {
-		super("freelook", Category.PLAYER, "module.freelook.name", "module.freelook.desc");
+		super("freelook", Category.PLAYER, "tt:FREELOOK", "tt:FREELOOK_DESCRIPTION");
 	}
 
 	public boolean isActive() {

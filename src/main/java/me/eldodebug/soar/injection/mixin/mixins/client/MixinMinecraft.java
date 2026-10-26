@@ -348,7 +348,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     	// One transition. Opening GuiOptions from GuiIngameMenu.initGui swapped
     	// the screen while this tick's Keyboard.next() loop was still running,
     	// so a second ESC in the same queue reached keyTyped on the new screen.
-    	this.displayGuiScreen(new GuiOptions(null, this.gameSettings));
+    	this.displayGuiScreen(new me.eldodebug.soar.gui.GuiGameMenu());
     	EscapeLatch.swallow = true;
     	if (this.isSingleplayer() && this.theIntegratedServer != null && !this.theIntegratedServer.getPublic()) {
     		this.mcSoundHandler.pauseSounds();

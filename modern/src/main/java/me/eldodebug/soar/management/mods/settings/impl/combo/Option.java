@@ -20,6 +20,10 @@ public class Option {
 		if (!text.equals(key)) {
 			return text;
 		}
+		try {
+			return me.eldodebug.soar.management.language.TranslateText.valueOf(value.toUpperCase(java.util.Locale.ROOT)).getText();
+		} catch (IllegalArgumentException ignored) {
+		}
 		return value.isEmpty() ? value : Character.toUpperCase(value.charAt(0)) + value.substring(1);
 	}
 

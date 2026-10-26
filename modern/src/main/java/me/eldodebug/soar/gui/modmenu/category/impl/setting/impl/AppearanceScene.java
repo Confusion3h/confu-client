@@ -33,6 +33,7 @@ public class AppearanceScene extends SettingScene {
 
     @Override
     public void initGui() {
+        modTheme = new CompComboBox(110, new me.eldodebug.soar.management.mods.settings.impl.ComboSetting(null, me.eldodebug.confu.ConfuClient.get().hudTheme()));
     }
 
     @Override
@@ -107,6 +108,16 @@ public class AppearanceScene extends SettingScene {
 
         nvg.restore();
 
+        nvg.drawRoundedRect(this.getX(), this.getY() + 91 + 87 - yMov2, this.getWidth(), 41, 6, palette.getBackgroundColor(ColorType.DARK));
+        nvg.drawText(TranslateText.HUD_THEME.getText(), this.getX() + 8, this.getY() + 11.5F + (91 * 2) - yMov2, palette.getFontColor(ColorType.DARK), 13, Fonts.MEDIUM);
+        if (modTheme == null) {
+            initGui();
+        }
+        modTheme.setX(this.getX() + this.getWidth() - 120);
+        modTheme.setY(this.getY() + 9.5F + (91 * 2) - yMov2);
+        modTheme.draw(mouseX, mouseY, partialTicks);
+
+
     }
 
     @Override
@@ -137,6 +148,9 @@ public class AppearanceScene extends SettingScene {
             offsetX += 40F;
         }
 
+        if (modTheme != null) {
+            modTheme.mouseClicked(mouseX, mouseY, mouseButton);
+        }
         instance.saveUi();
     }
 }

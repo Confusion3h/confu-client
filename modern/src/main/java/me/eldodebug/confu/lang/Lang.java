@@ -40,6 +40,13 @@ public final class Lang {
 	}
 
 	public static String get(String key) {
+		if (key.startsWith("tt:")) {
+			try {
+				return me.eldodebug.soar.management.language.TranslateText.valueOf(key.substring(3)).getText();
+			} catch (IllegalArgumentException e) {
+				return key.substring(3);
+			}
+		}
 		String value = table(current).get(key);
 		if (value == null) {
 			value = table(ENGLISH).get(key);

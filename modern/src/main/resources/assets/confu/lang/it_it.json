@@ -119,5 +119,11 @@
   "option.cyan": "Ciano",
   "option.yellow": "Giallo",
   "option.pink": "Rosa",
-  "option.purple": "Viola"
+  "option.purple": "Viola",
+  "module.totem.name": "Contatore Totem",
+  "module.totem.desc": "Totem dell'immortalità nell'inventario e nella mano secondaria.",
+  "setting.totem.hide_empty": "Nascondi se zero",
+  "module.elytra.name": "Stato Elitre",
+  "module.elytra.desc": "Durabilità delle elitre e velocità mentre plani.",
+  "setting.elytra.speed": "Mostra velocità"
 }

@@ -25,6 +25,9 @@ public class ModManager {
 			mods.put(m, mod);
 			ArrayList<Setting> list = new ArrayList<>();
 			for (me.eldodebug.confu.module.setting.Setting<?> s : m.settings()) {
+				if (m instanceof me.eldodebug.confu.hud.NvgHudModule && "scale".equals(s.key())) {
+					continue; // 1.8.9 scales HUD mods with the wheel in the HUD editor, not a setting
+				}
 				if (s instanceof BooleanSetting) {
 					list.add(new me.eldodebug.soar.management.mods.settings.impl.BooleanSetting(mod, (BooleanSetting) s));
 				} else if (s instanceof NumberSetting) {

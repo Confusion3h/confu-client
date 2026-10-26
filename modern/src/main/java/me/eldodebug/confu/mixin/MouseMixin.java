@@ -21,7 +21,8 @@ public abstract class MouseMixin {
 
 	@Inject(method = "onMouseButton", at = @At("HEAD"))
 	private void confu$countClick(long window, int button, int action, int mods, CallbackInfo ci) {
-		if (action == 1) {
+		// 1.8.9 counted in-game clicks only (EventClickMouse), not clicks on menus
+		if (action == 1 && net.minecraft.client.MinecraftClient.getInstance().currentScreen == null) {
 			CpsModule.click(button);
 		}
 	}

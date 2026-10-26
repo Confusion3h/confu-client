@@ -119,5 +119,11 @@
   "option.cyan": "Cyan",
   "option.yellow": "Yellow",
   "option.pink": "Pink",
-  "option.purple": "Purple"
+  "option.purple": "Purple",
+  "module.totem.name": "Totem Counter",
+  "module.totem.desc": "Totems of undying in your inventory and off hand.",
+  "setting.totem.hide_empty": "Hide when empty",
+  "module.elytra.name": "Elytra Status",
+  "module.elytra.desc": "Elytra durability, and your speed while gliding.",
+  "setting.elytra.speed": "Show speed"
 }
