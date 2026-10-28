@@ -108,7 +108,9 @@ public final class Settings {
 		s.clientJar = p.getProperty("clientJar", s.clientJar);
 		s.reduceMotion = Boolean.parseBoolean(p.getProperty("reduceMotion", "false"));
 		s.keepOpen = Boolean.parseBoolean(p.getProperty("keepOpen", "false"));
-		s.optifine = Boolean.parseBoolean(p.getProperty("optifine", "true"));
+		// "optifine" was written as false by older builds even for users who never chose it,
+		// so 0.2.4 starts over with a new key: on by default, and the toggle still turns it off.
+		s.optifine = Boolean.parseBoolean(p.getProperty("optifine.v2", "true"));
 		s.microsoft = Boolean.parseBoolean(p.getProperty("microsoft", "false"));
 		s.msClientId = p.getProperty("msClientId", "").trim();
 		s.gameVersion = "1.20.1".equals(p.getProperty("gameVersion")) ? "1.20.1" : "1.8.9";
@@ -128,7 +130,7 @@ public final class Settings {
 		p.setProperty("clientJar", clientJar);
 		p.setProperty("reduceMotion", Boolean.toString(reduceMotion));
 		p.setProperty("keepOpen", Boolean.toString(keepOpen));
-		p.setProperty("optifine", Boolean.toString(optifine));
+		p.setProperty("optifine.v2", Boolean.toString(optifine));
 		p.setProperty("microsoft", Boolean.toString(microsoft));
 		p.setProperty("gameVersion", gameVersion);
 		p.setProperty("msClientId", msClientId == null ? "" : msClientId.trim());

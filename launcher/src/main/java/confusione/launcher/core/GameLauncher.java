@@ -231,15 +231,24 @@ public final class GameLauncher {
 		return b.toString();
 	}
 
-	/** OptiFine is optional: a failed download is logged and the game starts without it. */
-	public static void fetchOptiFine(Settings s, Progress p) {
+	/**
+	 * OptiFine is optional: a failed download is logged and the game can start without it.
+	 * Returns null when OptiFine is ready (or turned off), otherwise the error message.
+	 */
+	public static String fetchOptiFine(Settings s, Progress p) {
 		if (!s.optifine) {
-			return;
+			p.log("OptiFine is turned off in Settings");
+			return null;
 		}
 		try {
-			OptiFine.ensure(new File(s.gameDir), p);
+			File f = OptiFine.ensure(new File(s.gameDir), p);
+			p.log("OptiFine ready: " + f);
+			return null;
 		} catch (Exception e) {
-			p.log("OptiFine not loaded: " + e.getMessage());
+			String msg = e.getMessage() == null ? e.toString() : e.getMessage();
+			p.log("ERROR: OptiFine not loaded: " + msg);
+			p.log("Fix: download " + OptiFine.NAME + " from " + OptiFine.PAGE_URL + " and pick it in the launcher, or put it in " + OptiFine.jar(new File(s.gameDir)).getParent());
+			return msg;
 		}
 	}
 }

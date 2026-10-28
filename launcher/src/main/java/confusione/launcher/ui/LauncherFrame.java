@@ -430,7 +430,10 @@ public final class LauncherFrame extends JFrame {
 						runDir = mr.instanceDir;
 					} else {
 						GameInstaller.Result r = new GameInstaller(new File(settings.gameDir), p).install();
-						GameLauncher.fetchOptiFine(settings, p);
+						String ofErr = GameLauncher.fetchOptiFine(settings, p);
+						if (ofErr != null) {
+							askForOptiFine(ofErr, p);
+						}
 						cmd = GameLauncher.command(settings, r, jar, session);
 						runDir = new File(settings.gameDir);
 					}
@@ -554,6 +557,57 @@ public final class LauncherFrame extends JFrame {
 			g.setColor(Theme.alpha(Theme.MUTED, 0.7f));
 			g.drawString(VERSION_LABEL, 26, getHeight() - 18);
 			g.dispose();
+		}
+	}
+
+	/**
+	 * OptiFine could not be downloaded: tell the user and let them pick a jar they downloaded
+	 * themselves, open the official page, or play without it. Runs on the launch thread.
+	 */
+	private void askForOptiFine(final String error, final Progress p) {
+		final File gameDir = new File(settings.gameDir);
+		final boolean[] again = { true };
+		while (again[0]) {
+			again[0] = false;
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					public void run() {
+						home.setStatus("OptiFine download failed: " + error, Theme.ERROR);
+						Object[] opts = { "Choose OptiFine jar\u2026", "Open optifine.net", "Play without OptiFine" };
+						int c = javax.swing.JOptionPane.showOptionDialog(LauncherFrame.this,
+							"OptiFine could not be downloaded:\n" + error + "\n\nDownload " + confusione.launcher.core.OptiFine.NAME
+								+ " from optifine.net yourself and choose the file here.\nConfu Client never bundles OptiFine.",
+							"OptiFine", javax.swing.JOptionPane.DEFAULT_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE, null, opts, opts[0]);
+						if (c == 0) {
+							javax.swing.JFileChooser fc = new javax.swing.JFileChooser(new File(System.getProperty("user.home"), "Downloads"));
+							fc.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("OptiFine jar", "jar"));
+							if (fc.showOpenDialog(LauncherFrame.this) == javax.swing.JFileChooser.APPROVE_OPTION) {
+								try {
+									confusione.launcher.core.OptiFine.importJar(fc.getSelectedFile(), gameDir);
+									p.log("OptiFine: imported " + fc.getSelectedFile());
+									home.setStatus("OptiFine added.", Theme.OK);
+								} catch (java.io.IOException e) {
+									p.log("ERROR: OptiFine jar rejected: " + e.getMessage());
+									javax.swing.JOptionPane.showMessageDialog(LauncherFrame.this, "That file was rejected: " + e.getMessage(), "OptiFine", javax.swing.JOptionPane.ERROR_MESSAGE);
+									again[0] = true;
+								}
+							} else {
+								again[0] = true;
+							}
+						} else if (c == 1) {
+							try {
+								java.awt.Desktop.getDesktop().browse(new java.net.URI(confusione.launcher.core.OptiFine.PAGE_URL));
+							} catch (Exception e) {
+								p.log("Open " + confusione.launcher.core.OptiFine.PAGE_URL + " in your browser");
+							}
+							again[0] = true;
+						}
+					}
+				});
+			} catch (Exception e) {
+				p.log("OptiFine prompt failed: " + e);
+				return;
+			}
 		}
 	}
 }
