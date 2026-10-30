@@ -40,6 +40,8 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 	private final Rectangle offlineChip = new Rectangle();
 	private final Rectangle msChip = new Rectangle();
 	private final Rectangle actionChip = new Rectangle();
+	private final Rectangle codeChip = new Rectangle();
+	private Runnable onCodeSignIn;
 	private Runnable onOffline, onMicrosoft, onAccountAction;
 	private final Rectangle legacyChip = new Rectangle();
 	private final Rectangle modernChip = new Rectangle();
@@ -103,6 +105,10 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 					onAccountAction.run();
 					return;
 				}
+				if (microsoft && codeChip.width > 0 && codeChip.contains(e.getPoint()) && onCodeSignIn != null) {
+					onCodeSignIn.run();
+					return;
+				}
 				if (!clientOk && buildAction != null && linkBounds().contains(e.getPoint())) {
 					buildAction.run();
 				}
@@ -113,6 +119,9 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 					return true;
 				}
 				if (microsoft && actionChip.width > 0 && actionChip.contains(e.getPoint())) {
+					return true;
+				}
+				if (microsoft && codeChip.width > 0 && codeChip.contains(e.getPoint())) {
 					return true;
 				}
 				return !clientOk && buildAction != null && linkBounds().contains(e.getPoint());
@@ -131,6 +140,11 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		status = s == null ? "" : s;
 		statusColor = c;
 		repaint();
+	}
+
+	/** "Accedi con codice": Microsoft device-code sign-in, works for any account type. */
+	public void onCodeSignIn(Runnable r) {
+		onCodeSignIn = r;
 	}
 
 	public void onAccount(Runnable offline, Runnable microsoft, Runnable action) {
@@ -172,11 +186,15 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		modernChip.setBounds(222, 152, 132, 24);
 		if (microsoft && accountName.isEmpty() && !polling) {
 			actionChip.setBounds(48, 262, microsoftButtonWidth(), 41);
+			codeChip.setBounds(48 + microsoftButtonWidth() + 10, 267, 132, 30);
 		} else if (microsoft) {
 			String label = accountActionLabel();
 			actionChip.setBounds(48, 268, Math.max(96, label.length() * 8 + 28), 30);
 		} else {
 			actionChip.setBounds(0, 0, 0, 0);
+		}
+		if (!(microsoft && accountName.isEmpty() && !polling)) {
+			codeChip.setBounds(0, 0, 0, 0);
 		}
 	}
 
@@ -205,11 +223,12 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 		if (microsoft) {
 			if (accountName.isEmpty() && !polling) {
 				microsoftButton(g, actionChip, actionHover);
+				chip(g, codeChip, "Accedi con codice", false);
 			} else {
 				chip(g, actionChip, accountActionLabel(), true, false);
 				g.setFont(Theme.regular(13));
 				g.setColor(Theme.TEXT);
-				String detail = polling ? "Finish sign-in in the window" : accountName;
+				String detail = polling ? "Finish sign-in in the browser" : accountName;
 				g.drawString(ellipsize(g.getFontMetrics(), detail, 240), actionChip.x + actionChip.width + 12, actionChip.y + 20);
 			}
 		}
@@ -269,6 +288,9 @@ public final class HomePage extends JComponent implements PageHost.Entrance {
 			return true;
 		}
 		if (microsoft && actionChip.width > 0 && actionChip.contains(p)) {
+			return true;
+		}
+		if (microsoft && codeChip.width > 0 && codeChip.contains(p)) {
 			return true;
 		}
 		return !clientOk && buildAction != null && linkBounds().contains(p);

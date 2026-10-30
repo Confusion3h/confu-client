@@ -98,10 +98,21 @@ public final class MicrosoftAuth {
 		return signInWithDefaultBrowser(clientId, url, p, cancel);
 	}
 
+	/** Message shown when Microsoft's desktop page is reached without a login code. */
+	public static final String NO_CODE_MESSAGE = "Microsoft closed the sign-in without a login code "
+			+ "(oauth20_desktop.srf?removed=true). Press \"Accedi con codice\" to sign in with a code, or press Sign in to try again.";
+
 	/**
-	 * macOS sign-in: the user types a short code on Microsoft's page in the default
-	 * browser. Nothing is read from the browser, so the browser choice does not matter.
+	 * Sign-in with a short code typed on Microsoft's page in the default browser.
+	 * Works for any account type (2FA, new device, child/family, consent prompts)
+	 * because nothing is read back from the browser. Primary flow on macOS, and the
+	 * "Accedi con codice" fallback everywhere.
 	 */
+	public static Session signInWithCode(String clientOverride, Progress p, AtomicBoolean cancel) throws IOException {
+		p.stage("Waiting for Microsoft sign-in");
+		return signInWithDeviceCode(resolveClientId(clientOverride), p, cancel);
+	}
+
 	private static Session signInWithDeviceCode(String clientId, Progress p, AtomicBoolean cancel) throws IOException {
 		Map<String, Object> dc;
 		try {
@@ -127,7 +138,8 @@ public final class MicrosoftAuth {
 			wait = 5L;
 		}
 		p.log("Enter the code " + userCode + " at " + uri + " in the browser that opens.");
-		p.stage("Enter code " + userCode + " at " + uri.replaceFirst("^https://", ""));
+		copyToClipboard(userCode);
+		p.stage("Enter code " + userCode + " at " + uri.replaceFirst("^https://", "") + " (copied)");
 		openUrl(uri, p);
 		long deadline = System.currentTimeMillis() + expiresIn * 1000L;
 		MsToken ms = null;
@@ -156,10 +168,30 @@ public final class MicrosoftAuth {
 		return finish(ms, p);
 	}
 
+	private static void copyToClipboard(String text) {
+		try {
+			java.awt.Toolkit.getDefaultToolkit().getSystemClipboard()
+					.setContents(new java.awt.datatransfer.StringSelection(text), null);
+		} catch (Throwable ignored) {
+		}
+	}
+
+	/** Command that opens a URL in the default browser: {@code open} on macOS (Safari or any other). */
+	static String[] openCommand(String os, String url) {
+		String o = os == null ? "" : os.toLowerCase();
+		if (o.contains("win")) {
+			return new String[] { "rundll32", "url.dll,FileProtocolHandler", url };
+		}
+		if (o.contains("mac") || o.contains("darwin")) {
+			return new String[] { "open", url };
+		}
+		return new String[] { "xdg-open", url };
+	}
+
 	/** Opens the page in the system default browser. If that fails the code is still on screen. */
 	private static void openUrl(String url, Progress p) {
 		try {
-			Process open = new ProcessBuilder("open", url).redirectErrorStream(true).start();
+			Process open = new ProcessBuilder(openCommand(System.getProperty("os.name", ""), url)).redirectErrorStream(true).start();
 			drain(open);
 			waitFor(open, 15);
 			if (open.exitValue() == 0) {
@@ -291,7 +323,9 @@ public final class MicrosoftAuth {
 		String code = queryParam(url, "code");
 		String err = queryParam(url, "error");
 		if ((code == null || code.isEmpty()) && (err == null || err.isEmpty())) {
-			return null;
+			// e.g. oauth20_desktop.srf?removed=true: Microsoft ended the flow without a code.
+			// Report it instead of leaving the user on a dead page until the timeout.
+			err = "no_code";
 		}
 		Hit h = new Hit();
 		h.code = code;
@@ -488,7 +522,10 @@ public final class MicrosoftAuth {
 		return Json.str((Map<String, Object>) first, "uhs");
 	}
 
-	private static String explainRedirect(String err, String description) {
+	static String explainRedirect(String err, String description) {
+		if ("no_code".equals(err)) {
+			return NO_CODE_MESSAGE;
+		}
 		if ("authorization_declined".equals(err) || "access_denied".equals(err)) {
 			return "Microsoft sign-in was declined.";
 		}
@@ -1133,6 +1170,19 @@ public final class MicrosoftAuth {
 		if (directDenied == null || !"access_denied".equals(directDenied.error)) fail("hitFromUrl error");
 		if (!"access_denied".equals(queryParam(denied, "error"))) fail("error parse");
 		if (!"The user cancelled".equals(queryParam(denied, "error_description"))) fail("error description");
+
+		Hit removed = hitFromUrl(REDIRECT + "?removed=true");
+		if (removed == null || removed.code != null || !"no_code".equals(removed.error)) fail("removed=true must be a no-code hit");
+		if (!explainRedirect(removed.error, null).contains("Accedi con codice")) fail("no-code message");
+		Hit bare = hitFromUrl(REDIRECT);
+		if (bare == null || !"no_code".equals(bare.error)) fail("bare desktop redirect");
+		Hit bareCode = hitFromUrl(REDIRECT + "?code=M.C1&removed=true");
+		if (bareCode == null || !"M.C1".equals(bareCode.code)) fail("code wins over removed");
+		Hit rm = scan("[{\"type\":\"page\",\"id\":\"r\",\"url\":\"https://login.live.com/oauth20_desktop.srf?removed=true\"}]");
+		if (rm == null || !"no_code".equals(rm.error) || !"r".equals(rm.id)) fail("scan removed");
+		if (!"open".equals(openCommand("Mac OS X", "https://x")[0])) fail("mac must use open (Safari ok)");
+		if (!"rundll32".equals(openCommand("Windows 10", "https://x")[0])) fail("windows open");
+		if (!"xdg-open".equals(openCommand("Linux", "https://x")[0])) fail("linux open");
 
 		String list = "[{\"type\":\"page\",\"id\":\"abc\",\"url\":\"" + auth.replace("\"", "") + "\"},"
 				+ "{\"type\":\"page\",\"id\":\"def\",\"url\":\"" + desktop + "\"}]";

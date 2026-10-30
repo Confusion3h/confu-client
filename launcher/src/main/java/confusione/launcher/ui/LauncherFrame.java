@@ -60,7 +60,7 @@ public final class LauncherFrame extends JFrame {
 	private final Anim indicator = new Anim(root, 0, 12);
 	private final Anim energy = new Anim(root, 0, 2);
 	private volatile boolean working;
-	private final AtomicBoolean signInCancel = new AtomicBoolean();
+	private volatile AtomicBoolean signInCancel = new AtomicBoolean();
 	private volatile Thread signInThread;
 	private Point dragAt;
 	private Point dragWindow;
@@ -113,6 +113,9 @@ public final class LauncherFrame extends JFrame {
 			public void run() { setMicrosoft(true); }
 		}, new Runnable() {
 			public void run() { accountAction(); }
+		});
+		home.onCodeSignIn(new Runnable() {
+			public void run() { startCodeSignIn(); }
 		});
 		settingsPage.onChange(new Runnable() { public void run() { refreshClient(); } });
 		refreshAccount();
@@ -334,7 +337,19 @@ public final class LauncherFrame extends JFrame {
 	}
 
 	private void startSignIn() {
-		signInCancel.set(false);
+		startSignIn(false);
+	}
+
+	private void startCodeSignIn() {
+		if (signInThread != null) {
+			cancelSignIn();
+		}
+		startSignIn(true);
+	}
+
+	private void startSignIn(final boolean withCode) {
+		final AtomicBoolean cancel = new AtomicBoolean();
+		signInCancel = cancel;
 		final Progress p = uiProgress();
 		signInThread = new Thread(new Runnable() {
 			public void run() {
@@ -345,7 +360,9 @@ public final class LauncherFrame extends JFrame {
 							refreshAccount();
 						}
 					});
-					MicrosoftAuth.Session session = MicrosoftAuth.signInWithBrowser(settings.msClientId, p, signInCancel);
+					MicrosoftAuth.Session session = withCode
+							? MicrosoftAuth.signInWithCode(settings.msClientId, p, cancel)
+							: MicrosoftAuth.signInWithBrowser(settings.msClientId, p, cancel);
 					finishSignIn(session);
 				} catch (final Exception e) {
 					final String msg = e.getMessage() == null ? e.toString() : e.getMessage();
@@ -357,7 +374,7 @@ public final class LauncherFrame extends JFrame {
 						public void run() {
 							signInThread = null;
 							refreshAccount();
-							if (!signInCancel.get()) {
+							if (!cancel.get()) {
 								home.setStatus(msg, Theme.ERROR);
 							}
 						}
