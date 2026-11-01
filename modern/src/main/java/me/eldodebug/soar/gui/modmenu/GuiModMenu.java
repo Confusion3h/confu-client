@@ -55,7 +55,10 @@ public class GuiModMenu extends GuiScreen {
 		
 		categories.add(new HomeCategory(this));
 		categories.add(new ModuleCategory(this));
+		categories.add(new CosmeticsCategory(this));
 		categories.add(new MusicCategory(this)); // only listed while Music Player is on
+		categories.add(new ProfileCategory(this));
+		categories.add(new ScreenshotCategory(this));
 		categories.add(new SettingCategory(this));
 		
 		currentCategory = getCategoryByClass(HomeCategory.class);
@@ -173,6 +176,19 @@ public class GuiModMenu extends GuiScreen {
 					searchBox.draw(mouseX, mouseY, partialTicks);
 				}
 				int yOff = (currentCategory.isShowTitle()) ? 31 : 0;
+				if(Objects.equals(currentCategory.getNameKey(), TranslateText.COSMETICS.getKey())){
+					float folderButtonX = x + width - 198;
+					float folderButtonY = y + 6.5F;
+					nvg.drawRoundedRect(folderButtonX, folderButtonY, 18,18, 6, palette.getBackgroundColor(ColorType.DARK));
+					nvg.drawCenteredText(LegacyIcon.FOLDER,folderButtonX + 8.5F, folderButtonY + 9 - (nvg.getTextHeight(LegacyIcon.FOLDER, 9, Fonts.LEGACYICON)/2), palette.getFontColor(ColorType.NORMAL), 9, Fonts.LEGACYICON);
+					// add (file chooser) and reload (rescan folder)
+					String[] icons = { LegacyIcon.PLUS, LegacyIcon.REFRESH };
+					for (int i = 0; i < icons.length; i++) {
+						float bx = folderButtonX - 24 * (i + 1);
+						nvg.drawRoundedRect(bx, folderButtonY, 18, 18, 6, palette.getBackgroundColor(ColorType.DARK));
+						nvg.drawCenteredText(icons[i], bx + 8.5F, folderButtonY + 9 - (nvg.getTextHeight(icons[i], 9, Fonts.LEGACYICON)/2), palette.getFontColor(ColorType.NORMAL), 9, Fonts.LEGACYICON);
+					}
+				}
 
 				nvg.scissor(x + 32, y + yOff, width - 32, height - yOff);
 				nvg.translate(0, 50 - (c.getCategoryAnimation().getValue() * 50));
@@ -222,6 +238,26 @@ public class GuiModMenu extends GuiScreen {
 		
 		currentCategory.mouseClicked(mouseX, mouseY, mouseButton);
 		searchBox.mouseClicked(mouseX, mouseY, mouseButton);
+
+		if(Objects.equals(currentCategory.getNameKey(), TranslateText.COSMETICS.getKey())){
+			float folderButtonX = x + width - 198;
+			float folderButtonY = y + 6.5F;
+			if (MouseUtils.isInside(mouseX, mouseY, folderButtonX, folderButtonY, 18, 18)){
+				me.eldodebug.soar.utils.file.FileUtils.openFolderAtPath(Glide.getInstance().getFileManager().getCustomCapeDir());
+			}
+			if (MouseUtils.isInside(mouseX, mouseY, folderButtonX - 24, folderButtonY, 18, 18) && mouseButton == 0) {
+				// the native file dialog blocks: keep it off the render thread
+				new Thread(() -> {
+					java.io.File picked = me.eldodebug.soar.utils.file.FileUtils.selectImageFile();
+					if (picked != null) {
+						Glide.getInstance().getCapeManager().importCape(picked);
+					}
+				}, "Confu cape picker").start();
+			}
+			if (MouseUtils.isInside(mouseX, mouseY, folderButtonX - 48, folderButtonY, 18, 18) && mouseButton == 0) {
+				Glide.getInstance().getCapeManager().loadCustomCapes(true);
+			}
+		}
 
 
 		

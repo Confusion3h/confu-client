@@ -46,6 +46,14 @@ public class ModManager {
 		}
 	}
 
+	public void disableAll() {
+		for (Mod m : mods.values()) {
+			if (m.isToggled()) {
+				m.setToggled(false);
+			}
+		}
+	}
+
 	public ArrayList<Mod> getMods() {
 		return new ArrayList<>(mods.values());
 	}

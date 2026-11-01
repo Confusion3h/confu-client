@@ -54,6 +54,43 @@ public final class Glide {
 		return musicManager;
 	}
 
+	private me.eldodebug.soar.management.file.FileManager fileManager;
+	private me.eldodebug.soar.management.cape.CapeManager capeManager;
+	private me.eldodebug.soar.management.profile.ProfileManager profileManager;
+	private me.eldodebug.soar.management.screenshot.ScreenshotManager screenshotManager;
+
+	public me.eldodebug.soar.management.file.FileManager getFileManager() {
+		if (fileManager == null) {
+			fileManager = new me.eldodebug.soar.management.file.FileManager();
+		}
+		return fileManager;
+	}
+
+	/** Built on first use from the render thread (registers GL textures). */
+	public me.eldodebug.soar.management.cape.CapeManager getCapeManager() {
+		if (capeManager == null) {
+			getFileManager();
+			capeManager = new me.eldodebug.soar.management.cape.CapeManager();
+		}
+		return capeManager;
+	}
+
+	public me.eldodebug.soar.management.profile.ProfileManager getProfileManager() {
+		if (profileManager == null) {
+			getFileManager();
+			profileManager = new me.eldodebug.soar.management.profile.ProfileManager();
+		}
+		return profileManager;
+	}
+
+	public me.eldodebug.soar.management.screenshot.ScreenshotManager getScreenshotManager() {
+		if (screenshotManager == null) {
+			getFileManager();
+			screenshotManager = new me.eldodebug.soar.management.screenshot.ScreenshotManager();
+		}
+		return screenshotManager;
+	}
+
 	public static Glide getInstance() {
 		return INSTANCE;
 	}

@@ -1,0 +1,102 @@
+package me.eldodebug.soar.management.file;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Logger;
+
+import me.eldodebug.soar.Glide;
+import me.eldodebug.soar.logger.GlideLogger;
+import net.fabricmc.loader.api.FabricLoader;
+
+public class FileManager {
+
+	private File glideDir, profileDir, cacheDir, screenshotDir, soarDir, customCapeDir, capeCacheDir, musicDir;
+	private boolean migrationSuccess = false;
+	
+	public FileManager() {
+		
+		File game = FabricLoader.getInstance().getGameDir().toFile();
+		glideDir = new File(game, "glide");
+		soarDir = new File(game, "soar");
+		profileDir = new File(glideDir, "profile");
+		cacheDir = new File(glideDir, "cache");
+		screenshotDir = new File(game, "screenshots"); // 1.20.1 F2 writes here
+		customCapeDir = new File(cacheDir, "custom-cape");
+		capeCacheDir = new File(cacheDir, "cape");
+		musicDir = new File(glideDir, "music");
+
+		try{
+
+			if(!glideDir.exists()){
+				if(soarDir.exists()) {
+					migrationSuccess = soarDir.renameTo(glideDir);
+					if(!migrationSuccess) createDir(glideDir);
+				} else {
+					createDir(glideDir);
+				}
+			}
+
+			if(!profileDir.exists()) createDir(profileDir);
+			if(!cacheDir.exists()) createDir(cacheDir);
+			if(!screenshotDir.exists()) createDir(screenshotDir);
+			if(!customCapeDir.exists()) createDir(customCapeDir);
+			if(!capeCacheDir.exists()) createDir(capeCacheDir);
+			if(!musicDir.exists()) createDir(musicDir);
+
+			createVersionFile();
+
+		} catch (Exception e) {
+			GlideLogger.error("Something has gone very wrong while trying to create the glide folder which may result in crashes later", e);
+		}
+
+	}
+	
+	private void createVersionFile() {
+		
+		File versionDir = new File(cacheDir, "version");
+		
+		createDir(versionDir);
+		createFile(new File(versionDir, Glide.getInstance().getVersion() + ".tmp"));
+	}
+	
+	public void createDir(File file) {
+		file.mkdirs();
+	}
+	
+	public void createFile(File file) {
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+			GlideLogger.error("Failed to create file " + file.getName(), e);
+		}
+	}
+
+	public File getScreenshotDir() {
+		return screenshotDir;
+	}
+
+	public File getGlideDir() {
+		return glideDir;
+	}
+
+	public File getMusicDir() {
+		return musicDir;
+	}
+
+	public File getProfileDir() {
+		return profileDir;
+	}
+
+	public File getCacheDir() {
+		return cacheDir;
+	}
+
+	public File getCustomCapeDir() {
+		return customCapeDir;
+	}
+
+	public File getCapeCacheDir() {
+		return capeCacheDir;
+	}
+
+}

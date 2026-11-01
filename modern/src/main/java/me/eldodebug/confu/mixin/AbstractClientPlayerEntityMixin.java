@@ -60,6 +60,12 @@ public abstract class AbstractClientPlayerEntityMixin implements WaveyCapeSimula
 		if ((Object) this != MinecraftClient.getInstance().player || ConfuClient.get() == null) {
 			return;
 		}
+		// 1.8.9 Cosmetics page: the cape picked there wins over the Cape mod's preset
+		Identifier picked = me.eldodebug.soar.Glide.getInstance().getCapeManager().getCurrentTexture();
+		if (picked != null) {
+			cir.setReturnValue(picked);
+			return;
+		}
 		CapeModule module = ConfuClient.get().modules().get(CapeModule.class);
 		if (module.isEnabled()) {
 			cir.setReturnValue(module.texture());
@@ -69,7 +75,8 @@ public abstract class AbstractClientPlayerEntityMixin implements WaveyCapeSimula
 	@Inject(method = "canRenderCapeTexture", at = @At("HEAD"), cancellable = true)
 	private void confu$canRender(CallbackInfoReturnable<Boolean> cir) {
 		if ((Object) this == MinecraftClient.getInstance().player && ConfuClient.get() != null
-				&& ConfuClient.get().modules().get(CapeModule.class).isEnabled()) {
+				&& (ConfuClient.get().modules().get(CapeModule.class).isEnabled()
+						|| me.eldodebug.soar.Glide.getInstance().getCapeManager().getCurrentTexture() != null)) {
 			cir.setReturnValue(true);
 		}
 	}

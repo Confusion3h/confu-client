@@ -202,6 +202,21 @@ public class ConfuClient implements ClientModInitializer {
 		me.eldodebug.soar.Glide.getInstance().getLanguageManager();
 
 		ClientTickEvents.END_CLIENT_TICK.register(this::onClientTick);
+		// 1.8.9 GlideHandler.onJoinServer: a profile with a server IP loads itself on join
+		net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+			net.minecraft.client.network.ServerInfo server = client.getCurrentServerEntry();
+			if (server == null) {
+				return;
+			}
+			me.eldodebug.soar.Glide glide = me.eldodebug.soar.Glide.getInstance();
+			for (me.eldodebug.soar.management.profile.Profile p : glide.getProfileManager().getProfiles()) {
+				if (!p.getServerIp().isEmpty() && server.address.toLowerCase().contains(p.getServerIp().toLowerCase())) {
+					glide.getModManager().disableAll();
+					glide.getProfileManager().load(p.getJsonFile());
+					break;
+				}
+			}
+		});
 		HudRenderCallback.EVENT.register((context, tickDelta) -> modules.renderHud(context, tickDelta));
 	}
 
