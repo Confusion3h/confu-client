@@ -240,6 +240,10 @@
             <p class="dl-sha"><span data-i18n="th.sha">SHA-256</span><code class="hash">80adfdbd8112408fec1ac527010b503f9335276f7364953c882fe3d7921b5795</code></p>
           </article>
         </div>
+        <details class="mac-note reveal" id="macos">
+          <summary><span class="mac-ic" aria-hidden="true"></span><span data-i18n="mac.title">Opening Confu Client on macOS the first time</span></summary>
+          <div class="mac-body" data-i18n="mac.body" data-i18n-html><p>The app is not notarized by Apple yet, so the first launch is blocked once. This is normal for unsigned apps.</p><ol><li>Open <b>Confu Client</b>. macOS warns that Apple could not verify it (or that it is from an unidentified developer). Click <b>Done</b>, not Move to Trash. The <b>?</b> button in that window explains the same steps.</li><li>Open <b>System Settings › Privacy &amp; Security</b> and scroll down to <b>Security</b>. You will see that “Confu Client” was blocked.</li><li>Click <b>Open Anyway</b> and enter your password (or use Touch ID) if asked.</li><li>Open Confu Client again. The warning now has an <b>Open Anyway</b> button: click it. The app sets up and starts, and opens normally from then on.</li></ol></div>
+        </details>
         <aside class="source spot reveal" id="source">
             <h3 data-i18n="source.title">Source code</h3>
             <p data-i18n="source.body">Confu Client is open source under GPL-3.0. It is a fork of Glide Client, which is based on Soar Client by EldoDebug.</p>
@@ -269,8 +273,8 @@
             <p data-i18n="faq.java.a" data-i18n-html>No. Each archive includes a JRE. The game is Minecraft 1.8.9. First launch downloads the game assets into the Confu folder (<code>%APPDATA%\.confu</code> on Windows, <code>~/.confu</code> on Linux and macOS).</p>
           </details>
           <details class="reveal">
-            <summary data-i18n="faq.mac.q">macOS says the app is damaged or can’t be opened</summary>
-            <p data-i18n="faq.mac.a" data-i18n-html>The app is not notarized by Apple yet. Right-click <b>Confu Client</b> and choose <b>Open</b>, then confirm. Or run this in Terminal: <code>xattr -dr com.apple.quarantine "/path/Confu Client.app"</code></p>
+            <summary data-i18n="faq.mac.q">macOS says Apple can’t verify the app</summary>
+            <p data-i18n="faq.mac.a" data-i18n-html>The app is not notarized by Apple yet, so macOS blocks the first launch. Go to <b>System Settings › Privacy &amp; Security</b>, scroll to <b>Security</b>, click <b>Open Anyway</b> next to “Confu Client” and confirm with your password. Then open the app again and click <b>Open Anyway</b>. <a href="#macos">Step-by-step guide</a>. Advanced: <code>xattr -dr com.apple.quarantine "/path/Confu Client.app"</code> in Terminal does the same.</p>
           </details>
           <details class="reveal">
             <summary data-i18n="faq.fps.q">Where does the FPS estimate come from?</summary>

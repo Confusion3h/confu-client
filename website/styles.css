@@ -338,6 +338,21 @@ html:not(.js) .intro, .intro.done { opacity: 0; visibility: hidden; pointer-even
 .source .github { grid-row: 1 / span 3; grid-column: 2; position: relative; z-index: 2; padding: 12px 20px; border-radius: 999px; border: 1px solid var(--line-2); text-decoration: none; font-weight: 600; font-size: 14px; transition: background-color .3s; }
 .source .github:hover { background: var(--panel-hi); }
 
+/* macOS first-launch callout */
+.mac-note { margin-top: 16px; border-radius: var(--radius); border: 1px solid var(--line-2); background: linear-gradient(120deg, rgba(124,147,168,.12), transparent 60%), var(--panel); overflow: hidden; }
+.mac-note summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 14px; padding: 18px 22px; font-weight: 600; letter-spacing: -.01em; }
+.mac-note summary::-webkit-details-marker { display: none; }
+.mac-note summary::after { content: "+"; margin-left: auto; flex: none; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line-2); font-weight: 400; transition: transform .5s var(--ease-out); }
+.mac-note[open] summary::after { transform: rotate(45deg); }
+.mac-ic { flex: none; width: 26px; height: 26px; border-radius: 8px; background: var(--accent); position: relative; }
+.mac-ic::after { content: "!"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink); font-weight: 700; font-size: 15px; }
+.mac-body { padding: 0 22px 20px 62px; color: var(--muted); font-size: 14.5px; }
+.mac-body p { margin: 0 0 10px; }
+.mac-body ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.mac-body b { color: var(--text); font-weight: 600; }
+.mac-note[open] .mac-body { animation: faq-in .5s var(--ease-out); }
+@media (max-width: 640px) { .mac-body { padding-left: 22px; } }
+
 /* faq accordion */
 .faq { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
 .faq details { border-bottom: 1px solid var(--line); }
