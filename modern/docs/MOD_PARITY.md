@@ -112,7 +112,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 93 | RawInputMod | OTHER | Mod | Ported | Raw mouse input. |
 | 94 | ReachCirclesMod | PLAYER | Mod | Ported | Reach visualisation circles. |
 | 95 | ReachDisplayMod | HUD | SimpleHUD | Ported | Last hit reach distance. |
-| 96 | RearviewMod | HUD | HUD | Skeleton | module registered; 2nd camera TBD |
+| 96 | RearviewMod | HUD | HUD | Ported | RearviewCamera re-enters GameRenderer.renderWorld into an 800x600 FBO (yaw+180, lock-camera pitch rule, glPushAttrib, render-hand mute + first-person override replace hideGUI/currentScreen; fire/water/pumpkin overlays live in the HUD on 1.20.1 so nothing leaks into the mirror), projection overridden to the 4:3 aspect while recording, NanoVG rounded-image with shadow, width/height/fps/fov/lock-camera/alpha settings (fov dead as in 1.8.9). |
 | 97 | ScoreboardMod | HUD | HUD | Ported | Scoreboard restyle. |
 | 98 | ServerIPDisplayMod | HUD | SimpleHUD | Ported | Server address. |
 | 99 | SessionInfoMod | HUD | HUD | Ported | Session info panel. |

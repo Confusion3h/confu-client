@@ -1,11 +1,15 @@
 package me.eldodebug.confu.mixin;
 
+import org.joml.Matrix4f;
+
 import me.eldodebug.confu.ConfuClient;
 import me.eldodebug.confu.module.impl.BowZoomModule;
 import me.eldodebug.confu.module.impl.FovModifierModule;
 import me.eldodebug.confu.module.impl.MinimalDamageShakeModule;
 import me.eldodebug.confu.module.impl.MinimalViewBobbingModule;
+import me.eldodebug.confu.module.impl.RearviewModule;
 import me.eldodebug.confu.module.impl.ZoomModule;
+import me.eldodebug.confu.module.impl.rearview.RearviewCamera;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -17,6 +21,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
+
+	/** 1.8.9 EventRenderTick fired in runGameLoop before the frame renders. */
+	@Inject(method = "render", at = @At("HEAD"))
+	private void confu$rearviewTick(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
+		RearviewModule module = RearviewModule.get();
+		if (module != null && module.isEnabled()) {
+			module.onRenderTick(tickDelta);
+		}
+	}
+
+	/** 1.8.9 swapped mc.displayWidth/Height to 800x600; the window is immutable here. */
+	@Inject(method = "getBasicProjectionMatrix", at = @At("RETURN"), cancellable = true)
+	private void confu$rearviewProjection(double fovDegrees, CallbackInfoReturnable<Matrix4f> cir) {
+		if (RearviewCamera.isRecording()) {
+			cir.setReturnValue(new Matrix4f().perspective((float) (fovDegrees * 0.01745329238474369),
+					RearviewCamera.MIRROR_WIDTH / (float) RearviewCamera.MIRROR_HEIGHT, 0.05F,
+					((GameRenderer) (Object) this).getFarPlaneDistance()));
+		}
+	}
 
 	@Inject(method = "getFov", at = @At("RETURN"), cancellable = true)
 	private void confu$applyZoom(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
@@ -46,7 +69,7 @@ public abstract class GameRendererMixin {
 	@Inject(method = "tiltViewWhenHurt", at = @At("HEAD"), cancellable = true)
 	private void confu$minimalHurt(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
 		MinimalDamageShakeModule mod = ConfuClient.get().modules().get(MinimalDamageShakeModule.class);
-		if (mod.isEnabled() && mod.intensityFactor() <= 0F) {
+		if ((mod.isEnabled() && mod.intensityFactor() <= 0F) || RearviewCamera.isRecording()) {
 			ci.cancel();
 		}
 	}
