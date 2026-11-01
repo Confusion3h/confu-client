@@ -1,6 +1,7 @@
 package me.eldodebug.confu.mixin;
 
 import me.eldodebug.confu.ConfuClient;
+import me.eldodebug.confu.module.impl.BowZoomModule;
 import me.eldodebug.confu.module.impl.FovModifierModule;
 import me.eldodebug.confu.module.impl.MinimalDamageShakeModule;
 import me.eldodebug.confu.module.impl.MinimalViewBobbingModule;
@@ -28,6 +29,10 @@ public abstract class GameRendererMixin {
 		float scale = fov.fovScale();
 		if (scale != 1F) {
 			cir.setReturnValue(cir.getReturnValue() * scale);
+		}
+		float bow = ConfuClient.get().modules().get(BowZoomModule.class).fovMultiplier();
+		if (bow != 1F) {
+			cir.setReturnValue(cir.getReturnValue() * bow);
 		}
 	}
 

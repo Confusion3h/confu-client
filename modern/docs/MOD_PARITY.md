@@ -21,13 +21,13 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 3 | ArmorStatusMod | HUD | HUD | Ported | Worn armour icons, H/V layout. |
 | 4 | ArrayListMod | HUD | HUD | Ported | Enabled-module list. |
 | 5 | AsyncScreenshotMod | OTHER | Mod | Pending | Off-thread PNG write. |
-| 6 | AutoTextMod | PLAYER | Mod | Pending | Keybind sends preset chat. |
+| 6 | AutoTextMod | PLAYER | Mod | Ported | Keybind sends preset chat. |
 | 7 | BlockInfoMod | HUD | HUD | Ported | Looked-at block name. |
 | 8 | BlockOverlayMod | RENDER | Mod | Pending | Block outline restyle. |
 | 9 | BloodParticlesMod | RENDER | Mod | Pending | Particles on hit. |
 | 10 | BorderlessFullscreenMod | OTHER | Mod | Ported | GLFW borderless fullscreen. |
 | 11 | BossHealthMod | HUD | HUD | Pending | Boss bar position/scale. |
-| 12 | BowZoomMod | PLAYER | Mod | Pending | Bow FOV; reuses Zoom FOV hook. |
+| 12 | BowZoomMod | PLAYER | Mod | Ported | Bow FOV; reuses Zoom FOV hook. |
 | 13 | BreadcrumbsMod | RENDER | Mod | Pending | Path trail. |
 | 14 | CalendarMod | HUD | HUD | Ported | Month calendar widget. |
 | 15 | ChatMod | OTHER | Mod | Pending | Chat scroll/animation. |
@@ -35,7 +35,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 17 | ChunkAnimatorMod | RENDER | Mod | Impossible | Needs chunk-rebuild hooks; conflicts with Sodium (project rule). |
 | 18 | ChunkBordersMod | RENDER | Mod | Ported | World-render chunk borders. |
 | 19 | ClearGlassMod | RENDER | Mod | Pending | Glass transparency. |
-| 20 | ClearWaterMod | RENDER | Mod | Pending | Water fog/texture. |
+| 20 | ClearWaterMod | RENDER | Mod | Ported | Water fog/texture. |
 | 21 | ClientSpooferMod | OTHER | Mod | Pending | Client brand spoof. |
 | 22 | ClockMod | HUD | SimpleHUD | Ported | Clock text. |
 | 23 | ColorSaturationMod | RENDER | Mod | Pending | Post-process saturation. |
@@ -52,12 +52,12 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 34 | DiscordRPCMod | OTHER | Mod | Pending | Discord IPC. |
 | 35 | EarsMod | PLAYER | Mod | Pending | Cosmetic ears layer. |
 | 36 | EntityCullingMod | OTHER | Mod | Pending | Entity frustum culling extras. |
-| 37 | FarCameraMod | RENDER | Mod | Pending | Third-person distance. |
+| 37 | FarCameraMod | RENDER | Mod | Ported | Third-person distance. |
 | 38 | FemaleGenderMod | PLAYER | Mod | Pending | Slim model override. |
 | 39 | FovModifierMod | PLAYER | Mod | Ported | FOV slider. |
 | 40 | FPSBoostMod | OTHER | Mod | Pending | Perf toggles; Sodium covers most. |
 | 41 | FPSDisplayMod | HUD | SimpleHUD | Ported | getCurrentFps(). |
-| 42 | FPSLimiterMod | OTHER | Mod | Pending | Framerate cap. |
+| 42 | FPSLimiterMod | OTHER | Mod | Ported | Framerate cap. |
 | 43 | FPSSpooferMod | OTHER | Mod | Pending | FPS spoof display. |
 | 44 | FreelookMod | PLAYER | Mod | Ported | Freelook camera. |
 | 45 | FullbrightMod | PLAYER | Mod | Ported | Gamma override. |
@@ -68,7 +68,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 50 | HitBoxMod | RENDER | Mod | Ported | Entity hitbox render. |
 | 51 | HitColorMod | RENDER | Mod | Pending | Hurt flash colour. |
 | 52 | HitDelayFixMod | PLAYER | Mod | Impossible | 1.8 miss-hit delay (leftClickCounter); 1.20.1 uses attack cooldown. |
-| 53 | HorseStatsMod | HUD | HUD | Pending | Horse stats panel. |
+| 53 | HorseStatsMod | HUD | HUD | Ported | Horse stats panel. |
 | 54 | HypixelMod | OTHER | Mod | Pending | Hypixel helpers (AutoGG etc.). |
 | 55 | HypixelQuickPlayMod | PLAYER | Mod | Pending | Hypixel quick play. |
 | 56 | ImageDisplayMod | HUD | HUD | Pending | Image overlay. |
@@ -95,8 +95,8 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 77 | NameDisplayMod | HUD | SimpleHUD | Ported | Player name text. |
 | 78 | NameProtectMod | PLAYER | Mod | Ported | Hide own name. |
 | 79 | NametagMod | PLAYER | Mod | Pending | Nametag restyle. |
-| 80 | OverlayEditorMod | RENDER | Mod | Pending | Hide HUD overlays. |
-| 81 | PackDisplayMod | HUD | HUD | Pending | Resource pack list. |
+| 80 | OverlayEditorMod | RENDER | Mod | Ported | Hide HUD overlays. |
+| 81 | PackDisplayMod | HUD | HUD | Ported | Resource pack list. |
 | 82 | ParticleCustomizerMod | RENDER | Mod | Pending | Particle settings. |
 | 83 | PingDisplayMod | HUD | SimpleHUD | Ported | Latency text. |
 | 84 | PlayerCounterMod | HUD | SimpleHUD | Ported | Online player count. |
@@ -118,7 +118,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 100 | ShinyPotsMod | RENDER | Mod | Pending | Potion item shine. |
 | 101 | Skin3DMod | RENDER | Mod | Pending | 3D skin layers (large). |
 | 102 | SkinProtectMod | PLAYER | Mod | Pending | Replace own skin. |
-| 103 | SlowSwingMod | PLAYER | Mod | Pending | Swing delay. |
+| 103 | SlowSwingMod | PLAYER | Mod | Ported | Swing delay. |
 | 104 | SoundModifierMod | OTHER | Mod | Pending | Per-category volume/pitch. |
 | 105 | SoundSubtitlesMod | HUD | HUD | Pending | Sound subtitles HUD. |
 | 106 | SpeedometerMod | HUD | SimpleHUD | Ported | Speed text/graph. |
@@ -134,11 +134,11 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 116 | UHCOverlayMod | RENDER | Mod | Pending | UHC overlay. |
 | 117 | WaveyCapesMod | RENDER | Mod | Pending | Cape physics. |
 | 118 | WaypointMod | WORLD | Mod | Pending | Waypoints. |
-| 119 | WeatherChangerMod | WORLD | Mod | Pending | Client-side weather. |
+| 119 | WeatherChangerMod | WORLD | Mod | Ported | Client-side weather. |
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
 | 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom. |
 
-Counts: Ported=44, Pending=75, Impossible=2. Total 121.
+Counts: Ported=54, Pending=65, Impossible=2. Total 121.
 
 ## 1.20.1-only (keep)
 

@@ -37,6 +37,7 @@ public class ModManager {
 				} else if (s instanceof KeybindSetting) {
 					list.add(new me.eldodebug.soar.management.mods.settings.impl.KeybindSetting(mod, (KeybindSetting) s));
 				}
+				// StringSetting persists via JSON; text-box UI is later
 			}
 			if (!list.isEmpty()) {
 				settings.put(mod, list);

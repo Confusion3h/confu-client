@@ -1,11 +1,13 @@
 package me.eldodebug.confu.mixin;
 
 import me.eldodebug.confu.ConfuClient;
+import me.eldodebug.confu.module.impl.FarCameraModule;
 import me.eldodebug.confu.module.impl.FreelookModule;
 import net.minecraft.client.render.Camera;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(Camera.class)
@@ -21,5 +23,10 @@ public abstract class CameraMixin {
 		float[] rotation = ConfuClient.get().modules().get(FreelookModule.class).cameraRotation(yaw, pitch);
 		args.set(0, rotation[0]);
 		args.set(1, rotation[1]);
+	}
+
+	@ModifyVariable(method = "clipToSpace", at = @At("HEAD"), argsOnly = true)
+	private double confu$farCamera(double desiredCameraDistance) {
+		return ConfuClient.get().modules().get(FarCameraModule.class).distance(desiredCameraDistance);
 	}
 }

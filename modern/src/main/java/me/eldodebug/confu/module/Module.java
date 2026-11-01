@@ -6,6 +6,7 @@ import me.eldodebug.confu.module.setting.ComboSetting;
 import me.eldodebug.confu.module.setting.KeybindSetting;
 import me.eldodebug.confu.module.setting.NumberSetting;
 import me.eldodebug.confu.module.setting.Setting;
+import me.eldodebug.confu.module.setting.StringSetting;
 import me.eldodebug.confu.lang.Lang;
 import me.eldodebug.confu.util.Keys;
 import net.minecraft.client.MinecraftClient;
@@ -115,6 +116,10 @@ public abstract class Module {
 
 	protected final KeybindSetting extraKey(String key, String nameKey, int defaultCode) {
 		return add(new KeybindSetting(key, nameKey, defaultCode));
+	}
+
+	protected final StringSetting string(String key, String nameKey, String defaultValue) {
+		return add(new StringSetting(key, nameKey, defaultValue));
 	}
 
 	private <S extends Setting<?>> S add(S setting) {

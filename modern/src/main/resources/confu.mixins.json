@@ -13,6 +13,7 @@
     "GameRendererMixin",
     "InGameHudMixin",
     "LightmapTextureManagerMixin",
+    "LivingEntityMixin",
     "MinecraftClientMixin",
     "MouseMixin",
     "TextRendererMixin",
