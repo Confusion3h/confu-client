@@ -87,7 +87,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 68 | MinemenMod | OTHER | Mod | Ported | Auto-play: joins /requeue from chat click events. |
 | 69 | MinimalDamageShakeMod | RENDER | Mod | Ported | Reduced hurt shake. |
 | 70 | MinimalViewBobbingMod | RENDER | Mod | Ported | Reduced view bobbing. |
-| 71 | MinimapMod | HUD | HUD | Skeleton | module registered; chunk atlas TBD |
+| 71 | MinimapMod | HUD | HUD | Ported | 1.8.9 ChunkAtlas (16px tiles, rotating about the player, region texture) drawn in a ScreenStencil rounded map with shadow and sky; width/height/alpha settings. |
 | 72 | MoBendsMod | PLAYER | Mod | Skeleton | module registered; large animation subsystem TBD |
 | 73 | ModernHotbarMod | HUD | HUD | Ported | 4 designs, smooth anim, pickup style; vanilla hotbar/XP hidden via InGameHudMixin. |
 | 74 | MotionBlurMod | RENDER | Mod | Skeleton | module registered; post-process TBD |
@@ -103,11 +103,11 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 84 | PlayerCounterMod | HUD | SimpleHUD | Ported | Online player count. |
 | 85 | PlayerDisplayMod | HUD | HUD | Ported | Local player paperdoll via entity render dispatcher. |
 | 86 | PlayerListMod | HUD | HUD | Ported | Player heads + names, max setting, auto height. |
-| 87 | PlayerPredicatorMod | WORLD | Mod | Skeleton | module registered; prediction render TBD |
+| 87 | PlayerPredicatorMod | WORLD | Mod | Ported | Crosshair + tablist target tracking with 2500 ms timeout, entity/teleport packet accumulation, translucent box at the pre-move position; Hypixel guard. |
 | 88 | PlayTimeDisplayMod | HUD | SimpleHUD | Ported | Session play time. |
 | 89 | PotionCounterMod | HUD | SimpleHUD | Ported | Healing pot count. |
 | 90 | PotionStatusMod | HUD | HUD | Ported | Active potion list. |
-| 91 | ProjectileTrailMod | PLAYER | Mod | Skeleton | module registered; trail FX TBD |
+| 91 | ProjectileTrailMod | PLAYER | Mod | Ported | 10 particle types; own arrows/bobbers and nearby throwables, 1.8.9 spawn cadence and offsets. |
 | 92 | QuickSwitchMod | PLAYER | Mod | Ported | Sword quick switch. |
 | 93 | RawInputMod | OTHER | Mod | Ported | Raw mouse input. |
 | 94 | ReachCirclesMod | PLAYER | Mod | Ported | Reach visualisation circles. |
@@ -139,7 +139,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
 | 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom. |
 
-Counts: Ported=107, Pending=0, Skeleton=12, Impossible=2. Total 121.
+Counts: Ported=110, Pending=0, Skeleton=9, Impossible=2. Total 121.
 
 ## 1.20.1-only (keep)
 
@@ -155,5 +155,5 @@ Counts: Ported=107, Pending=0, Skeleton=12, Impossible=2. Total 121.
 2. HUD panels (PotionStatus, BlockInfo, Calendar, SessionInfo, ArrayList, HorseStats, BossHealth, PackDisplay, MouseStrokes).
 3. Render basics (HitBox, ChunkBorders, BlockOverlay, Fullbright-siblings, Damage*, Minimal*, OverlayEditor, HitColor).
 4. Player/QoL (ToggleSneak, Taplook, BowZoom, FovModifier, AppleSkin, NameProtect, SlowSwing, QuickSwitch, RawInput, Borderless).
-5. Remaining RENDER/WORLD/OTHER (large subsystems last: Minimap, Skin3D, MoBends, WaveyCapes, Rearview, MotionBlur).
+5. Remaining RENDER/WORLD/OTHER (large subsystems last: Skin3D, MoBends, WaveyCapes, Rearview, MotionBlur, Ears, FemaleGender, ColorSaturation, Mechvibes).
 

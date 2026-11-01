@@ -1,10 +1,13 @@
 package me.eldodebug.confu.mixin;
 
+import me.eldodebug.confu.module.impl.PlayerPredicatorModule;
 import me.eldodebug.confu.util.CombatHooks;
 import me.eldodebug.confu.util.ConfuCommands;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
+import net.minecraft.network.packet.s2c.play.EntityS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityStatusS2CPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,5 +45,17 @@ public abstract class ClientPlayNetworkHandlerMixin {
 		if (entity != null) {
 			CombatHooks.fireDamage(entity);
 		}
+	}
+
+	@Inject(method = "onEntity", at = @At("RETURN"))
+	private void confu$playerPredicatorMove(EntityS2CPacket packet, CallbackInfo ci) {
+		if (world != null) {
+			PlayerPredicatorModule.handleEntityPacket(packet, world);
+		}
+	}
+
+	@Inject(method = "onEntityPosition", at = @At("RETURN"))
+	private void confu$playerPredicatorTeleport(EntityPositionS2CPacket packet, CallbackInfo ci) {
+		PlayerPredicatorModule.handleTeleportPacket(packet);
 	}
 }
