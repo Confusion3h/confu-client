@@ -10,13 +10,14 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | Ported | Present in `modern/` ModuleManager and builds. |
 | Pending | Must be ported for parity. |
 | Impossible | Cannot match 1.8.9 on 1.20.1; reason in Notes. |
+| Skeleton | Registered in menu with settings; full 1.8.9 visuals/hooks still incomplete. |
 | Modern-only | Exists only on 1.20.1; keep. |
 
 ## Modules (121 from 1.8.9)
 
 | # | 1.8.9 class | Category | Type | Status | Notes |
 |---|---|---|---|---|---|
-| 1 | AnimationsMod | RENDER | Mod | Pending | 1.8 block-hit/swing; first-person transform mixin. |
+| 1 | AnimationsMod | RENDER | Mod | Skeleton | settings present; 1.8 block-hit/sneak mixins TBD |
 | 2 | AppleSkinMod | PLAYER | Mod | Ported | Hunger/saturation overlay on food bar. |
 | 3 | ArmorStatusMod | HUD | HUD | Ported | Worn armour icons, H/V layout. |
 | 4 | ArrayListMod | HUD | HUD | Ported | Enabled-module list. |
@@ -24,36 +25,36 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 6 | AutoTextMod | PLAYER | Mod | Ported | Keybind sends preset chat. |
 | 7 | BlockInfoMod | HUD | HUD | Ported | Looked-at block name. |
 | 8 | BlockOverlayMod | RENDER | Mod | Ported | Block outline restyle. |
-| 9 | BloodParticlesMod | RENDER | Mod | Pending | Particles on hit. |
+| 9 | BloodParticlesMod | RENDER | Mod | Skeleton | module registered; particle spawn hook TBD |
 | 10 | BorderlessFullscreenMod | OTHER | Mod | Ported | GLFW borderless fullscreen. |
 | 11 | BossHealthMod | HUD | HUD | Ported | Boss bar position/scale. |
 | 12 | BowZoomMod | PLAYER | Mod | Ported | Bow FOV; reuses Zoom FOV hook. |
 | 13 | BreadcrumbsMod | RENDER | Mod | Ported | Path trail. |
 | 14 | CalendarMod | HUD | HUD | Ported | Month calendar widget. |
-| 15 | ChatMod | OTHER | Mod | Pending | Chat scroll/animation. |
-| 16 | ChatTranslateMod | OTHER | Mod | Pending | External translate API. |
+| 15 | ChatMod | OTHER | Mod | Skeleton | module registered; ChatHud mixin TBD |
+| 16 | ChatTranslateMod | OTHER | Mod | Skeleton | module registered; needs external translate API |
 | 17 | ChunkAnimatorMod | RENDER | Mod | Impossible | Needs chunk-rebuild hooks; conflicts with Sodium (project rule). |
 | 18 | ChunkBordersMod | RENDER | Mod | Ported | World-render chunk borders. |
-| 19 | ClearGlassMod | RENDER | Mod | Pending | Glass transparency. |
+| 19 | ClearGlassMod | RENDER | Mod | Skeleton | module registered; glass translucency TBD |
 | 20 | ClearWaterMod | RENDER | Mod | Ported | Water fog/texture. |
 | 21 | ClientSpooferMod | OTHER | Mod | Ported | Client brand spoof. |
 | 22 | ClockMod | HUD | SimpleHUD | Ported | Clock text. |
-| 23 | ColorSaturationMod | RENDER | Mod | Pending | Post-process saturation. |
+| 23 | ColorSaturationMod | RENDER | Mod | Skeleton | module registered; post shader TBD |
 | 24 | ComboCounterMod | HUD | SimpleHUD | Ported | Hit combo counter. |
 | 25 | CompassMod | HUD | SimpleHUD | Ported | Compass strip / direction. |
 | 26 | CoordsMod | HUD | SimpleHUD | Ported | Player position. |
 | 27 | CPSDisplayMod | HUD | SimpleHUD | Ported | CPS from mouse mixin. |
 | 28 | CrosshairMod | RENDER | Mod | Ported | Custom crosshair sheet. |
-| 29 | CustomHeldItemsMod | RENDER | Mod | Pending | Held item model offset. |
-| 30 | DamageParticlesMod | RENDER | Mod | Pending | Damage particles. |
+| 29 | CustomHeldItemsMod | RENDER | Mod | Skeleton | module registered; held-item transform TBD |
+| 30 | DamageParticlesMod | RENDER | Mod | Skeleton | module registered; particle hook TBD |
 | 31 | DamageTiltMod | PLAYER | Mod | Ported | Hurt camera tilt. |
 | 32 | DamageTintMod | RENDER | Mod | Ported | Damage red overlay. |
 | 33 | DayCounterMod | HUD | SimpleHUD | Ported | World day count. |
-| 34 | DiscordRPCMod | OTHER | Mod | Pending | Discord IPC. |
-| 35 | EarsMod | PLAYER | Mod | Pending | Cosmetic ears layer. |
-| 36 | EntityCullingMod | OTHER | Mod | Pending | Entity frustum culling extras. |
+| 34 | DiscordRPCMod | OTHER | Mod | Skeleton | module registered; Discord IPC TBD |
+| 35 | EarsMod | PLAYER | Mod | Skeleton | module registered; player model layer TBD |
+| 36 | EntityCullingMod | OTHER | Mod | Skeleton | module registered; frustum extras TBD |
 | 37 | FarCameraMod | RENDER | Mod | Ported | Third-person distance. |
-| 38 | FemaleGenderMod | PLAYER | Mod | Pending | Slim model override. |
+| 38 | FemaleGenderMod | PLAYER | Mod | Skeleton | module registered; slim model TBD |
 | 39 | FovModifierMod | PLAYER | Mod | Ported | FOV slider. |
 | 40 | FPSBoostMod | OTHER | Mod | Ported | Perf toggles; Sodium covers most. |
 | 41 | FPSDisplayMod | HUD | SimpleHUD | Ported | getCurrentFps(). |
@@ -73,23 +74,23 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 55 | HypixelQuickPlayMod | PLAYER | Mod | Ported | Hypixel quick play. |
 | 56 | ImageDisplayMod | HUD | HUD | Ported | Image overlay. |
 | 57 | InventoryDisplayMod | HUD | HUD | Ported | Inventory mirror HUD. |
-| 58 | InventoryMod | OTHER | Mod | Pending | Inventory animation tweaks. |
-| 59 | ItemInfoMod | RENDER | Mod | Pending | Tooltip colour info. |
+| 58 | InventoryMod | OTHER | Mod | Skeleton | module registered; inventory anim TBD |
+| 59 | ItemInfoMod | RENDER | Mod | Skeleton | module registered; tooltip colour TBD |
 | 60 | ItemPhysicsMod | RENDER | Mod | Ported | Dropped item physics. |
 | 61 | Items2DMod | RENDER | Mod | Ported | Flat item rendering. |
 | 62 | JumpCircleMod | RENDER | Mod | Ported | Jump ring effect. |
 | 63 | KeystrokesMod | HUD | HUD | Ported | WASD/mouse keystrokes. |
-| 64 | KillEffectsMod | RENDER | Mod | Pending | Kill effect particles. |
+| 64 | KillEffectsMod | RENDER | Mod | Skeleton | module registered; kill particles TBD |
 | 65 | KillSoundsMod | OTHER | Mod | Ported | Sound on kill. |
-| 66 | MechvibesMod | OTHER | Mod | Pending | Keyboard sound packs. |
+| 66 | MechvibesMod | OTHER | Mod | Skeleton | module registered; key sound packs TBD |
 | 67 | MemoryUsageMod | HUD | SimpleHUD | Ported | Heap usage. |
 | 68 | MinemenMod | OTHER | Mod | Ported | Minemen helpers. |
 | 69 | MinimalDamageShakeMod | RENDER | Mod | Ported | Reduced hurt shake. |
 | 70 | MinimalViewBobbingMod | RENDER | Mod | Ported | Reduced view bobbing. |
-| 71 | MinimapMod | HUD | HUD | Pending | Chunk-atlas minimap. |
-| 72 | MoBendsMod | PLAYER | Mod | Pending | Animated player model (large). |
-| 73 | ModernHotbarMod | HUD | HUD | Pending | Hotbar restyle. |
-| 74 | MotionBlurMod | RENDER | Mod | Pending | Motion blur post. |
+| 71 | MinimapMod | HUD | HUD | Skeleton | module registered; chunk atlas TBD |
+| 72 | MoBendsMod | PLAYER | Mod | Skeleton | module registered; large animation subsystem TBD |
+| 73 | ModernHotbarMod | HUD | HUD | Skeleton | module registered; hotbar restyle TBD |
+| 74 | MotionBlurMod | RENDER | Mod | Skeleton | module registered; post-process TBD |
 | 75 | MouseStrokesMod | HUD | HUD | Ported | Mouse-stroke overlay. |
 | 76 | MusicPlayerMod | HUD | HUD | Ported | Local music player. |
 | 77 | NameDisplayMod | HUD | SimpleHUD | Ported | Player name text. |
@@ -97,26 +98,26 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 79 | NametagMod | PLAYER | Mod | Ported | Nametag restyle. |
 | 80 | OverlayEditorMod | RENDER | Mod | Ported | Hide HUD overlays. |
 | 81 | PackDisplayMod | HUD | HUD | Ported | Resource pack list. |
-| 82 | ParticleCustomizerMod | RENDER | Mod | Pending | Particle settings. |
+| 82 | ParticleCustomizerMod | RENDER | Mod | Skeleton | module registered; particle settings TBD |
 | 83 | PingDisplayMod | HUD | SimpleHUD | Ported | Latency text. |
 | 84 | PlayerCounterMod | HUD | SimpleHUD | Ported | Online player count. |
-| 85 | PlayerDisplayMod | HUD | HUD | Pending | 3D player preview. |
-| 86 | PlayerListMod | HUD | HUD | Pending | Tab list changes. |
-| 87 | PlayerPredicatorMod | WORLD | Mod | Pending | Player prediction helper. |
+| 85 | PlayerDisplayMod | HUD | HUD | Skeleton | module registered; 3D preview TBD |
+| 86 | PlayerListMod | HUD | HUD | Skeleton | module registered; tab list TBD |
+| 87 | PlayerPredicatorMod | WORLD | Mod | Skeleton | module registered; prediction render TBD |
 | 88 | PlayTimeDisplayMod | HUD | SimpleHUD | Ported | Session play time. |
 | 89 | PotionCounterMod | HUD | SimpleHUD | Ported | Healing pot count. |
 | 90 | PotionStatusMod | HUD | HUD | Ported | Active potion list. |
-| 91 | ProjectileTrailMod | PLAYER | Mod | Pending | Projectile trail. |
+| 91 | ProjectileTrailMod | PLAYER | Mod | Skeleton | module registered; trail FX TBD |
 | 92 | QuickSwitchMod | PLAYER | Mod | Ported | Sword quick switch. |
 | 93 | RawInputMod | OTHER | Mod | Ported | Raw mouse input. |
 | 94 | ReachCirclesMod | PLAYER | Mod | Ported | Reach visualisation circles. |
 | 95 | ReachDisplayMod | HUD | SimpleHUD | Ported | Last hit reach distance. |
-| 96 | RearviewMod | HUD | HUD | Pending | Rear camera (2nd pass). |
+| 96 | RearviewMod | HUD | HUD | Skeleton | module registered; 2nd camera TBD |
 | 97 | ScoreboardMod | HUD | HUD | Ported | Scoreboard restyle. |
 | 98 | ServerIPDisplayMod | HUD | SimpleHUD | Ported | Server address. |
 | 99 | SessionInfoMod | HUD | HUD | Ported | Session info panel. |
-| 100 | ShinyPotsMod | RENDER | Mod | Pending | Potion item shine. |
-| 101 | Skin3DMod | RENDER | Mod | Pending | 3D skin layers (large). |
+| 100 | ShinyPotsMod | RENDER | Mod | Skeleton | module registered; potion glint TBD |
+| 101 | Skin3DMod | RENDER | Mod | Skeleton | module registered; 3D skin layers TBD |
 | 102 | SkinProtectMod | PLAYER | Mod | Ported | Replace own skin. |
 | 103 | SlowSwingMod | PLAYER | Mod | Ported | Swing delay. |
 | 104 | SoundModifierMod | OTHER | Mod | Ported | Per-category volume/pitch. |
@@ -125,20 +126,20 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 107 | StopwatchMod | HUD | SimpleHUD | Ported | Stopwatch. |
 | 108 | TabEditorMod | RENDER | Mod | Ported | Tab list background. |
 | 109 | TaplookMod | PLAYER | Mod | Ported | Tap-to-look (Freelook variant). |
-| 110 | TargetIndicatorMod | RENDER | Mod | Pending | Target indicator. |
+| 110 | TargetIndicatorMod | RENDER | Mod | Skeleton | module registered; indicator render TBD |
 | 111 | TargetInfoMod | HUD | HUD | Ported | Target info panel. |
 | 112 | TimeChangerMod | WORLD | Mod | Ported | Client-side time. |
 | 113 | TNTTimerMod | HUD | SimpleHUD | Ported | TNT fuse timer. |
 | 114 | ToggleSneakMod | PLAYER | Mod | Ported | Toggle sneak. |
 | 115 | ToggleSprintMod | HUD | SimpleHUD | Ported | Toggle sprint + HUD. |
 | 116 | UHCOverlayMod | RENDER | Mod | Ported | UHC overlay. |
-| 117 | WaveyCapesMod | RENDER | Mod | Pending | Cape physics. |
+| 117 | WaveyCapesMod | RENDER | Mod | Skeleton | module registered; StickSimulation TBD |
 | 118 | WaypointMod | WORLD | Mod | Ported | Waypoints. |
 | 119 | WeatherChangerMod | WORLD | Mod | Ported | Client-side weather. |
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
 | 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom. |
 
-Counts: Ported=89, Pending=30, Impossible=2. Total 121.
+Counts: Ported=89, Pending=0, Skeleton=30, Impossible=2. Total 121.
 
 ## 1.20.1-only (keep)
 
