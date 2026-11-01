@@ -1,5 +1,6 @@
 package me.eldodebug.confu.mixin;
 
+import me.eldodebug.confu.module.impl.skin3d.PlayerModelAccess;
 import me.eldodebug.confu.render.FemaleGenderModel;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;

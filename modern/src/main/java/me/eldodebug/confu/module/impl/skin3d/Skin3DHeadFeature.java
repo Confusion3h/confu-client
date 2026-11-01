@@ -1,7 +1,5 @@
 package me.eldodebug.confu.module.impl.skin3d;
 
-import me.eldodebug.confu.mixin.PlayerModelAccess;
-import me.eldodebug.confu.mixin.Skin3DLayersHolder;
 import me.eldodebug.confu.module.impl.Skin3DModule;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;

@@ -19,19 +19,19 @@ public final class HitBoxModule extends Module {
 
 	@Override
 	protected void onEnable() {
-		mc.getEntityRenderDispatcher().setRenderHitboxes(true);
+		if (mc.getEntityRenderDispatcher() != null) mc.getEntityRenderDispatcher().setRenderHitboxes(true);
 	}
 
 	@Override
 	public void onTick() {
-		if (!mc.getEntityRenderDispatcher().shouldRenderHitboxes()) {
+		if (mc.getEntityRenderDispatcher() != null && !mc.getEntityRenderDispatcher().shouldRenderHitboxes()) {
 			mc.getEntityRenderDispatcher().setRenderHitboxes(true);
 		}
 	}
 
 	@Override
 	protected void onDisable() {
-		mc.getEntityRenderDispatcher().setRenderHitboxes(false);
+		if (mc.getEntityRenderDispatcher() != null) mc.getEntityRenderDispatcher().setRenderHitboxes(false);
 	}
 
 	public boolean boundingBox() {

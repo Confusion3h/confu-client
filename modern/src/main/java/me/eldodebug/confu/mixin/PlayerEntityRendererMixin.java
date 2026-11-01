@@ -1,5 +1,7 @@
 package me.eldodebug.confu.mixin;
 
+import me.eldodebug.confu.module.impl.skin3d.PlayerModelAccess;
+import me.eldodebug.confu.module.impl.skin3d.Skin3DLayersHolder;
 import me.eldodebug.confu.ConfuClient;
 import me.eldodebug.confu.module.impl.FemaleGenderModule;
 import me.eldodebug.confu.module.impl.Skin3DModule;

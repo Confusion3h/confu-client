@@ -119,9 +119,7 @@ public final class RearviewCamera {
 
 		recording = true;
 		try {
-			GL11.glPushAttrib(272393);
 			renderer.renderWorld(partialTicks, System.nanoTime(), new MatrixStack());
-			GL11.glPopAttrib();
 		} finally {
 			recording = false;
 

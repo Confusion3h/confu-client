@@ -1,5 +1,7 @@
 package me.eldodebug.confu.mixin;
 
+import me.eldodebug.confu.module.impl.waveycapes.WaveyCapeSimulationHolder;
+import me.eldodebug.confu.module.impl.skin3d.Skin3DLayersHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
