@@ -139,7 +139,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
 | 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom. |
 
-Counts: Ported=114, Pending=0, Skeleton=5, Impossible=2. Total 121.
+Counts: Ported=118, Pending=0, Skeleton=1 (MoBends), Impossible=2. Total 121.
 
 ## 1.20.1-only (keep)
 
