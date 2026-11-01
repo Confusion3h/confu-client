@@ -26,9 +26,9 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 8 | BlockOverlayMod | RENDER | Mod | Ported | Block outline restyle. |
 | 9 | BloodParticlesMod | RENDER | Mod | Pending | Particles on hit. |
 | 10 | BorderlessFullscreenMod | OTHER | Mod | Ported | GLFW borderless fullscreen. |
-| 11 | BossHealthMod | HUD | HUD | Pending | Boss bar position/scale. |
+| 11 | BossHealthMod | HUD | HUD | Ported | Boss bar position/scale. |
 | 12 | BowZoomMod | PLAYER | Mod | Ported | Bow FOV; reuses Zoom FOV hook. |
-| 13 | BreadcrumbsMod | RENDER | Mod | Pending | Path trail. |
+| 13 | BreadcrumbsMod | RENDER | Mod | Ported | Path trail. |
 | 14 | CalendarMod | HUD | HUD | Ported | Month calendar widget. |
 | 15 | ChatMod | OTHER | Mod | Pending | Chat scroll/animation. |
 | 16 | ChatTranslateMod | OTHER | Mod | Pending | External translate API. |
@@ -55,13 +55,13 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 37 | FarCameraMod | RENDER | Mod | Ported | Third-person distance. |
 | 38 | FemaleGenderMod | PLAYER | Mod | Pending | Slim model override. |
 | 39 | FovModifierMod | PLAYER | Mod | Ported | FOV slider. |
-| 40 | FPSBoostMod | OTHER | Mod | Pending | Perf toggles; Sodium covers most. |
+| 40 | FPSBoostMod | OTHER | Mod | Ported | Perf toggles; Sodium covers most. |
 | 41 | FPSDisplayMod | HUD | SimpleHUD | Ported | getCurrentFps(). |
 | 42 | FPSLimiterMod | OTHER | Mod | Ported | Framerate cap. |
 | 43 | FPSSpooferMod | OTHER | Mod | Ported | FPS spoof display. |
 | 44 | FreelookMod | PLAYER | Mod | Ported | Freelook camera. |
 | 45 | FullbrightMod | PLAYER | Mod | Ported | Gamma override. |
-| 46 | GlintColorMod | RENDER | Mod | Pending | Enchant glint colour. |
+| 46 | GlintColorMod | RENDER | Mod | Ported | Enchant glint colour. |
 | 47 | InternalSettingsMod | OTHER | Mod | Ported | Theme/language/menu key via Settings. |
 | 48 | GodbridgeAssistMod | HUD | HUD | Pending | Godbridge assist HUD. |
 | 49 | HealthDisplayMod | HUD | SimpleHUD | Ported | Health text. |
@@ -75,12 +75,12 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 57 | InventoryDisplayMod | HUD | HUD | Pending | Inventory mirror HUD. |
 | 58 | InventoryMod | OTHER | Mod | Pending | Inventory animation tweaks. |
 | 59 | ItemInfoMod | RENDER | Mod | Pending | Tooltip colour info. |
-| 60 | ItemPhysicsMod | RENDER | Mod | Pending | Dropped item physics. |
-| 61 | Items2DMod | RENDER | Mod | Pending | Flat item rendering. |
+| 60 | ItemPhysicsMod | RENDER | Mod | Ported | Dropped item physics. |
+| 61 | Items2DMod | RENDER | Mod | Ported | Flat item rendering. |
 | 62 | JumpCircleMod | RENDER | Mod | Pending | Jump ring effect. |
 | 63 | KeystrokesMod | HUD | HUD | Ported | WASD/mouse keystrokes. |
 | 64 | KillEffectsMod | RENDER | Mod | Pending | Kill effect particles. |
-| 65 | KillSoundsMod | OTHER | Mod | Pending | Sound on kill. |
+| 65 | KillSoundsMod | OTHER | Mod | Ported | Sound on kill. |
 | 66 | MechvibesMod | OTHER | Mod | Pending | Keyboard sound packs. |
 | 67 | MemoryUsageMod | HUD | SimpleHUD | Ported | Heap usage. |
 | 68 | MinemenMod | OTHER | Mod | Pending | Minemen helpers. |
@@ -90,7 +90,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 72 | MoBendsMod | PLAYER | Mod | Pending | Animated player model (large). |
 | 73 | ModernHotbarMod | HUD | HUD | Pending | Hotbar restyle. |
 | 74 | MotionBlurMod | RENDER | Mod | Pending | Motion blur post. |
-| 75 | MouseStrokesMod | HUD | HUD | Pending | Mouse-stroke overlay. |
+| 75 | MouseStrokesMod | HUD | HUD | Ported | Mouse-stroke overlay. |
 | 76 | MusicPlayerMod | HUD | HUD | Ported | Local music player. |
 | 77 | NameDisplayMod | HUD | SimpleHUD | Ported | Player name text. |
 | 78 | NameProtectMod | PLAYER | Mod | Ported | Hide own name. |
@@ -107,19 +107,19 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 89 | PotionCounterMod | HUD | SimpleHUD | Ported | Healing pot count. |
 | 90 | PotionStatusMod | HUD | HUD | Ported | Active potion list. |
 | 91 | ProjectileTrailMod | PLAYER | Mod | Pending | Projectile trail. |
-| 92 | QuickSwitchMod | PLAYER | Mod | Pending | Sword quick switch. |
+| 92 | QuickSwitchMod | PLAYER | Mod | Ported | Sword quick switch. |
 | 93 | RawInputMod | OTHER | Mod | Ported | Raw mouse input. |
-| 94 | ReachCirclesMod | PLAYER | Mod | Pending | Reach visualisation circles. |
+| 94 | ReachCirclesMod | PLAYER | Mod | Ported | Reach visualisation circles. |
 | 95 | ReachDisplayMod | HUD | SimpleHUD | Ported | Last hit reach distance. |
 | 96 | RearviewMod | HUD | HUD | Pending | Rear camera (2nd pass). |
-| 97 | ScoreboardMod | HUD | HUD | Pending | Scoreboard restyle. |
+| 97 | ScoreboardMod | HUD | HUD | Ported | Scoreboard restyle. |
 | 98 | ServerIPDisplayMod | HUD | SimpleHUD | Ported | Server address. |
 | 99 | SessionInfoMod | HUD | HUD | Ported | Session info panel. |
 | 100 | ShinyPotsMod | RENDER | Mod | Pending | Potion item shine. |
 | 101 | Skin3DMod | RENDER | Mod | Pending | 3D skin layers (large). |
 | 102 | SkinProtectMod | PLAYER | Mod | Ported | Replace own skin. |
 | 103 | SlowSwingMod | PLAYER | Mod | Ported | Swing delay. |
-| 104 | SoundModifierMod | OTHER | Mod | Pending | Per-category volume/pitch. |
+| 104 | SoundModifierMod | OTHER | Mod | Ported | Per-category volume/pitch. |
 | 105 | SoundSubtitlesMod | HUD | HUD | Pending | Sound subtitles HUD. |
 | 106 | SpeedometerMod | HUD | SimpleHUD | Ported | Speed text/graph. |
 | 107 | StopwatchMod | HUD | SimpleHUD | Ported | Stopwatch. |
@@ -138,7 +138,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
 | 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom. |
 
-Counts: Ported=63, Pending=56, Impossible=2. Total 121.
+Counts: Ported=75, Pending=44, Impossible=2. Total 121.
 
 ## 1.20.1-only (keep)
 

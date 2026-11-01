@@ -129,6 +129,18 @@ public class ConfuClient implements ClientModInitializer {
 		modules.register(new HitColorModule());
 		modules.register(new DamageTintModule());
 		modules.register(new BlockOverlayModule());
+		modules.register(new MouseStrokesModule());
+		modules.register(new BossHealthModule());
+		modules.register(new ScoreboardModule());
+		modules.register(new FpsBoostModule());
+		modules.register(new QuickSwitchModule());
+		modules.register(new Items2DModule());
+		modules.register(new ItemPhysicsModule());
+		modules.register(new GlintColorModule());
+		modules.register(new SoundModifierModule());
+		modules.register(new KillSoundsModule());
+		modules.register(new ReachCirclesModule());
+		modules.register(new BreadcrumbsModule());
 		modules.register(new TotemCounterModule());
 		modules.register(new ElytraStatusModule());
 		modules.register(new MusicPlayerModule());
