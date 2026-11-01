@@ -625,6 +625,39 @@ public class NanoVGManager {
 		drawImage(texture, x, y, width, height, 1.0F);
 	}
 	
+	/** 1.8.9: crops the face and the hat overlay out of the 64x64 skin texture. */
+	public void drawPlayerHead(int texture, float x, float y, float width, float height, float radius, float alpha) {
+		
+		if(!assetManager.loadImage(nvg, texture, width, height)) {
+			return;
+		}
+		
+		int image = assetManager.getImage(texture);
+		
+		NanoVG.nvgImageSize(nvg, image, new int[]{(int) width}, new int[]{-(int) height});
+		NVGPaint p = paint;
+		
+		float sizeMultiplier = 8;
+		
+		NanoVG.nvgImagePattern(nvg, x - width / 4 * sizeMultiplier / 2, y - height / 4 * sizeMultiplier / 2, width * sizeMultiplier, height * sizeMultiplier, 0, image, alpha, p);
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgRoundedRect(nvg, x, y, width, height, radius);
+		NanoVG.nvgFillPaint(nvg, p);
+		NanoVG.nvgFill(nvg);
+		NanoVG.nvgClosePath(nvg);
+		
+		NanoVG.nvgImagePattern(nvg, x - width * 3.25F * sizeMultiplier / 2, y - height / 4 * sizeMultiplier / 2, width * sizeMultiplier, height * sizeMultiplier, 0, image, alpha, p);
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgRoundedRect(nvg, x, y, width, height, radius);
+		NanoVG.nvgFillPaint(nvg, p);
+		NanoVG.nvgFill(nvg);
+		NanoVG.nvgClosePath(nvg);
+	}
+	
+	public void drawPlayerHead(int texture, float x, float y, float width, float height, float radius) {
+		drawPlayerHead(texture, x, y, width, height, radius, 1.0F);
+	}
+	
 	public void drawRoundedImage(int texture, float x, float y, float width, float height, float radius, float alpha) {
 		
 		if(assetManager.loadImage(nvg, texture, width, height)) {

@@ -17,7 +17,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 
 | # | 1.8.9 class | Category | Type | Status | Notes |
 |---|---|---|---|---|---|
-| 1 | AnimationsMod | RENDER | Mod | Skeleton | settings present; 1.8 block-hit/sneak mixins TBD |
+| 1 | AnimationsMod | RENDER | Mod | Ported | All 10 settings; block-hit/pushing via isBreakingBlock mixin, smooth sneak via Camera.updateEyeHeight. |
 | 2 | AppleSkinMod | PLAYER | Mod | Ported | Hunger/saturation overlay on food bar. |
 | 3 | ArmorStatusMod | HUD | HUD | Ported | Worn armour icons, H/V layout. |
 | 4 | ArrayListMod | HUD | HUD | Ported | Enabled-module list. |
@@ -75,7 +75,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 56 | ImageDisplayMod | HUD | HUD | Ported | Image overlay. |
 | 57 | InventoryDisplayMod | HUD | HUD | Ported | Inventory mirror HUD. |
 | 58 | InventoryMod | OTHER | Mod | Skeleton | module registered; inventory anim TBD |
-| 59 | ItemInfoMod | RENDER | Mod | Skeleton | module registered; tooltip colour TBD |
+| 59 | ItemInfoMod | RENDER | Mod | Ported | Held-item name/enchants/potion info above hotbar, 1.8 colours. |
 | 60 | ItemPhysicsMod | RENDER | Mod | Ported | Dropped item physics. |
 | 61 | Items2DMod | RENDER | Mod | Ported | Flat item rendering. |
 | 62 | JumpCircleMod | RENDER | Mod | Ported | Jump ring effect. |
@@ -89,7 +89,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 70 | MinimalViewBobbingMod | RENDER | Mod | Ported | Reduced view bobbing. |
 | 71 | MinimapMod | HUD | HUD | Skeleton | module registered; chunk atlas TBD |
 | 72 | MoBendsMod | PLAYER | Mod | Skeleton | module registered; large animation subsystem TBD |
-| 73 | ModernHotbarMod | HUD | HUD | Skeleton | module registered; hotbar restyle TBD |
+| 73 | ModernHotbarMod | HUD | HUD | Ported | 4 designs, smooth anim, pickup style; vanilla hotbar/XP hidden via InGameHudMixin. |
 | 74 | MotionBlurMod | RENDER | Mod | Skeleton | module registered; post-process TBD |
 | 75 | MouseStrokesMod | HUD | HUD | Ported | Mouse-stroke overlay. |
 | 76 | MusicPlayerMod | HUD | HUD | Ported | Local music player. |
@@ -101,8 +101,8 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 82 | ParticleCustomizerMod | RENDER | Mod | Skeleton | module registered; particle settings TBD |
 | 83 | PingDisplayMod | HUD | SimpleHUD | Ported | Latency text. |
 | 84 | PlayerCounterMod | HUD | SimpleHUD | Ported | Online player count. |
-| 85 | PlayerDisplayMod | HUD | HUD | Skeleton | module registered; 3D preview TBD |
-| 86 | PlayerListMod | HUD | HUD | Skeleton | module registered; tab list TBD |
+| 85 | PlayerDisplayMod | HUD | HUD | Ported | Local player paperdoll via entity render dispatcher. |
+| 86 | PlayerListMod | HUD | HUD | Ported | Player heads + names, max setting, auto height. |
 | 87 | PlayerPredicatorMod | WORLD | Mod | Skeleton | module registered; prediction render TBD |
 | 88 | PlayTimeDisplayMod | HUD | SimpleHUD | Ported | Session play time. |
 | 89 | PotionCounterMod | HUD | SimpleHUD | Ported | Healing pot count. |
@@ -139,7 +139,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
 | 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom. |
 
-Counts: Ported=89, Pending=0, Skeleton=30, Impossible=2. Total 121.
+Counts: Ported=94, Pending=0, Skeleton=25, Impossible=2. Total 121.
 
 ## 1.20.1-only (keep)
 

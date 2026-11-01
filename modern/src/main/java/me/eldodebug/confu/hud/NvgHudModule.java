@@ -92,6 +92,20 @@ public abstract class NvgHudModule extends HudModule {
 		this.height = h;
 	}
 
+	/** Lets auto-positioned elements (hotbar, paperdoll) draw at an absolute spot for this frame. */
+	protected void setOrigin(float px, float py) {
+		this.x = px;
+		this.y = py;
+	}
+
+	public void drawPlayerHead(net.minecraft.util.Identifier skin, float addX, float addY, float width, float height, float radius) {
+		try {
+			int texture = mc.getTextureManager().getTexture(skin).getGlId();
+			nvg().drawPlayerHead(texture, x + (addX * s), y + (addY * s), width * s, height * s, radius * s);
+		} catch (RuntimeException ignored) {
+		}
+	}
+
 	protected float getX() {
 		return x;
 	}
