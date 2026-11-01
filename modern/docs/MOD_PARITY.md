@@ -17,7 +17,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | # | 1.8.9 class | Category | Type | Status | Notes |
 |---|---|---|---|---|---|
 | 1 | AnimationsMod | RENDER | Mod | Pending | 1.8 block-hit/swing; first-person transform mixin. |
-| 2 | AppleSkinMod | PLAYER | Mod | Pending | Hunger/saturation overlay on food bar. |
+| 2 | AppleSkinMod | PLAYER | Mod | Ported | Hunger/saturation overlay on food bar. |
 | 3 | ArmorStatusMod | HUD | HUD | Ported | Worn armour icons, H/V layout. |
 | 4 | ArrayListMod | HUD | HUD | Ported | Enabled-module list. |
 | 5 | AsyncScreenshotMod | OTHER | Mod | Ported | Off-thread PNG write. |
@@ -63,27 +63,27 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 45 | FullbrightMod | PLAYER | Mod | Ported | Gamma override. |
 | 46 | GlintColorMod | RENDER | Mod | Ported | Enchant glint colour. |
 | 47 | InternalSettingsMod | OTHER | Mod | Ported | Theme/language/menu key via Settings. |
-| 48 | GodbridgeAssistMod | HUD | HUD | Pending | Godbridge assist HUD. |
+| 48 | GodbridgeAssistMod | HUD | HUD | Ported | Godbridge assist HUD. |
 | 49 | HealthDisplayMod | HUD | SimpleHUD | Ported | Health text. |
 | 50 | HitBoxMod | RENDER | Mod | Ported | Entity hitbox render. |
 | 51 | HitColorMod | RENDER | Mod | Ported | Hurt flash colour. |
 | 52 | HitDelayFixMod | PLAYER | Mod | Impossible | 1.8 miss-hit delay (leftClickCounter); 1.20.1 uses attack cooldown. |
 | 53 | HorseStatsMod | HUD | HUD | Ported | Horse stats panel. |
-| 54 | HypixelMod | OTHER | Mod | Pending | Hypixel helpers (AutoGG etc.). |
-| 55 | HypixelQuickPlayMod | PLAYER | Mod | Pending | Hypixel quick play. |
-| 56 | ImageDisplayMod | HUD | HUD | Pending | Image overlay. |
-| 57 | InventoryDisplayMod | HUD | HUD | Pending | Inventory mirror HUD. |
+| 54 | HypixelMod | OTHER | Mod | Ported | Hypixel helpers (AutoGG etc.). |
+| 55 | HypixelQuickPlayMod | PLAYER | Mod | Ported | Hypixel quick play. |
+| 56 | ImageDisplayMod | HUD | HUD | Ported | Image overlay. |
+| 57 | InventoryDisplayMod | HUD | HUD | Ported | Inventory mirror HUD. |
 | 58 | InventoryMod | OTHER | Mod | Pending | Inventory animation tweaks. |
 | 59 | ItemInfoMod | RENDER | Mod | Pending | Tooltip colour info. |
 | 60 | ItemPhysicsMod | RENDER | Mod | Ported | Dropped item physics. |
 | 61 | Items2DMod | RENDER | Mod | Ported | Flat item rendering. |
-| 62 | JumpCircleMod | RENDER | Mod | Pending | Jump ring effect. |
+| 62 | JumpCircleMod | RENDER | Mod | Ported | Jump ring effect. |
 | 63 | KeystrokesMod | HUD | HUD | Ported | WASD/mouse keystrokes. |
 | 64 | KillEffectsMod | RENDER | Mod | Pending | Kill effect particles. |
 | 65 | KillSoundsMod | OTHER | Mod | Ported | Sound on kill. |
 | 66 | MechvibesMod | OTHER | Mod | Pending | Keyboard sound packs. |
 | 67 | MemoryUsageMod | HUD | SimpleHUD | Ported | Heap usage. |
-| 68 | MinemenMod | OTHER | Mod | Pending | Minemen helpers. |
+| 68 | MinemenMod | OTHER | Mod | Ported | Minemen helpers. |
 | 69 | MinimalDamageShakeMod | RENDER | Mod | Ported | Reduced hurt shake. |
 | 70 | MinimalViewBobbingMod | RENDER | Mod | Ported | Reduced view bobbing. |
 | 71 | MinimapMod | HUD | HUD | Pending | Chunk-atlas minimap. |
@@ -94,7 +94,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 76 | MusicPlayerMod | HUD | HUD | Ported | Local music player. |
 | 77 | NameDisplayMod | HUD | SimpleHUD | Ported | Player name text. |
 | 78 | NameProtectMod | PLAYER | Mod | Ported | Hide own name. |
-| 79 | NametagMod | PLAYER | Mod | Pending | Nametag restyle. |
+| 79 | NametagMod | PLAYER | Mod | Ported | Nametag restyle. |
 | 80 | OverlayEditorMod | RENDER | Mod | Ported | Hide HUD overlays. |
 | 81 | PackDisplayMod | HUD | HUD | Ported | Resource pack list. |
 | 82 | ParticleCustomizerMod | RENDER | Mod | Pending | Particle settings. |
@@ -120,25 +120,25 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 102 | SkinProtectMod | PLAYER | Mod | Ported | Replace own skin. |
 | 103 | SlowSwingMod | PLAYER | Mod | Ported | Swing delay. |
 | 104 | SoundModifierMod | OTHER | Mod | Ported | Per-category volume/pitch. |
-| 105 | SoundSubtitlesMod | HUD | HUD | Pending | Sound subtitles HUD. |
+| 105 | SoundSubtitlesMod | HUD | HUD | Ported | Sound subtitles HUD. |
 | 106 | SpeedometerMod | HUD | SimpleHUD | Ported | Speed text/graph. |
 | 107 | StopwatchMod | HUD | SimpleHUD | Ported | Stopwatch. |
-| 108 | TabEditorMod | RENDER | Mod | Pending | Tab list background. |
+| 108 | TabEditorMod | RENDER | Mod | Ported | Tab list background. |
 | 109 | TaplookMod | PLAYER | Mod | Ported | Tap-to-look (Freelook variant). |
 | 110 | TargetIndicatorMod | RENDER | Mod | Pending | Target indicator. |
-| 111 | TargetInfoMod | HUD | HUD | Pending | Target info panel. |
+| 111 | TargetInfoMod | HUD | HUD | Ported | Target info panel. |
 | 112 | TimeChangerMod | WORLD | Mod | Ported | Client-side time. |
 | 113 | TNTTimerMod | HUD | SimpleHUD | Ported | TNT fuse timer. |
 | 114 | ToggleSneakMod | PLAYER | Mod | Ported | Toggle sneak. |
 | 115 | ToggleSprintMod | HUD | SimpleHUD | Ported | Toggle sprint + HUD. |
-| 116 | UHCOverlayMod | RENDER | Mod | Pending | UHC overlay. |
+| 116 | UHCOverlayMod | RENDER | Mod | Ported | UHC overlay. |
 | 117 | WaveyCapesMod | RENDER | Mod | Pending | Cape physics. |
-| 118 | WaypointMod | WORLD | Mod | Pending | Waypoints. |
+| 118 | WaypointMod | WORLD | Mod | Ported | Waypoints. |
 | 119 | WeatherChangerMod | WORLD | Mod | Ported | Client-side weather. |
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
 | 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom. |
 
-Counts: Ported=75, Pending=44, Impossible=2. Total 121.
+Counts: Ported=89, Pending=30, Impossible=2. Total 121.
 
 ## 1.20.1-only (keep)
 
