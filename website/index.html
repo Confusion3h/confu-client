@@ -7,230 +7,295 @@
   <meta name="description" content="Confu Client is a Minecraft 1.8.9 client. FPS mode, Microsoft sign-in, a music player, and a bundled Java runtime.">
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="stylesheet" href="styles.css">
+  <meta name="theme-color" content="#0a0a0a">
+  <script>try{var t=localStorage.getItem("confu.theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}document.documentElement.classList.add("js");</script>
 </head>
 <body>
   <a class="skip" href="#content" data-i18n="skip">Skip to content</a>
-  <header class="nav">
-    <a class="brand" href="#top">
-      <img src="mark.svg" alt="">
-      Confu Client
-    </a>
-    <nav class="nav-links" data-i18n-aria="nav.aria" aria-label="Page">
-      <a href="#features" data-i18n="nav.features">Features</a>
-      <a href="#gallery" data-i18n="nav.gallery">Gallery</a>
-      <a href="#downloads" data-i18n="nav.downloads">Downloads</a>
-      <a href="#faq" data-i18n="nav.faq">FAQ</a>
+
+  <div class="intro" aria-hidden="true">
+    <img src="mark.svg" alt="" class="intro-mark">
+    <div class="intro-bar"><span></span></div>
+  </div>
+
+  <div class="progress" aria-hidden="true"><span></span></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <header class="nav-wrap">
+    <nav class="nav" data-i18n-aria="nav.aria" aria-label="Page">
+      <a class="brand" href="#top"><img src="mark.svg" alt=""><span>Confu Client</span></a>
+      <div class="nav-links">
+        <a href="#features" data-i18n="nav.features">Features</a>
+        <a href="#gallery" data-i18n="nav.gallery">Gallery</a>
+        <a href="#downloads" data-i18n="nav.downloads">Downloads</a>
+        <a href="#faq" data-i18n="nav.faq">FAQ</a>
+      </div>
+      <div class="nav-tools">
+        <div class="lang" role="group" data-i18n-aria="lang.aria" aria-label="Language">
+          <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-set-lang="it" aria-pressed="false">IT</button>
+        </div>
+        <button type="button" class="icon-btn theme-toggle" data-theme-toggle data-i18n-aria="theme.aria" aria-label="Light or dark theme">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <a class="btn btn-small sheen ripple nav-cta" href="#downloads" data-i18n="nav.cta">Download</a>
+        <button type="button" class="icon-btn menu-btn" data-menu-toggle aria-expanded="false" data-i18n-aria="menu.aria" aria-label="Menu">
+          <span></span><span></span>
+        </button>
+      </div>
     </nav>
-    <div class="lang" role="group" data-i18n-aria="lang.aria" aria-label="Language">
-      <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
-      <button type="button" data-set-lang="it" aria-pressed="false">IT</button>
+    <div class="mobile-menu" data-mobile-menu>
+      <a href="#features"><i>01</i><span data-i18n="nav.features">Features</span></a>
+      <a href="#gallery"><i>02</i><span data-i18n="nav.gallery">Gallery</span></a>
+      <a href="#downloads"><i>03</i><span data-i18n="nav.downloads">Downloads</span></a>
+      <a href="#faq"><i>04</i><span data-i18n="nav.faq">FAQ</span></a>
     </div>
   </header>
 
   <main id="content">
-    <div class="wrap hero" id="top">
-      <div>
-        <p class="kicker" data-i18n="kicker">Minecraft 1.8.9</p>
-        <h1 data-i18n="hero.title">Ready when you are.</h1>
-        <p class="lede" data-i18n="hero.lede">Confu Client is an FPS-first 1.8.9 client. The launcher picks a bundled Java, signs you into Microsoft or an offline name, and starts the game.</p>
-        <div class="actions">
-          <a class="play" data-download href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-Setup-0.2.7-win-x64.exe" data-i18n="cta.download">Download for Windows 10/11 (x64)</a>
-          <a class="ghost" href="#downloads" data-i18n="cta.all">All platforms</a>
-        </div>
-        <p class="note" data-download-note>Windows x64 · Confu-Client-Setup-0.2.7-win-x64.exe</p>
+    <section class="hero" id="top">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="grid-lines"></div>
+        <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+        <div class="ring r1"></div><div class="ring r2"></div>
       </div>
-      <aside class="hero-card">
-        <img class="mark" src="mark.svg" alt="Confu Client mark" data-i18n-alt="alt.mark">
-        <h2>Confu Client</h2>
-        <p data-i18n="hero.ver">v0.2.7 · Minecraft 1.8.9 + 1.20.1 (Fabric) · GPL-3.0</p>
-        <div class="stats">
-          <div class="stat"><b data-i18n="stat.fps.n">up to ~50%</b><span data-i18n="stat.fps">more FPS than the official launcher (est.)</span></div>
-          <div class="stat"><b data-i18n="stat.scene.n">ARM64</b><span data-i18n="stat.scene">only native client for Windows on ARM</span></div>
-          <div class="stat"><b>6</b><span data-i18n="stat.builds">builds</span></div>
+      <div class="wrap hero-inner">
+        <p class="kicker reveal"><span class="dot"></span><span data-i18n="kicker">Minecraft 1.8.9</span></p>
+        <h1 class="display reveal" style="--d:.08s" data-i18n="hero.big" data-i18n-html>Ready <em>when</em><br>you are.</h1>
+        <p class="lede reveal" style="--d:.16s" data-i18n="hero.lede">Confu Client is an FPS-first 1.8.9 client. The launcher picks a bundled Java, signs you into Microsoft or an offline name, and starts the game.</p>
+        <div class="actions reveal" style="--d:.24s">
+          <a class="btn btn-primary sheen ripple magnetic" data-download href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-Setup-0.2.7-win-x64.exe" data-i18n="cta.download">Download for Windows 10/11 (x64)</a>
+          <a class="btn btn-ghost sheen ripple" href="#downloads" data-i18n="cta.all">All platforms</a>
         </div>
-      </aside>
-    </div>
+        <p class="note reveal" style="--d:.3s" data-download-note>Windows x64 · Confu-Client-Setup-0.2.7-win-x64.exe</p>
+        <a class="pill reveal" style="--d:.36s" href="#downloads"><span class="pulse"></span><span data-i18n="hero.ver">v0.2.7 · Minecraft 1.8.9 + 1.20.1 (Fabric) · GPL-3.0</span><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+      <div class="scroll-cue" aria-hidden="true"><span></span></div>
+    </section>
 
-    <div class="wrap">
-      <section id="features">
-        <h2 class="section" data-i18n="features.title">Features</h2>
-        <p class="sub" data-i18n="features.sub">The same client the launcher starts. FPS mode is already on. Worlds, capes and music stay in your own folder.</p>
-        <div class="grid">
-          <article class="card">
+    <section class="stats-band">
+      <div class="wrap stats">
+          <div class="stat reveal" style="--d:0.00s"><b data-i18n="stat.fps.n">up to ~50%</b><span data-i18n="stat.fps">more FPS than the official launcher (est.)</span></div>
+          <div class="stat reveal" style="--d:0.08s"><b data-i18n="stat.scene.n">ARM64</b><span data-i18n="stat.scene">only native client for Windows on ARM</span></div>
+          <div class="stat reveal" style="--d:0.16s"><b>6</b><span data-i18n="stat.builds">builds</span></div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="eyebrow reveal">01</p>
+          <h2 class="display-md reveal" data-i18n="features.title">Features</h2>
+          <p class="sub reveal" data-i18n="features.sub">The same client the launcher starts. FPS mode is already on. Worlds, capes and music stay in your own folder.</p>
+        </header>
+        <ol class="feats">
+        <li class="feat reveal" style="--d:0.00s">
+          <span class="feat-n">01</span>
+          <div class="feat-body">
             <h3 data-i18n="feat.fps.title">FPS boost preset</h3>
             <p data-i18n="feat.fps.body" data-i18n-html>On the first launch, with FPS mode already on: fast graphics, short render distance, VBOs, fewer particles, no entity shadows, vsync off. Four extra JVM flags sit on top of the existing G1 set. Estimated gain: <span class="num">up to ~50% more FPS than the official Minecraft Launcher (1.8.9)</span>, <span class="num">in line with Lunar, Badlion and Feather</span>. Chunk delay, bot removal and entity culling stay off, so real players stay on screen.</p>
-          </article>
-          <article class="card">
+          </div>
+        </li>
+        <li class="feat reveal" style="--d:0.08s">
+          <span class="feat-n">02</span>
+          <div class="feat-body">
             <h3 data-i18n="feat.ms.title">Microsoft login</h3>
             <p data-i18n="feat.ms.body">Sign in with Microsoft from the launcher. It uses the built-in Live desktop client. There is no Azure app to register and no extra token file to paste.</p>
-          </article>
-          <article class="card">
+          </div>
+        </li>
+        <li class="feat reveal" style="--d:0.16s">
+          <span class="feat-n">03</span>
+          <div class="feat-body">
             <h3 data-i18n="feat.music.title">Music player</h3>
             <p data-i18n="feat.music.body">Play a folder of WAV, MP3 or OGG, or paste a YouTube or SoundCloud link. yt-dlp and FFmpeg download themselves and are checked against a pinned SHA-256 before they run.</p>
-          </article>
-          <article class="card">
+          </div>
+        </li>
+        <li class="feat reveal" style="--d:0.00s">
+          <span class="feat-n">04</span>
+          <div class="feat-body">
             <h3 data-i18n="feat.capes.title">Custom capes</h3>
             <p data-i18n="feat.capes.body">Cosmetics, then Custom. Add a PNG and press F5 to see it. Capes stay on this machine.</p>
-          </article>
-          <article class="card">
+          </div>
+        </li>
+        <li class="feat reveal" style="--d:0.08s">
+          <span class="feat-n">05</span>
+          <div class="feat-body">
             <h3 data-i18n="feat.esc.title">ESC menu</h3>
             <p data-i18n="feat.esc.body">Escape in a world opens the vanilla Options screen, including Open Confu Client menu. Right Shift opens that menu from anywhere, including the title screen.</p>
-          </article>
-          <article class="card">
+          </div>
+        </li>
+        <li class="feat reveal" style="--d:0.16s">
+          <span class="feat-n">06</span>
+          <div class="feat-body">
             <h3 data-i18n="feat.sp.title">Singleplayer</h3>
             <p data-i18n="feat.sp.body">The 1.8.9 singleplayer list, worlds and all. The main menu is Singleplayer, Multiplayer and Settings. Disconnect returns you there without dropping the process.</p>
-          </article>
-          <article class="card">
+          </div>
+        </li>
+        <li class="feat reveal" style="--d:0.00s">
+          <span class="feat-n">07</span>
+          <div class="feat-body">
             <h3 data-i18n="feat.java.title">Java 8, Minecraft 1.8.9</h3>
             <p data-i18n="feat.java.body">Every archive ships a JRE. Windows x64, Linux and macOS Intel use Temurin 8. macOS Apple Silicon uses Azul Zulu 8. Windows ARM64 uses a native Microsoft Build of OpenJDK 17, with a small compatibility jar so 1.8.9 still starts. You do not install Java yourself. Confu Client is the only native client for Windows on ARM: no x64 emulation.</p>
-          </article>
-        </div>
-      </section>
+          </div>
+        </li>
+        </ol>
+      </div>
+    </section>
 
-      <section id="gallery">
-        <h2 class="section" data-i18n="gallery.title">Gallery</h2>
-        <p class="sub" data-i18n="gallery.sub">Captured from the launcher and the game running on this build. Clips are muted and loop.</p>
+    <section id="gallery" class="section">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="eyebrow reveal">02</p>
+          <h2 class="display-md reveal" data-i18n="gallery.title">Gallery</h2>
+          <p class="sub reveal" data-i18n="gallery.sub">Captured from the launcher and the game running on this build. Clips are muted and loop.</p>
+        </header>
         <div class="gallery">
-          <figure class="span2">
+          <figure class="shot spot reveal wide">
             <video autoplay muted loop playsinline poster="media/launcher-home.png">
               <source src="media/launcher.webm" type="video/webm">
               <source src="media/launcher.mp4" type="video/mp4">
             </video>
             <figcaption data-i18n="cap.launcher">Launcher home. The light wash is the live window, not a mock.</figcaption>
           </figure>
-          <figure>
+          <figure class="shot spot reveal">
             <img src="media/launcher-microsoft.png" alt="Confu Client launcher with Sign in with Microsoft" data-i18n-alt="alt.ms" width="1000" height="620">
             <figcaption data-i18n="cap.ms">Microsoft tab. Sign in with Microsoft, no app setup.</figcaption>
           </figure>
-          <figure>
+          <figure class="shot spot reveal">
             <video autoplay muted loop playsinline poster="media/menu.png">
               <source src="media/menu.webm" type="video/webm">
               <source src="media/menu.mp4" type="video/mp4">
             </video>
             <figcaption data-i18n="cap.menuvideo">Main menu. The background follows the pointer.</figcaption>
           </figure>
-          <figure>
+          <figure class="shot spot reveal">
             <img src="media/menu.png" alt="Confu Client main menu with Singleplayer, Multiplayer and Settings" data-i18n-alt="alt.menu" width="1100" height="630">
             <figcaption data-i18n="cap.menu">Singleplayer, Multiplayer, Settings.</figcaption>
           </figure>
-          <figure>
+          <figure class="shot spot reveal">
             <video autoplay muted loop playsinline poster="media/world.png">
               <source src="media/world.webm" type="video/webm">
               <source src="media/world.mp4" type="video/mp4">
             </video>
             <figcaption data-i18n="cap.world">In a world, FPS display on.</figcaption>
           </figure>
-          <figure>
+          <figure class="shot spot reveal">
             <img src="media/options.png" alt="Vanilla Options with Open Confu Client menu" data-i18n-alt="alt.options" width="1100" height="630">
             <figcaption data-i18n="cap.options">Escape opens Options, with Open Confu Client menu.</figcaption>
           </figure>
-          <figure>
+          <figure class="shot spot reveal">
             <img src="media/client-menu.png" alt="Confu Client menu with FPS mode and Music player toggles" data-i18n-alt="alt.client" width="1100" height="630">
             <figcaption data-i18n="cap.client">Right Shift. FPS mode, FPS display, music.</figcaption>
           </figure>
-          <figure class="span2">
+          <figure class="shot spot reveal wide">
             <img src="media/music.png" alt="Music Player module row with the description on its own line" data-i18n-alt="alt.music" width="1100" height="630">
             <figcaption data-i18n="cap.music">Music Player. The description sits on its own line, clear of the settings gear.</figcaption>
           </figure>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="downloads">
-        <h2 class="section" data-i18n="dl.title">Downloads</h2>
-        <p class="sub" data-i18n="dl.sub" data-i18n-html>Version 0.2.7. On Minecraft 1.20.1 the mod menu sidebar is now the same as on 1.8.9: Cosmetics (capes, including your own PNGs), Profile (with server auto-load) and Screenshot pages. Sizes are the file on disk. SHA-256 is the whole archive.</p>
-        <div class="split">
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th data-i18n="th.platform">Platform</th>
-                  <th data-i18n="th.file">File</th>
-                  <th data-i18n="th.size">Size</th>
-                  <th data-i18n="th.sha">SHA-256</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr data-os="win-x64" data-label="Windows x64" data-file="Confu-Client-Setup-0.2.7-win-x64.exe">
-                  <td data-i18n="os.winx64">Windows x64</td>
-                  <td><a href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-Setup-0.2.7-win-x64.exe">Confu-Client-Setup-0.2.7-win-x64.exe</a></td>
-                  <td data-i18n="sz.winx64" data-i18n-html>82,285,482 bytes<br>82.3 MB</td>
-                  <td class="hash">a8c329246e52beef69679327b24417472d96ecfd460431c3e707dcab6489419c</td>
-                </tr>
-                <tr data-os="win-arm64" data-label="Windows ARM64" data-file="Confu-Client-Setup-0.2.7-win-arm64.exe">
-                  <td data-i18n="os.winarm">Windows ARM64</td>
-                  <td><a href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-Setup-0.2.7-win-arm64.exe">Confu-Client-Setup-0.2.7-win-arm64.exe</a></td>
-                  <td data-i18n="sz.winarm" data-i18n-html>105,300,895 bytes<br>105.3 MB</td>
-                  <td class="hash">5ddeece3cc37df82fff3b4974d52a90eaea7affc8f5bbd8597c88c7011c65bcb</td>
-                </tr>
-                <tr data-os="linux-x64" data-label="Linux x64" data-file="Confu-Client-0.2.7-linux-x64.tar.gz">
-                  <td data-i18n="os.linux64">Linux x64</td>
-                  <td><a href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-0.2.7-linux-x64.tar.gz">Confu-Client-0.2.7-linux-x64.tar.gz</a></td>
-                  <td data-i18n="sz.linux64" data-i18n-html>96,305,914 bytes<br>96.3 MB</td>
-                  <td class="hash">d79f6593534489159fe826675726986d0fde448b854fd4f104f0adbf6fd89c1b</td>
-                </tr>
-                <tr data-os="linux-arm64" data-label="Linux ARM64" data-file="Confu-Client-0.2.7-linux-aarch64.tar.gz">
-                  <td data-i18n="os.linuxarm">Linux ARM64</td>
-                  <td><a href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-0.2.7-linux-aarch64.tar.gz">Confu-Client-0.2.7-linux-aarch64.tar.gz</a></td>
-                  <td data-i18n="sz.linuxarm" data-i18n-html>109,035,393 bytes<br>109.0 MB</td>
-                  <td class="hash">14f52d390eb7a7ecad0c019b60db62224fcd817a627960130a1b6d3b763a7f78</td>
-                </tr>
-                <tr data-os="mac-x64" data-label="macOS Intel" data-file="Confu-Client-0.2.7-mac-x64.zip">
-                  <td data-i18n="os.mac64">macOS Intel</td>
-                  <td><a href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-0.2.7-mac-x64.zip">Confu-Client-0.2.7-mac-x64.zip</a></td>
-                  <td data-i18n="sz.mac64" data-i18n-html>94,868,754 bytes<br>94.9 MB</td>
-                  <td class="hash">bd2cc133a05c1551a47ff843fc3c7984e4064e4b9a5a72c1d6a182c0ee5eea2f</td>
-                </tr>
-                <tr data-os="mac-arm64" data-label="macOS Apple Silicon" data-file="Confu-Client-0.2.7-mac-aarch64.zip">
-                  <td data-i18n="os.macarm">macOS Apple Silicon</td>
-                  <td><a href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-0.2.7-mac-aarch64.zip">Confu-Client-0.2.7-mac-aarch64.zip</a></td>
-                  <td data-i18n="sz.macarm" data-i18n-html>94,965,365 bytes<br>95.0 MB</td>
-                  <td class="hash">80adfdbd8112408fec1ac527010b503f9335276f7364953c882fe3d7921b5795</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <aside class="source" id="source">
+    <section id="downloads" class="section">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="eyebrow reveal">03</p>
+          <h2 class="display-md reveal" data-i18n="dl.title">Downloads</h2>
+          <p class="sub reveal" data-i18n="dl.sub" data-i18n-html>Version 0.2.7. On Minecraft 1.20.1 the mod menu sidebar is now the same as on 1.8.9: Cosmetics (capes, including your own PNGs), Profile (with server auto-load) and Screenshot pages. Sizes are the file on disk. SHA-256 is the whole archive.</p>
+        </header>
+        <div class="dl-grid">
+          <article class="dl-card spot reveal" data-os="win-x64" data-label="Windows x64" data-file="Confu-Client-Setup-0.2.7-win-x64.exe">
+            <h3 class="dl-os" data-i18n="os.winx64">Windows x64</h3>
+            <a class="dl-file" href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-Setup-0.2.7-win-x64.exe">Confu-Client-Setup-0.2.7-win-x64.exe</a>
+            <p class="dl-size" data-i18n="sz.winx64" data-i18n-html>82,285,482 bytes<br>82.3 MB</p>
+            <p class="dl-sha"><span data-i18n="th.sha">SHA-256</span><code class="hash">a8c329246e52beef69679327b24417472d96ecfd460431c3e707dcab6489419c</code></p>
+          </article>
+          <article class="dl-card spot reveal" data-os="win-arm64" data-label="Windows ARM64" data-file="Confu-Client-Setup-0.2.7-win-arm64.exe">
+            <h3 class="dl-os" data-i18n="os.winarm">Windows ARM64</h3>
+            <a class="dl-file" href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-Setup-0.2.7-win-arm64.exe">Confu-Client-Setup-0.2.7-win-arm64.exe</a>
+            <p class="dl-size" data-i18n="sz.winarm" data-i18n-html>105,300,895 bytes<br>105.3 MB</p>
+            <p class="dl-sha"><span data-i18n="th.sha">SHA-256</span><code class="hash">5ddeece3cc37df82fff3b4974d52a90eaea7affc8f5bbd8597c88c7011c65bcb</code></p>
+          </article>
+          <article class="dl-card spot reveal" data-os="linux-x64" data-label="Linux x64" data-file="Confu-Client-0.2.7-linux-x64.tar.gz">
+            <h3 class="dl-os" data-i18n="os.linux64">Linux x64</h3>
+            <a class="dl-file" href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-0.2.7-linux-x64.tar.gz">Confu-Client-0.2.7-linux-x64.tar.gz</a>
+            <p class="dl-size" data-i18n="sz.linux64" data-i18n-html>96,305,914 bytes<br>96.3 MB</p>
+            <p class="dl-sha"><span data-i18n="th.sha">SHA-256</span><code class="hash">d79f6593534489159fe826675726986d0fde448b854fd4f104f0adbf6fd89c1b</code></p>
+          </article>
+          <article class="dl-card spot reveal" data-os="linux-arm64" data-label="Linux ARM64" data-file="Confu-Client-0.2.7-linux-aarch64.tar.gz">
+            <h3 class="dl-os" data-i18n="os.linuxarm">Linux ARM64</h3>
+            <a class="dl-file" href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-0.2.7-linux-aarch64.tar.gz">Confu-Client-0.2.7-linux-aarch64.tar.gz</a>
+            <p class="dl-size" data-i18n="sz.linuxarm" data-i18n-html>109,035,393 bytes<br>109.0 MB</p>
+            <p class="dl-sha"><span data-i18n="th.sha">SHA-256</span><code class="hash">14f52d390eb7a7ecad0c019b60db62224fcd817a627960130a1b6d3b763a7f78</code></p>
+          </article>
+          <article class="dl-card spot reveal" data-os="mac-x64" data-label="macOS Intel" data-file="Confu-Client-0.2.7-mac-x64.zip">
+            <h3 class="dl-os" data-i18n="os.mac64">macOS Intel</h3>
+            <a class="dl-file" href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-0.2.7-mac-x64.zip">Confu-Client-0.2.7-mac-x64.zip</a>
+            <p class="dl-size" data-i18n="sz.mac64" data-i18n-html>94,868,754 bytes<br>94.9 MB</p>
+            <p class="dl-sha"><span data-i18n="th.sha">SHA-256</span><code class="hash">bd2cc133a05c1551a47ff843fc3c7984e4064e4b9a5a72c1d6a182c0ee5eea2f</code></p>
+          </article>
+          <article class="dl-card spot reveal" data-os="mac-arm64" data-label="macOS Apple Silicon" data-file="Confu-Client-0.2.7-mac-aarch64.zip">
+            <h3 class="dl-os" data-i18n="os.macarm">macOS Apple Silicon</h3>
+            <a class="dl-file" href="https://github.com/Confusion3h/confu-client/releases/download/v0.2.7/Confu-Client-0.2.7-mac-aarch64.zip">Confu-Client-0.2.7-mac-aarch64.zip</a>
+            <p class="dl-size" data-i18n="sz.macarm" data-i18n-html>94,965,365 bytes<br>95.0 MB</p>
+            <p class="dl-sha"><span data-i18n="th.sha">SHA-256</span><code class="hash">80adfdbd8112408fec1ac527010b503f9335276f7364953c882fe3d7921b5795</code></p>
+          </article>
+        </div>
+        <aside class="source spot reveal" id="source">
             <h3 data-i18n="source.title">Source code</h3>
             <p data-i18n="source.body">Confu Client is open source under GPL-3.0. It is a fork of Glide Client, which is based on Soar Client by EldoDebug.</p>
             <p><a href="https://github.com/GlideClient/client">Glide Client</a><br><a href="https://github.com/Soar-Client/Legacy-SoarClient">Soar Client</a></p>
             <a class="github" href="https://github.com/Confusion3h/confu-client" data-i18n="github">View source on GitHub</a>
           </aside>
-        </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="faq">
-        <h2 class="section" data-i18n="faq.title">FAQ</h2>
+    <section id="faq" class="section">
+      <div class="wrap narrow">
+        <header class="sec-head">
+          <p class="eyebrow reveal">04</p>
+          <h2 class="display-md reveal" data-i18n="faq.title">FAQ</h2>
+        </header>
         <div class="faq">
-          <details open>
+          <details class="reveal" open>
             <summary data-i18n="faq.smart.q">Windows says the installer is an unrecognized app</summary>
             <p data-i18n="faq.smart.a" data-i18n-html>SmartScreen shows “Windows protected your PC” because this build is unsigned. There is no Authenticode certificate on the file, so Windows cannot name a publisher it already trusts. The installer still carries a version resource (product and company name Confu Client), a DPI-aware manifest, and LZMA compression. It is not packed with UPX. On the warning, choose <strong>More info</strong>, then <strong>Run anyway</strong>.</p>
           </details>
-          <details>
+          <details class="reveal">
             <summary data-i18n="faq.which.q">Which file is mine?</summary>
             <p data-i18n="faq.which.a" data-i18n-html>The Download button matches Windows, macOS or Linux, and x64 or ARM64, from the browser. Windows ARM64 is the native Java 17 build. The Windows x64 installer also runs on ARM Windows, under emulation, and says so when it starts. Linux and macOS archives unpack and run <code>confu</code> or the app bundle. They are not .exe installers.</p>
           </details>
-          <details>
+          <details class="reveal">
             <summary data-i18n="faq.java.q">Do I install Java first?</summary>
             <p data-i18n="faq.java.a" data-i18n-html>No. Each archive includes a JRE. The game is Minecraft 1.8.9. First launch downloads the game assets into the Confu folder (<code>%APPDATA%\.confu</code> on Windows, <code>~/.confu</code> on Linux and macOS).</p>
           </details>
-          <details>
+          <details class="reveal">
             <summary data-i18n="faq.mac.q">macOS says the app is damaged or can’t be opened</summary>
             <p data-i18n="faq.mac.a" data-i18n-html>The app is not notarized by Apple yet. Right-click <b>Confu Client</b> and choose <b>Open</b>, then confirm. Or run this in Terminal: <code>xattr -dr com.apple.quarantine "/path/Confu Client.app"</code></p>
           </details>
-          <details>
+          <details class="reveal">
             <summary data-i18n="faq.fps.q">Where does the FPS estimate come from?</summary>
             <p data-i18n="faq.fps.a">It is an estimate, not a benchmark of ours. Public 1.8.9 tests usually show OptiFine-based and PvP clients 25–70% above vanilla, depending on the PC. Confu Client stacks the Soar/Glide base, the FPS preset and tuned JVM flags on top, so we put it at up to ~50% over the official launcher and in line with the other PvP clients. Your hardware decides the real number.</p>
           </details>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div class="wrap cta-inner reveal">
+        <h2 class="display-lg" data-i18n="cta.big" data-i18n-html>Ready <em>when</em> you are.</h2>
+        <a class="btn btn-primary sheen ripple magnetic" href="#downloads" data-i18n="nav.cta">Download</a>
+      </div>
+    </section>
   </main>
 
-  <footer>
-    <div class="wrap">
+  <footer class="foot">
+    <div class="wrap foot-inner">
+      <a class="brand" href="#top"><img src="mark.svg" alt=""><span>Confu Client</span></a>
       <span data-i18n="footer">Confu Client 0.2.7 · GPL-3.0 · based on Glide Client and Soar Client by EldoDebug</span>
+      <a href="https://github.com/Confusion3h/confu-client" data-i18n="github">View source on GitHub</a>
     </div>
   </footer>
   <script src="site.js"></script>
+  <script src="fx.js"></script>
 </body>
 </html>
