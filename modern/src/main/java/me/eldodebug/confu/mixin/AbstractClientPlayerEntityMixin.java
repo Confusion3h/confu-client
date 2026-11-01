@@ -11,16 +11,19 @@ import me.eldodebug.confu.ConfuClient;
 import me.eldodebug.confu.module.impl.CapeModule;
 import me.eldodebug.confu.module.impl.SkinProtectModule;
 import me.eldodebug.confu.module.impl.WaveyCapesModule;
+import me.eldodebug.confu.module.impl.skin3d.PlayerSkinLayers;
 import me.eldodebug.confu.module.impl.waveycapes.WaveyCapeSimulation;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.util.Identifier;
 
 @Mixin(AbstractClientPlayerEntity.class)
-public abstract class AbstractClientPlayerEntityMixin implements WaveyCapeSimulationHolder {
+public abstract class AbstractClientPlayerEntityMixin implements WaveyCapeSimulationHolder, Skin3DLayersHolder {
 
 	@Unique
 	private WaveyCapeSimulation confu$capeSimulation;
+	@Unique
+	private PlayerSkinLayers confu$skinLayers;
 
 	@Override
 	public WaveyCapeSimulation confu$capeSimulation() {
@@ -28,6 +31,14 @@ public abstract class AbstractClientPlayerEntityMixin implements WaveyCapeSimula
 			confu$capeSimulation = new WaveyCapeSimulation();
 		}
 		return confu$capeSimulation;
+	}
+
+	@Override
+	public PlayerSkinLayers confu$skinLayers() {
+		if (confu$skinLayers == null) {
+			confu$skinLayers = new PlayerSkinLayers();
+		}
+		return confu$skinLayers;
 	}
 
 	/** 1.8.9 MixinEntityPlayer.onUpdate — the cape chain chases the player every tick. */

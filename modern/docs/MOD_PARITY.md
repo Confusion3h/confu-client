@@ -117,7 +117,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 98 | ServerIPDisplayMod | HUD | SimpleHUD | Ported | Server address. |
 | 99 | SessionInfoMod | HUD | HUD | Ported | Session info panel. |
 | 100 | ShinyPotsMod | RENDER | Mod | Ported | Glint layer override via RenderLayer mixin (no equal-depth mask). |
-| 101 | Skin3DMod | RENDER | Mod | Skeleton | module registered; 3D skin layers TBD |
+| 101 | Skin3DMod | RENDER | Mod | Ported | Voxel second-skin layers from the uploaded skin image (captured via PlayerSkinTexture mixin): body/jacket/sleeves/pants + head hat features over the posed model parts, first-person arm voxels via renderRight/LeftArm injections (right-arm pose for both, as 1.8.9), beyond-LOD force-visible vanilla layers quirk and the unsquared body LOD compare preserved; fixed 1.15/1.05/1.18 voxel sizes, LOD 14. |
 | 102 | SkinProtectMod | PLAYER | Mod | Ported | Replace own skin. |
 | 103 | SlowSwingMod | PLAYER | Mod | Ported | Swing delay. |
 | 104 | SoundModifierMod | OTHER | Mod | Ported | Per-category volume/pitch. |

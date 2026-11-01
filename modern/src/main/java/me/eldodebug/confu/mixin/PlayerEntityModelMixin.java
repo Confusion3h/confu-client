@@ -6,7 +6,9 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Direction;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,10 +19,18 @@ import java.util.List;
 import java.util.Map;
 
 @Mixin(PlayerEntityModel.class)
-public abstract class PlayerEntityModelMixin implements FemaleGenderModel {
+public abstract class PlayerEntityModelMixin implements FemaleGenderModel, PlayerModelAccess {
+
+	@Shadow @Final
+	private boolean thinArms;
 
 	@Unique
 	private ModelPart confu$boobs;
+
+	@Override
+	public boolean confu$isThinArms() {
+		return thinArms;
+	}
 	@Unique
 	private boolean confu$femaleActive;
 	@Unique
