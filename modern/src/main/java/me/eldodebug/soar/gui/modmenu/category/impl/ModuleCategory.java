@@ -21,6 +21,7 @@ import me.eldodebug.soar.management.mods.settings.impl.BooleanSetting;
 import me.eldodebug.soar.management.mods.settings.impl.ComboSetting;
 import me.eldodebug.soar.management.mods.settings.impl.KeybindSetting;
 import me.eldodebug.soar.management.mods.settings.impl.NumberSetting;
+import me.eldodebug.soar.management.mods.settings.impl.TextSetting;
 import me.eldodebug.soar.management.nanovg.NanoVGManager;
 import me.eldodebug.soar.management.nanovg.font.Font;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
@@ -30,6 +31,7 @@ import me.eldodebug.soar.ui.comp.impl.CompComboBox;
 import me.eldodebug.soar.ui.comp.impl.CompKeybind;
 import me.eldodebug.soar.ui.comp.impl.CompSlider;
 import me.eldodebug.soar.ui.comp.impl.CompToggleButton;
+import me.eldodebug.soar.ui.comp.impl.field.CompModTextBox;
 import me.eldodebug.soar.utils.ColorUtils;
 import me.eldodebug.soar.utils.MathUtils;
 import me.eldodebug.soar.utils.SearchUtils;
@@ -253,6 +255,16 @@ public class ModuleCategory extends Category {
 					keybind.setY(this.getY() + offsetY + 11 + s.openAnimation.getValue());
 				}
 				
+				if(s.comp instanceof CompModTextBox) {
+					
+					CompModTextBox textBox = (CompModTextBox) s.comp;
+					
+					textBox.setX(this.getX() + offsetX + 122);
+					textBox.setY(this.getY() + offsetY + 7 + s.openAnimation.getValue());
+					textBox.setWidth(75);
+					textBox.setHeight(16);
+				}
+				
 				
 				
 				
@@ -386,6 +398,20 @@ public class ModuleCategory extends Category {
 									keybind.setY(this.getY() + offsetY + 7);
 									
 									comps.add(new ModuleSetting(s, keybind));
+								}
+								
+								if(s instanceof TextSetting) {
+									
+									TextSetting tSetting = (TextSetting) s;
+									
+									CompModTextBox textBox = new CompModTextBox(tSetting);
+									
+									textBox.setX(this.getX() + offsetX + 122);
+									textBox.setY(this.getY() + offsetY + 7);
+									textBox.setWidth(75);
+									textBox.setHeight(16);
+									
+									comps.add(new ModuleSetting(s, textBox));
 								}
 								
 								

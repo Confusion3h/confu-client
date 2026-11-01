@@ -1,6 +1,7 @@
 package me.eldodebug.confu.mixin;
 
 import me.eldodebug.confu.util.CombatHooks;
+import me.eldodebug.confu.util.ConfuCommands;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -10,12 +11,27 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class ClientPlayNetworkHandlerMixin {
 
 	@Shadow
 	private ClientWorld world;
+
+	@Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
+	private void confu$clientCommandChat(String content, CallbackInfo ci) {
+		if (ConfuCommands.handle(content)) {
+			ci.cancel();
+		}
+	}
+
+	@Inject(method = "sendCommand", at = @At("HEAD"), cancellable = true)
+	private void confu$clientCommand(String command, CallbackInfoReturnable<Boolean> cir) {
+		if (ConfuCommands.handle("." + command)) {
+			cir.setReturnValue(true);
+		}
+	}
 
 	@Inject(method = "onEntityStatus", at = @At("RETURN"))
 	private void confu$damage(EntityStatusS2CPacket packet, CallbackInfo ci) {

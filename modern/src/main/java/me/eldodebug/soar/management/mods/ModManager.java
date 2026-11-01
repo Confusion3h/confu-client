@@ -36,8 +36,9 @@ public class ModManager {
 					list.add(new me.eldodebug.soar.management.mods.settings.impl.ComboSetting(mod, (ComboSetting) s));
 				} else if (s instanceof KeybindSetting) {
 					list.add(new me.eldodebug.soar.management.mods.settings.impl.KeybindSetting(mod, (KeybindSetting) s));
+				} else if (s instanceof me.eldodebug.confu.module.setting.StringSetting) {
+					list.add(new me.eldodebug.soar.management.mods.settings.impl.TextSetting(mod, (me.eldodebug.confu.module.setting.StringSetting) s));
 				}
-				// StringSetting persists via JSON; text-box UI is later
 			}
 			if (!list.isEmpty()) {
 				settings.put(mod, list);

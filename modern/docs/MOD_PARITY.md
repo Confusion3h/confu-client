@@ -31,8 +31,8 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 12 | BowZoomMod | PLAYER | Mod | Ported | Bow FOV; reuses Zoom FOV hook. |
 | 13 | BreadcrumbsMod | RENDER | Mod | Ported | Path trail. |
 | 14 | CalendarMod | HUD | HUD | Ported | Month calendar widget. |
-| 15 | ChatMod | OTHER | Mod | Skeleton | module registered; ChatHud mixin TBD |
-| 16 | ChatTranslateMod | OTHER | Mod | Skeleton | module registered; needs external translate API |
+| 15 | ChatMod | OTHER | Mod | Ported | ChatHud mixin: smooth fade/offset, head icons, infinity, background, compact duplicates. |
+| 16 | ChatTranslateMod | OTHER | Mod | Ported | Microsoft endpoint; green pencil icon, ChatScreen On/Off + To boxes, translated outgoing chat. |
 | 17 | ChunkAnimatorMod | RENDER | Mod | Impossible | Needs chunk-rebuild hooks; conflicts with Sodium (project rule). |
 | 18 | ChunkBordersMod | RENDER | Mod | Ported | World-render chunk borders. |
 | 19 | ClearGlassMod | RENDER | Mod | Skeleton | module registered; glass translucency TBD |
@@ -50,7 +50,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 31 | DamageTiltMod | PLAYER | Mod | Ported | Hurt camera tilt. |
 | 32 | DamageTintMod | RENDER | Mod | Ported | Damage red overlay. |
 | 33 | DayCounterMod | HUD | SimpleHUD | Ported | World day count. |
-| 34 | DiscordRPCMod | OTHER | Mod | Skeleton | module registered; Discord IPC TBD |
+| 34 | DiscordRPCMod | OTHER | Mod | Ported | Local Discord IPC; application ID set in the Soar menu text box. |
 | 35 | EarsMod | PLAYER | Mod | Skeleton | module registered; player model layer TBD |
 | 36 | EntityCullingMod | OTHER | Mod | Skeleton | module registered; frustum extras TBD |
 | 37 | FarCameraMod | RENDER | Mod | Ported | Third-person distance. |
@@ -74,7 +74,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 55 | HypixelQuickPlayMod | PLAYER | Mod | Ported | Hypixel quick play. |
 | 56 | ImageDisplayMod | HUD | HUD | Ported | Image overlay. |
 | 57 | InventoryDisplayMod | HUD | HUD | Ported | Inventory mirror HUD. |
-| 58 | InventoryMod | OTHER | Mod | Skeleton | module registered; inventory anim TBD |
+| 58 | InventoryMod | OTHER | Mod | Ported | Normal/EaseBackIn open animation, background toggle (all container screens), particle field; 1.20.1 never shifts on potion effects so prevent-potion-shift is inherent. |
 | 59 | ItemInfoMod | RENDER | Mod | Ported | Held-item name/enchants/potion info above hotbar, 1.8 colours. |
 | 60 | ItemPhysicsMod | RENDER | Mod | Ported | Dropped item physics. |
 | 61 | Items2DMod | RENDER | Mod | Ported | Flat item rendering. |
@@ -84,7 +84,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 65 | KillSoundsMod | OTHER | Mod | Ported | Sound on kill. |
 | 66 | MechvibesMod | OTHER | Mod | Skeleton | module registered; key sound packs TBD |
 | 67 | MemoryUsageMod | HUD | SimpleHUD | Ported | Heap usage. |
-| 68 | MinemenMod | OTHER | Mod | Ported | Minemen helpers. |
+| 68 | MinemenMod | OTHER | Mod | Ported | Auto-play: joins /requeue from chat click events. |
 | 69 | MinimalDamageShakeMod | RENDER | Mod | Ported | Reduced hurt shake. |
 | 70 | MinimalViewBobbingMod | RENDER | Mod | Ported | Reduced view bobbing. |
 | 71 | MinimapMod | HUD | HUD | Skeleton | module registered; chunk atlas TBD |
@@ -139,7 +139,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
 | 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom. |
 
-Counts: Ported=100, Pending=0, Skeleton=19, Impossible=2. Total 121.
+Counts: Ported=104, Pending=0, Skeleton=15, Impossible=2. Total 121.
 
 ## 1.20.1-only (keep)
 
