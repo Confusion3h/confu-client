@@ -82,7 +82,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 63 | KeystrokesMod | HUD | HUD | Ported | WASD/mouse keystrokes. |
 | 64 | KillEffectsMod | RENDER | Mod | Ported | Lightning/flame/cloud/blood effects + sounds on target removal. |
 | 65 | KillSoundsMod | OTHER | Mod | Ported | Sound on kill. |
-| 66 | MechvibesMod | OTHER | Mod | Skeleton | module registered; key sound packs TBD |
+| 66 | MechvibesMod | OTHER | Mod | Ported | 1.8.9 sound packs (nk_cream..topre_purple + mouse.wav) via javax.sound clips; GLFW rising-edge key/mouse polling, per-device volume + type settings reload packs like the tick watcher did. |
 | 67 | MemoryUsageMod | HUD | SimpleHUD | Ported | Heap usage. |
 | 68 | MinemenMod | OTHER | Mod | Ported | Auto-play: joins /requeue from chat click events. |
 | 69 | MinimalDamageShakeMod | RENDER | Mod | Ported | Reduced hurt shake. |
