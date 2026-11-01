@@ -25,7 +25,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 6 | AutoTextMod | PLAYER | Mod | Ported | Keybind sends preset chat. |
 | 7 | BlockInfoMod | HUD | HUD | Ported | Looked-at block name. |
 | 8 | BlockOverlayMod | RENDER | Mod | Ported | Block outline restyle. |
-| 9 | BloodParticlesMod | RENDER | Mod | Skeleton | module registered; particle spawn hook TBD |
+| 9 | BloodParticlesMod | RENDER | Mod | Ported | Redstone-crack burst + stone sound on hovered target hit. |
 | 10 | BorderlessFullscreenMod | OTHER | Mod | Ported | GLFW borderless fullscreen. |
 | 11 | BossHealthMod | HUD | HUD | Ported | Boss bar position/scale. |
 | 12 | BowZoomMod | PLAYER | Mod | Ported | Bow FOV; reuses Zoom FOV hook. |
@@ -46,7 +46,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 27 | CPSDisplayMod | HUD | SimpleHUD | Ported | CPS from mouse mixin. |
 | 28 | CrosshairMod | RENDER | Mod | Ported | Custom crosshair sheet. |
 | 29 | CustomHeldItemsMod | RENDER | Mod | Skeleton | module registered; held-item transform TBD |
-| 30 | DamageParticlesMod | RENDER | Mod | Skeleton | module registered; particle hook TBD |
+| 30 | DamageParticlesMod | RENDER | Mod | Ported | Floating damage/heal numbers via world-render text. |
 | 31 | DamageTiltMod | PLAYER | Mod | Ported | Hurt camera tilt. |
 | 32 | DamageTintMod | RENDER | Mod | Ported | Damage red overlay. |
 | 33 | DayCounterMod | HUD | SimpleHUD | Ported | World day count. |
@@ -80,7 +80,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 61 | Items2DMod | RENDER | Mod | Ported | Flat item rendering. |
 | 62 | JumpCircleMod | RENDER | Mod | Ported | Jump ring effect. |
 | 63 | KeystrokesMod | HUD | HUD | Ported | WASD/mouse keystrokes. |
-| 64 | KillEffectsMod | RENDER | Mod | Skeleton | module registered; kill particles TBD |
+| 64 | KillEffectsMod | RENDER | Mod | Ported | Lightning/flame/cloud/blood effects + sounds on target removal. |
 | 65 | KillSoundsMod | OTHER | Mod | Ported | Sound on kill. |
 | 66 | MechvibesMod | OTHER | Mod | Skeleton | module registered; key sound packs TBD |
 | 67 | MemoryUsageMod | HUD | SimpleHUD | Ported | Heap usage. |
@@ -98,7 +98,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 79 | NametagMod | PLAYER | Mod | Ported | Nametag restyle. |
 | 80 | OverlayEditorMod | RENDER | Mod | Ported | Hide HUD overlays. |
 | 81 | PackDisplayMod | HUD | HUD | Ported | Resource pack list. |
-| 82 | ParticleCustomizerMod | RENDER | Mod | Skeleton | module registered; particle settings TBD |
+| 82 | ParticleCustomizerMod | RENDER | Mod | Ported | Extra crit/enchanted-hit particles, 1.8 multipliers. |
 | 83 | PingDisplayMod | HUD | SimpleHUD | Ported | Latency text. |
 | 84 | PlayerCounterMod | HUD | SimpleHUD | Ported | Online player count. |
 | 85 | PlayerDisplayMod | HUD | HUD | Ported | Local player paperdoll via entity render dispatcher. |
@@ -116,7 +116,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 97 | ScoreboardMod | HUD | HUD | Ported | Scoreboard restyle. |
 | 98 | ServerIPDisplayMod | HUD | SimpleHUD | Ported | Server address. |
 | 99 | SessionInfoMod | HUD | HUD | Ported | Session info panel. |
-| 100 | ShinyPotsMod | RENDER | Mod | Skeleton | module registered; potion glint TBD |
+| 100 | ShinyPotsMod | RENDER | Mod | Ported | Glint layer override via RenderLayer mixin (no equal-depth mask). |
 | 101 | Skin3DMod | RENDER | Mod | Skeleton | module registered; 3D skin layers TBD |
 | 102 | SkinProtectMod | PLAYER | Mod | Ported | Replace own skin. |
 | 103 | SlowSwingMod | PLAYER | Mod | Ported | Swing delay. |
@@ -126,7 +126,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 107 | StopwatchMod | HUD | SimpleHUD | Ported | Stopwatch. |
 | 108 | TabEditorMod | RENDER | Mod | Ported | Tab list background. |
 | 109 | TaplookMod | PLAYER | Mod | Ported | Tap-to-look (Freelook variant). |
-| 110 | TargetIndicatorMod | RENDER | Mod | Skeleton | module registered; indicator render TBD |
+| 110 | TargetIndicatorMod | RENDER | Mod | Ported | Animated target ring; colour presets instead of RGB picker. |
 | 111 | TargetInfoMod | HUD | HUD | Ported | Target info panel. |
 | 112 | TimeChangerMod | WORLD | Mod | Ported | Client-side time. |
 | 113 | TNTTimerMod | HUD | SimpleHUD | Ported | TNT fuse timer. |
@@ -139,7 +139,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
 | 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom. |
 
-Counts: Ported=94, Pending=0, Skeleton=25, Impossible=2. Total 121.
+Counts: Ported=100, Pending=0, Skeleton=19, Impossible=2. Total 121.
 
 ## 1.20.1-only (keep)
 

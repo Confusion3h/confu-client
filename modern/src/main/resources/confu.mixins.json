@@ -17,6 +17,7 @@
     "LivingEntityMixin",
     "MinecraftClientMixin",
     "MouseMixin",
+    "RenderLayerMixin",
     "TextRendererMixin",
     "WorldMixin"
   ],
