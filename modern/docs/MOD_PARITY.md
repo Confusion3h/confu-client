@@ -133,7 +133,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 114 | ToggleSneakMod | PLAYER | Mod | Ported | Toggle sneak. |
 | 115 | ToggleSprintMod | HUD | SimpleHUD | Ported | Toggle sprint + HUD. |
 | 116 | UHCOverlayMod | RENDER | Mod | Ported | UHC overlay. |
-| 117 | WaveyCapesMod | RENDER | Mod | Skeleton | module registered; StickSimulation TBD |
+| 117 | WaveyCapesMod | RENDER | Mod | Ported | 1.8.9 StickSimulation per player (ticked from entity tick), 16-strip blocky + smooth quad capes replacing CapeFeatureRenderer with the same pose math, gravity/movement/style/mode/height-multiplier settings; disables MoBends on enable. |
 | 118 | WaypointMod | WORLD | Mod | Ported | Waypoints. |
 | 119 | WeatherChangerMod | WORLD | Mod | Ported | Client-side weather. |
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
