@@ -14,11 +14,15 @@
     "ClientPlayerInteractionManagerMixin",
     "CreativeInventoryScreenMixin",
     "EntityMixin",
+    "EntityRenderDispatcherMixin",
+    "EntityRendererAccessor",
     "GameMenuScreenAccessor",
     "GameRendererMixin",
     "HandledScreenMixin",
+    "HeldItemRendererMixin",
     "InGameHudMixin",
     "InventoryScreenMixin",
+    "ItemEntityRendererMixin",
     "LightmapTextureManagerMixin",
     "LivingEntityMixin",
     "MinecraftClientMixin",
@@ -26,7 +30,9 @@
     "RenderLayerMixin",
     "ScreenMixin",
     "TextRendererMixin",
-    "WorldMixin"
+    "TransparentBlockMixin",
+    "WorldMixin",
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

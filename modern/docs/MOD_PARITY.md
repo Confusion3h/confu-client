@@ -35,7 +35,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 16 | ChatTranslateMod | OTHER | Mod | Ported | Microsoft endpoint; green pencil icon, ChatScreen On/Off + To boxes, translated outgoing chat. |
 | 17 | ChunkAnimatorMod | RENDER | Mod | Impossible | Needs chunk-rebuild hooks; conflicts with Sodium (project rule). |
 | 18 | ChunkBordersMod | RENDER | Mod | Ported | World-render chunk borders. |
-| 19 | ClearGlassMod | RENDER | Mod | Skeleton | module registered; glass translucency TBD |
+| 19 | ClearGlassMod | RENDER | Mod | Ported | TransparentBlock.isSideInvisible mixin; Normal/Stained toggles, chunk rebuild on change. |
 | 20 | ClearWaterMod | RENDER | Mod | Ported | Water fog/texture. |
 | 21 | ClientSpooferMod | OTHER | Mod | Ported | Client brand spoof. |
 | 22 | ClockMod | HUD | SimpleHUD | Ported | Clock text. |
@@ -45,14 +45,14 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 26 | CoordsMod | HUD | SimpleHUD | Ported | Player position. |
 | 27 | CPSDisplayMod | HUD | SimpleHUD | Ported | CPS from mouse mixin. |
 | 28 | CrosshairMod | RENDER | Mod | Ported | Custom crosshair sheet. |
-| 29 | CustomHeldItemsMod | RENDER | Mod | Skeleton | module registered; held-item transform TBD |
+| 29 | CustomHeldItemsMod | RENDER | Mod | Ported | First-person X/Y/Z + X/Y/Z Scale at HeldItemRenderer.renderItem HEAD. |
 | 30 | DamageParticlesMod | RENDER | Mod | Ported | Floating damage/heal numbers via world-render text. |
 | 31 | DamageTiltMod | PLAYER | Mod | Ported | Hurt camera tilt. |
 | 32 | DamageTintMod | RENDER | Mod | Ported | Damage red overlay. |
 | 33 | DayCounterMod | HUD | SimpleHUD | Ported | World day count. |
 | 34 | DiscordRPCMod | OTHER | Mod | Ported | Local Discord IPC; application ID set in the Soar menu text box. |
 | 35 | EarsMod | PLAYER | Mod | Skeleton | module registered; player model layer TBD |
-| 36 | EntityCullingMod | OTHER | Mod | Skeleton | module registered; frustum extras TBD |
+| 36 | EntityCullingMod | OTHER | Mod | Ported | GL occlusion queries in EntityRenderDispatcher.render; label kept, marker/invisible handling, distance limit. |
 | 37 | FarCameraMod | RENDER | Mod | Ported | Third-person distance. |
 | 38 | FemaleGenderMod | PLAYER | Mod | Skeleton | module registered; slim model TBD |
 | 39 | FovModifierMod | PLAYER | Mod | Ported | FOV slider. |
@@ -76,8 +76,8 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 57 | InventoryDisplayMod | HUD | HUD | Ported | Inventory mirror HUD. |
 | 58 | InventoryMod | OTHER | Mod | Ported | Normal/EaseBackIn open animation, background toggle (all container screens), particle field; 1.20.1 never shifts on potion effects so prevent-potion-shift is inherent. |
 | 59 | ItemInfoMod | RENDER | Mod | Ported | Held-item name/enchants/potion info above hotbar, 1.8 colours. |
-| 60 | ItemPhysicsMod | RENDER | Mod | Ported | Dropped item physics. |
-| 61 | Items2DMod | RENDER | Mod | Ported | Flat item rendering. |
+| 60 | ItemPhysicsMod | RENDER | Mod | Ported | ItemEntityRenderer: press-to-ground Y, -90° X for non-blocks, airborne (1,1,1) spin; disables Items2D. |
+| 61 | Items2DMod | RENDER | Mod | Ported | Flat (non-3D) dropped items billboard to camera; disables ItemPhysics with notification. |
 | 62 | JumpCircleMod | RENDER | Mod | Ported | Jump ring effect. |
 | 63 | KeystrokesMod | HUD | HUD | Ported | WASD/mouse keystrokes. |
 | 64 | KillEffectsMod | RENDER | Mod | Ported | Lightning/flame/cloud/blood effects + sounds on target removal. |
@@ -139,7 +139,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
 | 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom. |
 
-Counts: Ported=104, Pending=0, Skeleton=15, Impossible=2. Total 121.
+Counts: Ported=107, Pending=0, Skeleton=12, Impossible=2. Total 121.
 
 ## 1.20.1-only (keep)
 
