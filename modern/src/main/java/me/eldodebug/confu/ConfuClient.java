@@ -98,6 +98,18 @@ public class ConfuClient implements ClientModInitializer {
 		modules.register(new BlockInfoModule());
 		modules.register(new ChunkBordersModule());
 		modules.register(new HitBoxModule());
+		modules.register(new ToggleSneakModule());
+		modules.register(new ArrayListModule());
+		modules.register(new SessionInfoModule());
+		modules.register(new CalendarModule());
+		modules.register(new MinimalViewBobbingModule());
+		modules.register(new MinimalDamageShakeModule());
+		modules.register(new TimeChangerModule());
+		modules.register(new FovModifierModule());
+		modules.register(new NameProtectModule());
+		modules.register(new TntTimerModule());
+		modules.register(new DamageTiltModule());
+		modules.register(new BorderlessFullscreenModule());
 		modules.register(new TotemCounterModule());
 		modules.register(new ElytraStatusModule());
 		modules.register(new MusicPlayerModule());

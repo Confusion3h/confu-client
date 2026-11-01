@@ -14,7 +14,9 @@
     "InGameHudMixin",
     "LightmapTextureManagerMixin",
     "MinecraftClientMixin",
-    "MouseMixin"
+    "MouseMixin",
+    "TextRendererMixin",
+    "WorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1

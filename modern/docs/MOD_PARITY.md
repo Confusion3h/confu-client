@@ -19,17 +19,17 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 1 | AnimationsMod | RENDER | Mod | Pending | 1.8 block-hit/swing; first-person transform mixin. |
 | 2 | AppleSkinMod | PLAYER | Mod | Pending | Hunger/saturation overlay on food bar. |
 | 3 | ArmorStatusMod | HUD | HUD | Ported | Worn armour icons, H/V layout. |
-| 4 | ArrayListMod | HUD | HUD | Pending | Enabled-module list. |
+| 4 | ArrayListMod | HUD | HUD | Ported | Enabled-module list. |
 | 5 | AsyncScreenshotMod | OTHER | Mod | Pending | Off-thread PNG write. |
 | 6 | AutoTextMod | PLAYER | Mod | Pending | Keybind sends preset chat. |
 | 7 | BlockInfoMod | HUD | HUD | Ported | Looked-at block name. |
 | 8 | BlockOverlayMod | RENDER | Mod | Pending | Block outline restyle. |
 | 9 | BloodParticlesMod | RENDER | Mod | Pending | Particles on hit. |
-| 10 | BorderlessFullscreenMod | OTHER | Mod | Pending | GLFW borderless fullscreen. |
+| 10 | BorderlessFullscreenMod | OTHER | Mod | Ported | GLFW borderless fullscreen. |
 | 11 | BossHealthMod | HUD | HUD | Pending | Boss bar position/scale. |
 | 12 | BowZoomMod | PLAYER | Mod | Pending | Bow FOV; reuses Zoom FOV hook. |
 | 13 | BreadcrumbsMod | RENDER | Mod | Pending | Path trail. |
-| 14 | CalendarMod | HUD | HUD | Pending | Month calendar widget. |
+| 14 | CalendarMod | HUD | HUD | Ported | Month calendar widget. |
 | 15 | ChatMod | OTHER | Mod | Pending | Chat scroll/animation. |
 | 16 | ChatTranslateMod | OTHER | Mod | Pending | External translate API. |
 | 17 | ChunkAnimatorMod | RENDER | Mod | Impossible | Needs chunk-rebuild hooks; conflicts with Sodium (project rule). |
@@ -46,7 +46,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 28 | CrosshairMod | RENDER | Mod | Ported | Custom crosshair sheet. |
 | 29 | CustomHeldItemsMod | RENDER | Mod | Pending | Held item model offset. |
 | 30 | DamageParticlesMod | RENDER | Mod | Pending | Damage particles. |
-| 31 | DamageTiltMod | PLAYER | Mod | Pending | Hurt camera tilt. |
+| 31 | DamageTiltMod | PLAYER | Mod | Ported | Hurt camera tilt. |
 | 32 | DamageTintMod | RENDER | Mod | Pending | Damage red overlay. |
 | 33 | DayCounterMod | HUD | SimpleHUD | Ported | World day count. |
 | 34 | DiscordRPCMod | OTHER | Mod | Pending | Discord IPC. |
@@ -54,7 +54,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 36 | EntityCullingMod | OTHER | Mod | Pending | Entity frustum culling extras. |
 | 37 | FarCameraMod | RENDER | Mod | Pending | Third-person distance. |
 | 38 | FemaleGenderMod | PLAYER | Mod | Pending | Slim model override. |
-| 39 | FovModifierMod | PLAYER | Mod | Pending | FOV slider. |
+| 39 | FovModifierMod | PLAYER | Mod | Ported | FOV slider. |
 | 40 | FPSBoostMod | OTHER | Mod | Pending | Perf toggles; Sodium covers most. |
 | 41 | FPSDisplayMod | HUD | SimpleHUD | Ported | getCurrentFps(). |
 | 42 | FPSLimiterMod | OTHER | Mod | Pending | Framerate cap. |
@@ -84,8 +84,8 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 66 | MechvibesMod | OTHER | Mod | Pending | Keyboard sound packs. |
 | 67 | MemoryUsageMod | HUD | SimpleHUD | Ported | Heap usage. |
 | 68 | MinemenMod | OTHER | Mod | Pending | Minemen helpers. |
-| 69 | MinimalDamageShakeMod | RENDER | Mod | Pending | Reduced hurt shake. |
-| 70 | MinimalViewBobbingMod | RENDER | Mod | Pending | Reduced view bobbing. |
+| 69 | MinimalDamageShakeMod | RENDER | Mod | Ported | Reduced hurt shake. |
+| 70 | MinimalViewBobbingMod | RENDER | Mod | Ported | Reduced view bobbing. |
 | 71 | MinimapMod | HUD | HUD | Pending | Chunk-atlas minimap. |
 | 72 | MoBendsMod | PLAYER | Mod | Pending | Animated player model (large). |
 | 73 | ModernHotbarMod | HUD | HUD | Pending | Hotbar restyle. |
@@ -93,7 +93,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 75 | MouseStrokesMod | HUD | HUD | Pending | Mouse-stroke overlay. |
 | 76 | MusicPlayerMod | HUD | HUD | Ported | Local music player. |
 | 77 | NameDisplayMod | HUD | SimpleHUD | Ported | Player name text. |
-| 78 | NameProtectMod | PLAYER | Mod | Pending | Hide own name. |
+| 78 | NameProtectMod | PLAYER | Mod | Ported | Hide own name. |
 | 79 | NametagMod | PLAYER | Mod | Pending | Nametag restyle. |
 | 80 | OverlayEditorMod | RENDER | Mod | Pending | Hide HUD overlays. |
 | 81 | PackDisplayMod | HUD | HUD | Pending | Resource pack list. |
@@ -114,7 +114,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 96 | RearviewMod | HUD | HUD | Pending | Rear camera (2nd pass). |
 | 97 | ScoreboardMod | HUD | HUD | Pending | Scoreboard restyle. |
 | 98 | ServerIPDisplayMod | HUD | SimpleHUD | Ported | Server address. |
-| 99 | SessionInfoMod | HUD | HUD | Pending | Session info panel. |
+| 99 | SessionInfoMod | HUD | HUD | Ported | Session info panel. |
 | 100 | ShinyPotsMod | RENDER | Mod | Pending | Potion item shine. |
 | 101 | Skin3DMod | RENDER | Mod | Pending | 3D skin layers (large). |
 | 102 | SkinProtectMod | PLAYER | Mod | Pending | Replace own skin. |
@@ -127,9 +127,9 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 109 | TaplookMod | PLAYER | Mod | Pending | Tap-to-look (Freelook variant). |
 | 110 | TargetIndicatorMod | RENDER | Mod | Pending | Target indicator. |
 | 111 | TargetInfoMod | HUD | HUD | Pending | Target info panel. |
-| 112 | TimeChangerMod | WORLD | Mod | Pending | Client-side time. |
-| 113 | TNTTimerMod | HUD | SimpleHUD | Pending | TNT fuse timer. |
-| 114 | ToggleSneakMod | PLAYER | Mod | Pending | Toggle sneak. |
+| 112 | TimeChangerMod | WORLD | Mod | Ported | Client-side time. |
+| 113 | TNTTimerMod | HUD | SimpleHUD | Ported | TNT fuse timer. |
+| 114 | ToggleSneakMod | PLAYER | Mod | Ported | Toggle sneak. |
 | 115 | ToggleSprintMod | HUD | SimpleHUD | Ported | Toggle sprint + HUD. |
 | 116 | UHCOverlayMod | RENDER | Mod | Pending | UHC overlay. |
 | 117 | WaveyCapesMod | RENDER | Mod | Pending | Cape physics. |
@@ -138,7 +138,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
 | 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom. |
 
-Counts: Ported=32, Pending=87, Impossible=2. Total 121.
+Counts: Ported=44, Pending=75, Impossible=2. Total 121.
 
 ## 1.20.1-only (keep)
 
