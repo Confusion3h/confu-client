@@ -39,7 +39,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 20 | ClearWaterMod | RENDER | Mod | Ported | Water fog/texture. |
 | 21 | ClientSpooferMod | OTHER | Mod | Ported | Client brand spoof. |
 | 22 | ClockMod | HUD | SimpleHUD | Ported | Clock text. |
-| 23 | ColorSaturationMod | RENDER | Mod | Skeleton | module registered; post shader TBD |
+| 23 | ColorSaturationMod | RENDER | Mod | Ported | Hue/Brightness/Contrast/Saturation post shader (GLSL 150); 1.8.9 group/prev-uniform semantics kept. |
 | 24 | ComboCounterMod | HUD | SimpleHUD | Ported | Hit combo counter. |
 | 25 | CompassMod | HUD | SimpleHUD | Ported | Compass strip / direction. |
 | 26 | CoordsMod | HUD | SimpleHUD | Ported | Player position. |
@@ -51,10 +51,10 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 32 | DamageTintMod | RENDER | Mod | Ported | Damage red overlay. |
 | 33 | DayCounterMod | HUD | SimpleHUD | Ported | World day count. |
 | 34 | DiscordRPCMod | OTHER | Mod | Ported | Local Discord IPC; application ID set in the Soar menu text box. |
-| 35 | EarsMod | PLAYER | Mod | Skeleton | module registered; player model layer TBD |
+| 35 | EarsMod | PLAYER | Mod | Ported | Custom blackcat ear cutouts on the local player; vanilla deadmau5 layer suppressed like the 1.8.9 @Overwrite. |
 | 36 | EntityCullingMod | OTHER | Mod | Ported | GL occlusion queries in EntityRenderDispatcher.render; label kept, marker/invisible handling, distance limit. |
 | 37 | FarCameraMod | RENDER | Mod | Ported | Third-person distance. |
-| 38 | FemaleGenderMod | PLAYER | Mod | Skeleton | module registered; slim model TBD |
+| 38 | FemaleGenderMod | PLAYER | Mod | Ported | Extra chest ModelPart (UV 16,20) with 1.8.9 45-rad pitch and sneak offset; local player only. |
 | 39 | FovModifierMod | PLAYER | Mod | Ported | FOV slider. |
 | 40 | FPSBoostMod | OTHER | Mod | Ported | Perf toggles; Sodium covers most. |
 | 41 | FPSDisplayMod | HUD | SimpleHUD | Ported | getCurrentFps(). |
@@ -90,7 +90,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 71 | MinimapMod | HUD | HUD | Ported | 1.8.9 ChunkAtlas (16px tiles, rotating about the player, region texture) drawn in a ScreenStencil rounded map with shadow and sky; width/height/alpha settings. |
 | 72 | MoBendsMod | PLAYER | Mod | Skeleton | module registered; large animation subsystem TBD |
 | 73 | ModernHotbarMod | HUD | HUD | Ported | 4 designs, smooth anim, pickup style; vanilla hotbar/XP hidden via InGameHudMixin. |
-| 74 | MotionBlurMod | RENDER | Mod | Skeleton | module registered; post-process TBD |
+| 74 | MotionBlurMod | RENDER | Mod | Ported | SHADER via previous-frame target; ACCUM impossible on the 1.20.1 core profile (glAccum aborts the JVM), so it auto-disables with the 1.8.9 error sound. |
 | 75 | MouseStrokesMod | HUD | HUD | Ported | Mouse-stroke overlay. |
 | 76 | MusicPlayerMod | HUD | HUD | Ported | Local music player. |
 | 77 | NameDisplayMod | HUD | SimpleHUD | Ported | Player name text. |
@@ -139,7 +139,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
 | 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom. |
 
-Counts: Ported=110, Pending=0, Skeleton=9, Impossible=2. Total 121.
+Counts: Ported=114, Pending=0, Skeleton=5, Impossible=2. Total 121.
 
 ## 1.20.1-only (keep)
 
@@ -155,5 +155,5 @@ Counts: Ported=110, Pending=0, Skeleton=9, Impossible=2. Total 121.
 2. HUD panels (PotionStatus, BlockInfo, Calendar, SessionInfo, ArrayList, HorseStats, BossHealth, PackDisplay, MouseStrokes).
 3. Render basics (HitBox, ChunkBorders, BlockOverlay, Fullbright-siblings, Damage*, Minimal*, OverlayEditor, HitColor).
 4. Player/QoL (ToggleSneak, Taplook, BowZoom, FovModifier, AppleSkin, NameProtect, SlowSwing, QuickSwitch, RawInput, Borderless).
-5. Remaining RENDER/WORLD/OTHER (large subsystems last: Skin3D, MoBends, WaveyCapes, Rearview, MotionBlur, Ears, FemaleGender, ColorSaturation, Mechvibes).
+5. Remaining RENDER/WORLD/OTHER (large subsystems last: Skin3D, MoBends, WaveyCapes, Rearview, Mechvibes).
 
