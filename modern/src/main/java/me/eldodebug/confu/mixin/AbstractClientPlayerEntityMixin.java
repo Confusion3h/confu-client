@@ -2,6 +2,7 @@ package me.eldodebug.confu.mixin;
 
 import me.eldodebug.confu.ConfuClient;
 import me.eldodebug.confu.module.impl.CapeModule;
+import me.eldodebug.confu.module.impl.SkinProtectModule;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.util.Identifier;
@@ -29,6 +30,16 @@ public abstract class AbstractClientPlayerEntityMixin {
 		if ((Object) this == MinecraftClient.getInstance().player && ConfuClient.get() != null
 				&& ConfuClient.get().modules().get(CapeModule.class).isEnabled()) {
 			cir.setReturnValue(true);
+		}
+	}
+
+	@Inject(method = "getSkinTexture", at = @At("HEAD"), cancellable = true)
+	private void confu$skinProtect(CallbackInfoReturnable<Identifier> cir) {
+		if ((Object) this != MinecraftClient.getInstance().player || ConfuClient.get() == null) {
+			return;
+		}
+		if (ConfuClient.get().modules().get(SkinProtectModule.class).isEnabled()) {
+			cir.setReturnValue(SkinProtectModule.STEVE);
 		}
 	}
 }

@@ -20,10 +20,10 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 2 | AppleSkinMod | PLAYER | Mod | Pending | Hunger/saturation overlay on food bar. |
 | 3 | ArmorStatusMod | HUD | HUD | Ported | Worn armour icons, H/V layout. |
 | 4 | ArrayListMod | HUD | HUD | Ported | Enabled-module list. |
-| 5 | AsyncScreenshotMod | OTHER | Mod | Pending | Off-thread PNG write. |
+| 5 | AsyncScreenshotMod | OTHER | Mod | Ported | Off-thread PNG write. |
 | 6 | AutoTextMod | PLAYER | Mod | Ported | Keybind sends preset chat. |
 | 7 | BlockInfoMod | HUD | HUD | Ported | Looked-at block name. |
-| 8 | BlockOverlayMod | RENDER | Mod | Pending | Block outline restyle. |
+| 8 | BlockOverlayMod | RENDER | Mod | Ported | Block outline restyle. |
 | 9 | BloodParticlesMod | RENDER | Mod | Pending | Particles on hit. |
 | 10 | BorderlessFullscreenMod | OTHER | Mod | Ported | GLFW borderless fullscreen. |
 | 11 | BossHealthMod | HUD | HUD | Pending | Boss bar position/scale. |
@@ -36,7 +36,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 18 | ChunkBordersMod | RENDER | Mod | Ported | World-render chunk borders. |
 | 19 | ClearGlassMod | RENDER | Mod | Pending | Glass transparency. |
 | 20 | ClearWaterMod | RENDER | Mod | Ported | Water fog/texture. |
-| 21 | ClientSpooferMod | OTHER | Mod | Pending | Client brand spoof. |
+| 21 | ClientSpooferMod | OTHER | Mod | Ported | Client brand spoof. |
 | 22 | ClockMod | HUD | SimpleHUD | Ported | Clock text. |
 | 23 | ColorSaturationMod | RENDER | Mod | Pending | Post-process saturation. |
 | 24 | ComboCounterMod | HUD | SimpleHUD | Ported | Hit combo counter. |
@@ -47,7 +47,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 29 | CustomHeldItemsMod | RENDER | Mod | Pending | Held item model offset. |
 | 30 | DamageParticlesMod | RENDER | Mod | Pending | Damage particles. |
 | 31 | DamageTiltMod | PLAYER | Mod | Ported | Hurt camera tilt. |
-| 32 | DamageTintMod | RENDER | Mod | Pending | Damage red overlay. |
+| 32 | DamageTintMod | RENDER | Mod | Ported | Damage red overlay. |
 | 33 | DayCounterMod | HUD | SimpleHUD | Ported | World day count. |
 | 34 | DiscordRPCMod | OTHER | Mod | Pending | Discord IPC. |
 | 35 | EarsMod | PLAYER | Mod | Pending | Cosmetic ears layer. |
@@ -58,7 +58,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 40 | FPSBoostMod | OTHER | Mod | Pending | Perf toggles; Sodium covers most. |
 | 41 | FPSDisplayMod | HUD | SimpleHUD | Ported | getCurrentFps(). |
 | 42 | FPSLimiterMod | OTHER | Mod | Ported | Framerate cap. |
-| 43 | FPSSpooferMod | OTHER | Mod | Pending | FPS spoof display. |
+| 43 | FPSSpooferMod | OTHER | Mod | Ported | FPS spoof display. |
 | 44 | FreelookMod | PLAYER | Mod | Ported | Freelook camera. |
 | 45 | FullbrightMod | PLAYER | Mod | Ported | Gamma override. |
 | 46 | GlintColorMod | RENDER | Mod | Pending | Enchant glint colour. |
@@ -66,7 +66,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 48 | GodbridgeAssistMod | HUD | HUD | Pending | Godbridge assist HUD. |
 | 49 | HealthDisplayMod | HUD | SimpleHUD | Ported | Health text. |
 | 50 | HitBoxMod | RENDER | Mod | Ported | Entity hitbox render. |
-| 51 | HitColorMod | RENDER | Mod | Pending | Hurt flash colour. |
+| 51 | HitColorMod | RENDER | Mod | Ported | Hurt flash colour. |
 | 52 | HitDelayFixMod | PLAYER | Mod | Impossible | 1.8 miss-hit delay (leftClickCounter); 1.20.1 uses attack cooldown. |
 | 53 | HorseStatsMod | HUD | HUD | Ported | Horse stats panel. |
 | 54 | HypixelMod | OTHER | Mod | Pending | Hypixel helpers (AutoGG etc.). |
@@ -108,7 +108,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 90 | PotionStatusMod | HUD | HUD | Ported | Active potion list. |
 | 91 | ProjectileTrailMod | PLAYER | Mod | Pending | Projectile trail. |
 | 92 | QuickSwitchMod | PLAYER | Mod | Pending | Sword quick switch. |
-| 93 | RawInputMod | OTHER | Mod | Pending | Raw mouse input. |
+| 93 | RawInputMod | OTHER | Mod | Ported | Raw mouse input. |
 | 94 | ReachCirclesMod | PLAYER | Mod | Pending | Reach visualisation circles. |
 | 95 | ReachDisplayMod | HUD | SimpleHUD | Ported | Last hit reach distance. |
 | 96 | RearviewMod | HUD | HUD | Pending | Rear camera (2nd pass). |
@@ -117,14 +117,14 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 99 | SessionInfoMod | HUD | HUD | Ported | Session info panel. |
 | 100 | ShinyPotsMod | RENDER | Mod | Pending | Potion item shine. |
 | 101 | Skin3DMod | RENDER | Mod | Pending | 3D skin layers (large). |
-| 102 | SkinProtectMod | PLAYER | Mod | Pending | Replace own skin. |
+| 102 | SkinProtectMod | PLAYER | Mod | Ported | Replace own skin. |
 | 103 | SlowSwingMod | PLAYER | Mod | Ported | Swing delay. |
 | 104 | SoundModifierMod | OTHER | Mod | Pending | Per-category volume/pitch. |
 | 105 | SoundSubtitlesMod | HUD | HUD | Pending | Sound subtitles HUD. |
 | 106 | SpeedometerMod | HUD | SimpleHUD | Ported | Speed text/graph. |
 | 107 | StopwatchMod | HUD | SimpleHUD | Ported | Stopwatch. |
 | 108 | TabEditorMod | RENDER | Mod | Pending | Tab list background. |
-| 109 | TaplookMod | PLAYER | Mod | Pending | Tap-to-look (Freelook variant). |
+| 109 | TaplookMod | PLAYER | Mod | Ported | Tap-to-look (Freelook variant). |
 | 110 | TargetIndicatorMod | RENDER | Mod | Pending | Target indicator. |
 | 111 | TargetInfoMod | HUD | HUD | Pending | Target info panel. |
 | 112 | TimeChangerMod | WORLD | Mod | Ported | Client-side time. |
@@ -138,7 +138,7 @@ Branch: `modern-allmods`. 1.8.9 tree (`src/`) is not modified.
 | 120 | WeatherDisplayMod | HUD | SimpleHUD | Ported | Weather text. |
 | 121 | ZoomMod | PLAYER | Mod | Ported | Smooth zoom. |
 
-Counts: Ported=54, Pending=65, Impossible=2. Total 121.
+Counts: Ported=63, Pending=56, Impossible=2. Total 121.
 
 ## 1.20.1-only (keep)
 

@@ -15,7 +15,12 @@ public final class FpsModule extends SimpleNvgHudModule {
 
 	@Override
 	public String getText() {
-		return mc.getCurrentFps() + " FPS";
+		int fps = mc.getCurrentFps();
+		try {
+			fps = me.eldodebug.confu.ConfuClient.get().modules().get(FpsSpooferModule.class).spoof(fps);
+		} catch (RuntimeException ignored) {
+		}
+		return fps + " FPS";
 	}
 
 	@Override

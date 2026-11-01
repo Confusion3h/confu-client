@@ -120,6 +120,15 @@ public class ConfuClient implements ClientModInitializer {
 		modules.register(new OverlayEditorModule());
 		modules.register(new HorseStatsModule());
 		modules.register(new PackDisplayModule());
+		modules.register(new TaplookModule());
+		modules.register(new RawInputModule());
+		modules.register(new ClientSpooferModule());
+		modules.register(new FpsSpooferModule());
+		modules.register(new SkinProtectModule());
+		modules.register(new AsyncScreenshotModule());
+		modules.register(new HitColorModule());
+		modules.register(new DamageTintModule());
+		modules.register(new BlockOverlayModule());
 		modules.register(new TotemCounterModule());
 		modules.register(new ElytraStatusModule());
 		modules.register(new MusicPlayerModule());

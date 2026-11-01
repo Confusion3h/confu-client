@@ -6,6 +6,7 @@
   "client": [
     "AbstractClientPlayerEntityMixin",
     "CameraMixin",
+    "ClientBrandRetrieverMixin",
     "ClientPlayNetworkHandlerMixin",
     "ClientPlayerInteractionManagerMixin",
     "EntityMixin",
