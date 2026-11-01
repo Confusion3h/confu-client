@@ -249,4 +249,12 @@ public abstract class NvgHudModule extends HudModule {
 			return Fonts.REGULAR;
 		}
 	}
+
+	public void drawArc(float addX, float addY, float radius, float startAngle, float endAngle, float strokeWidth, Color color) {
+		nvg().drawArc(x + (addX * s), y + (addY * s), radius * s, startAngle, endAngle, strokeWidth * s, color);
+	}
+
+	public void drawArc(float addX, float addY, float radius, float startAngle, float endAngle, float strokeWidth) {
+		drawArc(addX, addY, radius, startAngle, endAngle, strokeWidth, getFontColor());
+	}
 }

@@ -6,6 +6,8 @@
   "client": [
     "AbstractClientPlayerEntityMixin",
     "CameraMixin",
+    "ClientPlayNetworkHandlerMixin",
+    "ClientPlayerInteractionManagerMixin",
     "EntityMixin",
     "GameMenuScreenAccessor",
     "GameRendererMixin",
