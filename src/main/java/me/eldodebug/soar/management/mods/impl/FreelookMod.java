@@ -31,6 +31,14 @@ public class FreelookMod extends Mod {
 	/** Still easing back to the player's view after the key was released. */
 	private boolean returning;
 	private SimpleAnimation transition = new SimpleAnimation(0.0F);
+	/** Length of the ease back to the player's view. */
+	private static final long RETURN_MS = 350L;
+	private long returnStartMs;
+	/** Blend factor at the moment the return started (the ease-in may not have reached 1). */
+	private float returnStartP;
+	/** Player angles seen by the previous camera frame, to follow mouse input during the return. */
+	private float lastBaseYaw, lastBasePitch;
+	private boolean haveLastBase;
 	
 	private BooleanSetting invertYawSetting = new BooleanSetting(TranslateText.INVERT_YAW, this, false);
 	private BooleanSetting invertPitchSetting = new BooleanSetting(TranslateText.INVERT_PITCH, this, false);
@@ -64,6 +72,11 @@ public class FreelookMod extends Mod {
 				stop();
 			}
 		}
+
+		// Fallback: the camera hook is what normally ends the return, but never let it outlive its duration.
+		if(returning && System.currentTimeMillis() - returnStartMs > RETURN_MS + 200L) {
+			finishReturn();
+		}
 	}
 	
 	@EventTarget
@@ -85,21 +98,36 @@ public class FreelookMod extends Mod {
 	@EventTarget
 	public void onCameraRotation(EventCameraRotation event) {
 		if(!active && !returning) {
+			haveLastBase = false;
 			return;
-		}
-		float p = 1F;
-		if(smoothSetting.isToggled()) {
-			transition.setAnimation(active ? 1.0F : 0.0F, 12);
-			p = Math.max(0F, Math.min(1F, transition.getValue()));
 		}
 		float baseYaw = event.getYaw();
 		float basePitch = event.getPitch();
+		float p = 1F;
+		if(returning) {
+			// Mouse input during the return turns the player; move the free angle by the same amount so the
+			// camera follows the mouse 1:1 instead of being damped by the blend (the old "slow mouse" bug).
+			if(haveLastBase) {
+				yaw += baseYaw - lastBaseYaw;
+				pitch = MathHelper.clamp_float(pitch + (basePitch - lastBasePitch), -90, 90);
+			}
+			float t = Math.min(1F, (System.currentTimeMillis() - returnStartMs) / (float) RETURN_MS);
+			float inv = 1F - t;
+			p = returnStartP * inv * inv * inv; // ease-out, reaches exactly 0 at the end
+		} else if(smoothSetting.isToggled()) {
+			transition.setAnimation(1.0F, 12);
+			p = Math.max(0F, Math.min(1F, transition.getValue()));
+		}
+		lastBaseYaw = baseYaw;
+		lastBasePitch = basePitch;
+		haveLastBase = true;
+		if(returning && p <= 0.001F) {
+			finishReturn();
+			return; // leave the event untouched: plain player view from this frame on
+		}
 		event.setYaw(baseYaw + MathHelper.wrapAngleTo180_float(yaw - baseYaw) * p);
 		event.setPitch(basePitch + (pitch - basePitch) * p);
 		event.setThirdPersonDistance(event.getThirdPersonDistance() * p);
-		if(returning && p < 0.02F) {
-			finishReturn();
-		}
 	}
 	
 	@EventTarget
@@ -135,6 +163,9 @@ public class FreelookMod extends Mod {
 				pitch = renderView.rotationPitch;
 				previousPerspective = mc.gameSettings.thirdPersonView;
 				transition = new SimpleAnimation(smoothSetting.isToggled() ? 0.0F : 1.0F);
+			} else {
+				// re-pressed mid-return: continue the ease-in from where the return got to
+				transition = new SimpleAnimation(currentReturnP());
 			}
 			returning = false;
 			mc.gameSettings.thirdPersonView = 3;
@@ -146,14 +177,33 @@ public class FreelookMod extends Mod {
 			active = false;
 			if(smoothSetting.isToggled()) {
 				returning = true;
+				returnStartMs = System.currentTimeMillis();
+				returnStartP = Math.max(0F, Math.min(1F, transition.getValue()));
 			} else {
 				finishReturn();
 			}
 		}
 	}
 
+	private float currentReturnP() {
+		float t = Math.min(1F, (System.currentTimeMillis() - returnStartMs) / (float) RETURN_MS);
+		float inv = 1F - t;
+		return returnStartP * inv * inv * inv;
+	}
+
+	@Override
+	public void onDisable() {
+		super.onDisable();
+		toggled = false;
+		if(active || returning) {
+			active = false;
+			finishReturn();
+		}
+	}
+
 	private void finishReturn() {
 		returning = false;
+		haveLastBase = false;
 		mc.gameSettings.thirdPersonView = previousPerspective;
 		mc.renderGlobal.setDisplayListEntitiesDirty();
 	}
