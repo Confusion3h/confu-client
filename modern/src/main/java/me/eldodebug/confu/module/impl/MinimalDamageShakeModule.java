@@ -13,6 +13,11 @@ public final class MinimalDamageShakeModule extends Module {
 		super("minimal_damage_shake", Category.RENDER, "tt:MINIMAL_DAMAGE_SHAKE", "tt:MINIMAL_DAMAGE_SHAKE_DESCRIPTION");
 	}
 
+	@Override
+	public String alias() {
+		return "nohurtcam hurtcam hurt cam";
+	}
+
 	/** Multiplier for hurt camera tilt (0 = none). */
 	public float intensityFactor() {
 		return isEnabled() ? intensity.getFloat() / 100F : 1F;

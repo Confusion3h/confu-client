@@ -16,6 +16,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -72,6 +73,12 @@ public abstract class GameRendererMixin {
 		if ((mod.isEnabled() && mod.intensityFactor() <= 0F) || RearviewCamera.isRecording()) {
 			ci.cancel();
 		}
+	}
+
+	/** 1.8.9 MixinEntityRenderer#adjustHurtCameraEffect: scale every rotation in the hurt/death tilt by intensity/100. */
+	@ModifyArg(method = "tiltViewWhenHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/RotationAxis;rotationDegrees(F)Lorg/joml/Quaternionf;"), index = 0)
+	private float confu$scaleHurt(float angle) {
+		return angle * ConfuClient.get().modules().get(MinimalDamageShakeModule.class).intensityFactor();
 	}
 
 	@Inject(method = "render", at = @At("TAIL"))

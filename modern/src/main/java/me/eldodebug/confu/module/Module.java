@@ -41,6 +41,11 @@ public abstract class Module {
 		return id;
 	}
 
+	/** Extra search words for the mod menu (1.8.9 Mod alias). */
+	public String alias() {
+		return "";
+	}
+
 	public Category category() {
 		return category;
 	}
@@ -116,6 +121,10 @@ public abstract class Module {
 
 	protected final KeybindSetting extraKey(String key, String nameKey, int defaultCode) {
 		return add(new KeybindSetting(key, nameKey, defaultCode));
+	}
+
+	protected final me.eldodebug.confu.module.setting.ColorSetting color(String key, String nameKey, int defaultArgb, boolean showAlpha) {
+		return add(new me.eldodebug.confu.module.setting.ColorSetting(key, nameKey, defaultArgb, showAlpha));
 	}
 
 	protected final StringSetting string(String key, String nameKey, String defaultValue) {

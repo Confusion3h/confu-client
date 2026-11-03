@@ -36,6 +36,8 @@ public class ModManager {
 					list.add(new me.eldodebug.soar.management.mods.settings.impl.ComboSetting(mod, (ComboSetting) s));
 				} else if (s instanceof KeybindSetting) {
 					list.add(new me.eldodebug.soar.management.mods.settings.impl.KeybindSetting(mod, (KeybindSetting) s));
+				} else if (s instanceof me.eldodebug.confu.module.setting.ColorSetting) {
+					list.add(new me.eldodebug.soar.management.mods.settings.impl.ColorSetting(mod, (me.eldodebug.confu.module.setting.ColorSetting) s));
 				} else if (s instanceof me.eldodebug.confu.module.setting.StringSetting) {
 					list.add(new me.eldodebug.soar.management.mods.settings.impl.TextSetting(mod, (me.eldodebug.confu.module.setting.StringSetting) s));
 				}
@@ -77,6 +79,6 @@ public class ModManager {
 	}
 
 	public String getWords(Mod m) {
-		return m.getName() + " " + m.getDescription() + " " + m.getModule().id();
+		return m.getName() + " " + m.getDescription() + " " + m.getModule().id() + " " + m.getModule().alias();
 	}
 }

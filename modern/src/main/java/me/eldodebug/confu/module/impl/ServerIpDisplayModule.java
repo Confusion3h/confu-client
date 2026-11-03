@@ -10,7 +10,7 @@ public final class ServerIpDisplayModule extends SimpleNvgHudModule {
 	private final BooleanSetting icon = bool("icon", "tt:ICON", true);
 
 	public ServerIpDisplayModule() {
-		super("server_ip_display", "tt:SERVERIP_DISPLAY", "tt:SERVER_IP_DISPLAY_DESCRIPTION", 0.30F, 0.02F);
+		super("server_ip_display", "tt:SERVER_IP", "tt:SERVER_IP_DISPLAY_DESCRIPTION", 0.30F, 0.02F);
 	}
 
 	@Override
