@@ -8,12 +8,10 @@ import me.eldodebug.confu.module.setting.BooleanSetting;
 public final class FpsBoostModule extends Module {
 
 	private final BooleanSetting lowParticles = bool("low_particles", "tt:PARTICLE", false);
-	private final BooleanSetting hideEntities = bool("hide_entities", "tt:MOBS", false);
 
 	public FpsBoostModule() {
 		super("fps_boost", Category.OTHER, "tt:FPS_BOOST", "tt:FPS_BOOST_DESCRIPTION");
 	}
 
 	public boolean lowParticles() { return isEnabled() && lowParticles.enabled(); }
-	public boolean hideDistantEntities() { return isEnabled() && hideEntities.enabled(); }
 }

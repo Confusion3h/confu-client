@@ -98,7 +98,30 @@ public final class ModernHotbarModule extends NvgHudModule {
 			ItemStack stack = mc.player.getInventory().getStack(i);
 			if (!stack.isEmpty()) {
 				int x = baseX + i * 20;
+				// 1.8.9 ModernHotbarMod#renderHotBarItem pickup animations (pop / bread / vanilla)
+				String style = pickup.get();
+				float tickDelta = mc.getTickDelta();
+				float progress = stack.getBobbingAnimationTime() - ("bread".equals(style) ? tickDelta / 2F : tickDelta);
+				boolean animate = progress > 0F;
+				if (animate) {
+					context.getMatrices().push();
+					context.getMatrices().translate(x + 8, baseY + 12, 0F);
+					if ("bread".equals(style)) {
+						float s = 1F + progress / 2.5F;
+						context.getMatrices().scale(Math.max(1F, s / (1F / (s / 2F))), s, 1F);
+					} else if ("pop".equals(style)) {
+						float s = 1F + progress / 5F;
+						context.getMatrices().scale(s, s, 1F);
+					} else {
+						float s = 1F + progress / 5F;
+						context.getMatrices().scale(1F / s, (s + 1F) / 2F, 1F);
+					}
+					context.getMatrices().translate(-(x + 8), -(baseY + 12), 0F);
+				}
 				context.drawItem(stack, x, baseY);
+				if (animate) {
+					context.getMatrices().pop();
+				}
 				context.drawItemInSlot(mc.textRenderer, stack, x, baseY);
 			}
 		}

@@ -18,6 +18,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityRenderDispatcher.class)
 public class EntityRenderDispatcherMixin {
 
+	private static VertexConsumerProvider confu$hitboxProvider;
+
+	@Inject(method = "render", at = @At("HEAD"))
+	private void confu$captureProvider(Entity entity, double x, double y, double z, float yaw, float tickDelta,
+			MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+		confu$hitboxProvider = vertexConsumers;
+	}
+
+	@Inject(method = "renderHitbox", at = @At("HEAD"), cancellable = true)
+	private static void confu$hitbox(MatrixStack matrices, net.minecraft.client.render.VertexConsumer vertices, Entity entity, float tickDelta, CallbackInfo ci) {
+		me.eldodebug.confu.module.impl.HitBoxModule mod = me.eldodebug.confu.ConfuClient.get().modules().get(me.eldodebug.confu.module.impl.HitBoxModule.class);
+		if (mod != null && mod.isEnabled() && confu$hitboxProvider != null) {
+			ci.cancel();
+			mod.render(matrices, confu$hitboxProvider, entity, tickDelta);
+		}
+	}
+
+
 	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
 	private void confu$cullEntity(Entity entity, double x, double y, double z, float yaw, float tickDelta,
 			MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {

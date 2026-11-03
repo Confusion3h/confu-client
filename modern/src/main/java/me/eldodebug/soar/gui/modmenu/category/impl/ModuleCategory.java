@@ -18,6 +18,7 @@ import me.eldodebug.soar.management.mods.ModCategory;
 import me.eldodebug.soar.management.mods.ModManager;
 import me.eldodebug.soar.management.mods.settings.Setting;
 import me.eldodebug.soar.management.mods.settings.impl.BooleanSetting;
+import me.eldodebug.soar.management.mods.settings.impl.ColorSetting;
 import me.eldodebug.soar.management.mods.settings.impl.ComboSetting;
 import me.eldodebug.soar.management.mods.settings.impl.KeybindSetting;
 import me.eldodebug.soar.management.mods.settings.impl.NumberSetting;
@@ -27,6 +28,7 @@ import me.eldodebug.soar.management.nanovg.font.Font;
 import me.eldodebug.soar.management.nanovg.font.Fonts;
 import me.eldodebug.soar.management.nanovg.font.LegacyIcon;
 import me.eldodebug.soar.ui.comp.Comp;
+import me.eldodebug.soar.ui.comp.impl.CompColorPicker;
 import me.eldodebug.soar.ui.comp.impl.CompComboBox;
 import me.eldodebug.soar.ui.comp.impl.CompKeybind;
 import me.eldodebug.soar.ui.comp.impl.CompSlider;
@@ -218,6 +220,8 @@ public class ModuleCategory extends Category {
 				float controlLocal = 122F;
 				if(s.comp instanceof CompToggleButton) {
 					controlLocal = 168F;
+				} else if(s.comp instanceof CompColorPicker) {
+					controlLocal = 98F;
 				}
 				drawSettingLabel(nvg, s.setting.getName(), this.getX() + offsetX + 26, this.getY() + offsetY + 15F + s.openAnimation.getValue(), controlLocal - 32F, palette.getFontColor(ColorType.DARK));
 				
@@ -263,6 +267,13 @@ public class ModuleCategory extends Category {
 					textBox.setY(this.getY() + offsetY + 7 + s.openAnimation.getValue());
 					textBox.setWidth(75);
 					textBox.setHeight(16);
+				}
+
+				if(s.comp instanceof CompColorPicker) {
+					CompColorPicker picker = (CompColorPicker) s.comp;
+					picker.setX(this.getX() + offsetX + 98);
+					picker.setY(this.getY() + offsetY + 12.5F + s.openAnimation.getValue());
+					picker.setScale(0.8F);
 				}
 				
 				
@@ -413,6 +424,15 @@ public class ModuleCategory extends Category {
 									
 									comps.add(new ModuleSetting(s, textBox));
 								}
+
+								if(s instanceof ColorSetting) {
+									ColorSetting cSetting = (ColorSetting) s;
+									CompColorPicker picker = new CompColorPicker(cSetting);
+									picker.setX(this.getX() + offsetX + 98);
+									picker.setY(this.getY() + offsetY + 8.5F);
+									picker.setScale(0.8F);
+									comps.add(new ModuleSetting(s, picker));
+								}
 								
 								
 								
@@ -452,6 +472,21 @@ public class ModuleCategory extends Category {
 					
 					s.comp.mouseClicked(mouseX, (int) (mouseY - settingScroll.getValue()), mouseButton);
 					
+					if(s.comp instanceof CompColorPicker) {
+						CompColorPicker picker = (CompColorPicker) s.comp;
+						int openIndex = 1;
+						if(!picker.isInsideOpen(mouseX, (int) (mouseY - settingScroll.getValue()))) {
+							continue;
+						}
+						for(int i = 0; i < comps.size(); i++) {
+							if((openIndex * 2) + (comps.indexOf(s)) < comps.size()) {
+								ModuleSetting s2 = comps.get((openIndex * 2) + (comps.indexOf(s)));
+								int add = picker.isShowAlpha() ? 100 : 85;
+								s2.openY+= picker.isOpen() ? add : -add;
+							}
+							openIndex++;
+						}
+					}
 				}
 			}
 			
@@ -608,6 +643,17 @@ public class ModuleCategory extends Category {
 	        }
 
 	        ModuleSetting s = comps.get(i);
+	        if (s.comp instanceof CompColorPicker) {
+	            CompColorPicker picker = (CompColorPicker) s.comp;
+	            if (picker.isOpen()) {
+	                int add = picker.isShowAlpha() ? 100 : 85;
+	                if (MathUtils.isOdd(i + 1)) {
+	                    oddTotal += add;
+	                } else {
+	                    evenTotal += add;
+	                }
+	            }
+	        }
 	    }
 
 	    int output = Math.max(oddOutput, evenOutput) + Math.max(oddTotal, evenTotal);
